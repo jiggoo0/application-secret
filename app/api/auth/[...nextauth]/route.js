@@ -1,10 +1,76 @@
 // app/api/auth/[...nextauth]/route.js
 import CredentialsProvider from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
-import { compare } from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
-import { supabaseServer } from '@/lib/supabase/server'; // ใช้ service key จริง
+import { compare } from 'bcryptjs';
+import { supabaseServer } from '@/lib/supabase/server';
+
+async function authorize(credentials) {
+  console.log('Login attempt:', credentials.email);
+
+  let user = null;
+
+  // 1️⃣ Supabase first
+  try {
+    const { data, error } = await supabaseServer
+      .from('users')
+      .select('*')
+      .eq('email', credentials.email)
+      .single();
+
+    if (data) user = data;
+    if (error) console.warn('Supabase fetch error:', error.message);
+
+    console.log('Fetched user from Supabase:', user);
+  } catch (err) {
+    console.error('Supabase fetch error:', err.message);
+  }
+
+  // 2️⃣ fallback users.json
+  if (!user) {
+    try {
+      const filePath = path.join(process.cwd(), 'data', 'users.json');
+      if (fs.existsSync(filePath)) {
+        const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+        user = jsonData.find((u) => u.email === credentials.email) || null;
+        console.log('Fetched user from users.json:', user);
+      }
+    } catch (err) {
+      console.error('Error reading users.json:', err.message);
+    }
+  }
+
+  if (!user) {
+    console.error('User not found:', credentials.email);
+    throw new Error('No user found with this email');
+  }
+
+  // 3️⃣ ตรวจสอบ password
+  let isValid = false;
+  try {
+    if (user.password.startsWith('$2')) {
+      isValid = await compare(credentials.password, user.password);
+    } else {
+      isValid = credentials.password === user.password;
+    }
+  } catch (err) {
+    console.error('Password compare error:', err.message);
+  }
+
+  if (!isValid) {
+    console.error('Invalid password for user:', credentials.email);
+    throw new Error('Invalid password');
+  }
+
+  // 4️⃣ คืนค่า user object
+  return {
+    id: user.id || user.email,
+    email: user.email,
+    role: user.role || 'user',
+    name: user.name || user.email.split('@')[0],
+  };
+}
 
 export const authOptions = {
   providers: [
@@ -14,69 +80,7 @@ export const authOptions = {
         email: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error('Email and password required');
-        }
-
-        // ✅ ตรวจสอบจาก Supabase ก่อน
-        let user = null;
-
-        try {
-          const { data } = await supabaseServer
-            .from('users')
-            .select('*')
-            .eq('email', credentials.email)
-            .single();
-
-          if (data) user = data;
-        } catch (err) {
-          console.error('❌ Supabase fetch error:', err.message);
-        }
-
-        // ✅ ถ้า Supabase ไม่เจอ → ตรวจจาก users.json
-        if (!user) {
-          try {
-            const filePath = path.join(process.cwd(), 'data', 'users.json');
-            if (fs.existsSync(filePath)) {
-              const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-              const found = jsonData.find((u) => u.email === credentials.email);
-              if (found) user = found;
-            }
-          } catch (err) {
-            console.error('⚠️ Error reading users.json:', err.message);
-          }
-        }
-
-        if (!user) {
-          console.error('❌ User not found in Supabase or users.json');
-          throw new Error('No user found with this email');
-        }
-
-        // ✅ ตรวจสอบรหัสผ่าน
-        let isValid = false;
-        try {
-          if (user.password.startsWith('$2')) {
-            isValid = await compare(credentials.password, user.password);
-          } else {
-            isValid = credentials.password === user.password;
-          }
-        } catch (err) {
-          console.error('⚠️ Password compare error:', err.message);
-        }
-
-        if (!isValid) {
-          throw new Error('Invalid password');
-        }
-
-        // ✅ คืนค่าผู้ใช้ให้ NextAuth
-        return {
-          id: user.id || user.email, // fallback ถ้าไม่มี id
-          email: user.email,
-          role: user.role || 'user',
-          name: user.name || user.email.split('@')[0],
-        };
-      },
+      authorize,
     }),
   ],
 
