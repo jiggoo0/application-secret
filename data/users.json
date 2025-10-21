@@ -1,0 +1,80 @@
+[
+  {
+    "email": "admin2517@example.com",
+    "password": "$2b$10$LkgrzXJEDkIwL.TUXfdU/uu6swO0vtCV5Q8.brHWtdaoPo3a28xJy",
+    "role": "admin",
+    "name": "admin2517"
+  },
+  {
+    "email": "admin@example.com",
+    "password": "$2b$10$E1zA2o7bJFXjKNel9hRVFuuV3impzuhqyJ/.hMx1JCMjc3zATskKq",
+    "role": "admin",
+    "name": "admin"
+  },
+  {
+    "email": "Addmintest@example.com",
+    "password": "$2b$10$WGipWH.BIX7MyVNjicXCte75icZfWe02QoYNJdp0leSHM4R7J0cj2",
+    "role": "admin",
+    "name": "Addmintest"
+  },
+  {
+    "email": "SEOCARCARE@example.com",
+    "password": "$2b$10$d5ea5MyLVxvI7VAUCyngd.YwSQfaV31I2LA3q11VcFasXFxMe9Bdi",
+    "role": "user",
+    "name": "SEOCARCARE"
+  },
+  {
+    "email": "Usertest@example.com",
+    "password": "$2b$10$08iqySBipVKrh7/mgQxoX.oPgtbCQrWU51UzyF4/IjqJZ5PAFeTQq",
+    "role": "user",
+    "name": "Usertest"
+  },
+  {
+    "email": "Managertest@example.com",
+    "password": "$2b$10$3e3.PbmpgOZ5ucMktIuiJuMt9Ruj26SXanruhL0HpuhVGPGDKNKm.",
+    "role": "user",
+    "name": "Managertest"
+  },
+  {
+    "email": "parinya@example.com",
+    "password": "$2b$10$Rr2.kjMCOx1nr/JTWr79VOJYWtiR6AG.w.QhncXKOd8KKka/lrHEe",
+    "role": "user",
+    "name": "parinya"
+  },
+  {
+    "email": "JPKYETONKEY201@example.com",
+    "password": "$2b$10$.bjW9RVJSY3/QHoETObbDOfQXhNvx3hEua/b09JV3hUNYUVyNPCAi",
+    "role": "user",
+    "name": "JPKYETONKEY201"
+  },
+  {
+    "email": "JPusertest01@example.com",
+    "password": "$2b$10$wHSG5dJoMSGdjQpb.YqFaOySeAS3JL/51O5Le6rQnS3QPw4/HfYGW",
+    "role": "user",
+    "name": "JPusertest01"
+  },
+  {
+    "email": "JPusertest02@example.com",
+    "password": "$2b$10$FMKssK.GaQH0BUlC/DEFVeLxnGHuR5L/afqn.IpI5wHvlnJk6amoO",
+    "role": "user",
+    "name": "JPusertest02"
+  },
+  {
+    "email": "JPusertest03@example.com",
+    "password": "$2b$10$r2Ns4q255Y7LLW9A0OQ/5OzBfxwMxMSfgHHvkxfgJoAE3AmMnyrVG",
+    "role": "user",
+    "name": "JPusertest03"
+  },
+  {
+    "email": "JPusertest04@example.com",
+    "password": "$2b$10$ORDahIL9raPyw.G/YYzaf.Fjwyob2z/fnJSKZ5KUHli1XwyZ.FW/C",
+    "role": "user",
+    "name": "JPusertest04"
+  },
+  {
+    "email": "thawatchai@example.com",
+    "password": "$2b$10$VWG96IPARMJr7Gx.6M3p0umw8qVefvSLjXc.TBnMEAq33QyyKwKCS",
+    "role": "user",
+    "name": "thawatchai"
+  }
+]

@@ -1,5 +1,3 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
 # dependencies
 /node_modules
 /.pnp
@@ -30,12 +28,39 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
+# env files (commit .env.example only)
 .env*
-
+.env.local
+.env.production
 # vercel
 .vercel
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# rclone / cloud sync
+rclone.conf
+*.rclone.log
+
+# Termux / Linux specific
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# VNC / GUI artifacts
+.vnc/
+*.Xauthority
+*.Xresources
+
+# IDE/editor config
+.idea/
+.vscode/
+*.code-workspace
+
+# Project documentation
+project-structure.md
+project-summary.md
+
+._ZzZz_Dev_zZzZ_
