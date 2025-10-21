@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  output: "standalone",
+  output: 'standalone',
 
   images: {
     // ปิดการ Optimize เพื่อรองรับ external image ทุกโดเมน
@@ -14,7 +14,7 @@ const nextConfig = {
 
     // ป้องกัน Watcher ของ Termux/Android
     config.watchOptions = {
-      ignored: ["/node_modules", "/.git", "/data/**"],
+      ignored: ['/node_modules', '/.git', '/data/**'],
     };
 
     // สำหรับ client-side ไม่ให้ webpack เรียกใช้ module Node
