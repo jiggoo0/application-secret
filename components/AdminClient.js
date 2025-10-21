@@ -1,16 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Toaster } from '@/components/ui/sonner'; // ใช้ Toaster จาก custom wrapper
+import { Toaster } from '@/components/ui/sonner';
 import { Card } from '@/components/ui/card';
 
-// 🧩 Admin Components
+// 🧩 Admin Components (ลบ NotesAdmin และ Settings ออก)
 import Uploads from './admin/Uploads';
-import NotesAdmin from './admin/NotesAdmin';
 import Users from './admin/Users';
 import FileList from './admin/FileList';
 import UserSessionsTable from './admin/UserSessionsTable';
-import Settings from './admin/Settings';
 
 // 📄 Document Components
 import CompanyAccount from './documents/CompanyAccount';
@@ -18,34 +16,28 @@ import MedicalCertificate from './documents/MedicalCertificate';
 import SalaryCertificate from './documents/SalaryCertificate';
 import { RegistrationPreview } from './documents/RegistrationPreview';
 
-// 👆 เมนูด้านบน
+// 👆 เมนูด้านบน (ลบ notes, settings)
 const menuItems = [
   { key: 'uploads', label: 'อัปโหลด' },
-  { key: 'notes', label: 'Notes Admin' },
   { key: 'users', label: 'ผู้ใช้งาน' },
   { key: 'files', label: 'รายการไฟล์' },
   { key: 'user-sessions', label: 'ประวัติผู้ใช้' },
-  // ❌ ลบ Keylock Verifier ออก
   { key: 'company', label: 'บัญชีบริษัท' },
   { key: 'medical', label: 'ใบรับรองแพทย์' },
   { key: 'salary', label: 'ใบรับรองเงินเดือน' },
   { key: 'registration', label: 'ทะเบียนพาณิชย์' },
-  { key: 'settings', label: 'ตั้งค่า' },
 ];
 
-// 👆 map key -> component
+// 👆 map key -> component (ลบ notes, settings)
 const componentsMap = {
   uploads: <Uploads />,
-  notes: <NotesAdmin />,
   users: <Users />,
   files: <FileList />,
   'user-sessions': <UserSessionsTable />,
-  // ❌ ตัด keylock ออก
   company: <CompanyAccount />,
   medical: <MedicalCertificate />,
   salary: <SalaryCertificate />,
   registration: <RegistrationPreview />,
-  settings: <Settings />,
 };
 
 export default function AdminClient() {

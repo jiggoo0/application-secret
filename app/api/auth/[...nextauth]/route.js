@@ -1,45 +1,10 @@
-import NextAuth from 'next-auth';
+// app/api/auth/[...nextauth]/route.js
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { comparePassword } from '@/lib/passwordUtils';
-import { supabaseServer } from '@/lib/supabase/server';
-import fs from 'fs/promises';
+import NextAuth from 'next-auth';
+import { compare } from 'bcryptjs';
+import fs from 'fs';
 import path from 'path';
-
-const filePath = path.join(process.cwd(), 'data/users.json');
-
-// โหลดผู้ใช้จากไฟล์ JSON
-async function loadUsersFromFile() {
-  try {
-    const raw = await fs.readFile(filePath, 'utf8');
-    const users = JSON.parse(raw);
-    return Array.isArray(users) ? users : [];
-  } catch {
-    return [];
-  }
-}
-
-// โหลดผู้ใช้จาก Supabase
-async function loadUserFromSupabase(email) {
-  const { data, error } = await supabaseServer
-    .from('users')
-    .select('*')
-    .eq('email', email.toLowerCase())
-    .single();
-
-  return error ? null : data;
-}
-
-// รวมการค้นหาผู้ใช้จากไฟล์หรือ DB
-async function findUser(email) {
-  const fileUsers = await loadUsersFromFile();
-  const userFromFile = fileUsers.find((u) => u.email?.toLowerCase() === email.toLowerCase());
-  if (userFromFile) return { source: 'file', user: userFromFile };
-
-  const userFromDb = await loadUserFromSupabase(email);
-  if (userFromDb) return { source: 'db', user: userFromDb };
-
-  return null;
-}
+import { supabaseServer } from '@/lib/supabase/server'; // ใช้ service key จริง
 
 export const authOptions = {
   providers: [
@@ -50,21 +15,66 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) return null;
+        if (!credentials?.email || !credentials?.password) {
+          throw new Error('Email and password required');
+        }
 
-        const result = await findUser(credentials.email);
-        if (!result || !result.user?.password) return null;
+        // ✅ ตรวจสอบจาก Supabase ก่อน
+        let user = null;
 
-        const isValid = await comparePassword(credentials.password, result.user.password);
-        if (!isValid) return null;
+        try {
+          const { data } = await supabaseServer
+            .from('users')
+            .select('*')
+            .eq('email', credentials.email)
+            .single();
 
-        const { user } = result;
+          if (data) user = data;
+        } catch (err) {
+          console.error('❌ Supabase fetch error:', err.message);
+        }
+
+        // ✅ ถ้า Supabase ไม่เจอ → ตรวจจาก users.json
+        if (!user) {
+          try {
+            const filePath = path.join(process.cwd(), 'data', 'users.json');
+            if (fs.existsSync(filePath)) {
+              const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+              const found = jsonData.find((u) => u.email === credentials.email);
+              if (found) user = found;
+            }
+          } catch (err) {
+            console.error('⚠️ Error reading users.json:', err.message);
+          }
+        }
+
+        if (!user) {
+          console.error('❌ User not found in Supabase or users.json');
+          throw new Error('No user found with this email');
+        }
+
+        // ✅ ตรวจสอบรหัสผ่าน
+        let isValid = false;
+        try {
+          if (user.password.startsWith('$2')) {
+            isValid = await compare(credentials.password, user.password);
+          } else {
+            isValid = credentials.password === user.password;
+          }
+        } catch (err) {
+          console.error('⚠️ Password compare error:', err.message);
+        }
+
+        if (!isValid) {
+          throw new Error('Invalid password');
+        }
+
+        // ✅ คืนค่าผู้ใช้ให้ NextAuth
         return {
-          id: user.id || user.email,
+          id: user.id || user.email, // fallback ถ้าไม่มี id
           email: user.email,
-          name: user.name || user.email,
           role: user.role || 'user',
-          source: result.source,
+          name: user.name || user.email.split('@')[0],
         };
       },
     }),
@@ -72,49 +82,35 @@ export const authOptions = {
 
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 วัน
+    maxAge: 7 * 24 * 60 * 60, // 7 วัน
   },
 
   pages: {
     signIn: '/login',
-    error: '/login?error=auth',
   },
-
-  secret: process.env.NEXTAUTH_SECRET,
 
   callbacks: {
     async jwt({ token, user }) {
-      if (user) Object.assign(token, user);
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.role = user.role;
+        token.name = user.name;
+      }
       return token;
     },
     async session({ session, token }) {
       session.user = {
         id: token.id,
         email: token.email,
-        name: token.name || token.email,
-        role: token.role || 'user',
-        source: token.source,
+        role: token.role,
+        name: token.name,
       };
       return session;
     },
-    async signIn({ user }) {
-      try {
-        // บันทึก session ลง Supabase
-        await supabaseServer.from('user_sessions').insert({
-          user_id: user.email,
-          action: 'login',
-        });
-      } catch (err) {
-        console.error('Supabase session error:', err);
-      }
-      return true;
-    },
-    async redirect({ baseUrl, token }) {
-      if (token?.role === 'admin') return `${baseUrl}/admin`;
-      if (token?.role === 'user') return `${baseUrl}/user`;
-      return baseUrl;
-    },
   },
+
+  secret: process.env.NEXTAUTH_SECRET,
 };
 
 const handler = NextAuth(authOptions);
