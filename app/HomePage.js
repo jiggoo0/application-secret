@@ -4,13 +4,14 @@ import dynamic from 'next/dynamic';
 import SEO from '@/components/SEO';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import AlertBanner from '@/components/AlertBanner';
+import Banner from '@/components/Banner';
 import Section from '@/components/common/Section';
 import Services from '@/components/Services';
 import OurWorks from '@/components/OurWorks/OurWorks';
 import About from '@/components/About';
 
 // 🧠 Dynamic imports with fallback UI
-const Hero = dynamic(() => import('@/components/Hero'), {
+const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
     <div className="py-12 text-center text-gray-500 dark:text-gray-400">กำลังโหลด Hero...</div>
   ),
@@ -31,18 +32,24 @@ const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   ssr: false,
 });
 
-// 🧩 Section configuration (จัดการ sections ให้แยกชัด)
+// 🧩 Section configuration
 const sections = [
   {
     id: 'hero',
     Component: Hero,
     props: {
       headline: 'ทำธุรกิจสีเทาให้มีความมาตรฐานมืออาชีพ',
+      highlightText: 'เจ้าป่า ชัดเจนไม่ขายฝัน',
       subtext: 'ยินดีร่วมงานทุกสายวงการ',
       ctaText: 'ดูบริการของเรา',
       ctaUrl: '#services',
       images: ['/images/hero/hero.webp', '/images/hero/hero2.webp', '/images/hero/hero3.webp'],
       slideInterval: 5000,
+      metrics: [
+        { label: 'ลูกค้า', value: '180+' },
+        { label: 'โปรเจกต์', value: '80+' },
+        { label: 'ปีที่ดำเนินธุรกิจ', value: '8 ปี' },
+      ],
     },
   },
   { id: 'about', Component: About },
@@ -66,6 +73,7 @@ export default function HomePage() {
       {/* 🔔 Global Announcements */}
       <AnnouncementBar />
       <AlertBanner />
+      <Banner />
 
       {/* 🌍 Main Page */}
       <main

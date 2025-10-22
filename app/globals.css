@@ -11,35 +11,35 @@
     --popover: 0 0% 100%;
 
     /* ─── Text ───────────────────────────────────────── */
-    --foreground: 222.2 84% 4.9%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --foreground: 224 71.4% 4.1%;
+    --card-foreground: 224 71.4% 4.1%;
+    --popover-foreground: 224 71.4% 4.1%;
 
     /* ─── Primary Action ─────────────────────────────── */
-    --primary: 220 60% 50%;
+    --primary: 220.9 39.3% 11%;
     --primary-hover: 220 60% 40%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 210 20% 98%;
 
     /* ─── Secondary Action ───────────────────────────── */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 220 14.3% 95.9%;
+    --secondary-foreground: 220.9 39.3% 11%;
 
     /* ─── Accent / Highlight ─────────────────────────── */
-    --accent: 210 60% 88%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 220 14.3% 95.9%;
+    --accent-foreground: 220.9 39.3% 11%;
 
     /* ─── Muted / Disabled ───────────────────────────── */
-    --muted: 210 20% 94%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 220 14.3% 95.9%;
+    --muted-foreground: 220 8.9% 46.1%;
 
     /* ─── Destructive / Danger ───────────────────────── */
-    --destructive: 0 70% 45%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 20% 98%;
 
     /* ─── UI Elements ────────────────────────────────── */
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 212.7 80% 90%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 224 71.4% 4.1%;
     --neutral: 210 16% 82%;
 
     /* ─── Status ─────────────────────────────────────── */
@@ -63,41 +63,41 @@
 
   .dark {
     /* ─── Layout & Surface ───────────────────────────── */
-    --background: 222.2 84% 4.9%;
+    --background: 224 71.4% 4.1%;
     --surface: 222.2 84% 4.9%;
-    --card: 222.2 84% 4.9%;
-    --popover: 222.2 84% 4.9%;
+    --card: 224 71.4% 4.1%;
+    --popover: 224 71.4% 4.1%;
 
     /* ─── Text ───────────────────────────────────────── */
-    --foreground: 210 40% 98%;
-    --card-foreground: 210 40% 98%;
-    --popover-foreground: 210 40% 98%;
+    --foreground: 210 20% 98%;
+    --card-foreground: 210 20% 98%;
+    --popover-foreground: 210 20% 98%;
 
     /* ─── Primary Action ─────────────────────────────── */
-    --primary: 210 60% 60%;
+    --primary: 210 20% 98%;
     --primary-hover: 210 60% 45%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 220.9 39.3% 11%;
 
     /* ─── Secondary Action ───────────────────────────── */
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 215 27.9% 16.9%;
+    --secondary-foreground: 210 20% 98%;
 
     /* ─── Accent / Highlight ─────────────────────────── */
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 215 27.9% 16.9%;
+    --accent-foreground: 210 20% 98%;
 
     /* ─── Muted / Disabled ───────────────────────────── */
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    --muted: 215 27.9% 16.9%;
+    --muted-foreground: 217.9 10.6% 64.9%;
 
     /* ─── Destructive / Danger ───────────────────────── */
-    --destructive: 0 70% 45%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
 
     /* ─── UI Elements ────────────────────────────────── */
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 80% 90%;
+    --border: 215 27.9% 16.9%;
+    --input: 215 27.9% 16.9%;
+    --ring: 216 12.2% 83.9%;
     --neutral: 217.2 32.6% 17.5%;
 
     /* ─── Status ─────────────────────────────────────── */
@@ -106,11 +106,11 @@
     --error: 0 70% 40%;
 
     /* ─── Chart Palette ──────────────────────────────── */
-    --chart-1: 220 80% 65%;
-    --chart-2: 160 70% 60%;
-    --chart-3: 30 90% 65%;
-    --chart-4: 280 75% 70%;
-    --chart-5: 340 85% 65%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
   }
 
   html {
@@ -123,5 +123,28 @@
 
   * {
     @apply border-border;
+  }
+  .theme {
+    --animate-line-shadow: line-shadow 15s linear infinite;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@theme inline {
+  @keyframes line-shadow {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 100% -100%;
+    }
   }
 }

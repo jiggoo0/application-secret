@@ -18,12 +18,13 @@ export default function LoginPage() {
       let session = await getSession();
       let retries = 0;
 
-      // รอให้ session พร้อม (retry สูงสุด 3 ครั้ง)
       while (!session && retries < 3) {
         await new Promise((r) => setTimeout(r, 300));
         session = await getSession();
         retries++;
       }
+
+      console.log('ℹ️ Session after login:', session);
 
       const role = session?.user?.role;
       const fallback = role === 'admin' ? '/admin' : '/user';
@@ -72,7 +73,6 @@ export default function LoginPage() {
           ลงชื่อเข้าใช้
         </h1>
 
-        {/* Email */}
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -86,13 +86,11 @@ export default function LoginPage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            autoFocus
             placeholder="you@example.com"
-            className="mt-1 w-full rounded border border-gray-300 p-2 text-gray-900 focus:outline-none focus:ring focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            className="mt-1 w-full rounded border p-2 dark:bg-gray-700"
           />
         </div>
 
-        {/* Password */}
         <div className="mb-4">
           <label
             htmlFor="password"
@@ -107,18 +105,17 @@ export default function LoginPage() {
             onChange={(e) => setPassword(e.target.value)}
             required
             placeholder="••••••••"
-            className="mt-1 w-full rounded border border-gray-300 p-2 text-gray-900 focus:outline-none focus:ring focus:ring-primary/20 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            className="mt-1 w-full rounded border p-2 dark:bg-gray-700"
           />
         </div>
 
-        {/* Remember & Forgot */}
         <div className="mb-4 flex items-center justify-between text-sm text-gray-700 dark:text-gray-300">
           <label className="flex items-center gap-2">
             <input
               type="checkbox"
               checked={remember}
               onChange={() => setRemember(!remember)}
-              className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary dark:border-gray-600 dark:bg-gray-700"
+              className="h-4 w-4 rounded border-gray-300 dark:bg-gray-700"
             />
             จำฉันไว้
           </label>
@@ -127,23 +124,14 @@ export default function LoginPage() {
           </a>
         </div>
 
-        {/* Error */}
         {error && (
-          <p
-            className="mb-4 text-center text-sm text-red-600 dark:text-red-400"
-            role="alert"
-            aria-live="polite"
-          >
-            ⚠️ {error}
-          </p>
+          <p className="mb-4 text-center text-sm text-red-600 dark:text-red-400">{error}</p>
         )}
 
-        {/* Submit */}
         <button
           type="submit"
           disabled={loading}
-          aria-disabled={loading}
-          className="hover:bg-primaryHover flex w-full items-center justify-center gap-2 rounded bg-primary px-4 py-2 font-semibold text-white transition disabled:cursor-not-allowed disabled:opacity-70"
+          className="flex w-full items-center justify-center gap-2 rounded bg-primary px-4 py-2 text-white disabled:opacity-70"
         >
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           {loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}

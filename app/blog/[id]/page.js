@@ -3,13 +3,15 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 const FALLBACK_IMAGE = '/images/placeholder.webp';
+
+// ✅ ใช้ลิงก์ Supabase ใหม่
 const blogUrls = [
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog1.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog2.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog3.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog4.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog5.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog6.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog1.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog2.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog3.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog4.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog5.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog6.json',
 ];
 
 // โหลดบทความทั้งหมด
@@ -32,7 +34,7 @@ export async function generateStaticParams() {
 
 // แสดงบทความตาม id
 export default async function BlogPage({ params }) {
-  const id = params.id; // ✅ ใช้ params.id แบบตรง ๆ
+  const { id } = params; // ✅ destructure safer
   const articles = await getAllArticles();
   const article = articles.find((a) => a.id === id);
 

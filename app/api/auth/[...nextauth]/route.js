@@ -1,4 +1,3 @@
-// app/api/auth/[...nextauth]/route.js
 import CredentialsProvider from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
 import fs from 'fs';
@@ -7,11 +6,11 @@ import { compare } from 'bcryptjs';
 import { supabaseServer } from '@/lib/supabase/server';
 
 async function authorize(credentials) {
-  console.log('Login attempt:', credentials.email);
+  console.log('🔑 Login attempt:', credentials.email);
 
   let user = null;
 
-  // 1️⃣ Supabase first
+  // 1️⃣ ตรวจสอบจาก Supabase table users
   try {
     const { data, error } = await supabaseServer
       .from('users')
@@ -20,29 +19,29 @@ async function authorize(credentials) {
       .single();
 
     if (data) user = data;
-    if (error) console.warn('Supabase fetch error:', error.message);
+    if (error) console.warn('⚠️ Supabase fetch error:', error.message);
 
-    console.log('Fetched user from Supabase:', user);
+    console.log('ℹ️ Fetched user from Supabase table:', user);
   } catch (err) {
-    console.error('Supabase fetch error:', err.message);
+    console.error('❌ Supabase fetch exception:', err.message);
   }
 
-  // 2️⃣ fallback users.json
+  // 2️⃣ Fallback: ตรวจสอบ users.json
   if (!user) {
     try {
       const filePath = path.join(process.cwd(), 'data', 'users.json');
       if (fs.existsSync(filePath)) {
         const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         user = jsonData.find((u) => u.email === credentials.email) || null;
-        console.log('Fetched user from users.json:', user);
+        console.log('ℹ️ Fetched user from users.json:', user);
       }
     } catch (err) {
-      console.error('Error reading users.json:', err.message);
+      console.error('❌ Error reading users.json:', err.message);
     }
   }
 
   if (!user) {
-    console.error('User not found:', credentials.email);
+    console.error('❌ User not found:', credentials.email);
     throw new Error('No user found with this email');
   }
 
@@ -55,21 +54,24 @@ async function authorize(credentials) {
       isValid = credentials.password === user.password;
     }
   } catch (err) {
-    console.error('Password compare error:', err.message);
+    console.error('❌ Password compare error:', err.message);
   }
 
   if (!isValid) {
-    console.error('Invalid password for user:', credentials.email);
+    console.error('❌ Invalid password for user:', credentials.email);
     throw new Error('Invalid password');
   }
 
   // 4️⃣ คืนค่า user object
-  return {
+  const returnedUser = {
     id: user.id || user.email,
     email: user.email,
     role: user.role || 'user',
     name: user.name || user.email.split('@')[0],
   };
+
+  console.log('✅ Authorized user:', returnedUser);
+  return returnedUser;
 }
 
 export const authOptions = {
@@ -110,6 +112,7 @@ export const authOptions = {
         role: token.role,
         name: token.name,
       };
+      console.log('🔄 Session callback:', session);
       return session;
     },
   },

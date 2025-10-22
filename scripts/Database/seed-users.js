@@ -1,26 +1,50 @@
+#!/usr/bin/env node
+
+/**
+ * seedAllUsers.js
+ * ✅ Hash password, update table users, insert/update users.json
+ * ✅ Create users in Supabase Auth (admin + user)
+ */
+
 import fs from 'fs';
 import path from 'path';
-import { supabaseServer } from '../../lib/supabase/server.js';
 import { hash } from 'bcryptjs';
+import { createClient } from '@supabase/supabase-js';
 
-// Path ไปยัง users.json
-const filePath = path.join('/data/data/com.termux/files/home/project/data', 'users.json');
+// Supabase server
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-async function seedUsers() {
-  try {
-    // อ่านไฟล์ users.json
-    const rawData = fs.readFileSync(filePath, 'utf-8');
-    const users = JSON.parse(rawData);
+if (!supabaseUrl || !supabaseServiceKey) {
+  console.error('❌ Please set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in env');
+  process.exit(1);
+}
 
-    // Loop ทุก user
-    for (let i = 0; i < users.length; i++) {
-      const user = users[i];
+const supabaseServer = createClient(supabaseUrl, supabaseServiceKey);
 
-      // Hash password
-      const hashedPassword = await hash(user.password, 10);
-      users[i].password = hashedPassword; // อัพเดตใน array เดิม
+// Path users.json
+const filePath = path.join(process.cwd(), 'data', 'users.json');
 
-      // ตรวจสอบว่ามี user อยู่แล้ว
+async function seedAllUsers() {
+  if (!fs.existsSync(filePath)) {
+    console.error('❌ users.json not found at', filePath);
+    process.exit(1);
+  }
+
+  const rawData = fs.readFileSync(filePath, 'utf-8');
+  const users = JSON.parse(rawData);
+
+  console.log(`ℹ️ Found ${users.length} users in users.json`);
+
+  for (let i = 0; i < users.length; i++) {
+    const user = users[i];
+
+    // 1️⃣ Hash password สำหรับ database
+    const hashedPassword = await hash(user.password, 10);
+    users[i].password = hashedPassword;
+
+    // 2️⃣ Insert/Update database table `users`
+    try {
       const { data: existing, error: fetchError } = await supabaseServer
         .from('users')
         .select('*')
@@ -28,47 +52,56 @@ async function seedUsers() {
         .single();
 
       if (fetchError && fetchError.code !== 'PGRST116') {
-        console.error('❌ Error fetching', user.email, fetchError.message);
+        console.error('❌ Error fetching from table:', user.email, fetchError.message);
         continue;
       }
 
       if (!existing) {
-        // Insert user ใหม่
-        const { error: insertError } = await supabaseServer.from('users').insert([
-          {
-            email: user.email,
-            password: hashedPassword,
-            role: user.role,
-            name: user.name,
-          },
-        ]);
-
-        if (insertError) console.error('❌ Insert failed for', user.email, insertError.message);
-        else console.log('✅ Inserted', user.email);
+        const { error: insertError } = await supabaseServer
+          .from('users')
+          .insert([
+            { email: user.email, password: hashedPassword, role: user.role, name: user.name },
+          ]);
+        if (insertError) console.error('❌ Insert failed:', user.email, insertError.message);
+        else console.log('✅ Inserted into DB:', user.email);
       } else {
-        // Update user เดิม
         const { error: updateError } = await supabaseServer
           .from('users')
-          .update({
-            password: hashedPassword,
-            role: user.role,
-            name: user.name,
-          })
+          .update({ password: hashedPassword, role: user.role, name: user.name })
           .eq('email', user.email);
-
-        if (updateError) console.error('❌ Update failed for', user.email, updateError.message);
-        else console.log('🔄 Updated', user.email);
+        if (updateError) console.error('❌ Update failed:', user.email, updateError.message);
+        else console.log('🔄 Updated DB user:', user.email);
       }
+    } catch (err) {
+      console.error('❌ DB operation failed for', user.email, err.message);
     }
 
-    // บันทึก array users กลับลงไฟล์เดิม
-    fs.writeFileSync(filePath, JSON.stringify(users, null, 2), 'utf-8');
+    // 3️⃣ สร้าง user ใน Supabase Auth
+    try {
+      const { data, error } = await supabaseServer.auth.admin.createUser({
+        email: user.email,
+        password: user.password, // ใช้รหัสผ่านเดิม (plain text)
+        email_confirm: true,
+      });
 
-    console.log('🎉 Seed complete! Passwords hashed and saved in users.json');
-  } catch (err) {
-    console.error('❌ Seed script failed:', err);
+      if (error) {
+        if (error.message.includes('already exists')) {
+          console.log('🔹 Already exists in Auth:', user.email);
+        } else {
+          console.error('❌ Error creating Auth user:', user.email, error.message);
+        }
+      } else {
+        console.log('✅ Created in Auth:', user.email);
+      }
+    } catch (err) {
+      console.error('❌ Auth create exception for', user.email, err.message);
+    }
   }
+
+  // 4️⃣ บันทึก users.json ใหม่ (hashed password)
+  fs.writeFileSync(filePath, JSON.stringify(users, null, 2), 'utf-8');
+  console.log('🎉 Seed complete! Users updated in DB, Auth, and users.json');
 }
 
-// Run seed script
-seedUsers();
+// Run script
+seedAllUsers();

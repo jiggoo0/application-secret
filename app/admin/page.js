@@ -13,15 +13,19 @@ export default function AdminPage() {
   useEffect(() => {
     if (status === 'loading') return;
 
+    // debug: log session
+    console.log('🔹 AdminPage session:', session);
+
     const isAdmin = session?.user?.role === 'admin';
     setAuthorized(isAdmin);
 
     if (!isAdmin) {
+      // redirect ไป login พร้อม query error
       router.replace('/login?error=unauthorized');
     }
   }, [status, session, router]);
 
-  // Loading state while checking session
+  // loading state ระหว่างตรวจสอบ session
   if (status === 'loading') {
     return (
       <main className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -32,7 +36,7 @@ export default function AdminPage() {
     );
   }
 
-  // Prevent flash before redirect
+  // ป้องกัน flash ก่อน redirect
   if (!authorized) return null;
 
   const user = session?.user || {};
