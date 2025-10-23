@@ -1,5 +1,8 @@
 // utils/animations.js
 
+/**
+ * 🔼 Fade in + slide up animation
+ */
 export const fadeInUp = {
   hidden: { opacity: 0, y: 20 },
   visible: {
@@ -12,6 +15,9 @@ export const fadeInUp = {
   },
 };
 
+/**
+ * 🌫️ Simple fade in animation
+ */
 export const fadeIn = {
   hidden: { opacity: 0 },
   visible: {
@@ -23,6 +29,9 @@ export const fadeIn = {
   },
 };
 
+/**
+ * 🔍 Scale in + fade animation
+ */
 export const scaleIn = {
   hidden: { scale: 0.95, opacity: 0 },
   visible: {
@@ -35,6 +44,9 @@ export const scaleIn = {
   },
 };
 
+/**
+ * ⏱️ Staggered animation container for child elements
+ */
 export const staggerContainer = {
   hidden: {},
   visible: {

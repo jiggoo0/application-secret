@@ -48,9 +48,10 @@ export default function ReviewCard({
 
   return (
     <article
-      className="mx-auto mb-6 max-w-xl rounded-xl bg-white p-5 shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg dark:bg-gray-900"
       aria-label={`รีวิวจาก ${displayName}`}
+      className="mx-auto mb-6 max-w-xl rounded-xl bg-white p-5 shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg dark:bg-gray-900"
     >
+      {/* 🧑‍💼 Header */}
       <header className="mb-2 flex items-center gap-3">
         <div className="relative h-10 w-10 overflow-hidden rounded-full border border-gray-300 dark:border-gray-700">
           <Image
@@ -71,9 +72,13 @@ export default function ReviewCard({
         </div>
       </header>
 
+      {/* 💬 Feedback */}
       <p className="mb-3 text-[15px] leading-normal text-gray-800 dark:text-gray-200">{feedback}</p>
+
+      {/* 👍 Like Text */}
       <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">{likeText}</p>
 
+      {/* 🧩 Actions */}
       <div className="mt-2 flex justify-around border-t pt-2 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-300">
         <button
           type="button"
@@ -87,7 +92,9 @@ export default function ReviewCard({
           }`}
         >
           <span
-            className={`transition-transform duration-300 ${hasLiked ? 'scale-125 text-blue-500' : ''}`}
+            className={`transition-transform duration-300 ${
+              hasLiked ? 'scale-125 text-blue-500' : ''
+            }`}
           >
             👍
           </span>

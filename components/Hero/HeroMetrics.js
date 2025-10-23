@@ -4,9 +4,9 @@ import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 
 /**
- * HeroMetrics
- * แสดงตัวเลข/สถิติสำคัญใน Hero section
- * รองรับ animation fade-in + slide
+ * 📊 HeroMetrics
+ * - แสดงตัวเลข/สถิติสำคัญใน Hero section
+ * - รองรับ animation fade-in + slide
  */
 export default function HeroMetrics({ metrics }) {
   if (!metrics?.length) return null;
@@ -16,13 +16,23 @@ export default function HeroMetrics({ metrics }) {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { staggerChildren: 0.2 },
+      transition: {
+        staggerChildren: 0.2,
+        ease: 'easeOut',
+      },
     },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: 'easeOut',
+      },
+    },
   };
 
   return (
@@ -50,7 +60,7 @@ export default function HeroMetrics({ metrics }) {
   );
 }
 
-// 🔹 PropTypes
+// ✅ PropTypes
 HeroMetrics.propTypes = {
   metrics: PropTypes.arrayOf(
     PropTypes.shape({
@@ -60,7 +70,7 @@ HeroMetrics.propTypes = {
   ),
 };
 
-// 🔹 Default Props
+// ✅ Default Props
 HeroMetrics.defaultProps = {
   metrics: [],
 };

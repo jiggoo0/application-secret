@@ -16,11 +16,14 @@ export default function Uploads() {
 
       try {
         const res = await fetch('/api/admin/uploads');
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`HTTP ${res.status}: ${text}`);
+        }
         const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to fetch uploads');
         setUploads(data || []);
       } catch (err) {
-        console.error('❌ Failed to fetch uploads:', JSON.stringify(err));
+        console.error('❌ Failed to fetch uploads:', err);
         setError(err.message || 'เกิดข้อผิดพลาดในการโหลดไฟล์');
       } finally {
         setLoading(false);
@@ -38,8 +41,15 @@ export default function Uploads() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id }),
       });
-      const result = await res.json();
-      if (!res.ok) throw new Error(result.error || 'Approve failed');
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`HTTP ${res.status}: ${text}`);
+      }
+
+      // ไม่ต้องเก็บ result ถ้าไม่ได้ใช้
+      await res.json();
+
       setUploads((prev) => prev.map((u) => (u.id === id ? { ...u, status: 'approved' } : u)));
     } catch (err) {
       console.error('❌ Approve failed:', err);
@@ -56,9 +66,15 @@ export default function Uploads() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ path }),
       });
-      const result = await res.json();
-      if (!res.ok || !result.url) throw new Error(result.error || 'Preview failed');
-      setPreviewUrl(result.url);
+
+      if (!res.ok) {
+        const text = await res.text();
+        throw new Error(`HTTP ${res.status}: ${text}`);
+      }
+
+      const { url } = await res.json(); // destructure url เลย
+      if (!url) throw new Error('Preview failed: no URL returned');
+      setPreviewUrl(url);
     } catch (err) {
       console.error('❌ Preview failed:', err);
       alert(err.message);

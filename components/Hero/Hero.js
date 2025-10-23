@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { ShinyButton } from '@/components/ui/shiny-button';
 import { LineShadowText } from '@/components/ui/line-shadow-text';
@@ -8,48 +9,40 @@ import HeroBackground from './HeroBackground';
 import HeroMetrics from './HeroMetrics';
 
 /**
- * Hero Section
- *
- * Props:
- * - headline: string
- * - highlightText: string (ข้อความเน้นด้วย LineShadowText)
- * - subtext: string
- * - ctaText: string
- * - ctaUrl: string (id selector สำหรับ scroll)
- * - images: string[] (ภาพ background)
- * - metrics: { label: string; value: string|number }[]
- * - slideInterval: number (ms)
+ * 🦁 Hero Section
+ * - แสดงภาพพื้นหลังแบบ slideshow
+ * - แสดงข้อความหลัก, ข้อความเน้น, subtext, CTA และ metrics
  */
 export default function Hero({
   headline,
   highlightText = '',
   subtext = '',
-  ctaText,
-  ctaUrl,
+  ctaText = 'เข้าสู่ระบบ',
+  ctaUrl = '/login',
   images = ['/images/hero/hero.webp'],
   metrics = [],
   slideInterval = 5000,
 }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const router = useRouter();
 
-  // Switch to next slide
+  // 👉 เปลี่ยนภาพ background อัตโนมัติ
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
   }, [images.length]);
 
-  // Auto slideshow effect
   useEffect(() => {
     if (images.length <= 1) return;
-
     const interval = setInterval(nextSlide, slideInterval);
     return () => clearInterval(interval);
   }, [images.length, nextSlide, slideInterval]);
 
-  // Memoize background & metrics to reduce re-render
+  // 🧠 ลด re-render ของ background และ metrics
   const background = useMemo(
     () => <HeroBackground images={images} currentIndex={currentIndex} />,
     [images, currentIndex],
   );
+
   const metricsBlock = useMemo(() => <HeroMetrics metrics={metrics} />, [metrics]);
 
   return (
@@ -67,7 +60,7 @@ export default function Hero({
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        {/* Headline */}
+        {/* 🧠 Headline */}
         <motion.h1
           id="hero-heading"
           className="flex flex-wrap justify-center gap-2 text-4xl font-bold md:text-5xl"
@@ -83,7 +76,7 @@ export default function Hero({
           )}
         </motion.h1>
 
-        {/* Subtext */}
+        {/* 📄 Subtext */}
         {subtext && (
           <motion.p
             className="text-lg md:text-xl"
@@ -95,7 +88,7 @@ export default function Hero({
           </motion.p>
         )}
 
-        {/* CTA Button */}
+        {/* 🚀 CTA Button */}
         {ctaText && ctaUrl && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -105,8 +98,7 @@ export default function Hero({
             <ShinyButton
               onClick={(e) => {
                 e.preventDefault();
-                const el = document.querySelector(ctaUrl);
-                el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                router.push(ctaUrl);
               }}
               className="mt-4"
               aria-label={`ไปยัง: ${ctaText}`}
@@ -116,7 +108,7 @@ export default function Hero({
           </motion.div>
         )}
 
-        {/* Metrics */}
+        {/* 📊 Metrics */}
         {metricsBlock}
       </motion.div>
     </section>

@@ -45,33 +45,32 @@ module.exports = {
     },
   },
 
-  font: {
-    sans: ['Inter', 'sans-serif'],
-    heading: ['Poppins', 'sans-serif'],
+  fontFamily: {
+    sans: ['Inter', 'system-ui', 'sans-serif'],
+    heading: ['Poppins', 'system-ui', 'sans-serif'],
     mono: ['Fira Code', 'monospace'],
   },
 
-  typography: {
+  fontSize: {
     xs: '0.75rem',
     sm: '0.875rem',
     base: '1rem',
     lg: '1.125rem',
     xl: '1.25rem',
-    heading: {
-      h1: '2.25rem',
-      h2: '1.875rem',
-      h3: '1.5rem',
-    },
-    weight: {
-      thin: '100',
-      light: '300',
-      normal: '400',
-      medium: '500',
-      semibold: '600',
-      bold: '700',
-      extrabold: '800',
-      black: '900',
-    },
+    h1: '2.25rem',
+    h2: '1.875rem',
+    h3: '1.5rem',
+  },
+
+  fontWeight: {
+    thin: '100',
+    light: '300',
+    normal: '400',
+    medium: '500',
+    semibold: '600',
+    bold: '700',
+    extrabold: '800',
+    black: '900',
   },
 
   borderRadius: {

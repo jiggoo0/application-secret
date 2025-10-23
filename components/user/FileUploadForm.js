@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
-import Image from 'next/image'; // <-- import Image
+import Image from 'next/image';
 
 /**
  * @typedef {Object} UploadResponse
@@ -59,7 +59,8 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      const data = /** @type {UploadResponse} */ (res.data);
+      /** @type {UploadResponse} */
+      const data = res.data;
 
       if (!data.url) throw new Error(data.error || 'Upload failed');
 

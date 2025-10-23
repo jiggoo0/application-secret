@@ -3,12 +3,12 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import ReviewCard from './common/ReviewCard';
+import ReviewCard from './common/ReviewCard'; // ✅ ใช้ component เดิม
 
 export default function ReviewCarousel({
   initialLimit = 5,
   autoSlide = true,
-  interval = 3000, // เลื่อนทุก 3 วิ
+  interval = 3000,
   continuous = true,
 }) {
   const [reviews, setReviews] = useState([]);
@@ -50,7 +50,7 @@ export default function ReviewCarousel({
     if (!container || reviews.length === 0) return;
 
     const cardWidth = container.querySelector('div > div')?.offsetWidth || 320;
-    container.scrollBy({ left: cardWidth + 24, behavior: 'smooth' }); // 24 = gap
+    container.scrollBy({ left: cardWidth + 24, behavior: 'smooth' });
   }, [reviews]);
 
   const scroll = useCallback((direction) => {
@@ -66,7 +66,6 @@ export default function ReviewCarousel({
     });
   }, []);
 
-  // Auto-slide
   useEffect(() => {
     if (!autoSlide) return;
     const container = containerRef.current;
@@ -96,7 +95,7 @@ export default function ReviewCarousel({
 
   return (
     <section aria-label="รีวิวจากลูกค้า" className="group relative mx-auto max-w-6xl px-4 py-6">
-      {/* Scroll Buttons */}
+      {/* 🔄 Scroll Buttons */}
       <button
         onClick={() => scroll('left')}
         aria-label="เลื่อนรีวิวไปทางซ้าย"
@@ -113,11 +112,11 @@ export default function ReviewCarousel({
         <FaChevronRight className="h-5 w-5 text-gray-700 dark:text-gray-200" />
       </button>
 
-      {/* Gradient Overlays */}
+      {/* 🌗 Gradient Overlays */}
       <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-12 bg-gradient-to-r from-white to-transparent dark:from-gray-900" />
       <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-12 bg-gradient-to-l from-white to-transparent dark:from-gray-900" />
 
-      {/* Review Cards */}
+      {/* 🧩 Review Cards */}
       <div
         ref={containerRef}
         onMouseEnter={() => (hoverRef.current = true)}
@@ -126,7 +125,7 @@ export default function ReviewCarousel({
       >
         {reviews.map((review, idx) => (
           <motion.div
-            key={`${review.id}-${idx}`}
+            key={`${review.id ?? review.username}-${idx}`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}

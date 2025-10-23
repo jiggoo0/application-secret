@@ -3,35 +3,35 @@
 import Image from 'next/image';
 import { FaLine, FaEnvelope, FaFacebook, FaFacebookMessenger } from 'react-icons/fa';
 
+const socialLinks = [
+  {
+    type: 'line',
+    label: 'Line',
+    uri: 'https://lin.ee/G8s8rKp',
+    icon: FaLine,
+  },
+  {
+    type: 'email',
+    label: 'Email',
+    uri: 'mailto:application-secret@zohomail.com',
+    icon: FaEnvelope,
+  },
+  {
+    type: 'facebook',
+    label: 'Facebook',
+    uri: 'https://www.facebook.com/profile.php?id=61573307616115&mibextid=ZbWKwL',
+    icon: FaFacebook,
+  },
+  {
+    type: 'messenger',
+    label: 'Messenger',
+    uri: 'https://m.me/61573307616115?hash=AbZf0L5cSZ8XvIYw&source=qr_link_share',
+    icon: FaFacebookMessenger,
+  },
+];
+
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-
-  const socialLinks = [
-    {
-      type: 'line',
-      label: 'Line',
-      uri: 'https://lin.ee/G8s8rKp',
-      icon: FaLine,
-    },
-    {
-      type: 'email',
-      label: 'Email',
-      uri: 'mailto:Jp-visoul-doce@export.com',
-      icon: FaEnvelope,
-    },
-    {
-      type: 'facebook',
-      label: 'Facebook',
-      uri: 'https://www.facebook.com/profile.php?id=61573307616115&mibextid=ZbWKwL',
-      icon: FaFacebook,
-    },
-    {
-      type: 'messenger',
-      label: 'Messenger',
-      uri: 'https://m.me/61573307616115?hash=AbZf0L5cSZ8XvIYw&source=qr_link_share',
-      icon: FaFacebookMessenger,
-    },
-  ];
 
   return (
     <footer
@@ -49,6 +49,12 @@ export default function Footer() {
             height={40}
             priority
             className="rounded-md"
+            onError={(e) => {
+              const target = e.target;
+              if (target instanceof HTMLImageElement) {
+                target.src = '/fallback-logo.png';
+              }
+            }}
           />
           <div className="text-center md:text-left">
             <h2 id="footer-heading" className="text-lg font-bold">
@@ -56,6 +62,7 @@ export default function Footer() {
             </h2>
             <p className="mt-1 text-sm text-blue-200 dark:text-blue-300">
               © {currentYear} JP Visual & Docs. All rights reserved.
+              <span className="sr-only">ปีปัจจุบันคือ {currentYear}</span>
             </p>
           </div>
         </div>
@@ -66,7 +73,7 @@ export default function Footer() {
             <li>
               <a
                 href="/privacy"
-                className="rounded transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-white"
+                className="rounded transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-white motion-safe:transition-all motion-safe:duration-200"
               >
                 Privacy
               </a>
@@ -74,7 +81,7 @@ export default function Footer() {
             <li>
               <a
                 href="/contact"
-                className="rounded transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-white"
+                className="rounded transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-white motion-safe:transition-all motion-safe:duration-200"
               >
                 Contact
               </a>
@@ -85,17 +92,20 @@ export default function Footer() {
 
       {/* Social Links */}
       <address className="border-t border-blue-800 px-6 py-4 not-italic" aria-label="ช่องทางติดต่อ">
-        <ul className="flex flex-wrap items-center justify-center gap-6">
+        <ul
+          className="flex flex-wrap items-center justify-center gap-6"
+          aria-label="ลิงก์โซเชียลมีเดีย"
+        >
           {socialLinks.map(({ type, label, uri, icon: Icon }) => (
             <li key={type}>
               <a
                 href={uri}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-white transition-colors hover:text-yellow-400 dark:hover:text-yellow-300"
+                className="flex items-center gap-2 text-white transition-colors hover:text-yellow-400 motion-safe:transition-all motion-safe:duration-200 dark:hover:text-yellow-300"
                 aria-label={`ติดต่อผ่าน ${label}`}
               >
-                <Icon className="text-lg" />
+                <Icon className="text-lg" aria-hidden="true" />
                 <span className="text-sm">{label}</span>
               </a>
             </li>

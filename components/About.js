@@ -9,6 +9,7 @@ import Signature from './common/Signature';
 export default function AboutSection() {
   return (
     <section
+      id="about"
       aria-labelledby="about-title"
       role="region"
       aria-label="เกี่ยวกับ JP Visual & Docs"
@@ -19,7 +20,7 @@ export default function AboutSection() {
         whileInView="visible"
         viewport={{ once: true }}
         variants={staggerContainer}
-        className="grid grid-cols-1 items-start gap-10 md:grid-cols-2"
+        className="grid grid-cols-1 gap-10 md:grid-cols-2"
       >
         {/* 🧾 Content */}
         <motion.div variants={fadeInUp} className="space-y-6 text-base leading-relaxed">
@@ -50,7 +51,7 @@ export default function AboutSection() {
           </p>
 
           {/* 🏷️ Badges */}
-          <div className="flex flex-wrap items-center gap-4 pt-6">
+          <div className="flex flex-wrap gap-4 pt-6">
             {['8+ ปีประสบการณ์', 'ความลับลูกค้าเป็นอันดับหนึ่ง', 'ดีไซน์เฉพาะทาง'].map((text) => (
               <motion.div key={text} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Badge text={text} />

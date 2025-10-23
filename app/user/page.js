@@ -13,6 +13,7 @@ import DashboardSection from '@/components/shared/DashboardSection';
 import SecurityNotice from '@/components/user/SecurityNotice';
 import ErrorFallback from '@/components/shared/ErrorFallback';
 import LogoutButton from '@/components/common/LogoutButton';
+import ChatRoom from '@/components/ChatRoom/ChatRoom'; // 🟢 เพิ่ม ChatRoom
 
 // 🔧 Services
 import { getRoadmap } from '@/lib/services/roadmap/RoadmapService';
@@ -42,6 +43,7 @@ export default async function UserDashboardPage() {
         {/* Header Section */}
         <section className="space-y-6 text-center">
           <div className="flex flex-col items-center space-y-4">
+            {/* Avatar */}
             {user.image && (
               <Image
                 src={user.image}
@@ -54,11 +56,13 @@ export default async function UserDashboardPage() {
               />
             )}
 
+            {/* Welcome Text */}
             <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
               ยินดีต้อนรับ <span className="text-blue-600 dark:text-blue-400">{user.name}</span>
             </h1>
 
-            <div className="mt-2 inline-block rounded-md bg-gray-100 p-3 text-left dark:bg-gray-800">
+            {/* User Info Card */}
+            <div className="mt-2 inline-block w-full max-w-md rounded-md bg-gray-100 p-3 text-left dark:bg-gray-800">
               <p>
                 <strong>ชื่อ:</strong> {user.name}
               </p>
@@ -70,13 +74,16 @@ export default async function UserDashboardPage() {
               </p>
             </div>
 
+            {/* Logout Button */}
             <LogoutButton />
           </div>
 
+          {/* Security Notice */}
           <div className="mx-auto max-w-2xl">
             <SecurityNotice />
           </div>
 
+          {/* Signature */}
           <div className="flex justify-center">
             <Image
               src="/images/signatureเจ้าป่า.webp"
@@ -90,29 +97,29 @@ export default async function UserDashboardPage() {
           </div>
         </section>
 
-        {/* Upload Documents */}
+        {/* Dashboard Sections */}
         <DashboardSection title="อัปโหลดเอกสารเพิ่มเติม" iconName="FileText">
           <FileUploadForm />
         </DashboardSection>
 
-        {/* User Session History */}
         <DashboardSection title="ประวัติการเข้าใช้งาน" iconName="Clock">
           <UserSessionHistory userEmail={user.email} />
         </DashboardSection>
 
-        {/* Random Transactions */}
         <DashboardSection title="รายงานผลการดำเนินงาน" iconName="Shuffle">
           <RandomTransactionTable />
         </DashboardSection>
 
-        {/* Roadmap Overview */}
         <DashboardSection title="แผนงานโดยรวม" iconName="Map">
           <RoadmapSummary data={roadmap} />
         </DashboardSection>
 
-        {/* Target Breakdown */}
         <DashboardSection title="เป้าหมายที่ตั้งไว้" iconName="Target">
           <TargetBreakdown data={targets} />
+        </DashboardSection>
+
+        <DashboardSection title="แชทห้องผู้ใช้งาน" iconName="MessageCircle">
+          <ChatRoom roomId="main-room" user={user} />
         </DashboardSection>
       </main>
     );

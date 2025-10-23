@@ -3,6 +3,7 @@ const plugin = require('tailwindcss/plugin');
 const theme = require('./config/theme.js');
 
 module.exports = {
+  // ─── Content Paths ─────────────────────────────────────
   content: [
     './app/**/*.{js,jsx}',
     './components/**/*.{js,jsx}',
@@ -12,7 +13,11 @@ module.exports = {
     './hooks/**/*.{js,jsx}',
     './public/**/*.html',
   ],
-  darkMode: ['class', 'class'],
+
+  // ─── Dark Mode Strategy ────────────────────────────────
+  darkMode: 'class',
+
+  // ─── Theme Extension ───────────────────────────────────
   theme: {
     extend: {
       colors: {
@@ -29,6 +34,7 @@ module.exports = {
         },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
+          hover: 'hsl(var(--primary-hover))',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
@@ -50,6 +56,10 @@ module.exports = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        neutral: 'hsl(var(--neutral))',
+        success: 'hsl(var(--success))',
+        warning: 'hsl(var(--warning))',
+        error: 'hsl(var(--error))',
         chart: {
           1: 'hsl(var(--chart-1))',
           2: 'hsl(var(--chart-2))',
@@ -66,20 +76,23 @@ module.exports = {
       },
       boxShadow: {
         ...theme.boxShadow,
+        inset: 'var(--shadow-inset)',
+        hover: 'var(--shadow-hover)',
+        card: 'var(--shadow-card)',
       },
       fontFamily: {
-        sans: ['theme.font.sans'],
-        heading: ['theme.font.heading'],
-        mono: ['theme.font.mono'],
+        sans: theme.fontFamily.sans,
+        heading: theme.fontFamily.heading,
+        mono: theme.fontFamily.mono,
       },
       fontSize: {
-        ...theme.typography,
-        h1: 'theme.typography.heading.h1',
-        h2: 'theme.typography.heading.h2',
-        h3: 'theme.typography.heading.h3',
+        ...theme.fontSize,
+        h1: theme.fontSize.h1,
+        h2: theme.fontSize.h2,
+        h3: theme.fontSize.h3,
       },
       fontWeight: {
-        ...theme.typography.weight,
+        ...theme.fontWeight,
       },
       spacing: {
         ...theme.spacing,
@@ -88,7 +101,7 @@ module.exports = {
         ...theme.zIndex,
       },
       screens: {
-        ...theme.breakpoints,
+        ...theme.screens,
       },
       opacity: {
         ...theme.opacity,
@@ -103,6 +116,8 @@ module.exports = {
       },
     },
   },
+
+  // ─── Plugins ────────────────────────────────────────────
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
@@ -195,6 +210,8 @@ module.exports = {
       );
     }),
   ],
+
+  // ─── DaisyUI Config ─────────────────────────────────────
   daisyui: {
     themes: [
       {

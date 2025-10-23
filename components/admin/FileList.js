@@ -9,15 +9,24 @@ export default function FileList() {
   const [loading, setLoading] = useState(true);
   const [approvingId, setApprovingId] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [error, setError] = useState(null);
 
   // ดึงข้อมูลไฟล์จาก API
   const fetchFiles = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await axios.get('/api/admin/uploads');
       setFiles(res.data || []);
     } catch (err) {
       console.error('❌ Fetch files error:', err);
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.error || `HTTP ${err.response?.status} - Failed to fetch files`,
+        );
+      } else {
+        setError(err.message || 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ');
+      }
     } finally {
       setLoading(false);
     }
@@ -37,6 +46,11 @@ export default function FileList() {
       }
     } catch (err) {
       console.error('❌ Approve error:', err);
+      alert(
+        axios.isAxiosError(err)
+          ? err.response?.data?.error || `HTTP ${err.response?.status} - Approve failed`
+          : err.message,
+      );
     } finally {
       setApprovingId(null);
     }
@@ -48,13 +62,22 @@ export default function FileList() {
       const res = await axios.post('/api/admin/uploads/preview', { path });
       if (res.data?.url) {
         setPreviewUrl(res.data.url);
+      } else {
+        throw new Error('Preview failed: URL not returned');
       }
     } catch (err) {
       console.error('❌ Preview error:', err);
+      alert(
+        axios.isAxiosError(err)
+          ? err.response?.data?.error || `HTTP ${err.response?.status} - Preview failed`
+          : err.message,
+      );
     }
   };
 
   if (loading) return <p className="py-6 text-center">กำลังโหลดไฟล์...</p>;
+  if (error) return <p className="py-6 text-center text-red-500">{error}</p>;
+  if (!files.length) return <p className="py-6 text-center">ไม่มีไฟล์ที่อัปโหลด</p>;
 
   return (
     <div className="overflow-x-auto">

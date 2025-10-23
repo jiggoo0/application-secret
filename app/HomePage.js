@@ -9,30 +9,38 @@ import Section from '@/components/common/Section';
 import Services from '@/components/Services';
 import OurWorks from '@/components/OurWorks/OurWorks';
 import About from '@/components/About';
+import { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 
-// 🧠 Dynamic imports with fallback UI
+// 🧠 Dynamic Imports (with better fallback + performance hint)
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
-    <div className="py-12 text-center text-gray-500 dark:text-gray-400">กำลังโหลด Hero...</div>
+    <div className="animate-pulse py-16 text-center text-gray-500 dark:text-gray-400">
+      🔄 กำลังโหลด Hero...
+    </div>
   ),
   ssr: false,
 });
 
 const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
   loading: () => (
-    <div className="py-12 text-center text-gray-500 dark:text-gray-400">กำลังโหลดรีวิว...</div>
+    <div className="animate-pulse py-16 text-center text-gray-500 dark:text-gray-400">
+      💬 กำลังโหลดรีวิว...
+    </div>
   ),
   ssr: false,
 });
 
 const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   loading: () => (
-    <div className="py-12 text-center text-gray-500 dark:text-gray-400">กำลังโหลดบทความ...</div>
+    <div className="animate-pulse py-16 text-center text-gray-500 dark:text-gray-400">
+      📰 กำลังโหลดบทความ...
+    </div>
   ),
   ssr: false,
 });
 
-// 🧩 Section configuration
+// 🧩 Section Config
 const sections = [
   {
     id: 'hero',
@@ -60,6 +68,12 @@ const sections = [
 ];
 
 export default function HomePage() {
+  const controls = useAnimation();
+
+  useEffect(() => {
+    controls.start('visible');
+  }, [controls]);
+
   return (
     <>
       {/* 🧭 SEO Metadata */}
@@ -80,17 +94,31 @@ export default function HomePage() {
         id="main-content"
         role="main"
         aria-label="เนื้อหาหลัก"
-        className="space-y-24 bg-white text-gray-900 dark:bg-gray-950 dark:text-gray-100 sm:space-y-32"
+        className="flex flex-col space-y-20 bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100 sm:space-y-28 lg:space-y-36"
       >
         {sections.map(({ id, Component, props }) => (
-          <Section
+          <motion.section
             key={id}
             id={id}
-            ariaLabelledBy={`section-${id}`}
-            className="scroll-mt-20 px-4 sm:px-6 lg:px-8"
+            aria-labelledby={`section-${id}`}
+            initial="hidden"
+            animate={controls}
+            variants={{
+              hidden: { opacity: 0, y: 40 },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+            }}
+            viewport={{ once: true, amount: 0.2 }}
           >
-            <Component {...props} />
-          </Section>
+            <Section
+              id={id}
+              ariaLabelledBy={`section-${id}`}
+              className="scroll-mt-20 px-4 sm:px-6 lg:px-8"
+            >
+              <div className="mx-auto max-w-7xl">
+                <Component {...props} />
+              </div>
+            </Section>
+          </motion.section>
         ))}
       </main>
     </>
