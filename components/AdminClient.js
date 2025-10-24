@@ -1,130 +1,114 @@
-import Image from 'next/image';
-import { getServerSession } from 'next-auth';
-import { redirect } from 'next/navigation';
-import { authOptions } from '@/lib/auth';
+'use client';
 
-// 🧩 Components
-import FileUploadForm from '@/components/user/FileUploadForm';
-import RoadmapSummary from '@/components/user/RoadmapSummary';
-import TargetBreakdown from '@/components/user/TargetBreakdown';
-import RandomTransactionTable from '@/components/user/RandomTransactionTable';
-import UserSessionHistory from '@/components/user/UserSessionHistory';
-import DashboardSection from '@/components/shared/DashboardSection';
-import SecurityNotice from '@/components/user/SecurityNotice';
-import ErrorFallback from '@/components/shared/ErrorFallback';
-import LogoutButton from '@/components/common/LogoutButton';
-import ChatRoom from '@/components/ChatRoom/ChatRoom'; // 🟢 เพิ่ม ChatRoom
+import { useState } from 'react';
+import { Toaster } from '@/components/ui/sonner';
+import { Card } from '@/components/ui/card';
 
-// 🔧 Services
-import { getRoadmap } from '@/lib/services/roadmap/RoadmapService';
-import { getTargets } from '@/lib/services/target/TargetService';
+// 🧩 Admin Components
+import Uploads from './admin/Uploads';
+import Users from './admin/Users';
+import FileList from './admin/FileList';
+import UserSessionsTable from './admin/UserSessionsTable';
+import KbankLive from './admin/KbankLive';
 
-// 🌐 Metadata
-import { userDashboardMetadata as metadata } from '@/lib/metadata/th';
-export { metadata };
+// 📄 Document Components
+import CompanyAccount from './documents/CompanyAccount';
+import MedicalCertificate from './documents/MedicalCertificate';
+import SalaryCertificate from './documents/SalaryCertificate';
+import { RegistrationPreview } from './documents/RegistrationPreview';
 
-export default async function UserDashboardPage() {
-  // ตรวจสอบ session
-  const session = await getServerSession(authOptions);
-  if (!session?.user) redirect('/login');
+// 💬 ChatRoom
+import ChatRoom from '@/components/ChatRoom/ChatRoom';
+import ChatAllRoom from '@/components/ChatRoom/Chat/ChatAllRoom';
 
-  try {
-    const [roadmap, targets] = await Promise.all([getRoadmap(), getTargets()]);
+// 👆 เมนูด้านบน
+const menuItems = [
+  { key: 'uploads', label: 'อัปโหลด' },
+  { key: 'users', label: 'ผู้ใช้งาน' },
+  { key: 'files', label: 'รายการไฟล์' },
+  { key: 'user-sessions', label: 'ประวัติผู้ใช้' },
+  { key: 'company', label: 'บัญชีบริษัท' },
+  { key: 'medical', label: 'ใบรับรองแพทย์' },
+  { key: 'salary', label: 'ใบรับรองเงินเดือน' },
+  { key: 'registration', label: 'ทะเบียนพาณิชย์' },
+  { key: 'kbank', label: 'KBank Live Demo' },
+  { key: 'chat', label: 'Chat Room' },
+  { key: 'chat-all', label: 'All Chat Rooms' },
+];
 
-    const user = {
-      name: session.user.name || session.user.email || 'ผู้ใช้งาน',
-      email: session.user.email || '-',
-      role: session.user.role || 'user',
-      image: session.user.image || null,
-    };
+// 👆 Map key -> component
+const componentsMap = {
+  uploads: <Uploads />,
+  users: <Users />,
+  files: <FileList />,
+  'user-sessions': <UserSessionsTable />,
+  company: <CompanyAccount />,
+  medical: <MedicalCertificate />,
+  salary: <SalaryCertificate />,
+  registration: <RegistrationPreview />,
+  kbank: <KbankLive />,
+  chat: <ChatRoom roomId="main-room" user={{ name: 'Admin', email: 'admin@example.com' }} />,
+  'chat-all': <ChatAllRoom />,
+};
 
-    return (
-      <main className="min-h-screen space-y-12 bg-white px-4 py-10 dark:bg-gray-900 md:px-8">
-        {/* Header Section */}
-        <section className="space-y-6 text-center">
-          <div className="flex flex-col items-center space-y-4">
-            {/* Avatar */}
-            {user.image && (
-              <Image
-                src={user.image}
-                alt={user.name}
-                width={96}
-                height={96}
-                className="rounded-full border-4 border-blue-500 object-cover shadow-md"
-                priority
-                unoptimized
-              />
-            )}
+export default function AdminClient() {
+  const [activeKey, setActiveKey] = useState('uploads');
 
-            {/* Welcome Text */}
-            <h1 className="text-3xl font-bold text-gray-800 dark:text-white">
-              ยินดีต้อนรับ <span className="text-blue-600 dark:text-blue-400">{user.name}</span>
-            </h1>
+  const renderContent = () => (
+    <Card className="h-[600px] overflow-auto rounded-2xl bg-white p-4 shadow-md transition-all dark:bg-gray-800 sm:h-[650px] sm:p-6 md:h-[700px] lg:h-[750px] lg:p-8">
+      {componentsMap[activeKey] || (
+        <p className="text-center text-gray-500 dark:text-gray-400">⚙️ กรุณาเลือกเมนูด้านบน</p>
+      )}
+    </Card>
+  );
 
-            {/* User Info Card */}
-            <div className="mt-2 inline-block w-full max-w-md rounded-md bg-gray-100 p-3 text-left dark:bg-gray-800">
-              <p>
-                <strong>ชื่อ:</strong> {user.name}
-              </p>
-              <p>
-                <strong>Email:</strong> {user.email}
-              </p>
-              <p>
-                <strong>Role:</strong> {user.role}
-              </p>
-            </div>
-
-            {/* Logout Button */}
-            <LogoutButton />
+  return (
+    <div className="flex min-h-screen flex-col bg-gray-50 transition-colors duration-300 dark:bg-gray-900">
+      {/* Navbar */}
+      <nav className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/90 backdrop-blur-md dark:border-gray-800 dark:bg-gray-800/80">
+        <div className="mx-auto max-w-7xl px-3 sm:px-6">
+          <div className="no-scrollbar relative flex overflow-x-auto py-2 sm:justify-center">
+            {menuItems.map(({ key, label }) => {
+              const isActive = activeKey === key;
+              return (
+                <button
+                  key={key}
+                  onClick={() => setActiveKey(key)}
+                  className={`relative mx-1 rounded-md px-3 py-2 text-sm font-medium transition-all sm:px-4 sm:text-base ${
+                    isActive
+                      ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md dark:from-blue-500 dark:to-blue-400'
+                      : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {label}
+                  {isActive && (
+                    <span className="absolute bottom-0 left-0 h-[2px] w-full rounded-full bg-blue-500" />
+                  )}
+                </button>
+              );
+            })}
           </div>
+        </div>
+      </nav>
 
-          {/* Security Notice */}
-          <div className="mx-auto max-w-2xl">
-            <SecurityNotice />
-          </div>
-
-          {/* Signature */}
-          <div className="flex justify-center">
-            <Image
-              src="/images/signatureเจ้าป่า.webp"
-              alt="เจ้าป่า"
-              width={128}
-              height={128}
-              priority
-              className="object-contain"
-              unoptimized
-            />
-          </div>
-        </section>
-
-        {/* Dashboard Sections */}
-        <DashboardSection title="อัปโหลดเอกสารเพิ่มเติม" iconName="FileText">
-          <FileUploadForm />
-        </DashboardSection>
-
-        <DashboardSection title="ประวัติการเข้าใช้งาน" iconName="Clock">
-          <UserSessionHistory userEmail={user.email} />
-        </DashboardSection>
-
-        <DashboardSection title="รายงานผลการดำเนินงาน" iconName="Shuffle">
-          <RandomTransactionTable />
-        </DashboardSection>
-
-        <DashboardSection title="แผนงานโดยรวม" iconName="Map">
-          <RoadmapSummary data={roadmap} />
-        </DashboardSection>
-
-        <DashboardSection title="เป้าหมายที่ตั้งไว้" iconName="Target">
-          <TargetBreakdown data={targets} />
-        </DashboardSection>
-
-        <DashboardSection title="CHAT ROOM JP51I0" iconName="MessageCircle">
-          <ChatRoom roomId="main-room" user={user} />
-        </DashboardSection>
+      {/* Main Content */}
+      <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-6 sm:px-6 lg:px-8">
+        {renderContent()}
       </main>
-    );
-  } catch (error) {
-    console.error('[UserDashboardPage] ❌ Failed to load user data:', error);
-    return <ErrorFallback />;
-  }
+
+      {/* Toast Notifications */}
+      <Toaster
+        position="bottom-right"
+        richColors
+        expand
+        closeButton
+        duration={3000}
+        toastOptions={{
+          classNames: {
+            toast: 'text-sm sm:text-base rounded-lg shadow-md dark:shadow-gray-700',
+          },
+        }}
+      />
+    </div>
+  );
 }

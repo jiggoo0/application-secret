@@ -6,13 +6,11 @@ import { compare } from 'bcryptjs';
 import { supabaseServer } from '@/lib/supabase/server';
 
 async function authorize(credentials) {
-  if (!credentials?.email || !credentials?.password) {
-    throw new Error('Missing credentials');
-  }
+  console.log('🔑 Login attempt:', credentials.email);
 
   let user = null;
 
-  // 1️⃣ Fetch from Supabase
+  // 1️⃣ ตรวจสอบจาก Supabase table users
   try {
     const { data, error } = await supabaseServer
       .from('users')
@@ -20,48 +18,60 @@ async function authorize(credentials) {
       .eq('email', credentials.email)
       .single();
 
-    if (error && error.code !== 'PGRST116') console.warn('Supabase error:', error.message);
     if (data) user = data;
+    if (error) console.warn('⚠️ Supabase fetch error:', error.message);
+
+    console.log('ℹ️ Fetched user from Supabase table:', user);
   } catch (err) {
-    console.error('Supabase fetch failed:', err.message);
+    console.error('❌ Supabase fetch exception:', err.message);
   }
 
-  // 2️⃣ Fallback: users.json
+  // 2️⃣ Fallback: ตรวจสอบ users.json
   if (!user) {
     try {
       const filePath = path.join(process.cwd(), 'data', 'users.json');
       if (fs.existsSync(filePath)) {
         const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
         user = jsonData.find((u) => u.email === credentials.email) || null;
+        console.log('ℹ️ Fetched user from users.json:', user);
       }
     } catch (err) {
-      console.error('Error reading users.json:', err.message);
+      console.error('❌ Error reading users.json:', err.message);
     }
   }
 
-  if (!user) throw new Error('No user found with this email');
+  if (!user) {
+    console.error('❌ User not found:', credentials.email);
+    throw new Error('No user found with this email');
+  }
 
-  // 3️⃣ Validate password
+  // 3️⃣ ตรวจสอบ password
   let isValid = false;
   try {
-    if (user.password?.startsWith?.('$2')) {
+    if (user.password.startsWith('$2')) {
       isValid = await compare(credentials.password, user.password);
     } else {
       isValid = credentials.password === user.password;
     }
-  } catch {
-    throw new Error('Password verification failed');
+  } catch (err) {
+    console.error('❌ Password compare error:', err.message);
   }
 
-  if (!isValid) throw new Error('Invalid password');
+  if (!isValid) {
+    console.error('❌ Invalid password for user:', credentials.email);
+    throw new Error('Invalid password');
+  }
 
-  // 4️⃣ Return safe user object
-  return {
+  // 4️⃣ คืนค่า user object
+  const returnedUser = {
     id: user.id || user.email,
-    email: user.email || 'unknown@example.com',
+    email: user.email,
     role: user.role || 'user',
-    name: user.name || user.email?.split('@')[0] || 'Unknown',
+    name: user.name || user.email.split('@')[0],
   };
+
+  console.log('✅ Authorized user:', returnedUser);
+  return returnedUser;
 }
 
 export const authOptions = {
@@ -81,23 +91,34 @@ export const authOptions = {
     maxAge: 7 * 24 * 60 * 60, // 7 วัน
   },
 
-  pages: { signIn: '/login' },
+  pages: {
+    signIn: '/login',
+  },
 
   callbacks: {
     async jwt({ token, user }) {
-      if (user) Object.assign(token, user);
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.role = user.role;
+        token.name = user.name;
+      }
       return token;
     },
     async session({ session, token }) {
-      session.user = { id: token.id, email: token.email, role: token.role, name: token.name };
+      session.user = {
+        id: token.id,
+        email: token.email,
+        role: token.role,
+        name: token.name,
+      };
+      console.log('🔄 Session callback:', session);
       return session;
     },
   },
 
   secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV !== 'production',
 };
 
-// ✅ Export for App Router
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
