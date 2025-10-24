@@ -4,9 +4,6 @@ import { useEffect, useState, useCallback } from 'react';
 
 /**
  * 👥 หน้าจัดการผู้ใช้งานในระบบแอดมิน
- * - แสดงรายชื่อผู้ใช้
- * - ค้นหาผู้ใช้ (ชื่อ / อีเมล / ID)
- * - มีสถานะโหลด / error / ไม่มีข้อมูล
  */
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -14,13 +11,8 @@ export default function Users() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // ✅ โหลดข้อมูลผู้ใช้ทั้งหมดเมื่อเปิดหน้า
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  // 📦 โหลดข้อมูลผู้ใช้ทั้งหมด
-  const fetchUsers = async () => {
+  // โหลดข้อมูลผู้ใช้ทั้งหมด
+  const fetchUsers = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
@@ -33,9 +25,13 @@ export default function Users() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  // 🔍 ฟังก์ชันค้นหา (ใช้ debounce)
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  // ฟังก์ชันค้นหา (debounce 500ms)
   const handleSearch = useCallback(async () => {
     const keyword = query.trim();
     if (keyword.length < 2) {
@@ -59,16 +55,15 @@ export default function Users() {
     } finally {
       setLoading(false);
     }
-  }, [query]);
+  }, [query, fetchUsers]);
 
-  // ⏱️ Debounce search 500ms
   useEffect(() => {
     const delay = setTimeout(() => {
       if (query.trim().length >= 2) handleSearch();
       else if (query.trim().length === 0) fetchUsers();
     }, 500);
     return () => clearTimeout(delay);
-  }, [query, handleSearch]);
+  }, [query, handleSearch, fetchUsers]);
 
   return (
     <section className="space-y-6">
@@ -106,14 +101,14 @@ export default function Users() {
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {users.map((user, index) => (
             <li
-              key={user.id || `${user.email || 'unknown'}-${index}`}
+              key={user.id ?? `${user.email ?? 'unknown'}-${index}`}
               className="rounded-lg border border-base-300 bg-base-100 p-4 shadow-sm transition-shadow hover:shadow-md"
             >
               <h2 className="text-lg font-semibold text-base-content">
-                {user.name || 'ไม่ระบุชื่อ'}
+                {user.name ?? 'ไม่ระบุชื่อ'}
               </h2>
-              <p className="text-sm text-gray-600">📧 {user.email || 'ไม่ระบุอีเมล'}</p>
-              <p className="text-sm text-gray-500">🔑 สิทธิ์: {user.role || 'ไม่ระบุสิทธิ์'}</p>
+              <p className="text-sm text-gray-600">📧 {user.email ?? 'ไม่ระบุอีเมล'}</p>
+              <p className="text-sm text-gray-500">🔑 สิทธิ์: {user.role ?? 'ไม่ระบุสิทธิ์'}</p>
             </li>
           ))}
         </ul>

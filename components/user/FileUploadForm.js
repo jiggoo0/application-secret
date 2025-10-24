@@ -12,7 +12,6 @@ import Image from 'next/image';
  */
 
 /**
- * File upload form component with preview
  * @param {{ endpoint?: string }} props
  */
 export default function FileUploadForm({ endpoint = '/api/uploads' }) {
@@ -74,8 +73,11 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
   };
 
   return (
-    <div className="mx-auto max-w-md space-y-4 rounded border border-gray-200 p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
+    <div className="mx-auto w-full max-w-md space-y-4 rounded-lg border border-gray-200 p-4 shadow-sm dark:border-gray-700 dark:bg-gray-900">
       {/* File Input */}
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+        เลือกไฟล์
+      </label>
       <input
         type="file"
         onChange={handleFileChange}
@@ -105,14 +107,14 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
           </p>
 
           {fileType === 'image' && (
-            <div className="relative max-h-80 w-full">
+            <div className="relative aspect-video w-full overflow-hidden rounded border border-gray-300 dark:border-gray-600">
               <Image
                 src={fileUrl}
                 alt={file.name}
                 fill
                 style={{ objectFit: 'contain' }}
-                className="rounded border border-gray-300 dark:border-gray-600"
-                unoptimized // ถ้าใช้ลิงก์จาก Supabase
+                className="rounded"
+                unoptimized
               />
             </div>
           )}
@@ -121,7 +123,7 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
             <video
               src={fileUrl}
               controls
-              className="max-h-80 w-full rounded border border-gray-300 dark:border-gray-600"
+              className="aspect-video w-full rounded border border-gray-300 dark:border-gray-600"
             />
           )}
 
@@ -130,7 +132,7 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
               href={fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-sm text-blue-500 underline dark:text-blue-400"
+              className="inline-block text-sm text-blue-500 underline dark:text-blue-400"
             >
               เปิดไฟล์ {file.name}
             </a>

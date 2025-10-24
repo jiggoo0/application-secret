@@ -7,6 +7,7 @@ export default function Uploads() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [previewingPath, setPreviewingPath] = useState(null);
   const [approvingId, setApprovingId] = useState(null);
 
   useEffect(() => {
@@ -20,8 +21,13 @@ export default function Uploads() {
           const text = await res.text();
           throw new Error(`HTTP ${res.status}: ${text}`);
         }
+
         const data = await res.json();
-        setUploads(data || []);
+        if (data?.ok && Array.isArray(data.uploads)) {
+          setUploads(data.uploads);
+        } else {
+          throw new Error('Invalid response structure');
+        }
       } catch (err) {
         console.error('❌ Failed to fetch uploads:', err);
         setError(err.message || 'เกิดข้อผิดพลาดในการโหลดไฟล์');
@@ -33,7 +39,7 @@ export default function Uploads() {
     fetchUploads();
   }, []);
 
-  async function handleApprove(id) {
+  const handleApprove = async (id) => {
     setApprovingId(id);
     try {
       const res = await fetch('/api/admin/uploads/approve', {
@@ -47,19 +53,20 @@ export default function Uploads() {
         throw new Error(`HTTP ${res.status}: ${text}`);
       }
 
-      // ไม่ต้องเก็บ result ถ้าไม่ได้ใช้
-      await res.json();
-
-      setUploads((prev) => prev.map((u) => (u.id === id ? { ...u, status: 'approved' } : u)));
+      const result = await res.json();
+      if (result?.data) {
+        setUploads((prev) => prev.map((u) => (u.id === id ? { ...u, status: 'approved' } : u)));
+      }
     } catch (err) {
       console.error('❌ Approve failed:', err);
       alert(err.message);
     } finally {
       setApprovingId(null);
     }
-  }
+  };
 
-  async function handlePreview(path) {
+  const handlePreview = async (path) => {
+    setPreviewingPath(path);
     try {
       const res = await fetch('/api/admin/uploads/preview', {
         method: 'POST',
@@ -72,18 +79,27 @@ export default function Uploads() {
         throw new Error(`HTTP ${res.status}: ${text}`);
       }
 
-      const { url } = await res.json(); // destructure url เลย
+      const { url } = await res.json();
       if (!url) throw new Error('Preview failed: no URL returned');
       setPreviewUrl(url);
     } catch (err) {
       console.error('❌ Preview failed:', err);
       alert(err.message);
+    } finally {
+      setPreviewingPath(null);
     }
+  };
+
+  if (loading) {
+    return (
+      <div className="py-4 text-center">
+        <div className="mx-auto h-6 w-1/3 animate-pulse rounded bg-gray-300" />
+      </div>
+    );
   }
 
-  if (loading) return <p>Loading uploads...</p>;
-  if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (!uploads.length) return <p>No uploads found.</p>;
+  if (error) return <p className="py-4 text-center text-red-500">Error: {error}</p>;
+  if (!uploads.length) return <p className="py-4 text-center">No uploads found.</p>;
 
   return (
     <div>
@@ -96,7 +112,7 @@ export default function Uploads() {
             <div>
               <p className="font-medium">{u.name}</p>
               <p className="text-sm text-gray-500">
-                Uploaded at: {new Date(u.created_at).toLocaleString()}
+                Uploaded at: {u.created_at ? new Date(u.created_at).toLocaleString('th-TH') : '-'}
               </p>
               <p className="text-sm text-gray-700">Status: {u.status}</p>
             </div>
@@ -112,7 +128,8 @@ export default function Uploads() {
               )}
               <button
                 onClick={() => handlePreview(u.path)}
-                className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700"
+                disabled={previewingPath === u.path}
+                className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700 disabled:opacity-50"
               >
                 Preview
               </button>
@@ -130,7 +147,11 @@ export default function Uploads() {
             >
               ✖
             </button>
-            <iframe src={previewUrl} className="h-96 w-full" title="Preview" />
+            {previewUrl.endsWith('.pdf') || previewUrl.startsWith('https://') ? (
+              <iframe src={previewUrl} className="h-96 w-full" title="Preview" />
+            ) : (
+              <p className="text-center text-gray-600">ไม่สามารถแสดงตัวอย่างไฟล์นี้ได้</p>
+            )}
           </div>
         </div>
       )}

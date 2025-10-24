@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast, Toaster } from 'sonner'; // import จาก package โดยตรง
+import { toast, Toaster } from 'sonner';
 import { getTransactions, getBalance, addTransaction } from '@/lib/services/mock/MockKbank';
 import { motion } from 'framer-motion';
 import {
@@ -46,14 +46,13 @@ export default function KbankLive() {
 
   const type = watch('type');
 
-  // Fetch initial data
   useEffect(() => {
     async function fetchData() {
       try {
         setLoading(true);
         const [txs, bal] = await Promise.all([getTransactions(), getBalance()]);
-        setTransactions(txs);
-        setBalance(bal);
+        setTransactions(txs || []);
+        setBalance(bal || 0);
       } catch (err) {
         console.error(err);
         toast.error('ไม่สามารถโหลดข้อมูลได้');
@@ -64,7 +63,6 @@ export default function KbankLive() {
     fetchData();
   }, []);
 
-  // Submit transaction
   const onSubmit = async (data) => {
     try {
       setSubmitting(true);
@@ -75,7 +73,7 @@ export default function KbankLive() {
       toast.success('ทำรายการสำเร็จ');
     } catch (err) {
       console.error(err);
-      toast.error(err || 'เกิดข้อผิดพลาด');
+      toast.error(err?.message || 'เกิดข้อผิดพลาด');
     } finally {
       setSubmitting(false);
     }
@@ -186,16 +184,16 @@ export default function KbankLive() {
           }}
         >
           <ul>
-            {transactions.map((tx) => (
+            {transactions.map((tx, index) => (
               <motion.li
-                key={tx.id}
+                key={tx.id ?? index}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 className="flex items-center justify-between px-4 py-3"
               >
                 <div>
                   <p className="font-medium">{tx.description}</p>
-                  <p className="text-sm">{new Date(tx.date).toLocaleString()}</p>
+                  <p className="text-sm">{tx.date ? new Date(tx.date).toLocaleString() : '-'}</p>
                 </div>
                 <p
                   className="flex items-center gap-1 font-semibold"

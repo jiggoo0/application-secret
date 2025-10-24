@@ -11,7 +11,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'; // ✅ ใช้ Table ของ shadcn/ui
+} from '@/components/ui/table';
 
 /**
  * @typedef {Object} TransactionRow
@@ -69,11 +69,14 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
   return (
     <div className="space-y-4">
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm dark:border-gray-700">
-        <Table>
+        <Table className="min-w-[640px] text-sm">
           <TableHeader>
             <TableRow>
               {headers.map((h) => (
-                <TableHead key={h} className="font-medium text-gray-700 dark:text-gray-200">
+                <TableHead
+                  key={h}
+                  className="whitespace-nowrap px-4 py-2 font-medium text-gray-700 dark:text-gray-200"
+                >
                   {h}
                 </TableHead>
               ))}
@@ -84,7 +87,7 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
               Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i} className="animate-pulse">
                   {headers.map((_, j) => (
-                    <TableCell key={j}>
+                    <TableCell key={j} className="px-4 py-2">
                       <div className="h-5 rounded bg-gray-200 dark:bg-gray-700" />
                     </TableCell>
                   ))}
@@ -105,17 +108,19 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
                   key={row.id || uuidv4()}
                   className="transition hover:bg-gray-50 dark:hover:bg-gray-900"
                 >
-                  <TableCell>{row.customer || '—'}</TableCell>
-                  <TableCell>{row.product || '—'}</TableCell>
-                  <TableCell>
+                  <TableCell className="px-4 py-2">{row.customer || '—'}</TableCell>
+                  <TableCell className="px-4 py-2">{row.product || '—'}</TableCell>
+                  <TableCell className="px-4 py-2">
                     <span
                       className={`inline-block w-[120px] rounded-full px-2 py-1 text-center text-xs font-medium ${getStatusStyle(row.status)}`}
                     >
                       {row.status || '—'}
                     </span>
                   </TableCell>
-                  <TableCell>{row.date ? formatThaiDate(row.date) : '—'}</TableCell>
-                  <TableCell>{row.team || '—'}</TableCell>
+                  <TableCell className="px-4 py-2">
+                    {row.date ? formatThaiDate(row.date) : '—'}
+                  </TableCell>
+                  <TableCell className="px-4 py-2">{row.team || '—'}</TableCell>
                 </TableRow>
               ))
             )}

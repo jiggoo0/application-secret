@@ -9,24 +9,26 @@ export default function FileList() {
   const [loading, setLoading] = useState(true);
   const [approvingId, setApprovingId] = useState(null);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [previewingPath, setPreviewingPath] = useState(null);
   const [error, setError] = useState(null);
 
-  // ดึงข้อมูลไฟล์จาก API
   const fetchFiles = async () => {
     setLoading(true);
     setError(null);
     try {
       const res = await axios.get('/api/admin/uploads');
-      setFiles(res.data || []);
+      if (res.data?.ok && Array.isArray(res.data.uploads)) {
+        setFiles(res.data.uploads);
+      } else {
+        throw new Error('Invalid response structure');
+      }
     } catch (err) {
       console.error('❌ Fetch files error:', err);
-      if (axios.isAxiosError(err)) {
-        setError(
-          err.response?.data?.error || `HTTP ${err.response?.status} - Failed to fetch files`,
-        );
-      } else {
-        setError(err.message || 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ');
-      }
+      setError(
+        axios.isAxiosError(err)
+          ? err.response?.data?.error || `HTTP ${err.response?.status} - Failed to fetch files`
+          : err.message || 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ',
+      );
     } finally {
       setLoading(false);
     }
@@ -36,7 +38,6 @@ export default function FileList() {
     fetchFiles();
   }, []);
 
-  // อนุมัติไฟล์
   const handleApprove = async (id) => {
     try {
       setApprovingId(id);
@@ -56,9 +57,9 @@ export default function FileList() {
     }
   };
 
-  // Preview ไฟล์
   const handlePreview = async (path) => {
     try {
+      setPreviewingPath(path);
       const res = await axios.post('/api/admin/uploads/preview', { path });
       if (res.data?.url) {
         setPreviewUrl(res.data.url);
@@ -72,10 +73,19 @@ export default function FileList() {
           ? err.response?.data?.error || `HTTP ${err.response?.status} - Preview failed`
           : err.message,
       );
+    } finally {
+      setPreviewingPath(null);
     }
   };
 
-  if (loading) return <p className="py-6 text-center">กำลังโหลดไฟล์...</p>;
+  if (loading) {
+    return (
+      <div className="py-6 text-center">
+        <div className="mx-auto h-6 w-1/3 animate-pulse rounded bg-gray-300" />
+      </div>
+    );
+  }
+
   if (error) return <p className="py-6 text-center text-red-500">{error}</p>;
   if (!files.length) return <p className="py-6 text-center">ไม่มีไฟล์ที่อัปโหลด</p>;
 
@@ -93,8 +103,8 @@ export default function FileList() {
           </tr>
         </thead>
         <tbody>
-          {files.map((file) => (
-            <tr key={file.id} className="text-center">
+          {files.map((file, index) => (
+            <tr key={file.id ?? index} className="text-center">
               <td className="border px-4 py-2">{file.name}</td>
               <td className="border px-4 py-2">{file.type || '-'}</td>
               <td className="border px-4 py-2">{file.user_email}</td>
@@ -106,12 +116,13 @@ export default function FileList() {
                 )}
               </td>
               <td className="border px-4 py-2">
-                {new Date(file.created_at).toLocaleString('th-TH')}
+                {file.created_at ? new Date(file.created_at).toLocaleString('th-TH') : '-'}
               </td>
               <td className="flex justify-center gap-2 border px-4 py-2">
                 <button
                   onClick={() => handlePreview(file.path)}
-                  className="inline-flex items-center gap-1 rounded-md bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700"
+                  disabled={previewingPath === file.path}
+                  className="inline-flex items-center gap-1 rounded-md bg-blue-600 px-3 py-1 text-sm text-white hover:bg-blue-700 disabled:opacity-50"
                 >
                   <Eye className="h-4 w-4" /> Preview
                 </button>
@@ -122,7 +133,7 @@ export default function FileList() {
                     disabled={approvingId === file.id}
                     className="inline-flex items-center gap-1 rounded-md bg-green-600 px-3 py-1 text-sm text-white hover:bg-green-700 disabled:opacity-50"
                   >
-                    <CheckCircle className="h-4 w-4" />{' '}
+                    <CheckCircle className="h-4 w-4" />
                     {approvingId === file.id ? 'กำลังอนุมัติ...' : 'Approve'}
                   </button>
                 )}
@@ -132,7 +143,6 @@ export default function FileList() {
         </tbody>
       </table>
 
-      {/* Preview Modal */}
       {previewUrl && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
           <div className="relative w-full max-w-3xl rounded-md bg-white p-4">
@@ -142,7 +152,11 @@ export default function FileList() {
             >
               ✕
             </button>
-            <iframe src={previewUrl} className="h-96 w-full" title="File Preview"></iframe>
+            {previewUrl.endsWith('.pdf') || previewUrl.startsWith('https://') ? (
+              <iframe src={previewUrl} className="h-96 w-full" title="File Preview"></iframe>
+            ) : (
+              <p className="text-center text-gray-600">ไม่สามารถแสดงตัวอย่างไฟล์นี้ได้</p>
+            )}
           </div>
         </div>
       )}

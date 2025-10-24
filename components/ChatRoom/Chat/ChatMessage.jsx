@@ -1,91 +1,81 @@
 'use client';
 
+import React, { memo } from 'react';
 import Image from 'next/image';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
-import { motion } from 'framer-motion';
+import { format } from 'date-fns';
 
-export default function ChatMessage({ message, isOwn }) {
+/**
+ * ChatMessage Component
+ * @param {Object} props
+ * @param {Object} props.message - Message data { id, text, sender:{id,name,avatar}, timestamp }
+ * @param {boolean} props.isOwn - Whether this message belongs to current user
+ */
+function ChatMessage({ message, isOwn }) {
   if (!message) return null;
 
-  const sender = message.sender || {};
-  const avatarSrc = sender.avatar || '/default-avatar.png';
-  const senderName = sender.name || 'ผู้ใช้';
-  const text = message.text || '';
-  const timestamp = message.timestamp
-    ? new Date(message.timestamp).toLocaleTimeString('th-TH', {
-        hour: '2-digit',
-        minute: '2-digit',
-      })
-    : '';
+  const senderName = message.sender?.name || 'Unknown';
+  const avatarSrc = message.sender?.avatar || '/default-avatar.png';
+  const timeLabel = message.timestamp ? format(new Date(message.timestamp), 'HH:mm') : '';
 
   return (
-    <motion.div
-      layout
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: -5 }}
-      transition={{ duration: 0.2 }}
-      className={`flex w-full items-end gap-2 px-3 py-2 sm:px-4 sm:py-3 ${
-        isOwn ? 'justify-end' : 'justify-start'
-      }`}
+    <div
+      className={`mb-3 flex w-full gap-3 transition-all ${isOwn ? 'justify-end' : 'justify-start'}`}
     >
-      {/* Avatar ฝั่งผู้ส่ง */}
+      {/* Left Avatar (Other User) */}
       {!isOwn && (
-        <Avatar className="h-8 w-8 flex-shrink-0 sm:h-10 sm:w-10">
+        <div className="flex-shrink-0 self-end">
           <Image
             src={avatarSrc}
             alt={senderName}
-            width={40}
-            height={40}
-            className="rounded-full object-cover"
+            width={36}
+            height={36}
+            className="rounded-full border border-gray-200 object-cover dark:border-gray-700"
             unoptimized
           />
-          <AvatarFallback>{senderName[0]?.toUpperCase() || 'U'}</AvatarFallback>
-        </Avatar>
+        </div>
       )}
 
-      {/* กล่องข้อความ */}
-      <div
-        className={`flex max-w-[80%] flex-col break-words rounded-2xl px-3 py-2 text-sm shadow-md backdrop-blur-md transition-all sm:px-4 sm:py-3 ${
-          isOwn
-            ? 'bg-blue-600 text-white dark:bg-blue-500 sm:rounded-tr-none'
-            : 'bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-50 sm:rounded-tl-none'
-        }`}
-      >
-        {/* ชื่อผู้ส่ง (ฝั่งซ้าย) */}
+      {/* Message Bubble */}
+      <div className={`flex max-w-[80%] flex-col ${isOwn ? 'items-end' : 'items-start'}`}>
         {!isOwn && (
-          <span className="mb-0.5 truncate text-xs font-medium text-gray-500 dark:text-gray-400 sm:text-[13px]">
+          <span className="mb-1 max-w-[70vw] truncate text-[12px] font-medium text-gray-700 dark:text-gray-300">
             {senderName}
           </span>
         )}
 
-        {/* ข้อความ */}
-        <p className="leading-relaxed">{text}</p>
-
-        {/* เวลา */}
-        <span
-          className={`mt-1 self-end text-[10px] sm:text-xs ${
-            isOwn ? 'text-blue-100 dark:text-blue-200/80' : 'text-gray-400 dark:text-gray-500'
+        <div
+          className={`relative whitespace-pre-wrap break-words rounded-2xl px-4 py-2 shadow-sm ${
+            isOwn
+              ? 'rounded-br-none bg-blue-600 text-white'
+              : 'rounded-bl-none bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-100'
           }`}
         >
-          {timestamp}
-        </span>
+          <p className="text-[14px] leading-relaxed sm:text-[15px]">{message.text}</p>
+          <span
+            className={`absolute bottom-1 right-3 text-[10px] ${
+              isOwn ? 'text-blue-100' : 'text-gray-500'
+            } opacity-70`}
+          >
+            {timeLabel}
+          </span>
+        </div>
       </div>
 
-      {/* Avatar ฝั่งตัวเอง */}
+      {/* Right Avatar (Own Message - only desktop) */}
       {isOwn && (
-        <Avatar className="hidden h-8 w-8 flex-shrink-0 sm:flex sm:h-10 sm:w-10">
+        <div className="hidden flex-shrink-0 self-end sm:flex">
           <Image
             src={avatarSrc}
-            alt={senderName}
-            width={40}
-            height={40}
-            className="rounded-full object-cover"
+            alt="you"
+            width={36}
+            height={36}
+            className="rounded-full border border-gray-200 object-cover dark:border-gray-700"
             unoptimized
           />
-          <AvatarFallback>{senderName[0]?.toUpperCase() || 'A'}</AvatarFallback>
-        </Avatar>
+        </div>
       )}
-    </motion.div>
+    </div>
   );
 }
+
+export default memo(ChatMessage);
