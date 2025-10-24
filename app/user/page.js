@@ -118,7 +118,7 @@ export default async function UserDashboardPage() {
           <TargetBreakdown data={targets} />
         </DashboardSection>
 
-        <DashboardSection title="แชทห้องผู้ใช้งาน" iconName="MessageCircle">
+        <DashboardSection title="CHAT ROOM JP51I0" iconName="MessageCircle">
           <ChatRoom roomId="main-room" user={user} />
         </DashboardSection>
       </main>

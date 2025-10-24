@@ -12,10 +12,10 @@ import About from '@/components/About';
 import { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
-// 🧠 Dynamic Imports (with better fallback + performance hint)
+// 🧠 Dynamic Imports (with fallback)
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
-    <div className="animate-pulse py-16 text-center text-gray-500 dark:text-gray-400">
+    <div className="animate-pulse py-24 text-center text-gray-500 dark:text-gray-400">
       🔄 กำลังโหลด Hero...
     </div>
   ),
@@ -24,7 +24,7 @@ const Hero = dynamic(() => import('@/components/Hero/Hero'), {
 
 const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
   loading: () => (
-    <div className="animate-pulse py-16 text-center text-gray-500 dark:text-gray-400">
+    <div className="animate-pulse py-24 text-center text-gray-500 dark:text-gray-400">
       💬 กำลังโหลดรีวิว...
     </div>
   ),
@@ -33,7 +33,7 @@ const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
 
 const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   loading: () => (
-    <div className="animate-pulse py-16 text-center text-gray-500 dark:text-gray-400">
+    <div className="animate-pulse py-24 text-center text-gray-500 dark:text-gray-400">
       📰 กำลังโหลดบทความ...
     </div>
   ),
@@ -49,7 +49,7 @@ const sections = [
       headline: 'ทำธุรกิจสีเทาให้มีความมาตรฐานมืออาชีพ',
       highlightText: 'เจ้าป่า ชัดเจนไม่ขายฝัน',
       subtext: 'ยินดีร่วมงานทุกสายวงการ',
-      ctaText: 'ดูบริการของเรา',
+      ctaText: 'เข้าสู่ระบบ',
       ctaUrl: '#services',
       images: ['/images/hero/hero.webp', '/images/hero/hero2.webp', '/images/hero/hero3.webp'],
       slideInterval: 5000,
@@ -76,7 +76,7 @@ export default function HomePage() {
 
   return (
     <>
-      {/* 🧭 SEO Metadata */}
+      {/* 🧭 SEO */}
       <SEO
         title="หน้าแรก | Application Secret"
         description="ทำธุรกิจสีเทาให้มีความมาตรฐานมืออาชีพ ยินดีร่วมงานทุกสายวงการ"
@@ -94,7 +94,7 @@ export default function HomePage() {
         id="main-content"
         role="main"
         aria-label="เนื้อหาหลัก"
-        className="flex flex-col space-y-20 bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100 sm:space-y-28 lg:space-y-36"
+        className="flex flex-col gap-20 bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100 sm:gap-28 lg:gap-36"
       >
         {sections.map(({ id, Component, props }) => (
           <motion.section
@@ -105,9 +105,10 @@ export default function HomePage() {
             animate={controls}
             variants={{
               hidden: { opacity: 0, y: 40 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
             }}
             viewport={{ once: true, amount: 0.2 }}
+            className="w-full"
           >
             <Section
               id={id}

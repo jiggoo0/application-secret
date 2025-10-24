@@ -3,7 +3,6 @@ const plugin = require('tailwindcss/plugin');
 const theme = require('./config/theme.js');
 
 module.exports = {
-  // ─── Content Paths ─────────────────────────────────────
   content: [
     './app/**/*.{js,jsx}',
     './components/**/*.{js,jsx}',
@@ -13,59 +12,41 @@ module.exports = {
     './hooks/**/*.{js,jsx}',
     './public/**/*.html',
   ],
-
-  // ─── Dark Mode Strategy ────────────────────────────────
   darkMode: 'class',
-
-  // ─── Theme Extension ───────────────────────────────────
   theme: {
     extend: {
       colors: {
         ...theme.colors,
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          hover: 'hsl(var(--primary-hover))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
-        },
-        accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
-        },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
-        neutral: 'hsl(var(--neutral))',
-        success: 'hsl(var(--success))',
-        warning: 'hsl(var(--warning))',
-        error: 'hsl(var(--error))',
+        background: 'hsl(var(--background, 0 0% 100%))',
+        foreground: 'hsl(var(--foreground, 0 0% 7%))',
+        card: 'hsl(var(--card, 0 0% 100%))',
+        'card-foreground': 'hsl(var(--card-foreground, 0 0% 7%))',
+        popover: 'hsl(var(--popover, 0 0% 100%))',
+        'popover-foreground': 'hsl(var(--popover-foreground, 0 0% 7%))',
+        primary: 'hsl(var(--primary, 0 0% 9%))',
+        'primary-hover': 'hsl(var(--primary-hover, 220 60% 40%))',
+        'primary-foreground': 'hsl(var(--primary-foreground, 0 0% 98%))',
+        secondary: 'hsl(var(--secondary, 0 0% 96.1%))',
+        'secondary-foreground': 'hsl(var(--secondary-foreground, 0 0% 12%))',
+        accent: 'hsl(var(--accent, 0 0% 96.1%))',
+        'accent-foreground': 'hsl(var(--accent-foreground, 0 0% 12%))',
+        muted: 'hsl(var(--muted, 0 0% 96.1%))',
+        'muted-foreground': 'hsl(var(--muted-foreground, 0 0% 30%))',
+        destructive: 'hsl(var(--destructive, 0 84.2% 60.2%))',
+        'destructive-foreground': 'hsl(var(--destructive-foreground, 0 0% 98%))',
+        border: 'hsl(var(--border, 0 0% 89.8%))',
+        input: 'hsl(var(--input, 0 0% 89.8%))',
+        ring: 'hsl(var(--ring, 0 0% 7%))',
+        neutral: 'hsl(var(--neutral, 210 16% 90%))',
+        success: 'hsl(var(--success, 160 70% 40%))',
+        warning: 'hsl(var(--warning, 43 90% 60%))',
+        error: 'hsl(var(--error, 0 70% 45%))',
         chart: {
-          1: 'hsl(var(--chart-1))',
-          2: 'hsl(var(--chart-2))',
-          3: 'hsl(var(--chart-3))',
-          4: 'hsl(var(--chart-4))',
-          5: 'hsl(var(--chart-5))',
+          1: 'hsl(var(--chart-1, 12 76% 61%))',
+          2: 'hsl(var(--chart-2, 173 58% 39%))',
+          3: 'hsl(var(--chart-3, 197 37% 24%))',
+          4: 'hsl(var(--chart-4, 43 74% 66%))',
+          5: 'hsl(var(--chart-5, 27 87% 67%))',
         },
       },
       borderRadius: {
@@ -116,8 +97,6 @@ module.exports = {
       },
     },
   },
-
-  // ─── Plugins ────────────────────────────────────────────
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
@@ -133,7 +112,7 @@ module.exports = {
             fontWeight: theme('fontWeight.medium'),
             borderRadius: theme('borderRadius.md'),
             padding: `${theme('spacing.sm')} ${theme('spacing.md')}`,
-            border: `1px solid ${theme('colors.muted.DEFAULT')}`,
+            border: `1px solid ${theme('colors.border')}`,
             boxShadow: theme('boxShadow.inset'),
             transitionProperty: 'all',
             transitionDuration: theme('transitionDuration.fast'),
@@ -142,31 +121,31 @@ module.exports = {
             color: theme('colors.foreground'),
           },
           '.btn-primary': {
-            backgroundColor: theme('colors.primary.DEFAULT'),
-            color: theme('colors.primary.foreground'),
-            borderColor: theme('colors.primary.DEFAULT'),
+            backgroundColor: theme('colors.primary'),
+            color: theme('colors.primary-foreground'),
+            borderColor: theme('colors.primary'),
           },
           '.btn-primary:hover': {
-            backgroundColor: theme('colors.primary.hover'),
+            backgroundColor: theme('colors.primary-hover'),
             boxShadow: theme('boxShadow.hover'),
           },
           '.btn-secondary': {
-            backgroundColor: theme('colors.secondary.DEFAULT'),
-            color: theme('colors.secondary.foreground'),
-            borderColor: theme('colors.secondary.DEFAULT'),
+            backgroundColor: theme('colors.secondary'),
+            color: theme('colors.secondary-foreground'),
+            borderColor: theme('colors.secondary'),
           },
           '.btn-secondary:hover': {
-            backgroundColor: theme('colors.accent.DEFAULT'),
+            backgroundColor: theme('colors.accent'),
             boxShadow: theme('boxShadow.hover'),
           },
           '.btn-outline': {
             backgroundColor: 'transparent',
-            color: theme('colors.primary.DEFAULT'),
-            borderColor: theme('colors.primary.DEFAULT'),
+            color: theme('colors.primary'),
+            borderColor: theme('colors.primary'),
           },
           '.btn-outline:hover': {
-            backgroundColor: theme('colors.primary.hover'),
-            color: theme('colors.primary.foreground'),
+            backgroundColor: theme('colors.primary-hover'),
+            color: theme('colors.primary-foreground'),
           },
           '.btn-disabled': {
             opacity: theme('opacity.50'),
@@ -191,7 +170,7 @@ module.exports = {
             fontWeight: theme('fontWeight.medium'),
             borderRadius: theme('borderRadius.full'),
             backgroundColor: theme('colors.neutral'),
-            color: theme('colors.muted.foreground'),
+            color: theme('colors.muted-foreground'),
           },
           '.badge-success': {
             backgroundColor: theme('colors.success'),
@@ -210,12 +189,10 @@ module.exports = {
       );
     }),
   ],
-
-  // ─── DaisyUI Config ─────────────────────────────────────
   daisyui: {
     themes: [
       {
-        business: {
+        adosy: {
           primary: '#2563eb',
           'primary-focus': '#1d4ed8',
           secondary: '#f1f5f9',
@@ -230,8 +207,8 @@ module.exports = {
         },
       },
     ],
-    darkTheme: 'business',
-    base: true,
+    darkTheme: 'adosy',
+    base: false,
     styled: true,
     utils: true,
     logs: false,

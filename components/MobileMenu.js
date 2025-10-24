@@ -48,7 +48,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
           <div className="mt-8 flex flex-col gap-3 border-t border-gray-200 pt-6 dark:border-gray-700">
             <Button
               asChild
-              className="w-full bg-primary text-white hover:bg-primary/90"
+              className="hover:bg-primary/90 w-full bg-primary text-white"
               onClick={() => setIsOpen(false)}
             >
               <Link href="/login">เข้าสู่ระบบ</Link>
@@ -57,7 +57,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
             <Button
               asChild
               variant="outline"
-              className="w-full border-primary text-primary hover:bg-primary/10"
+              className="hover:bg-primary/10 w-full border-primary text-primary"
               onClick={() => setIsOpen(false)}
             >
               <Link href="/register">สมัครสมาชิก</Link>

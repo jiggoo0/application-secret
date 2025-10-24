@@ -8,11 +8,6 @@ import { LineShadowText } from '@/components/ui/line-shadow-text';
 import HeroBackground from './HeroBackground';
 import HeroMetrics from './HeroMetrics';
 
-/**
- * 🦁 Hero Section
- * - แสดงภาพพื้นหลังแบบ slideshow
- * - แสดงข้อความหลัก, ข้อความเน้น, subtext, CTA และ metrics
- */
 export default function Hero({
   headline,
   highlightText = '',
@@ -26,7 +21,6 @@ export default function Hero({
   const [currentIndex, setCurrentIndex] = useState(0);
   const router = useRouter();
 
-  // 👉 เปลี่ยนภาพ background อัตโนมัติ
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
   }, [images.length]);
@@ -37,7 +31,6 @@ export default function Hero({
     return () => clearInterval(interval);
   }, [images.length, nextSlide, slideInterval]);
 
-  // 🧠 ลด re-render ของ background และ metrics
   const background = useMemo(
     () => <HeroBackground images={images} currentIndex={currentIndex} />,
     [images, currentIndex],
@@ -49,21 +42,22 @@ export default function Hero({
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 text-center md:px-12"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-4 text-center sm:px-6 lg:px-12"
     >
+      {/* Background Slider */}
       {background}
 
       <motion.div
-        className="relative z-10 flex max-w-3xl flex-col items-center gap-6 text-white"
+        className="relative z-20 flex w-full max-w-5xl flex-col items-center gap-6 text-white sm:gap-8 md:gap-10"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
         viewport={{ once: true }}
       >
-        {/* 🧠 Headline */}
+        {/* Headline */}
         <motion.h1
           id="hero-heading"
-          className="flex flex-wrap justify-center gap-2 text-4xl font-bold md:text-5xl"
+          className="flex flex-wrap justify-center gap-2 text-3xl font-extrabold leading-snug sm:text-4xl md:text-5xl lg:text-6xl"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
@@ -76,10 +70,10 @@ export default function Hero({
           )}
         </motion.h1>
 
-        {/* 📄 Subtext */}
+        {/* Subtext */}
         {subtext && (
           <motion.p
-            className="text-lg md:text-xl"
+            className="max-w-3xl text-base leading-relaxed sm:text-lg md:text-xl lg:text-2xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -88,19 +82,20 @@ export default function Hero({
           </motion.p>
         )}
 
-        {/* 🚀 CTA Button */}
-        {ctaText && ctaUrl && (
+        {/* CTA Button */}
+        {ctaText && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
+            initial={{ opacity: 0, scale: 0.85 }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.35 }}
+            className="mt-4"
           >
             <ShinyButton
               onClick={(e) => {
                 e.preventDefault();
-                router.push(ctaUrl);
+                router.push(ctaUrl || '/login');
               }}
-              className="mt-4"
+              className="px-6 py-3 text-lg sm:px-8 sm:py-4 sm:text-xl"
               aria-label={`ไปยัง: ${ctaText}`}
             >
               {ctaText}
@@ -108,8 +103,12 @@ export default function Hero({
           </motion.div>
         )}
 
-        {/* 📊 Metrics */}
-        {metricsBlock}
+        {/* Metrics */}
+        {metrics.length > 0 && (
+          <div className="mt-6 flex w-full flex-wrap justify-center gap-4 sm:mt-8">
+            {metricsBlock}
+          </div>
+        )}
       </motion.div>
     </section>
   );

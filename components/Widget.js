@@ -132,7 +132,7 @@ export default function Widget() {
         aria-expanded={open}
         aria-controls="contact-widget"
         onClick={() => setOpen((prev) => !prev)}
-        className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/40"
+        className="hover:bg-primary/90 focus:ring-primary/40 fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white shadow-lg transition-colors focus:outline-none focus:ring-2"
         title={open ? 'ปิดช่องทางติดต่อ' : 'เปิดช่องทางติดต่อ'}
       >
         {open ? <FaTimes aria-hidden /> : <FaCommentDots aria-hidden />}

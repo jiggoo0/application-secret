@@ -57,7 +57,7 @@ export default function TargetBreakdown({ data = [] }) {
             {sanitizedData.map((item, idx) => (
               <tr
                 key={idx}
-                className="border-t border-gray-200 transition hover:bg-muted/50 dark:border-gray-700"
+                className="hover:bg-muted/50 border-t border-gray-200 transition dark:border-gray-700"
               >
                 <td className="break-words px-4 py-2">{item.name || '—'}</td>
                 <td className="px-4 py-2 text-right">{formatNumber(item.target)}</td>

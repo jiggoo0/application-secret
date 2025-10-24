@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
  * 📊 HeroMetrics
  * - แสดงตัวเลข/สถิติสำคัญใน Hero section
  * - รองรับ animation fade-in + slide
+ * - Responsive: ปรับ layout และ font size ตาม screen
  */
 export default function HeroMetrics({ metrics }) {
   if (!metrics?.length) return null;
@@ -37,7 +38,7 @@ export default function HeroMetrics({ metrics }) {
 
   return (
     <motion.dl
-      className="mt-6 flex flex-wrap justify-center gap-6 text-sm text-white/80 md:gap-8"
+      className="mt-6 flex flex-wrap justify-center gap-6 text-center sm:gap-8 md:gap-12"
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
@@ -48,12 +49,12 @@ export default function HeroMetrics({ metrics }) {
         <motion.div
           key={idx}
           variants={itemVariants}
-          className="flex flex-col items-center"
+          className="flex min-w-[80px] flex-col items-center sm:min-w-[100px]"
           role="group"
           aria-label={label}
         >
-          <dt className="text-xl font-bold md:text-2xl">{value}</dt>
-          <dd className="text-sm text-white/70">{label}</dd>
+          <dt className="text-xl font-bold text-white sm:text-2xl md:text-3xl">{value}</dt>
+          <dd className="mt-1 text-sm text-white/70 sm:text-base md:text-lg">{label}</dd>
         </motion.div>
       ))}
     </motion.dl>

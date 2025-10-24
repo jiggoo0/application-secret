@@ -23,7 +23,6 @@ export default function AdminPage() {
     }
   }, [status, session, router]);
 
-  // Loading state
   if (status === 'loading') {
     return (
       <main className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
@@ -40,10 +39,10 @@ export default function AdminPage() {
 
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
-      <div className="mx-auto max-w-7xl p-4 sm:p-6 lg:p-8">
+      <div className="mx-auto max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
         {/* Page Header */}
-        <header className="mb-8 text-center">
-          <h1 className="mb-3 text-2xl font-bold text-red-600 dark:text-red-400 sm:text-3xl">
+        <header className="space-y-2 text-center">
+          <h1 className="text-2xl font-bold text-red-600 dark:text-red-400 sm:text-3xl">
             🛡️ Admin Dashboard
           </h1>
           <p className="text-sm text-gray-600 dark:text-gray-300 sm:text-base">
@@ -52,35 +51,28 @@ export default function AdminPage() {
         </header>
 
         {/* User Info Card */}
-        <section className="mx-auto mb-8 max-w-md rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800">
-          <div className="p-5 text-left">
-            <h2 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
-              👤 ข้อมูลผู้ใช้
-            </h2>
-            <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
-              <p>
-                <strong>ชื่อ:</strong> {user.name || '-'}
-              </p>
-              <p>
-                <strong>Email:</strong> {user.email || '-'}
-              </p>
-              <p>
-                <strong>Role:</strong> {user.role || '-'}
-              </p>
-            </div>
+        <section className="mx-auto max-w-md rounded-2xl bg-white p-5 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800">
+          <h2 className="mb-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
+            👤 ข้อมูลผู้ใช้
+          </h2>
+          <div className="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+            <p>
+              <strong>ชื่อ:</strong> {user.name || '-'}
+            </p>
+            <p>
+              <strong>Email:</strong> {user.email || '-'}
+            </p>
+            <p>
+              <strong>Role:</strong> {user.role || '-'}
+            </p>
           </div>
         </section>
 
-        {/* Main Content Area */}
+        {/* Admin Client Section */}
         <section className="rounded-2xl bg-white p-4 shadow-sm dark:bg-gray-800 sm:p-6">
           <AdminClient />
         </section>
       </div>
-
-      {/* Footer */}
-      <footer className="mt-12 border-t border-gray-200 py-6 text-center text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400">
-        © {new Date().getFullYear()} Admin System — Next.js + Tailwind
-      </footer>
     </main>
   );
 }
