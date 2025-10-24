@@ -24,34 +24,47 @@ export async function POST(req) {
       });
     }
 
+    // ✅ ป้องกันไฟล์ใหญ่เกิน 10MB
+    if (file.size > 10 * 1024 * 1024) {
+      return new Response(JSON.stringify({ error: 'File too large (max 10MB)' }), {
+        status: 413,
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+
     const timestamp = Date.now();
     const emailFolder = session.user.email.replace(/[@.]/g, '_');
     const path = `user/${emailFolder}/${timestamp}-${file.name}`;
 
-    // Upload file
+    // ✅ Upload to Supabase Storage
     await uploadFile(file, path);
 
-    // Get public URL
+    // ✅ Generate public URL
     const url = getPublicUrl(path);
 
-    // Save metadata to 'uploads' table
-    const { error: dbError } = await supabaseServer.from('uploads').insert({
-      user_email: session.user.email,
-      path,
-      name: file.name,
-      type: file.type,
-      status: 'pending',
-      created_at: new Date().toISOString(),
-    });
-
+    // ✅ Save metadata in DB
+    const { error: dbError } = await supabaseServer.from('uploads').insert([
+      {
+        user_email: session.user.email,
+        path,
+        name: file.name,
+        type: file.type,
+        status: 'pending',
+        created_at: new Date().toISOString(),
+      },
+    ]);
     if (dbError) throw dbError;
 
+    // ✅ Success response
     return new Response(JSON.stringify({ url }), {
       status: 200,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-store',
+      },
     });
   } catch (err) {
-    console.error('❌ Upload API error:', err);
+    console.error('[Upload API] ❌', err.message || err);
     return new Response(JSON.stringify({ error: err.message || 'Upload failed' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },

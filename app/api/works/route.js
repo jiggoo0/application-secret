@@ -1,10 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase/server';
 
-/**
- * 🔹 GET - ดึงรายการไฟล์ทั้งหมดใน bucket 'user-uploads/Work'
- * พร้อมข้อมูล: ชื่อไฟล์, URL, ขนาด, วันที่สร้าง, ประเภท
- */
 export async function GET() {
   try {
     const { data: files, error } = await supabaseServer.storage.from('user-uploads').list('Work', {
@@ -13,7 +9,12 @@ export async function GET() {
     });
 
     if (error) throw error;
-    if (!files?.length) return NextResponse.json([]);
+
+    console.log('[Supabase Files]', files);
+
+    if (!files?.length) {
+      return NextResponse.json([]);
+    }
 
     const urls = files.map((file) => {
       const { data: urlData } = supabaseServer.storage
@@ -25,8 +26,8 @@ export async function GET() {
         url: urlData.publicUrl,
         type: file.metadata?.mimetype || 'unknown',
         size: file.metadata?.size || 0,
-        created_at: file.created_at,
-        updated_at: file.updated_at,
+        created_at: file.created_at ?? null,
+        updated_at: file.updated_at ?? null,
       };
     });
 

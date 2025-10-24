@@ -1,38 +1,41 @@
-// app/api/dti/evaluate/route.js
 import { calculateDTI } from '@/lib/dti';
-import fs from 'fs';
+import { promises as fs } from 'fs';
 import path from 'path';
+import { NextResponse } from 'next/server';
 
 export async function POST(req) {
   try {
-    const body = await req.json();
-    const { income, debts = [], consentSave = false } = body;
+    const { income, debts = [], consentSave = false } = await req.json();
+
+    if (
+      typeof income !== 'number' ||
+      !Array.isArray(debts) ||
+      debts.some((d) => typeof d !== 'number')
+    ) {
+      return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
+    }
+
     const result = calculateDTI(income, debts);
+
     if (process.env.DTI_SAVE_RESULTS === 'true' && consentSave) {
       try {
         const dataDir = path.join(process.cwd(), 'data');
-        if (!fs.existsSync(dataDir)) {
-          fs.mkdirSync(dataDir, { recursive: true });
-        }
+        await fs.mkdir(dataDir, { recursive: true });
+
         const outPath = path.join(dataDir, 'dti-results.jsonl');
         const record = {
           ts: new Date().toISOString(),
           dti: result.dti,
           totalDebt: result.totalDebt,
         };
-        fs.appendFileSync(outPath, JSON.stringify(record) + '\n', 'utf8');
+        await fs.appendFile(outPath, JSON.stringify(record) + '\n', 'utf8');
       } catch (e) {
-        // non-fatal: log but don't fail response
+        console.error('Failed to save DTI result:', e);
       }
     }
-    return new Response(JSON.stringify({ ok: true, result }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
+
+    return NextResponse.json({ ok: true, result });
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message || 'invalid' }), {
-      status: 400,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return NextResponse.json({ error: err.message || 'invalid' }, { status: 400 });
   }
 }

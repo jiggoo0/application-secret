@@ -1,703 +1,1116 @@
 [
   {
-    "id": "r_bw16i6",
-    "name": "Room 5",
-    "description": "Description for Room 5",
+    "id": "r_zhx2yl",
+    "name": "May's ห้อง 1",
+    "description": "ติดต่อ Addmin",
     "members": [
       {
-        "id": "u_xr6x",
-        "name": "User1",
-        "avatar": "https://i.pravatar.cc/150?u=0.5805433353527653"
+        "id": "u_hebd",
+        "name": "View",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
       }
     ],
+    "lastMessageAt": 1761274239689,
     "messages": [
       {
-        "id": "m_jtmv1sy",
-        "text": "Sample message 3 in Room 5",
+        "id": "m_gs1k0cz",
+        "text": "การออกแบบโลโก้หรือแบนเนอร์ คุณมีตัวอย่างสไตล์หรือธีมที่แนะนำสำหรับธุรกิจขนาดเล็กไหม?",
         "sender": {
-          "id": "u_xr6x",
-          "name": "User1",
-          "avatar": "https://i.pravatar.cc/150?u=0.5805433353527653"
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
         },
-        "timestamp": 1761257152727
+        "timestamp": 1761274239689
       },
       {
-        "id": "m_4v03pkz",
-        "text": "Sample message 2 in Room 5",
+        "id": "m_dmn25nm",
+        "text": "บริการการตลาดครบวงจร + ระบบหลังบ้าน มีระบบรายงานผลลัพธ์แบบเรียลไทม์หรือสามารถตั้งค่าแจ้งเตือนอัตโนมัติได้ไหม?",
         "sender": {
-          "id": "u_xr6x",
-          "name": "User1",
-          "avatar": "https://i.pravatar.cc/150?u=0.5805433353527653"
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
         },
-        "timestamp": 1761257152727
+        "timestamp": 1761274179689
       },
       {
-        "id": "m_plindej",
-        "text": "Sample message 1 in Room 5",
+        "id": "m_2qslubh",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
         "sender": {
-          "id": "u_xr6x",
-          "name": "User1",
-          "avatar": "https://i.pravatar.cc/150?u=0.5805433353527653"
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
         },
-        "timestamp": 1761257152727
+        "timestamp": 1761274119689
+      },
+      {
+        "id": "m_9kro1mq",
+        "text": "ขอบคุณมากครับ คำตอบชัดเจนและเป็นประโยชน์",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761274059689
+      },
+      {
+        "id": "m_kf52rm7",
+        "text": "ถ้าเอกสารการเงินของผมมีหนี้สินบางส่วน สามารถยื่นกู้สินเชื่อผ่านบริการของคุณได้ไหมครับ?",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273999689
+      },
+      {
+        "id": "m_dvioavn",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273939689
+      },
+      {
+        "id": "m_c7meqyq",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273879689
+      },
+      {
+        "id": "m_ne7g3bm",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273819689
+      },
+      {
+        "id": "m_luqrcmf",
+        "text": "โอเคครับ จะเริ่มดำเนินการตามขั้นตอนนี้",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273759689
+      },
+      {
+        "id": "m_3yt253r",
+        "text": "โอเคครับ จะเริ่มดำเนินการตามขั้นตอนนี้",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273699689
+      },
+      {
+        "id": "m_77dyrod",
+        "text": "สำหรับการรีแบรนด์ภาพลักษณ์องค์กร คุณมีขั้นตอนประเมินภาพลักษณ์ปัจจุบันและเสนอแนวทางปรับปรุงอย่างไร?",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273639689
+      },
+      {
+        "id": "m_ydet9vx",
+        "text": "ขอบคุณมากครับ คำตอบชัดเจนและเป็นประโยชน์",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273579689
+      },
+      {
+        "id": "m_6m6ji89",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273519689
+      },
+      {
+        "id": "m_50suyoq",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273459689
+      },
+      {
+        "id": "m_aggffze",
+        "text": "บริการแก้ไขเอกสารของคุณ มีขั้นตอนอย่างไรบ้าง และใช้เวลานานแค่ไหน?",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273399689
+      },
+      {
+        "id": "m_pi3c7o5",
+        "text": "ดีใจที่ได้คำแนะนำนี้ ขอบคุณครับ",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273339689
+      },
+      {
+        "id": "m_zarvar5",
+        "text": "สำหรับการรีแบรนด์ภาพลักษณ์องค์กร คุณมีขั้นตอนประเมินภาพลักษณ์ปัจจุบันและเสนอแนวทางปรับปรุงอย่างไร?",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273279689
       }
     ]
   },
   {
-    "id": "r_o2nruq",
-    "name": "Room 4",
-    "description": "Description for Room 4",
+    "id": "r_iewdqe",
+    "name": "Ying's ห้อง 2",
+    "description": "ชำระเงิน",
     "members": [
       {
-        "id": "u_khrv",
-        "name": "User1",
-        "avatar": "https://i.pravatar.cc/150?u=0.8896169617203415"
-      },
-      {
-        "id": "u_7xvt",
-        "name": "User2",
-        "avatar": "https://i.pravatar.cc/150?u=0.223139357634198"
-      },
-      {
-        "id": "u_nokd",
-        "name": "User3",
-        "avatar": "https://i.pravatar.cc/150?u=0.17086156960068533"
+        "id": "u_sc7n",
+        "name": "Bam",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
       }
     ],
+    "lastMessageAt": 1761274239690,
     "messages": [
       {
-        "id": "m_8ptyj1p",
-        "text": "Sample message 1 in Room 4",
+        "id": "m_55z5nvg",
+        "text": "ดีเลยครับ วิธีนี้ช่วยแก้ปัญหาได้จริง ๆ",
         "sender": {
-          "id": "u_nokd",
-          "name": "User3",
-          "avatar": "https://i.pravatar.cc/150?u=0.17086156960068533"
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
         },
-        "timestamp": 1761257152727
+        "timestamp": 1761274239690
+      },
+      {
+        "id": "m_cbuwk5p",
+        "text": "ถ้าเอกสารการเงินของผมมีหนี้สินบางส่วน สามารถยื่นกู้สินเชื่อผ่านบริการของคุณได้ไหมครับ?",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761274179690
+      },
+      {
+        "id": "m_0l59lnw",
+        "text": "บริการใหม่ที่กำลังเปิดตัว มีฟีเจอร์เด่นอะไร และจะช่วยแก้ปัญหาแบบใดให้ลูกค้ากลุ่มเป้าหมายได้มากที่สุด?",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761274119690
+      },
+      {
+        "id": "m_3p1w3lk",
+        "text": "บริการการตลาดครบวงจร + ระบบหลังบ้าน มีระบบรายงานผลลัพธ์แบบเรียลไทม์หรือสามารถตั้งค่าแจ้งเตือนอัตโนมัติได้ไหม?",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761274059690
+      },
+      {
+        "id": "m_orz9r4s",
+        "text": "สำหรับการรีแบรนด์ภาพลักษณ์องค์กร คุณมีขั้นตอนประเมินภาพลักษณ์ปัจจุบันและเสนอแนวทางปรับปรุงอย่างไร?",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761273999690
+      },
+      {
+        "id": "m_dg80ul1",
+        "text": "AI Matching ระบบจัดการลูกค้าอัตโนมัติ สามารถกำหนดเกณฑ์การจับคู่เองหรือระบบทำงานแบบสำเร็จรูป?",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761273939690
+      },
+      {
+        "id": "m_3bmctl2",
+        "text": "ดีเลยครับ วิธีนี้ช่วยแก้ปัญหาได้จริง ๆ",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761273879690
+      },
+      {
+        "id": "m_90zflaf",
+        "text": "สำหรับการรีแบรนด์ภาพลักษณ์องค์กร คุณมีขั้นตอนประเมินภาพลักษณ์ปัจจุบันและเสนอแนวทางปรับปรุงอย่างไร?",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761273819690
+      },
+      {
+        "id": "m_b0u249r",
+        "text": "ขอบคุณมากครับ ตอนนี้เข้าใจขั้นตอนแล้ว",
+        "sender": {
+          "id": "u_sc7n",
+          "name": "Bam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bam38"
+        },
+        "timestamp": 1761273759690
       }
     ]
   },
   {
-    "id": "r_db8ygp",
-    "name": "Room 3",
-    "description": "Description for Room 3",
+    "id": "r_r84wwv",
+    "name": "Chai's ห้อง 3",
+    "description": "พูดคุยเจ้าป่าโดยตรง",
     "members": [
       {
-        "id": "u_2wr4",
-        "name": "User1",
-        "avatar": "https://i.pravatar.cc/150?u=0.13817915630283317"
+        "id": "u_oct0",
+        "name": "Beech",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Beech22"
       },
       {
-        "id": "u_9ffu",
-        "name": "User2",
-        "avatar": "https://i.pravatar.cc/150?u=0.7769519866944568"
+        "id": "u_1fni",
+        "name": "Beam",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Beam37"
       },
       {
-        "id": "u_ldxj",
-        "name": "User3",
-        "avatar": "https://i.pravatar.cc/150?u=0.2657247907285275"
+        "id": "u_cvc0",
+        "name": "Joe",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
       },
       {
-        "id": "u_0yti",
-        "name": "User4",
-        "avatar": "https://i.pravatar.cc/150?u=0.934678873806573"
-      },
-      {
-        "id": "u_xifk",
-        "name": "User5",
-        "avatar": "https://i.pravatar.cc/150?u=0.10042000968856146"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_ohk4wv7",
-        "text": "Sample message 4 in Room 3",
-        "sender": {
-          "id": "u_ldxj",
-          "name": "User3",
-          "avatar": "https://i.pravatar.cc/150?u=0.2657247907285275"
-        },
-        "timestamp": 1761257152727
-      },
-      {
-        "id": "m_cljefyc",
-        "text": "Sample message 3 in Room 3",
-        "sender": {
-          "id": "u_ldxj",
-          "name": "User3",
-          "avatar": "https://i.pravatar.cc/150?u=0.2657247907285275"
-        },
-        "timestamp": 1761257152727
-      },
-      {
-        "id": "m_o441hf9",
-        "text": "Sample message 2 in Room 3",
-        "sender": {
-          "id": "u_ldxj",
-          "name": "User3",
-          "avatar": "https://i.pravatar.cc/150?u=0.2657247907285275"
-        },
-        "timestamp": 1761257152727
-      },
-      {
-        "id": "m_ma4m0xv",
-        "text": "Sample message 1 in Room 3",
-        "sender": {
-          "id": "u_ldxj",
-          "name": "User3",
-          "avatar": "https://i.pravatar.cc/150?u=0.2657247907285275"
-        },
-        "timestamp": 1761257152727
-      }
-    ]
-  },
-  {
-    "id": "r_ojmm2d",
-    "name": "Room 2",
-    "description": "Description for Room 2",
-    "members": [
-      {
-        "id": "u_bfv8",
-        "name": "User1",
-        "avatar": "https://i.pravatar.cc/150?u=0.23588790696655593"
-      },
-      {
-        "id": "u_ymer",
-        "name": "User2",
-        "avatar": "https://i.pravatar.cc/150?u=0.426029044798534"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_7nm8p1e",
-        "text": "Sample message 1 in Room 2",
-        "sender": {
-          "id": "u_bfv8",
-          "name": "User1",
-          "avatar": "https://i.pravatar.cc/150?u=0.23588790696655593"
-        },
-        "timestamp": 1761257152727
-      }
-    ]
-  },
-  {
-    "id": "r_pwppva",
-    "name": "Room 1",
-    "description": "Description for Room 1",
-    "members": [
-      {
-        "id": "u_gd6e",
-        "name": "User1",
-        "avatar": "https://i.pravatar.cc/150?u=0.7354044549466869"
-      },
-      {
-        "id": "u_4nlp",
-        "name": "User2",
-        "avatar": "https://i.pravatar.cc/150?u=0.07497651056069565"
-      },
-      {
-        "id": "u_mlxx",
-        "name": "User3",
-        "avatar": "https://i.pravatar.cc/150?u=0.3770638496824311"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_c3sj6i4",
-        "text": "Sample message 4 in Room 1",
-        "sender": {
-          "id": "u_mlxx",
-          "name": "User3",
-          "avatar": "https://i.pravatar.cc/150?u=0.3770638496824311"
-        },
-        "timestamp": 1761257152727
-      },
-      {
-        "id": "m_g9p41zl",
-        "text": "Sample message 3 in Room 1",
-        "sender": {
-          "id": "u_gd6e",
-          "name": "User1",
-          "avatar": "https://i.pravatar.cc/150?u=0.7354044549466869"
-        },
-        "timestamp": 1761257152727
-      },
-      {
-        "id": "m_yqiuc9j",
-        "text": "Sample message 2 in Room 1",
-        "sender": {
-          "id": "u_mlxx",
-          "name": "User3",
-          "avatar": "https://i.pravatar.cc/150?u=0.3770638496824311"
-        },
-        "timestamp": 1761257152727
-      },
-      {
-        "id": "m_7kpzvvc",
-        "text": "Sample message 1 in Room 1",
-        "sender": {
-          "id": "u_4nlp",
-          "name": "User2",
-          "avatar": "https://i.pravatar.cc/150?u=0.07497651056069565"
-        },
-        "timestamp": 1761257152727
-      }
-    ]
-  },
-  {
-    "id": "r_ttzq0n",
-    "name": "Mali's room 1",
-    "description": "Random chat",
-    "members": [
-      {
-        "id": "u_uxd4",
-        "name": "Somchai",
-        "avatar": "https://i.pravatar.cc/150?u=Somchai0"
-      },
-      {
-        "id": "u_pb5y",
+        "id": "u_lfyq",
         "name": "Anan",
-        "avatar": "https://i.pravatar.cc/150?u=Anan1"
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Anan4"
       },
       {
-        "id": "u_6ag2",
-        "name": "Nong",
-        "avatar": "https://i.pravatar.cc/150?u=Nong2"
+        "id": "u_rzpu",
+        "name": "Mook",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Mook40"
       }
     ],
+    "lastMessageAt": 1761274239690,
     "messages": [
       {
-        "id": "m_9adbudh",
-        "text": "Sample message 1 in Mali's room 1",
+        "id": "m_7ayoixg",
+        "text": "บริการแก้ไขเอกสารของคุณ มีขั้นตอนอย่างไรบ้าง และใช้เวลานานแค่ไหน?",
         "sender": {
-          "id": "u_uxd4",
-          "name": "Somchai",
-          "avatar": "https://i.pravatar.cc/150?u=Somchai0"
+          "id": "u_lfyq",
+          "name": "Anan",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Anan4"
         },
-        "timestamp": 1761257152725
+        "timestamp": 1761274239690
+      },
+      {
+        "id": "m_kyu173a",
+        "text": "อยากทราบว่าการตรวจสอบเอกสารวีซ่าของคุณ ครอบคลุมเอกสารของทุกประเทศหรือมีข้อจำกัดใด ๆ?",
+        "sender": {
+          "id": "u_oct0",
+          "name": "Beech",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Beech22"
+        },
+        "timestamp": 1761274179690
+      },
+      {
+        "id": "m_ywfiw9j",
+        "text": "บริการแก้ไขเอกสารของคุณ มีขั้นตอนอย่างไรบ้าง และใช้เวลานานแค่ไหน?",
+        "sender": {
+          "id": "u_rzpu",
+          "name": "Mook",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Mook40"
+        },
+        "timestamp": 1761274119690
+      },
+      {
+        "id": "m_lc486yb",
+        "text": "ขอบคุณมากครับ คำตอบชัดเจนและเป็นประโยชน์",
+        "sender": {
+          "id": "u_1fni",
+          "name": "Beam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Beam37"
+        },
+        "timestamp": 1761274059690
+      },
+      {
+        "id": "m_s284qbl",
+        "text": "บริการแก้ไขเอกสารของคุณ มีขั้นตอนอย่างไรบ้าง และใช้เวลานานแค่ไหน?",
+        "sender": {
+          "id": "u_rzpu",
+          "name": "Mook",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Mook40"
+        },
+        "timestamp": 1761273999690
+      },
+      {
+        "id": "m_0jrav23",
+        "text": "ดีเลยครับ วิธีนี้ช่วยแก้ปัญหาได้จริง ๆ",
+        "sender": {
+          "id": "u_1fni",
+          "name": "Beam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Beam37"
+        },
+        "timestamp": 1761273939690
+      },
+      {
+        "id": "m_4f6t6hq",
+        "text": "ขอบคุณครับ ตอนนี้รู้แล้วว่าจะทำอย่างไรต่อ",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273879690
+      },
+      {
+        "id": "m_fxu29z9",
+        "text": "บริการแก้ไขเอกสารของคุณ มีขั้นตอนอย่างไรบ้าง และใช้เวลานานแค่ไหน?",
+        "sender": {
+          "id": "u_1fni",
+          "name": "Beam",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Beam37"
+        },
+        "timestamp": 1761273819690
       }
     ]
   },
   {
-    "id": "r_5bh3h6",
-    "name": "Kanya's room 2",
-    "description": "KBank demo",
+    "id": "r_wfq8pu",
+    "name": "Dao's ห้อง 4",
+    "description": "ตรวจสอบรหัส JPHASHPASSWORD",
     "members": [
       {
-        "id": "u_m3gx",
-        "name": "Nong",
-        "avatar": "https://i.pravatar.cc/150?u=Nong0"
+        "id": "u_hebd",
+        "name": "View",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+      },
+      {
+        "id": "u_cvc0",
+        "name": "Joe",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+      },
+      {
+        "id": "u_u353",
+        "name": "Praew",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
       }
     ],
+    "lastMessageAt": 1761274239690,
     "messages": [
       {
-        "id": "m_29969r8",
-        "text": "Sample message 1 in Kanya's room 2",
+        "id": "m_774ubt1",
+        "text": "สำหรับการรีแบรนด์ภาพลักษณ์องค์กร คุณมีขั้นตอนประเมินภาพลักษณ์ปัจจุบันและเสนอแนวทางปรับปรุงอย่างไร?",
         "sender": {
-          "id": "u_m3gx",
-          "name": "Nong",
-          "avatar": "https://i.pravatar.cc/150?u=Nong0"
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
         },
-        "timestamp": 1761257152725
+        "timestamp": 1761274239690
       },
       {
-        "id": "m_e5rteel",
-        "text": "Sample message 2 in Kanya's room 2",
+        "id": "m_h9b3i79",
+        "text": "บริการใหม่ที่กำลังเปิดตัว มีฟีเจอร์เด่นอะไร และจะช่วยแก้ปัญหาแบบใดให้ลูกค้ากลุ่มเป้าหมายได้มากที่สุด?",
         "sender": {
-          "id": "u_m3gx",
-          "name": "Nong",
-          "avatar": "https://i.pravatar.cc/150?u=Nong0"
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
         },
-        "timestamp": 1761257092725
+        "timestamp": 1761274179690
       },
       {
-        "id": "m_z7a46p9",
-        "text": "Sample message 3 in Kanya's room 2",
+        "id": "m_7tibpie",
+        "text": "ขอบคุณมากครับ คำตอบชัดเจนและเป็นประโยชน์",
         "sender": {
-          "id": "u_m3gx",
-          "name": "Nong",
-          "avatar": "https://i.pravatar.cc/150?u=Nong0"
+          "id": "u_u353",
+          "name": "Praew",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
         },
-        "timestamp": 1761257032725
+        "timestamp": 1761274119690
       },
       {
-        "id": "m_gbmiaai",
-        "text": "Sample message 4 in Kanya's room 2",
+        "id": "m_1a7eyjt",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
         "sender": {
-          "id": "u_m3gx",
-          "name": "Nong",
-          "avatar": "https://i.pravatar.cc/150?u=Nong0"
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
         },
-        "timestamp": 1761256972725
+        "timestamp": 1761274059690
       },
       {
-        "id": "m_hc03wsm",
-        "text": "Sample message 5 in Kanya's room 2",
+        "id": "m_cs2656s",
+        "text": "บริการใหม่ที่กำลังเปิดตัว มีฟีเจอร์เด่นอะไร และจะช่วยแก้ปัญหาแบบใดให้ลูกค้ากลุ่มเป้าหมายได้มากที่สุด?",
         "sender": {
-          "id": "u_m3gx",
-          "name": "Nong",
-          "avatar": "https://i.pravatar.cc/150?u=Nong0"
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
         },
-        "timestamp": 1761256912725
+        "timestamp": 1761273999690
       },
       {
-        "id": "m_dnhkgft",
-        "text": "Sample message 6 in Kanya's room 2",
+        "id": "m_lmcs3is",
+        "text": "บริการการตลาดครบวงจร + ระบบหลังบ้าน มีระบบรายงานผลลัพธ์แบบเรียลไทม์หรือสามารถตั้งค่าแจ้งเตือนอัตโนมัติได้ไหม?",
         "sender": {
-          "id": "u_m3gx",
-          "name": "Nong",
-          "avatar": "https://i.pravatar.cc/150?u=Nong0"
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
         },
-        "timestamp": 1761256852725
+        "timestamp": 1761273939690
+      },
+      {
+        "id": "m_6di7lln",
+        "text": "อยากทราบว่าการตรวจสอบเอกสารวีซ่าของคุณ ครอบคลุมเอกสารของทุกประเทศหรือมีข้อจำกัดใด ๆ?",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273879690
+      },
+      {
+        "id": "m_0ndw6vr",
+        "text": "บริการใหม่ที่กำลังเปิดตัว มีฟีเจอร์เด่นอะไร และจะช่วยแก้ปัญหาแบบใดให้ลูกค้ากลุ่มเป้าหมายได้มากที่สุด?",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273819690
+      },
+      {
+        "id": "m_iwmrd60",
+        "text": "ขอบคุณครับ ตอนนี้รู้แล้วว่าจะทำอย่างไรต่อ",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273759690
+      },
+      {
+        "id": "m_4bf5t9n",
+        "text": "AI Matching ระบบจัดการลูกค้าอัตโนมัติ สามารถกำหนดเกณฑ์การจับคู่เองหรือระบบทำงานแบบสำเร็จรูป?",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273699690
+      },
+      {
+        "id": "m_ct6sbcq",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273639690
+      },
+      {
+        "id": "m_8c2vco8",
+        "text": "บริการแก้ไขเอกสารของคุณ มีขั้นตอนอย่างไรบ้าง และใช้เวลานานแค่ไหน?",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273579690
+      },
+      {
+        "id": "m_04h19cz",
+        "text": "บริการใหม่ที่กำลังเปิดตัว มีฟีเจอร์เด่นอะไร และจะช่วยแก้ปัญหาแบบใดให้ลูกค้ากลุ่มเป้าหมายได้มากที่สุด?",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273519690
       }
     ]
   },
   {
-    "id": "r_0tp059",
-    "name": "Ploy's room 3",
-    "description": "Random chat",
+    "id": "r_4ewlaj",
+    "name": "View's ห้อง 5",
+    "description": "แจ้งปัญหา",
     "members": [
       {
-        "id": "u_vtmm",
-        "name": "Somchai",
-        "avatar": "https://i.pravatar.cc/150?u=Somchai0"
+        "id": "u_u353",
+        "name": "Praew",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
       },
       {
-        "id": "u_ewgm",
-        "name": "Anan",
-        "avatar": "https://i.pravatar.cc/150?u=Anan1"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_bvb7ftz",
-        "text": "Sample message 1 in Ploy's room 3",
-        "sender": {
-          "id": "u_ewgm",
-          "name": "Anan",
-          "avatar": "https://i.pravatar.cc/150?u=Anan1"
-        },
-        "timestamp": 1761257152725
-      },
-      {
-        "id": "m_dhcqwpw",
-        "text": "Sample message 2 in Ploy's room 3",
-        "sender": {
-          "id": "u_vtmm",
-          "name": "Somchai",
-          "avatar": "https://i.pravatar.cc/150?u=Somchai0"
-        },
-        "timestamp": 1761257092725
-      },
-      {
-        "id": "m_rcryio1",
-        "text": "Sample message 3 in Ploy's room 3",
-        "sender": {
-          "id": "u_ewgm",
-          "name": "Anan",
-          "avatar": "https://i.pravatar.cc/150?u=Anan1"
-        },
-        "timestamp": 1761257032725
-      },
-      {
-        "id": "m_dmgtyv6",
-        "text": "Sample message 4 in Ploy's room 3",
-        "sender": {
-          "id": "u_ewgm",
-          "name": "Anan",
-          "avatar": "https://i.pravatar.cc/150?u=Anan1"
-        },
-        "timestamp": 1761256972725
-      }
-    ]
-  },
-  {
-    "id": "r_43nx8h",
-    "name": "Anan's room 4",
-    "description": "General discussion",
-    "members": [
-      {
-        "id": "u_uq3h",
-        "name": "Natee",
-        "avatar": "https://i.pravatar.cc/150?u=Natee0"
-      },
-      {
-        "id": "u_eytp",
-        "name": "Ploy",
-        "avatar": "https://i.pravatar.cc/150?u=Ploy1"
-      },
-      {
-        "id": "u_mlu8",
+        "id": "u_gud6",
         "name": "Bee",
-        "avatar": "https://i.pravatar.cc/150?u=Bee2"
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bee9"
       },
       {
-        "id": "u_x57j",
-        "name": "Somchai",
-        "avatar": "https://i.pravatar.cc/150?u=Somchai3"
+        "id": "u_bpxo",
+        "name": "Oil",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Oil42"
       },
       {
-        "id": "u_em2u",
-        "name": "Ploy",
-        "avatar": "https://i.pravatar.cc/150?u=Ploy4"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_rblywps",
-        "text": "Sample message 1 in Anan's room 4",
-        "sender": {
-          "id": "u_uq3h",
-          "name": "Natee",
-          "avatar": "https://i.pravatar.cc/150?u=Natee0"
-        },
-        "timestamp": 1761257152726
-      },
-      {
-        "id": "m_n2y8ulx",
-        "text": "Sample message 2 in Anan's room 4",
-        "sender": {
-          "id": "u_eytp",
-          "name": "Ploy",
-          "avatar": "https://i.pravatar.cc/150?u=Ploy1"
-        },
-        "timestamp": 1761257092726
-      },
-      {
-        "id": "m_c6m24or",
-        "text": "Sample message 3 in Anan's room 4",
-        "sender": {
-          "id": "u_uq3h",
-          "name": "Natee",
-          "avatar": "https://i.pravatar.cc/150?u=Natee0"
-        },
-        "timestamp": 1761257032726
-      },
-      {
-        "id": "m_twhq94j",
-        "text": "Sample message 4 in Anan's room 4",
-        "sender": {
-          "id": "u_uq3h",
-          "name": "Natee",
-          "avatar": "https://i.pravatar.cc/150?u=Natee0"
-        },
-        "timestamp": 1761256972726
-      },
-      {
-        "id": "m_8w9y06c",
-        "text": "Sample message 5 in Anan's room 4",
-        "sender": {
-          "id": "u_em2u",
-          "name": "Ploy",
-          "avatar": "https://i.pravatar.cc/150?u=Ploy4"
-        },
-        "timestamp": 1761256912726
-      }
-    ]
-  },
-  {
-    "id": "r_ztn90k",
-    "name": "Ploy's room 5",
-    "description": "Random chat",
-    "members": [
-      {
-        "id": "u_unxv",
-        "name": "Ton",
-        "avatar": "https://i.pravatar.cc/150?u=Ton0"
-      },
-      {
-        "id": "u_liq2",
-        "name": "Ploy",
-        "avatar": "https://i.pravatar.cc/150?u=Ploy1"
-      },
-      {
-        "id": "u_2vcp",
-        "name": "Somchai",
-        "avatar": "https://i.pravatar.cc/150?u=Somchai2"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_890xwdb",
-        "text": "Sample message 1 in Ploy's room 5",
-        "sender": {
-          "id": "u_unxv",
-          "name": "Ton",
-          "avatar": "https://i.pravatar.cc/150?u=Ton0"
-        },
-        "timestamp": 1761257152726
-      },
-      {
-        "id": "m_7pvc75g",
-        "text": "Sample message 2 in Ploy's room 5",
-        "sender": {
-          "id": "u_unxv",
-          "name": "Ton",
-          "avatar": "https://i.pravatar.cc/150?u=Ton0"
-        },
-        "timestamp": 1761257092726
-      },
-      {
-        "id": "m_p3t4c76",
-        "text": "Sample message 3 in Ploy's room 5",
-        "sender": {
-          "id": "u_liq2",
-          "name": "Ploy",
-          "avatar": "https://i.pravatar.cc/150?u=Ploy1"
-        },
-        "timestamp": 1761257032726
-      },
-      {
-        "id": "m_p1ni4mh",
-        "text": "Sample message 4 in Ploy's room 5",
-        "sender": {
-          "id": "u_2vcp",
-          "name": "Somchai",
-          "avatar": "https://i.pravatar.cc/150?u=Somchai2"
-        },
-        "timestamp": 1761256972726
-      }
-    ]
-  },
-  {
-    "id": "r_ybnkka",
-    "name": "Kanya's room 6",
-    "description": "Random chat",
-    "members": [
-      {
-        "id": "u_1g2t",
-        "name": "Nong",
-        "avatar": "https://i.pravatar.cc/150?u=Nong0"
-      },
-      {
-        "id": "u_4jdq",
-        "name": "Mali",
-        "avatar": "https://i.pravatar.cc/150?u=Mali1"
-      },
-      {
-        "id": "u_sd13",
-        "name": "Anan",
-        "avatar": "https://i.pravatar.cc/150?u=Anan2"
-      },
-      {
-        "id": "u_dzzp",
-        "name": "Mali",
-        "avatar": "https://i.pravatar.cc/150?u=Mali3"
-      },
-      {
-        "id": "u_qgib",
-        "name": "Ton",
-        "avatar": "https://i.pravatar.cc/150?u=Ton4"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_ct290ga",
-        "text": "Sample message 1 in Kanya's room 6",
-        "sender": {
-          "id": "u_4jdq",
-          "name": "Mali",
-          "avatar": "https://i.pravatar.cc/150?u=Mali1"
-        },
-        "timestamp": 1761257152726
-      },
-      {
-        "id": "m_iqu7y65",
-        "text": "Sample message 2 in Kanya's room 6",
-        "sender": {
-          "id": "u_4jdq",
-          "name": "Mali",
-          "avatar": "https://i.pravatar.cc/150?u=Mali1"
-        },
-        "timestamp": 1761257092726
-      }
-    ]
-  },
-  {
-    "id": "r_5j0nf1",
-    "name": "Mali's room 7",
-    "description": "KBank demo",
-    "members": [
-      {
-        "id": "u_rofu",
-        "name": "Ton",
-        "avatar": "https://i.pravatar.cc/150?u=Ton0"
-      },
-      {
-        "id": "u_b5ey",
-        "name": "Nong",
-        "avatar": "https://i.pravatar.cc/150?u=Nong1"
-      }
-    ],
-    "messages": [
-      {
-        "id": "m_lt4rrzc",
-        "text": "Sample message 1 in Mali's room 7",
-        "sender": {
-          "id": "u_rofu",
-          "name": "Ton",
-          "avatar": "https://i.pravatar.cc/150?u=Ton0"
-        },
-        "timestamp": 1761257152726
-      }
-    ]
-  },
-  {
-    "id": "r_2ogu32",
-    "name": "Kanya's room 8",
-    "description": "Project updates",
-    "members": [
-      {
-        "id": "u_em12",
-        "name": "Somchai",
-        "avatar": "https://i.pravatar.cc/150?u=Somchai0"
-      },
-      {
-        "id": "u_ka7s",
-        "name": "Kanya",
-        "avatar": "https://i.pravatar.cc/150?u=Kanya1"
-      },
-      {
-        "id": "u_kwp8",
+        "id": "u_hud2",
         "name": "Natee",
-        "avatar": "https://i.pravatar.cc/150?u=Natee2"
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Natee2"
       },
       {
-        "id": "u_ubo0",
-        "name": "Ton",
-        "avatar": "https://i.pravatar.cc/150?u=Ton3"
+        "id": "u_cvc0",
+        "name": "Joe",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
       }
     ],
+    "lastMessageAt": 1761274239690,
     "messages": [
       {
-        "id": "m_j51cgyv",
-        "text": "Sample message 1 in Kanya's room 8",
+        "id": "m_ia9wzl1",
+        "text": "ดีใจที่ได้คำแนะนำนี้ ขอบคุณครับ",
         "sender": {
-          "id": "u_kwp8",
+          "id": "u_hud2",
           "name": "Natee",
-          "avatar": "https://i.pravatar.cc/150?u=Natee2"
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Natee2"
         },
-        "timestamp": 1761257152726
+        "timestamp": 1761274239690
       },
       {
-        "id": "m_ygsjny3",
-        "text": "Sample message 2 in Kanya's room 8",
+        "id": "m_5rtvmbi",
+        "text": "ถ้าเอกสารการเงินของผมมีหนี้สินบางส่วน สามารถยื่นกู้สินเชื่อผ่านบริการของคุณได้ไหมครับ?",
         "sender": {
-          "id": "u_kwp8",
-          "name": "Natee",
-          "avatar": "https://i.pravatar.cc/150?u=Natee2"
+          "id": "u_gud6",
+          "name": "Bee",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bee9"
         },
-        "timestamp": 1761257092726
+        "timestamp": 1761274179690
       },
       {
-        "id": "m_euwdths",
-        "text": "Sample message 3 in Kanya's room 8",
+        "id": "m_xhk2ovv",
+        "text": "AI Matching ระบบจัดการลูกค้าอัตโนมัติ สามารถกำหนดเกณฑ์การจับคู่เองหรือระบบทำงานแบบสำเร็จรูป?",
         "sender": {
-          "id": "u_em12",
+          "id": "u_u353",
+          "name": "Praew",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
+        },
+        "timestamp": 1761274119690
+      },
+      {
+        "id": "m_3fqg888",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
+        "sender": {
+          "id": "u_gud6",
+          "name": "Bee",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bee9"
+        },
+        "timestamp": 1761274059690
+      },
+      {
+        "id": "m_rh1u22q",
+        "text": "ดีใจที่ได้คำแนะนำนี้ ขอบคุณครับ",
+        "sender": {
+          "id": "u_gud6",
+          "name": "Bee",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bee9"
+        },
+        "timestamp": 1761273999690
+      },
+      {
+        "id": "m_22aoqdp",
+        "text": "โอเคครับ จะเริ่มดำเนินการตามขั้นตอนนี้",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273939690
+      },
+      {
+        "id": "m_zmjya9v",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
+        "sender": {
+          "id": "u_u353",
+          "name": "Praew",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
+        },
+        "timestamp": 1761273879690
+      },
+      {
+        "id": "m_ei90rhz",
+        "text": "ดีใจที่ได้คำแนะนำนี้ ขอบคุณครับ",
+        "sender": {
+          "id": "u_hud2",
+          "name": "Natee",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Natee2"
+        },
+        "timestamp": 1761273819690
+      },
+      {
+        "id": "m_q6v9u20",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273759690
+      },
+      {
+        "id": "m_ggl7gk5",
+        "text": "ขอบคุณมากครับ ตอนนี้เข้าใจขั้นตอนแล้ว",
+        "sender": {
+          "id": "u_u353",
+          "name": "Praew",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
+        },
+        "timestamp": 1761273699690
+      },
+      {
+        "id": "m_y4sfjl1",
+        "text": "โอเคครับ จะเริ่มดำเนินการตามขั้นตอนนี้",
+        "sender": {
+          "id": "u_u353",
+          "name": "Praew",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
+        },
+        "timestamp": 1761273639690
+      },
+      {
+        "id": "m_ghrmwg6",
+        "text": "ขอบคุณครับ ตอนนี้รู้แล้วว่าจะทำอย่างไรต่อ",
+        "sender": {
+          "id": "u_hud2",
+          "name": "Natee",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Natee2"
+        },
+        "timestamp": 1761273579690
+      },
+      {
+        "id": "m_w15vusu",
+        "text": "อยากทราบว่าการตรวจสอบเอกสารวีซ่าของคุณ ครอบคลุมเอกสารของทุกประเทศหรือมีข้อจำกัดใด ๆ?",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273519690
+      },
+      {
+        "id": "m_um0aav6",
+        "text": "บริการการตลาดครบวงจร + ระบบหลังบ้าน มีระบบรายงานผลลัพธ์แบบเรียลไทม์หรือสามารถตั้งค่าแจ้งเตือนอัตโนมัติได้ไหม?",
+        "sender": {
+          "id": "u_u353",
+          "name": "Praew",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Praew21"
+        },
+        "timestamp": 1761273459690
+      }
+    ]
+  },
+  {
+    "id": "r_6ck1q0",
+    "name": "Lek's ห้อง 6",
+    "description": "JP51I0",
+    "members": [
+      {
+        "id": "u_rpsm",
+        "name": "Somchai",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Somchai0"
+      },
+      {
+        "id": "u_okcz",
+        "name": "Nok",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Nok25"
+      },
+      {
+        "id": "u_qnlc",
+        "name": "Pae",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+      },
+      {
+        "id": "u_qnlc",
+        "name": "Pae",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+      }
+    ],
+    "lastMessageAt": 1761274239690,
+    "messages": [
+      {
+        "id": "m_qjwmi46",
+        "text": "ดีเลยครับ วิธีนี้ช่วยแก้ปัญหาได้จริง ๆ",
+        "sender": {
+          "id": "u_qnlc",
+          "name": "Pae",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+        },
+        "timestamp": 1761274239690
+      },
+      {
+        "id": "m_vpyn67r",
+        "text": "ถ้าผมต้องการผลิตบัตรพร้อม QR Code และลายน้ำ คุณสามารถทำให้ตรงกับมาตรฐานความปลอดภัยระดับมืออาชีพได้หรือไม่?",
+        "sender": {
+          "id": "u_okcz",
+          "name": "Nok",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Nok25"
+        },
+        "timestamp": 1761274179690
+      },
+      {
+        "id": "m_r1za1zr",
+        "text": "โอเคครับ จะเริ่มดำเนินการตามขั้นตอนนี้",
+        "sender": {
+          "id": "u_qnlc",
+          "name": "Pae",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+        },
+        "timestamp": 1761274119690
+      },
+      {
+        "id": "m_5dxe79g",
+        "text": "ขอบคุณมากครับ ตอนนี้เข้าใจขั้นตอนแล้ว",
+        "sender": {
+          "id": "u_qnlc",
+          "name": "Pae",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+        },
+        "timestamp": 1761274059690
+      },
+      {
+        "id": "m_kr35cos",
+        "text": "อยากทราบว่าการตรวจสอบเอกสารวีซ่าของคุณ ครอบคลุมเอกสารของทุกประเทศหรือมีข้อจำกัดใด ๆ?",
+        "sender": {
+          "id": "u_rpsm",
           "name": "Somchai",
-          "avatar": "https://i.pravatar.cc/150?u=Somchai0"
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Somchai0"
         },
-        "timestamp": 1761257032726
+        "timestamp": 1761273999690
+      }
+    ]
+  },
+  {
+    "id": "r_mcq694",
+    "name": "View's ห้อง 7",
+    "description": "JP52I0",
+    "members": [
+      {
+        "id": "u_1ank",
+        "name": "Icey",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Icey39"
+      },
+      {
+        "id": "u_0wmx",
+        "name": "Bell",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+      },
+      {
+        "id": "u_mwg5",
+        "name": "Lek",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Lek17"
+      }
+    ],
+    "lastMessageAt": 1761274239690,
+    "messages": [
+      {
+        "id": "m_8v0gp67",
+        "text": "บริการแก้ไขเอกสารของคุณ มีขั้นตอนอย่างไรบ้าง และใช้เวลานานแค่ไหน?",
+        "sender": {
+          "id": "u_1ank",
+          "name": "Icey",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Icey39"
+        },
+        "timestamp": 1761274239690
+      },
+      {
+        "id": "m_bbnbbnp",
+        "text": "ขอบคุณครับ ตอนนี้รู้แล้วว่าจะทำอย่างไรต่อ",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761274179690
+      },
+      {
+        "id": "m_lnex30s",
+        "text": "ขอบคุณครับ ตอนนี้รู้แล้วว่าจะทำอย่างไรต่อ",
+        "sender": {
+          "id": "u_1ank",
+          "name": "Icey",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Icey39"
+        },
+        "timestamp": 1761274119690
+      },
+      {
+        "id": "m_dzkj9li",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761274059690
+      },
+      {
+        "id": "m_cuopeix",
+        "text": "เยี่ยมเลยครับ ตอนนี้ผมมีแนวทางชัดเจนแล้ว",
+        "sender": {
+          "id": "u_1ank",
+          "name": "Icey",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Icey39"
+        },
+        "timestamp": 1761273999690
+      },
+      {
+        "id": "m_h5g5djf",
+        "text": "AI Matching ระบบจัดการลูกค้าอัตโนมัติ สามารถกำหนดเกณฑ์การจับคู่เองหรือระบบทำงานแบบสำเร็จรูป?",
+        "sender": {
+          "id": "u_1ank",
+          "name": "Icey",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Icey39"
+        },
+        "timestamp": 1761273939690
+      },
+      {
+        "id": "m_eae65ps",
+        "text": "ถ้าเอกสารการเงินของผมมีหนี้สินบางส่วน สามารถยื่นกู้สินเชื่อผ่านบริการของคุณได้ไหมครับ?",
+        "sender": {
+          "id": "u_mwg5",
+          "name": "Lek",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Lek17"
+        },
+        "timestamp": 1761273879690
+      },
+      {
+        "id": "m_ncham44",
+        "text": "โอเคครับ จะเริ่มดำเนินการตามขั้นตอนนี้",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273819690
+      },
+      {
+        "id": "m_eiv8gpr",
+        "text": "โอเคครับ จะเริ่มดำเนินการตามขั้นตอนนี้",
+        "sender": {
+          "id": "u_mwg5",
+          "name": "Lek",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Lek17"
+        },
+        "timestamp": 1761273759690
+      },
+      {
+        "id": "m_7j6fu38",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273699690
+      },
+      {
+        "id": "m_lrjbatn",
+        "text": "เยี่ยมเลยครับ ตอนนี้ผมมีแนวทางชัดเจนแล้ว",
+        "sender": {
+          "id": "u_mwg5",
+          "name": "Lek",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Lek17"
+        },
+        "timestamp": 1761273639690
+      },
+      {
+        "id": "m_w2niz2g",
+        "text": "ถ้าเอกสารการเงินของผมมีหนี้สินบางส่วน สามารถยื่นกู้สินเชื่อผ่านบริการของคุณได้ไหมครับ?",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273579690
+      },
+      {
+        "id": "m_td90eiq",
+        "text": "ขอบคุณครับ รู้สึกมั่นใจมากขึ้นแล้ว",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273519690
+      },
+      {
+        "id": "m_y1bwoah",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273459690
+      },
+      {
+        "id": "m_w8eswt0",
+        "text": "บริการใหม่ที่กำลังเปิดตัว มีฟีเจอร์เด่นอะไร และจะช่วยแก้ปัญหาแบบใดให้ลูกค้ากลุ่มเป้าหมายได้มากที่สุด?",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273399690
+      },
+      {
+        "id": "m_kzigwbo",
+        "text": "การออกแบบโลโก้หรือแบนเนอร์ คุณมีตัวอย่างสไตล์หรือธีมที่แนะนำสำหรับธุรกิจขนาดเล็กไหม?",
+        "sender": {
+          "id": "u_mwg5",
+          "name": "Lek",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Lek17"
+        },
+        "timestamp": 1761273339690
+      },
+      {
+        "id": "m_8f2g3bo",
+        "text": "ขอบคุณมากครับ คำตอบชัดเจนและเป็นประโยชน์",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273279690
+      },
+      {
+        "id": "m_i22pibi",
+        "text": "บริการการตลาดครบวงจร + ระบบหลังบ้าน มีระบบรายงานผลลัพธ์แบบเรียลไทม์หรือสามารถตั้งค่าแจ้งเตือนอัตโนมัติได้ไหม?",
+        "sender": {
+          "id": "u_0wmx",
+          "name": "Bell",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Bell36"
+        },
+        "timestamp": 1761273219690
+      }
+    ]
+  },
+  {
+    "id": "r_gvfqmq",
+    "name": "Oil's ห้อง 8",
+    "description": "JP53I0",
+    "members": [
+      {
+        "id": "u_cvc0",
+        "name": "Joe",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+      },
+      {
+        "id": "u_hebd",
+        "name": "View",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+      },
+      {
+        "id": "u_qnlc",
+        "name": "Pae",
+        "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+      }
+    ],
+    "lastMessageAt": 1761274239690,
+    "messages": [
+      {
+        "id": "m_0hoo0wr",
+        "text": "ดีเลยครับ วิธีนี้ช่วยแก้ปัญหาได้จริง ๆ",
+        "sender": {
+          "id": "u_qnlc",
+          "name": "Pae",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+        },
+        "timestamp": 1761274239690
+      },
+      {
+        "id": "m_2wes0hj",
+        "text": "เยี่ยมมากครับ คำตอบนี้ตรงจุดมาก",
+        "sender": {
+          "id": "u_qnlc",
+          "name": "Pae",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+        },
+        "timestamp": 1761274179690
+      },
+      {
+        "id": "m_7bxmzdf",
+        "text": "ถ้าผมต้องการผลิตบัตรพร้อม QR Code และลายน้ำ คุณสามารถทำให้ตรงกับมาตรฐานความปลอดภัยระดับมืออาชีพได้หรือไม่?",
+        "sender": {
+          "id": "u_qnlc",
+          "name": "Pae",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+        },
+        "timestamp": 1761274119690
+      },
+      {
+        "id": "m_h3cxrfg",
+        "text": "ขอบคุณมากครับ คำตอบชัดเจนและเป็นประโยชน์",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761274059690
+      },
+      {
+        "id": "m_6jun9ac",
+        "text": "ขอบคุณมากครับ ตอนนี้เข้าใจขั้นตอนแล้ว",
+        "sender": {
+          "id": "u_qnlc",
+          "name": "Pae",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Pae43"
+        },
+        "timestamp": 1761273999690
+      },
+      {
+        "id": "m_60g1tvf",
+        "text": "โอเค ขอบคุณสำหรับคำแนะนำที่ละเอียดครับ",
+        "sender": {
+          "id": "u_cvc0",
+          "name": "Joe",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=Joe34"
+        },
+        "timestamp": 1761273939690
+      },
+      {
+        "id": "m_3yy63io",
+        "text": "บริการใหม่ที่กำลังเปิดตัว มีฟีเจอร์เด่นอะไร และจะช่วยแก้ปัญหาแบบใดให้ลูกค้ากลุ่มเป้าหมายได้มากที่สุด?",
+        "sender": {
+          "id": "u_hebd",
+          "name": "View",
+          "avatar": "https://api.dicebear.com/7.x/identicon/svg?seed=View41"
+        },
+        "timestamp": 1761273879690
       }
     ]
   }
