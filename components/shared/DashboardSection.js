@@ -13,7 +13,10 @@ import clsx from 'clsx';
  */
 
 /**
- * @param {DashboardSectionProps}
+ * DashboardSection รองรับ scrollable inner content
+ * และ responsive layout บน mobile/desktop
+ *
+ * @param {DashboardSectionProps} props
  */
 export default function DashboardSection({ title, iconName, children, className }) {
   const Icon = iconName ? LucideIcons[iconName] : null;
@@ -25,13 +28,15 @@ export default function DashboardSection({ title, iconName, children, className 
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
+      {/* Header */}
       <h2 className="flex items-center gap-2 border-b border-gray-300 pb-2 text-xl font-semibold text-gray-700 dark:border-gray-700 dark:text-white">
         {Icon && <Icon className="h-5 w-5 text-blue-500" aria-hidden="true" />}
         <span>{title}</span>
       </h2>
 
-      <div className="rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-        {children}
+      {/* Content */}
+      <div className="overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+        <div className="w-full">{children}</div>
       </div>
     </motion.section>
   );
