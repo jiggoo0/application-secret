@@ -2,14 +2,16 @@
 const path = require('path');
 
 const isVercel = !!process.env.VERCEL;
-const isTermux = !!process.env.TERMUX; // กำหนด TERMUX=true บน Termux/Android
+const isTermux = !!process.env.TERMUX;
 const projectRoot = __dirname;
 
 const nextConfig = {
   reactStrictMode: true,
+
+  // 🏗️ Output mode for Vercel
   output: isVercel ? 'standalone' : undefined,
 
-  // 🖼️ Images config
+  // 🖼️ Image optimization
   images: {
     unoptimized: !isVercel,
     domains: [
@@ -21,14 +23,17 @@ const nextConfig = {
     ],
   },
 
-  // Turbopack
-  turbopack: isVercel
-    ? {
-        rules: { '*.mdx': ['@mdx-js/loader'] },
-      }
-    : false, // ปิด Turbopack บน Termux/Android
+  // ⚡ Turbopack configuration
+  turbopack: {
+    enabled: isVercel,
+    rules: {
+      '*.mdx': ['@mdx-js/loader'],
+    },
+  },
 
+  // 🧪 Experimental features
   experimental: {
+    serverActions: {}, // ✅ ต้องเป็น object
     optimizePackageImports: [
       'lucide-react',
       '@radix-ui/react-icons',
@@ -37,36 +42,30 @@ const nextConfig = {
     ],
   },
 
+  // ✅ Typed routes (moved out of experimental)
+  typedRoutes: true,
+
+  // 🔍 ESLint configuration
   eslint: {
     dirs: ['app', 'components', 'lib', 'utils', 'config'],
   },
 
+  // ⚙️ Webpack customization
   webpack: (config, { isServer }) => {
-    // ปิด cache
     config.cache = false;
 
-    // Watcher settings
-    if (isTermux) {
-      // ใช้ polling watcher บน Termux
-      config.watchOptions = {
-        poll: 1000,
-        aggregateTimeout: 300,
-        ignored: [
-          '/node_modules',
-          '/.git',
-          '/.next/',
-          path.resolve(projectRoot, '/'), // ป้องกัน scan root
-          '/data/',
-        ],
-      };
-    } else {
-      // Linux/macOS/Vercel ปกติ
-      config.watchOptions = {
-        ignored: ['/node_modules', '/.git', '/.next/'],
-      };
-    }
+    // 👀 Watcher settings
+    config.watchOptions = isTermux
+      ? {
+          poll: 1000,
+          aggregateTimeout: 300,
+          ignored: ['/node_modules', '/.git', '/.next/', path.resolve(projectRoot, '/'), '/data/'],
+        }
+      : {
+          ignored: ['/node_modules', '/.git', '/.next/'],
+        };
 
-    // Fallback สำหรับ client-side ไม่ให้ error กับ Node core modules
+    // 🛡️ Fallback for client-side
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,
@@ -78,7 +77,7 @@ const nextConfig = {
       };
     }
 
-    // รองรับ .mjs / .cjs
+    // 📦 Extension aliasing
     config.resolve.extensionAlias = {
       '.js': ['.js', '.ts', '.tsx'],
     };

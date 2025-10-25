@@ -6,10 +6,23 @@ import { Button } from '@/components/ui/button';
 
 const FALLBACK_IMAGE = '/images/placeholder.webp';
 
+/**
+ * @typedef {Object} BlogArticle
+ * @property {string} id
+ * @property {string} title
+ * @property {string} image
+ * @property {string} summary
+ */
+
+/**
+ * @param {{ blog: BlogArticle }} props
+ */
 export default function BlogCard({ blog }) {
   if (!blog || typeof blog !== 'object') return null;
 
   const { id, title, image, summary } = blog;
+
+  const imageSrc = image?.startsWith('/') ? image : image || FALLBACK_IMAGE;
 
   return (
     <article
@@ -20,7 +33,7 @@ export default function BlogCard({ blog }) {
       {/* 🖼️ Blog Image */}
       <div className="relative h-48 w-full overflow-hidden rounded-md">
         <Image
-          src={image?.startsWith('/') ? image : image || FALLBACK_IMAGE}
+          src={imageSrc}
           alt={`ภาพประกอบบทความ: ${title}`}
           fill
           className="object-cover transition-transform duration-300 hover:scale-105"
@@ -30,7 +43,10 @@ export default function BlogCard({ blog }) {
       </div>
 
       {/* 📝 Blog Title */}
-      <h3 id={`blog-title-${id}`} className="text-lg font-semibold text-black dark:text-white">
+      <h3
+        id={`blog-title-${id}`}
+        className="line-clamp-2 text-lg font-semibold text-black dark:text-white"
+      >
         {title}
       </h3>
 

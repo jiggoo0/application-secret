@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 
 const FALLBACK_IMAGE = '/images/placeholder.webp';
 
-// ✅ ใช้ลิงก์ Supabase ใหม่
 const blogUrls = [
   'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog1.json',
   'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog2.json',
@@ -14,27 +13,35 @@ const blogUrls = [
   'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog6.json',
 ];
 
-// โหลดบทความทั้งหมด
+// 🔹 โหลดบทความทั้งหมด
 async function getAllArticles() {
   const responses = await Promise.all(blogUrls.map((url) => fetch(url)));
   const jsonData = await Promise.all(
-    responses.map((res) => {
-      if (!res.ok) throw new Error(`โหลดข้อมูลล้มเหลว: ${res.url}`);
-      return res.json();
+    responses.map(async (res) => {
+      if (!res.ok) {
+        console.warn(`⚠️ ไม่สามารถโหลด: ${res.url}`);
+        return [];
+      }
+      try {
+        const data = await res.json();
+        return Array.isArray(data) ? data : [data];
+      } catch {
+        return [];
+      }
     }),
   );
   return jsonData.flat().filter((article) => article?.published !== false);
 }
 
-// สร้าง static params
+// 🔹 สร้าง static params สำหรับ dynamic route
 export async function generateStaticParams() {
   const articles = await getAllArticles();
   return articles.map((article) => ({ id: article.id }));
 }
 
-// แสดงบทความตาม id
+// 🔹 แสดงบทความตาม id
 export default async function BlogPage({ params }) {
-  const { id } = params; // ✅ destructure safer
+  const { id } = params;
   const articles = await getAllArticles();
   const article = articles.find((a) => a.id === id);
 
@@ -43,6 +50,9 @@ export default async function BlogPage({ params }) {
       <section className="px-6 py-20 text-center text-red-600 dark:text-red-400">
         <h1 className="text-2xl font-bold">❌ ไม่พบบทความ</h1>
         <p>บทความที่คุณค้นหาอาจถูกลบหรือยังไม่เผยแพร่</p>
+        <Link href="/blog" className="mt-6 inline-block">
+          <Button variant="outline">← กลับไปหน้าบทความทั้งหมด</Button>
+        </Link>
       </section>
     );
   }

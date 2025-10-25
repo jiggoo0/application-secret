@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import BlogCard from './BlogCard';
 
 const blogUrls = [
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog1.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog2.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog3.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog4.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog5.json',
-  'https://tgzgjuqawhwsqwrlidpo.supabase.co/storage/v1/object/public/user-uploads/Blog%20/Blog6.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog1.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog2.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog3.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog4.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog5.json',
+  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog6.json',
 ];
 
 export default function Blog() {
@@ -22,13 +22,21 @@ export default function Blog() {
       try {
         const responses = await Promise.all(blogUrls.map((url) => fetch(url)));
         const jsonData = await Promise.all(
-          responses.map((res) => {
-            if (!res.ok) throw new Error(`โหลดข้อมูลล้มเหลว: ${res.url}`);
-            return res.json();
+          responses.map(async (res) => {
+            if (!res.ok) {
+              console.warn(`⚠️ ไม่สามารถโหลด: ${res.url}`);
+              return [];
+            }
+            try {
+              const data = await res.json();
+              return Array.isArray(data) ? data : [data];
+            } catch {
+              return [];
+            }
           }),
         );
         const merged = jsonData.flat();
-        const published = merged.filter((a) => a.published !== false);
+        const published = merged.filter((a) => a?.published !== false);
         setArticles(published);
       } catch (error) {
         setErrorMsg(error.message || 'เกิดข้อผิดพลาดไม่ทราบสาเหตุ');
