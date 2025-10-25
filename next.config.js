@@ -52,17 +52,17 @@ const nextConfig = {
         poll: 1000,
         aggregateTimeout: 300,
         ignored: [
-          '**/node_modules',
-          '**/.git',
-          '**/.next/**',
+          '/node_modules',
+          '/.git',
+          '/.next/',
           path.resolve(projectRoot, '/'), // ป้องกัน scan root
-          '/data/**',
+          '/data/',
         ],
       };
     } else {
       // Linux/macOS/Vercel ปกติ
       config.watchOptions = {
-        ignored: ['**/node_modules', '**/.git', '**/.next/**'],
+        ignored: ['/node_modules', '/.git', '/.next/'],
       };
     }
 

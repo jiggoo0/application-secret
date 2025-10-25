@@ -10,14 +10,20 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
     const countParam = searchParams.get('count');
-    const count = Math.max(1, Math.min(parseInt(countParam || '20', 10), 100));
 
+    // ✅ ป้องกัน input ผิดพลาดและจำกัดจำนวน
+    const count = Math.max(1, Math.min(Number(countParam) || 20, 100));
+
+    // ✅ สร้างรีวิวจำลอง
     const reviews = await generateFacebookStyleReviews(count);
 
+    // ✅ ตรวจสอบว่าได้ array จริง
     if (!Array.isArray(reviews)) {
+      console.warn('[Reviews API] ⚠️ Unexpected data format:', reviews);
       throw new Error('Invalid data format');
     }
 
+    // ✅ ส่ง response พร้อม header ที่เหมาะสม
     return NextResponse.json(
       { reviews },
       {
@@ -30,6 +36,14 @@ export async function GET(request) {
     );
   } catch (error) {
     console.error('[Reviews API] ❌', error.message || error);
-    return NextResponse.json({ error: 'Failed to generate reviews' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to generate reviews' },
+      {
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
   }
 }

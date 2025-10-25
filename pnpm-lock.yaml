@@ -187,7 +187,7 @@ importers:
         version: 7.37.5(eslint@8.57.1)
       eslint-plugin-react-hooks:
         specifier: '7'
-        version: 7.0.0(eslint@8.57.1)
+        version: 7.0.1(eslint@8.57.1)
       eslint-plugin-unused-imports:
         specifier: ^4.2.0
         version: 4.3.0(@typescript-eslint/eslint-plugin@8.46.2(@typescript-eslint/parser@8.46.2(eslint@8.57.1)(typescript@4.9.5))(eslint@8.57.1)(typescript@4.9.5))(eslint@8.57.1)
@@ -1669,10 +1669,10 @@ packages:
         integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==,
       }
 
-  '@rushstack/eslint-patch@1.14.0':
+  '@rushstack/eslint-patch@1.14.1':
     resolution:
       {
-        integrity: sha512-WJFej426qe4RWOm9MMtP4V3CV4AucXolQty+GRgAWLgQXmpCuwzs7hEpxxhSc/znXUSxum9d/P/32MW0FlAAlA==,
+        integrity: sha512-jGTk8UD/RdjsNZW8qq10r0RBvxL8OWtoT+kImlzPDFilmozzM+9QmIJsmze9UiSBrFU45ZxhTYBypn9q9z/VfQ==,
       }
 
   '@shadcn/ui@0.0.4':
@@ -3763,10 +3763,10 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
-  eslint-plugin-react-hooks@7.0.0:
+  eslint-plugin-react-hooks@7.0.1:
     resolution:
       {
-        integrity: sha512-fNXaOwvKwq2+pXiRpXc825Vd63+KM4DLL40Rtlycb8m7fYpp6efrTp1sa6ZbP/Ap58K2bEKFXRmhURE+CJAQWw==,
+        integrity: sha512-O0d0m04evaNzEPoSW+59Mezf8Qt0InfgGIBJnpC0h3NH/WjUAR7BIKUfysC6todmtiZ/A0oUVS8Gce0WhBrHsA==,
       }
     engines: { node: '>=18' }
     peerDependencies:
@@ -8223,7 +8223,7 @@ snapshots:
 
   '@rtsao/scc@1.1.0': {}
 
-  '@rushstack/eslint-patch@1.14.0': {}
+  '@rushstack/eslint-patch@1.14.1': {}
 
   '@shadcn/ui@0.0.4':
     dependencies:
@@ -9528,7 +9528,7 @@ snapshots:
   eslint-config-next@15.5.4(eslint@8.57.1)(typescript@4.9.5):
     dependencies:
       '@next/eslint-plugin-next': 15.5.4
-      '@rushstack/eslint-patch': 1.14.0
+      '@rushstack/eslint-patch': 1.14.1
       '@typescript-eslint/eslint-plugin': 8.46.2(@typescript-eslint/parser@8.46.2(eslint@8.57.1)(typescript@4.9.5))(eslint@8.57.1)(typescript@4.9.5)
       '@typescript-eslint/parser': 8.46.2(eslint@8.57.1)(typescript@4.9.5)
       eslint: 8.57.1
@@ -9644,7 +9644,7 @@ snapshots:
     dependencies:
       eslint: 8.57.1
 
-  eslint-plugin-react-hooks@7.0.0(eslint@8.57.1):
+  eslint-plugin-react-hooks@7.0.1(eslint@8.57.1):
     dependencies:
       '@babel/core': 7.28.5
       '@babel/parser': 7.28.5

@@ -1,74 +1,114 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
+import clsx from 'clsx';
 
-export default function Banner() {
-  const [banners, setBanners] = useState([]);
-  const [visible, setVisible] = useState(true);
-  const [error, setError] = useState('');
+const Banner = () => {
+  const [data, setData] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  const DATA_URL =
-    'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Data/Banner.json';
-
-  // Fetch banners from Supabase
+  // Load JSON and check localStorage
   useEffect(() => {
-    const fetchBanner = async () => {
-      try {
-        const res = await fetch(DATA_URL);
-        if (!res.ok) throw new Error(`HTTP error! Status: ${res.status}`);
-        const data = await res.json();
-        if (Array.isArray(data)) setBanners(data);
-      } catch (err) {
-        console.error('❌ Failed to fetch banner:', err);
-        setError('ไม่สามารถโหลดประกาศได้');
-      }
-    };
-    fetchBanner();
+    const hasSeen = localStorage.getItem('hasSeenBanner');
+    if (hasSeen === 'true') return;
+
+    fetch('/data/Banner.json')
+      .then((res) => res.json())
+      .then((json) => {
+        setData(json);
+        setVisible(true);
+        setIsLoaded(true);
+      })
+      .catch((err) => console.error('โหลด Banner.json ไม่สำเร็จ:', err));
   }, []);
 
-  // Auto-dismiss after 10 seconds
-  useEffect(() => {
-    if (!visible) return;
-    const timer = setTimeout(() => setVisible(false), 10000);
-    return () => clearTimeout(timer);
-  }, [visible]);
+  const handleClose = () => {
+    setVisible(false);
+    localStorage.setItem('hasSeenBanner', 'true');
+  };
 
-  // Scroll lock when popup visible
-  useEffect(() => {
-    document.body.style.overflow = visible ? 'hidden' : '';
-  }, [visible]);
+  if (!data || !visible) return null;
 
-  if (!visible || error || banners.length === 0) return null;
+  const {
+    title = 'น้อมอาลัย',
+    message = '',
+    image = '',
+    theme = {},
+    layout = {},
+    options = {},
+  } = data;
+
+  const aspectRatio =
+    layout.aspectRatio === '16/9'
+      ? 16 / 9
+      : layout.aspectRatio === '4/3'
+        ? 4 / 3
+        : layout.aspectRatio === '1/1'
+          ? 1
+          : 16 / 9;
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          transition={{ duration: 0.5 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50"
-        >
-          <div className="relative w-full max-w-lg rounded-xl border-2 border-red-600 bg-white p-6 shadow-xl dark:bg-gray-800">
-            {banners.map((banner) => (
-              <div key={banner.id}>
-                <h2 className="mb-4 flex items-center gap-2 text-xl font-bold text-red-600 dark:text-red-400">
-                  ⚠️ {banner.title}
-                </h2>
-                <p className="mb-4 text-gray-800 dark:text-gray-200">{banner.message}</p>
-                <button
-                  onClick={() => setVisible(false)}
-                  className="animate-pulse rounded bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600"
-                >
-                  ปิด
-                </button>
-              </div>
-            ))}
-          </div>
-        </motion.div>
+    <div
+      className={clsx(
+        'fixed inset-0 z-[9999] flex items-center justify-center bg-black/60 px-4 transition-opacity duration-500 sm:px-6 md:px-8',
+        isLoaded ? 'animate-fadeIn opacity-100' : 'opacity-0',
       )}
-    </AnimatePresence>
+      aria-modal="true"
+      role="dialog"
+    >
+      <div
+        className={clsx(
+          'w-full max-w-[90vw] rounded-xl bg-white shadow-xl transition-all dark:bg-zinc-900 sm:max-w-lg md:max-w-2xl',
+          options.centered ? 'text-center' : 'text-left',
+        )}
+        style={{
+          fontFamily: theme.font || 'TH Sarabun New, sans-serif',
+          color: theme.text || '#222',
+          padding: layout.padding || '2rem',
+          borderRadius: layout.borderRadius || '12px',
+        }}
+      >
+        {options.showPortrait && image && (
+          <AspectRatio ratio={aspectRatio} className="mb-6 overflow-hidden rounded-lg">
+            <Image
+              src={image}
+              alt="พระบรมฉายาลักษณ์"
+              fill
+              className="object-cover grayscale dark:brightness-[0.3]"
+              priority
+              unoptimized
+            />
+          </AspectRatio>
+        )}
+
+        <h1
+          className="mb-4 text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
+          style={{ color: theme.accent || '#000066' }}
+        >
+          {title}
+        </h1>
+
+        <p className="whitespace-pre-line text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl">
+          {message}
+        </p>
+
+        {options.showCloseButton && (
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={handleClose}
+              className="rounded-md bg-blue-900 px-6 py-2 text-sm font-medium text-white transition hover:bg-blue-800 sm:text-base"
+              aria-label="ปิดแบนเนอร์ไว้อาลัย"
+            >
+              ปิด
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
-}
+};
+
+export default Banner;
