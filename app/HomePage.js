@@ -6,13 +6,10 @@ import AnnouncementBar from '@/components/AnnouncementBar';
 import AlertBanner from '@/components/AlertBanner';
 import Banner from '@/components/Banner';
 import Section from '@/components/common/Section';
-import Services from '@/components/Services';
-import OurWorks from '@/components/OurWorks/OurWorks';
-import About from '@/components/About';
 import { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
-// 🧠 Dynamic Imports (with fallback)
+// 🧠 Dynamic Imports (SSR: false) + Loading fallback
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-gray-500 dark:text-gray-400">
@@ -60,9 +57,12 @@ const sections = [
       ],
     },
   },
-  { id: 'about', Component: About },
-  { id: 'services', Component: Services },
-  { id: 'works', Component: OurWorks },
+  { id: 'about', Component: dynamic(() => import('@/components/About'), { ssr: false }) },
+  { id: 'services', Component: dynamic(() => import('@/components/Services'), { ssr: false }) },
+  {
+    id: 'works',
+    Component: dynamic(() => import('@/components/OurWorks/OurWorks'), { ssr: false }),
+  },
   { id: 'reviews', Component: ReviewCarousel },
   { id: 'blog', Component: Blog },
 ];
@@ -89,7 +89,7 @@ export default function HomePage() {
       <AlertBanner />
       <Banner />
 
-      {/* 🌍 Main Page */}
+      {/* 🌍 Main Content */}
       <main
         id="main-content"
         role="main"

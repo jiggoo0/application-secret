@@ -73,7 +73,7 @@ export default function Hero({
         {/* Subtext */}
         {subtext && (
           <motion.p
-            className="max-w-3xl text-base leading-relaxed sm:text-lg md:text-xl lg:text-2xl"
+            className="max-w-3xl text-base leading-relaxed text-gray-100 dark:text-gray-200 sm:text-lg md:text-xl lg:text-2xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}

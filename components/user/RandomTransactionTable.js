@@ -1,9 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { formatThaiDate } from '@/lib/fakereview/utils';
-
 import {
   Table,
   TableBody,
@@ -15,30 +13,34 @@ import {
 
 /**
  * @typedef {Object} TransactionRow
+ * @property {string} id
  * @property {string} customer
  * @property {string} product
  * @property {string} status
  * @property {string} date
  * @property {string} team
- * @property {string} [id]
  */
 
 /**
  * @param {{ refreshInterval?: number }} props
  */
 export default function RandomTransactionTable({ refreshInterval = 5000 }) {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(/** @type {TransactionRow[]} */ ([]));
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   async function fetchData() {
     try {
-      const res = await fetch('/api/mock-transactions', { cache: 'no-store' });
+      const res = await fetch('/api/mock-transactions?count=20', { cache: 'no-store' });
       if (!res.ok) throw new Error(`Fetch failed with status ${res.status}`);
-      const json = await res.json().catch(() => []);
-      setData(Array.isArray(json) ? json : []);
+      const json = await res.json();
+      if (!Array.isArray(json)) throw new Error('Invalid response format');
+      setData(json);
+      setError('');
     } catch (err) {
       console.error('[RandomTransactionTable] ❌ fetch failed:', err);
       setData([]);
+      setError('ไม่สามารถโหลดข้อมูลธุรกรรมได้');
     } finally {
       setLoading(false);
     }
@@ -68,6 +70,8 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
 
   return (
     <div className="space-y-4">
+      {error && <p className="text-center text-sm text-red-500 dark:text-red-400">{error}</p>}
+
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm dark:border-gray-700">
         <Table className="min-w-[640px] text-sm">
           <TableHeader>
@@ -85,7 +89,7 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
           <TableBody>
             {loading ? (
               Array.from({ length: 5 }).map((_, i) => (
-                <TableRow key={i} className="animate-pulse">
+                <TableRow key={`loading-${i}`} className="animate-pulse">
                   {headers.map((_, j) => (
                     <TableCell key={j} className="px-4 py-2">
                       <div className="h-5 rounded bg-gray-200 dark:bg-gray-700" />
@@ -105,7 +109,7 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
             ) : (
               data.map((row) => (
                 <TableRow
-                  key={row.id || uuidv4()}
+                  key={row.id}
                   className="transition hover:bg-gray-50 dark:hover:bg-gray-900"
                 >
                   <TableCell className="px-4 py-2">{row.customer || '—'}</TableCell>

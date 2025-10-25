@@ -21,6 +21,12 @@ import clsx from 'clsx';
 export default function DashboardSection({ title, iconName, children, className }) {
   const Icon = iconName ? LucideIcons[iconName] : null;
 
+  const isEmpty =
+    children === null ||
+    children === undefined ||
+    (Array.isArray(children) && children.length === 0) ||
+    (typeof children === 'boolean' && !children);
+
   return (
     <motion.section
       className={clsx('space-y-4', className)}
@@ -29,14 +35,23 @@ export default function DashboardSection({ title, iconName, children, className 
       transition={{ duration: 0.4 }}
     >
       {/* Header */}
-      <h2 className="flex items-center gap-2 border-b border-gray-300 pb-2 text-xl font-semibold text-gray-700 dark:border-gray-700 dark:text-white">
+      <h2
+        className="flex items-center gap-2 border-b border-gray-300 pb-2 text-xl font-semibold text-gray-700 dark:border-gray-700 dark:text-white"
+        aria-label={title}
+      >
         {Icon && <Icon className="h-5 w-5 text-blue-500" aria-hidden="true" />}
         <span>{title}</span>
       </h2>
 
       {/* Content */}
       <div className="overflow-x-auto rounded-lg border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
-        <div className="w-full">{children}</div>
+        <div className="w-full">
+          {!isEmpty ? (
+            children
+          ) : (
+            <p className="text-sm text-gray-500 dark:text-gray-400">ไม่มีข้อมูลในส่วนนี้</p>
+          )}
+        </div>
       </div>
     </motion.section>
   );

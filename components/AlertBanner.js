@@ -7,6 +7,7 @@ import { Megaphone } from 'lucide-react';
 export default function AlertBanner() {
   const [visible, setVisible] = useState(false);
 
+  // Show alert if not dismissed
   useEffect(() => {
     const dismissed = typeof window !== 'undefined' && localStorage.getItem('alertDismissed');
     if (!dismissed) setVisible(true);

@@ -16,10 +16,10 @@ import { Alert } from '@/components/ui/alert';
  */
 
 /**
- * @param {{ data: RoadmapItem[] }} props
+ * @param {{ roadmap: RoadmapItem[] }} props
  */
-export default function RoadmapSummary({ data = [] }) {
-  if (!Array.isArray(data) || data.length === 0) {
+export default function RoadmapSummary({ roadmap = [] }) {
+  if (!Array.isArray(roadmap) || roadmap.length === 0) {
     return (
       <Alert variant="default" className="text-sm text-muted-foreground">
         ไม่มีข้อมูล Roadmap
@@ -28,15 +28,25 @@ export default function RoadmapSummary({ data = [] }) {
   }
 
   const formatNumber = (value) =>
-    new Intl.NumberFormat('th-TH', { maximumFractionDigits: 2 }).format(value);
+    typeof value === 'number'
+      ? new Intl.NumberFormat('th-TH', { maximumFractionDigits: 2 }).format(value)
+      : '—';
 
-  const getStatusVariant = () => 'warning'; // ทุกคนเริ่มดำเนินการ
-  const formatStatusLabel = () => 'เริ่มดำเนินการ';
+  const getStatusVariant = (status) => {
+    const s = status?.toLowerCase();
+    if (s?.includes('เสร็จสิ้น')) return 'success';
+    if (s?.includes('รอดำเนินการ')) return 'secondary';
+    return 'warning'; // เริ่มดำเนินการ
+  };
+
+  const formatStatusLabel = (status) => {
+    return status || 'เริ่มดำเนินการ';
+  };
 
   const formatRange = (range) => {
     try {
       const parsed = typeof range === 'string' && range.startsWith('[') ? JSON.parse(range) : range;
-      return Array.isArray(parsed) ? parsed.join(' - ') : '—';
+      return Array.isArray(parsed) ? parsed.map((v) => formatNumber(v)).join(' - ') : '—';
     } catch {
       return '—';
     }
@@ -50,7 +60,7 @@ export default function RoadmapSummary({ data = [] }) {
           <h3 className="text-base font-medium text-gray-800 dark:text-white">
             รายการ Roadmap ทั้งหมด
           </h3>
-          <Badge variant="outline">{data.length} รายการ</Badge>
+          <Badge variant="outline">{roadmap.length} รายการ</Badge>
         </CardHeader>
       </Card>
 
@@ -68,7 +78,7 @@ export default function RoadmapSummary({ data = [] }) {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, idx) => (
+              {roadmap.map((item, idx) => (
                 <tr
                   key={idx}
                   className="hover:bg-muted/50 border-t border-gray-200 transition dark:border-gray-700"
@@ -77,7 +87,9 @@ export default function RoadmapSummary({ data = [] }) {
                   <td className="px-4 py-2 text-right">{formatNumber(item.target)}</td>
                   <td className="px-4 py-2 text-center">{formatRange(item.range)}</td>
                   <td className="px-4 py-2 text-center">
-                    <Badge variant={getStatusVariant()}>{formatStatusLabel()}</Badge>
+                    <Badge variant={getStatusVariant(item.status)}>
+                      {formatStatusLabel(item.status)}
+                    </Badge>
                   </td>
                   <td className="break-words px-4 py-2">{item.owner || '—'}</td>
                 </tr>
@@ -89,7 +101,7 @@ export default function RoadmapSummary({ data = [] }) {
 
       {/* Mobile Cards */}
       <div className="space-y-2 md:hidden">
-        {data.map((item, idx) => (
+        {roadmap.map((item, idx) => (
           <div
             key={`mobile-${idx}`}
             className="space-y-1 rounded-lg border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"
@@ -103,7 +115,9 @@ export default function RoadmapSummary({ data = [] }) {
             </div>
             <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
               <span>สถานะ:</span>
-              <Badge variant={getStatusVariant()}>{formatStatusLabel()}</Badge>
+              <Badge variant={getStatusVariant(item.status)}>
+                {formatStatusLabel(item.status)}
+              </Badge>
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-300">
               ผู้รับผิดชอบ: {item.owner || '—'}

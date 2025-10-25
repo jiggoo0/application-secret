@@ -13,9 +13,10 @@ export default function LoginPage() {
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
   const searchParams = useSearchParams();
 
-  // 🔁 Redirect by Role
+  // 🔁 Redirect user by role after login
   const handleRedirectByRole = async () => {
     try {
       let session = await getSession();
@@ -37,7 +38,7 @@ export default function LoginPage() {
     }
   };
 
-  // 🔐 Handle Login
+  // 🔐 Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -65,9 +66,8 @@ export default function LoginPage() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-8 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
-      {/* 💠 Wrapper */}
       <div className="flex w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-xl dark:bg-gray-800 md:grid md:grid-cols-2">
-        {/* 🎨 Left Panel (Hero / Branding) */}
+        {/* Left Panel: Branding */}
         <div className="from-primary/90 relative hidden bg-gradient-to-br to-blue-700 p-8 text-white md:flex md:flex-col md:justify-center">
           <div className="absolute inset-0 opacity-10">
             <Image
@@ -78,7 +78,6 @@ export default function LoginPage() {
               priority
             />
           </div>
-
           <div className="relative z-10 space-y-4">
             <h1 className="text-3xl font-bold">JP Visual & Docs</h1>
             <p className="max-w-sm text-sm text-gray-100/90">
@@ -87,7 +86,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* 🧾 Right Panel (Form) */}
+        {/* Right Panel: Login Form */}
         <div className="flex flex-col justify-center p-8 sm:p-10">
           <form
             onSubmit={handleSubmit}
@@ -175,7 +174,7 @@ export default function LoginPage() {
               <span className="h-px w-16 bg-gray-300 dark:bg-gray-600" />
             </div>
 
-            {/* Alternative login (optional future section) */}
+            {/* Alternative login (future) */}
             <div className="flex flex-col gap-2">
               <button
                 type="button"

@@ -27,6 +27,7 @@ export default function ResultAnnouncement() {
         setLoading(false);
       }
     };
+
     fetchResults();
   }, []);
 

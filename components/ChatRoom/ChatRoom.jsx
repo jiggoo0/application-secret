@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase/client';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { toast } from 'sonner'; // ✅ ใช้ตรงจาก sonner
+import { toast } from 'sonner';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Skeleton } from '@/components/ui/skeleton';
 
@@ -15,7 +15,7 @@ export default function ChatRoom({ roomId, user }) {
   const [sending, setSending] = useState(false);
   const messagesEndRef = useRef(null);
 
-  // โหลดข้อความเริ่มต้น
+  // Load initial messages
   useEffect(() => {
     const loadMessages = async () => {
       setLoading(true);
@@ -30,7 +30,7 @@ export default function ChatRoom({ roomId, user }) {
         setMessages(data || []);
       } catch (err) {
         console.error('Failed to load messages:', err);
-        toast.error('ไม่สามารถโหลดข้อความได้'); // ✅ ใช้ toast.error()
+        toast.error('ไม่สามารถโหลดข้อความได้');
       } finally {
         setLoading(false);
       }
@@ -39,7 +39,7 @@ export default function ChatRoom({ roomId, user }) {
     loadMessages();
   }, [roomId]);
 
-  // Subscription แบบ realtime
+  // Realtime subscription
   useEffect(() => {
     const subscription = supabase
       .channel(`room-${roomId}`)
@@ -60,12 +60,12 @@ export default function ChatRoom({ roomId, user }) {
     return () => supabase.removeChannel(subscription);
   }, [roomId]);
 
-  // Scroll ไปยังข้อความล่าสุด
+  // Scroll to latest message
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // ส่งข้อความ
+  // Handle send message
   const handleSend = async (text) => {
     if (!text.trim()) return;
     setSending(true);
@@ -95,13 +95,14 @@ export default function ChatRoom({ roomId, user }) {
   };
 
   return (
-    <div className="flex h-[400px] flex-col rounded-xl border bg-white shadow-md transition-colors duration-300 dark:bg-gray-800 sm:h-[500px] md:h-[600px]">
+    <div className="flex h-[400px] flex-col rounded-xl border bg-white shadow-md transition-colors duration-300 dark:bg-gray-800 sm:h-[500px] md:h-[600px] lg:h-[700px]">
+      {/* Message List */}
       <ScrollArea className="flex-1 space-y-2 overflow-auto p-3">
         {loading ? (
           Array.from({ length: 5 }).map((_, idx) => (
             <Skeleton key={idx} className="h-8 w-full rounded-md" />
           ))
-        ) : (
+        ) : messages.length ? (
           <AnimatePresence initial={false}>
             {messages.map((msg) => (
               <motion.div
@@ -115,10 +116,15 @@ export default function ChatRoom({ roomId, user }) {
               </motion.div>
             ))}
           </AnimatePresence>
+        ) : (
+          <p className="mt-4 text-center text-gray-400 dark:text-gray-500">
+            ยังไม่มีข้อความในห้องนี้
+          </p>
         )}
         <div ref={messagesEndRef} />
       </ScrollArea>
 
+      {/* Input */}
       <div className="border-t bg-gray-50 p-2 dark:bg-gray-700">
         <ChatInput onSend={handleSend} disabled={sending} />
       </div>

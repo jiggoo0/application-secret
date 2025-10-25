@@ -13,13 +13,8 @@ import {
 } from '@/components/ui/table';
 
 /**
- * @typedef {Object} Document
- * @property {string} id
- * @property {string} name
- * @property {string} uploadedAt
- * @property {'ผ่าน'|'ไม่ผ่าน'|'เอกสารมีปัญหา'|string} status
+ * แสดงบัญชีบริษัทพร้อมสถานะเอกสาร
  */
-
 export default function CompanyAccount() {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,28 +28,14 @@ export default function CompanyAccount() {
         const data = await res.json();
         setDocuments(data);
       } catch (err) {
-        console.error('❌ Failed to fetch documents:', err);
+        console.error('❌ Failed to fetch CompanyAccount:', err);
         setError(err.message || 'เกิดข้อผิดพลาด');
       } finally {
         setLoading(false);
       }
     }
-
     fetchData();
   }, []);
-
-  const statusLabel = (status) => {
-    switch (status) {
-      case 'ผ่าน':
-        return 'ตรวจสอบแล้ว';
-      case 'ไม่ผ่าน':
-        return 'ไม่ผ่าน';
-      case 'เอกสารมีปัญหา':
-        return 'เอกสารมีปัญหา';
-      default:
-        return status;
-    }
-  };
 
   const statusColor = (status) => {
     switch (status) {
@@ -69,39 +50,45 @@ export default function CompanyAccount() {
     }
   };
 
-  if (loading) return <p>Loading documents...</p>;
-  if (error) return <p className="text-red-500">Error: {error}</p>;
-  if (!documents.length) return <p>ไม่พบเอกสาร</p>;
+  if (loading)
+    return (
+      <p className="py-4 text-center text-gray-500 dark:text-gray-400">กำลังโหลดบัญชีบริษัท...</p>
+    );
+  if (error) return <p className="py-4 text-center text-red-500 dark:text-red-400">❌ {error}</p>;
+  if (!documents.length)
+    return <p className="py-4 text-center text-gray-500 dark:text-gray-400">ไม่พบเอกสาร</p>;
 
   return (
-    <Table>
-      <TableCaption>รายละเอียดผลดำเนินการเอกสารของบริษัท</TableCaption>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[100px]">รหัสเอกสาร</TableHead>
-          <TableHead>ชื่อเอกสาร</TableHead>
-          <TableHead>วันที่อัปโหลด</TableHead>
-          <TableHead>สถานะ</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {documents.map((doc) => (
-          <TableRow key={doc.id}>
-            <TableCell className="font-medium">{doc.id}</TableCell>
-            <TableCell>{doc.name}</TableCell>
-            <TableCell>{doc.uploadedAt}</TableCell>
-            <TableCell className={`font-semibold ${statusColor(doc.status)}`}>
-              {statusLabel(doc.status)}
-            </TableCell>
+    <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm dark:border-gray-700">
+      <Table className="min-w-full">
+        <TableCaption className="text-left">รายละเอียดผลดำเนินการเอกสารของบริษัท</TableCaption>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[100px]">รหัสเอกสาร</TableHead>
+            <TableHead>ชื่อเอกสาร</TableHead>
+            <TableHead>วันที่อัปโหลด</TableHead>
+            <TableHead>สถานะ</TableHead>
           </TableRow>
-        ))}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>รวมเอกสารทั้งหมด</TableCell>
-          <TableCell>{documents.length}</TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+        </TableHeader>
+        <TableBody>
+          {documents.map((doc) => (
+            <TableRow key={doc.id} className="hover:bg-gray-50 dark:hover:bg-gray-900">
+              <TableCell className="font-medium">{doc.id}</TableCell>
+              <TableCell>{doc.name}</TableCell>
+              <TableCell>{doc.uploadedAt}</TableCell>
+              <TableCell className={`font-semibold ${statusColor(doc.status)}`}>
+                {doc.status}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter>
+          <TableRow>
+            <TableCell colSpan={3}>รวมเอกสารทั้งหมด</TableCell>
+            <TableCell>{documents.length}</TableCell>
+          </TableRow>
+        </TableFooter>
+      </Table>
+    </div>
   );
 }

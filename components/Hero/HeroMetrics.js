@@ -7,33 +7,22 @@ import PropTypes from 'prop-types';
  * 📊 HeroMetrics
  * - แสดงตัวเลข/สถิติสำคัญใน Hero section
  * - รองรับ animation fade-in + slide
- * - Responsive: ปรับ layout และ font size ตาม screen
+ * - Responsive & accessible
  */
 export default function HeroMetrics({ metrics }) {
   if (!metrics?.length) return null;
 
   const containerVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
-      transition: {
-        staggerChildren: 0.2,
-        ease: 'easeOut',
-      },
+      transition: { staggerChildren: 0.15, ease: 'easeOut' },
     },
   };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: 'easeOut',
-      },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
   };
 
   return (

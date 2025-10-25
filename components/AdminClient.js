@@ -21,22 +21,22 @@ import { RegistrationPreview } from './documents/RegistrationPreview';
 import ChatRoom from '@/components/ChatRoom/ChatRoom';
 import ChatAllRoom from '@/components/ChatRoom/Chat/ChatAllRoom';
 
-// 👆 เมนูด้านบน
+// 🧭 เมนู
 const menuItems = [
-  { key: 'uploads', label: 'อัปโหลด' },
-  { key: 'users', label: 'ผู้ใช้งาน' },
-  { key: 'files', label: 'รายการไฟล์' },
-  { key: 'user-sessions', label: 'ประวัติผู้ใช้' },
-  { key: 'company', label: 'บัญชีบริษัท' },
-  { key: 'medical', label: 'ใบรับรองแพทย์' },
-  { key: 'salary', label: 'ใบรับรองเงินเดือน' },
-  { key: 'registration', label: 'ทะเบียนพาณิชย์' },
-  { key: 'kbank', label: 'KBank Live Demo' },
-  { key: 'chat', label: 'Chat Room' },
-  { key: 'chat-all', label: 'All Chat Rooms' },
+  { key: 'uploads', label: '📤 อัปโหลด' },
+  { key: 'users', label: '👥 ผู้ใช้งาน' },
+  { key: 'files', label: '📁 รายการไฟล์' },
+  { key: 'user-sessions', label: '🕓 ประวัติผู้ใช้' },
+  { key: 'company', label: '🏢 บัญชีบริษัท' },
+  { key: 'medical', label: '💊 ใบรับรองแพทย์' },
+  { key: 'salary', label: '💰 ใบรับรองเงินเดือน' },
+  { key: 'registration', label: '📜 ทะเบียนพาณิชย์' },
+  { key: 'kbank', label: '🏦 KBank Live Demo' },
+  { key: 'chat', label: '💬 Chat Room' },
+  { key: 'chat-all', label: '🗂️ All Chat Rooms' },
 ];
 
-// 👆 Map key -> component
+// 🔗 Map key → component
 const componentsMap = {
   uploads: <Uploads />,
   users: <Users />,
@@ -55,28 +55,28 @@ export default function AdminClient() {
   const [activeKey, setActiveKey] = useState('uploads');
 
   const renderContent = () => (
-    <Card className="h-[600px] overflow-auto rounded-2xl bg-white p-4 shadow-md transition-all dark:bg-gray-800 sm:h-[650px] sm:p-6 md:h-[700px] lg:h-[750px] lg:p-8">
+    <Card className="h-[calc(100vh-200px)] overflow-auto rounded-2xl bg-white p-4 shadow-md transition-all duration-300 dark:bg-gray-800 sm:p-6 lg:p-8">
       {componentsMap[activeKey] || (
-        <p className="text-center text-gray-500 dark:text-gray-400">⚙️ กรุณาเลือกเมนูด้านบน</p>
+        <p className="text-center text-gray-500 dark:text-gray-400">⚙️ กรุณาเลือกเมนูจากด้านบน</p>
       )}
     </Card>
   );
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50 transition-colors duration-300 dark:bg-gray-900">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/90 backdrop-blur-md dark:border-gray-800 dark:bg-gray-800/80">
+      {/* 🔝 Navbar */}
+      <nav className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-800/70">
         <div className="mx-auto max-w-7xl px-3 sm:px-6">
-          <div className="no-scrollbar relative flex overflow-x-auto py-2 sm:justify-center">
+          <div className="no-scrollbar relative flex overflow-x-auto py-2 sm:grid sm:grid-cols-2 sm:gap-2 md:grid-cols-3 lg:grid-cols-5">
             {menuItems.map(({ key, label }) => {
               const isActive = activeKey === key;
               return (
                 <button
                   key={key}
                   onClick={() => setActiveKey(key)}
-                  className={`relative mx-1 rounded-md px-3 py-2 text-sm font-medium transition-all sm:px-4 sm:text-base ${
+                  className={`relative mx-1 whitespace-nowrap rounded-md px-3 py-2 text-sm font-medium transition-all sm:px-4 sm:text-base ${
                     isActive
-                      ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md dark:from-blue-500 dark:to-blue-400'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-500 text-white shadow-md dark:from-blue-500 dark:to-indigo-400'
                       : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-700'
                   }`}
                 >
@@ -91,12 +91,12 @@ export default function AdminClient() {
         </div>
       </nav>
 
-      {/* Main Content */}
+      {/* 🧩 Main Content */}
       <main className="mx-auto w-full max-w-7xl flex-1 px-3 py-6 sm:px-6 lg:px-8">
         {renderContent()}
       </main>
 
-      {/* Toast Notifications */}
+      {/* 🔔 Toast Notifications */}
       <Toaster
         position="bottom-right"
         richColors

@@ -6,9 +6,17 @@ import { ShieldAlert } from 'lucide-react';
 
 export default function SecurityNotice() {
   return (
-    <Alert variant="destructive" className="text-sm md:text-base">
+    <Alert
+      variant="destructive"
+      role="alert"
+      aria-live="assertive"
+      className="text-sm md:text-base"
+    >
       <div className="flex flex-col gap-3 md:flex-row md:items-start">
-        <ShieldAlert className="h-6 w-6 shrink-0 text-red-500 dark:text-red-400" />
+        <ShieldAlert
+          className="h-6 w-6 shrink-0 text-red-500 dark:text-red-400"
+          aria-hidden="true"
+        />
         <div className="space-y-2">
           <AlertTitle className="font-semibold text-red-600 dark:text-red-400">
             🚫 ข้อกำหนดด้านความปลอดภัย: ห้ามเปลี่ยนอุปกรณ์

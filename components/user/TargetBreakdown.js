@@ -14,8 +14,11 @@ import { Alert } from '@/components/ui/alert';
  * @property {string} unit
  */
 
-export default function TargetBreakdown({ data = [] }) {
-  if (!Array.isArray(data) || data.length === 0) {
+/**
+ * @param {{ targets: TargetItem[] }} props
+ */
+export default function TargetBreakdown({ targets = [] }) {
+  if (!Array.isArray(targets) || targets.length === 0) {
     return (
       <Alert variant="default" className="text-sm text-muted-foreground">
         ไม่มีข้อมูลเป้าหมาย
@@ -39,7 +42,7 @@ export default function TargetBreakdown({ data = [] }) {
           <h3 className="text-base font-medium text-gray-800 dark:text-white">
             รายชื่อลูกค้า ตามแผนดำเนินการวันที่ 23 ตุลาคม 2568
           </h3>
-          <Badge variant="outline">{data.length} รายการ</Badge>
+          <Badge variant="outline">{targets.length} รายการ</Badge>
         </CardHeader>
       </Card>
 
@@ -57,7 +60,7 @@ export default function TargetBreakdown({ data = [] }) {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, idx) => (
+              {targets.map((item, idx) => (
                 <tr
                   key={idx}
                   className="hover:bg-muted/50 border-t border-gray-200 transition dark:border-gray-700"
@@ -78,7 +81,7 @@ export default function TargetBreakdown({ data = [] }) {
 
       {/* Mobile Cards */}
       <div className="space-y-2 md:hidden">
-        {data.map((item, idx) => (
+        {targets.map((item, idx) => (
           <div
             key={`mobile-${idx}`}
             className="space-y-1 rounded-lg border border-gray-200 bg-white p-3 shadow-sm dark:border-gray-700 dark:bg-gray-900"

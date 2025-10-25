@@ -1,4 +1,3 @@
-// app/user/UserDashboardClient.jsx
 'use client';
 
 import Image from 'next/image';
@@ -13,7 +12,66 @@ import LogoutButton from '@/components/common/LogoutButton';
 import ChatRoom from '@/components/ChatRoom/ChatRoom';
 import ResultAnnouncement from '@/components/documents/ResultAnnouncement';
 
+/**
+ * @typedef {Object} DashboardProps
+ * @property {Object} user
+ * @property {string} user.name
+ * @property {string} user.email
+ * @property {string} user.role
+ * @property {string | null} user.image
+ * @property {any[]} roadmap
+ * @property {any[]} targets
+ */
+
+/**
+ * @param {DashboardProps} props
+ */
 export default function UserDashboardClient({ user, roadmap, targets }) {
+  const sectionProps = {
+    user,
+    roadmap,
+    targets,
+    userEmail: user.email,
+  };
+
+  const DASHBOARD_SECTIONS = [
+    {
+      title: 'อัปโหลดเอกสารเพิ่มเติม',
+      icon: 'FileText',
+      component: <FileUploadForm {...sectionProps} />,
+    },
+    {
+      title: 'ประกาศผล',
+      icon: 'CheckCircle',
+      component: <ResultAnnouncement {...sectionProps} />,
+    },
+    {
+      title: 'ประวัติการเข้าใช้งาน',
+      icon: 'Clock',
+      component: <UserSessionHistory {...sectionProps} />,
+    },
+    {
+      title: 'รายงานผลการดำเนินงาน',
+      icon: 'Shuffle',
+      component: <RandomTransactionTable {...sectionProps} />,
+    },
+    {
+      title: 'แผนงานโดยรวม',
+      icon: 'Map',
+      component: <RoadmapSummary roadmap={roadmap} />,
+    },
+    {
+      title: 'เป้าหมายที่ตั้งไว้',
+      icon: 'Target',
+      component: <TargetBreakdown targets={targets} />,
+    },
+    {
+      title: 'CHAT ROOM JP51I0',
+      icon: 'MessageCircle',
+      component: <ChatRoom roomId="main-room" {...sectionProps} />,
+    },
+  ];
+
   return (
     <main className="min-h-screen space-y-12 bg-white px-4 py-10 dark:bg-gray-900 md:px-12 lg:px-24">
       {/* Header */}
@@ -67,33 +125,11 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
 
       {/* Dashboard Grid */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <DashboardSection title="อัปโหลดเอกสารเพิ่มเติม" iconName="FileText">
-          <FileUploadForm />
-        </DashboardSection>
-
-        <DashboardSection title="ประกาศผล" iconName="CheckCircle">
-          <ResultAnnouncement />
-        </DashboardSection>
-
-        <DashboardSection title="ประวัติการเข้าใช้งาน" iconName="Clock">
-          <UserSessionHistory userEmail={user.email} />
-        </DashboardSection>
-
-        <DashboardSection title="รายงานผลการดำเนินงาน" iconName="Shuffle">
-          <RandomTransactionTable />
-        </DashboardSection>
-
-        <DashboardSection title="แผนงานโดยรวม" iconName="Map">
-          <RoadmapSummary data={roadmap} />
-        </DashboardSection>
-
-        <DashboardSection title="เป้าหมายที่ตั้งไว้" iconName="Target">
-          <TargetBreakdown data={targets} />
-        </DashboardSection>
-
-        <DashboardSection title="CHAT ROOM JP51I0" iconName="MessageCircle">
-          <ChatRoom roomId="main-room" user={user} />
-        </DashboardSection>
+        {DASHBOARD_SECTIONS.map(({ title, icon, component }) => (
+          <DashboardSection key={title} title={title} iconName={icon}>
+            {component}
+          </DashboardSection>
+        ))}
       </div>
     </main>
   );

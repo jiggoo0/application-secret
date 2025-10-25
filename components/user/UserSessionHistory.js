@@ -2,10 +2,13 @@
 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Alert } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function UserSessionHistory() {
   const [sessions, setSessions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchSessions();
@@ -13,30 +16,53 @@ export default function UserSessionHistory() {
 
   const fetchSessions = async () => {
     setLoading(true);
+    setError('');
     try {
-      const res = await axios.get('/api/user/sessions?limit=5'); // ดึง 5 รายการล่าสุด
-      setSessions(res.data || []);
+      const res = await axios.get('/api/user/sessions?limit=5');
+      setSessions(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
       console.error('[UserSessionHistory] ❌', err);
+      setError('ไม่สามารถโหลดข้อมูลประวัติการเข้าสู่ระบบ');
     } finally {
       setLoading(false);
     }
   };
 
-  if (loading) return <p className="py-6 text-center text-gray-500">กำลังโหลดประวัติ...</p>;
+  if (loading) {
+    return (
+      <div className="space-y-2 py-6">
+        {[...Array(3)].map((_, i) => (
+          <Skeleton key={i} className="h-6 w-full rounded bg-gray-200 dark:bg-gray-700" />
+        ))}
+      </div>
+    );
+  }
 
-  if (!sessions.length)
-    return <p className="py-6 text-center text-gray-500">ไม่มีประวัติการเข้าสู่ระบบ</p>;
+  if (error) {
+    return (
+      <Alert variant="destructive" className="text-sm text-red-500 dark:text-red-400">
+        {error}
+      </Alert>
+    );
+  }
+
+  if (!sessions.length) {
+    return (
+      <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        ไม่มีประวัติการเข้าสู่ระบบ
+      </p>
+    );
+  }
 
   return (
     <div className="overflow-x-auto">
-      <table className="min-w-full table-auto border-collapse border border-gray-200 dark:border-gray-700">
+      <table className="min-w-full table-auto border-collapse border border-gray-200 text-sm dark:border-gray-700">
         <thead className="bg-gray-100 dark:bg-gray-800">
-          <tr className="text-center">
-            <th className="border px-4 py-2">Action</th>
+          <tr className="text-center font-medium text-gray-700 dark:text-white">
+            <th className="border px-4 py-2">การกระทำ</th>
             <th className="border px-4 py-2">IP Address</th>
-            <th className="border px-4 py-2">User Agent</th>
-            <th className="border px-4 py-2">Timestamp</th>
+            <th className="border px-4 py-2">อุปกรณ์</th>
+            <th className="border px-4 py-2">เวลา</th>
           </tr>
         </thead>
         <tbody>
@@ -46,10 +72,12 @@ export default function UserSessionHistory() {
               <td className="px-4 py-2">{s.ip_address || '-'}</td>
               <td className="px-4 py-2">{s.user_agent || '-'}</td>
               <td className="px-4 py-2">
-                {new Date(s.created_at).toLocaleString('th-TH', {
-                  dateStyle: 'short',
-                  timeStyle: 'short',
-                })}
+                {s.created_at
+                  ? new Date(s.created_at).toLocaleString('th-TH', {
+                      dateStyle: 'short',
+                      timeStyle: 'short',
+                    })
+                  : '-'}
               </td>
             </tr>
           ))}

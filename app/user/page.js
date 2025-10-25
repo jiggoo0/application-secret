@@ -7,12 +7,14 @@ import UserDashboardClient from './UserDashboardClient';
 import { redirect } from 'next/navigation';
 
 export default async function UserDashboardPageServer() {
+  // 🔐 ตรวจสอบ session
   const session = await getServerSession(authOptions);
-  if (!session?.user) redirect('/login');
 
-  // ดึงข้อมูลพร้อมกัน
-  const [roadmap, targets] = await Promise.all([getRoadmap(), getTargets()]);
+  if (!session?.user) {
+    redirect('/login');
+  }
 
+  // 🧠 สร้างข้อมูลผู้ใช้
   const user = {
     name: session.user.name || session.user.email || 'ผู้ใช้งาน',
     email: session.user.email || '-',
@@ -20,5 +22,19 @@ export default async function UserDashboardPageServer() {
     image: session.user.image || null,
   };
 
+  // 📦 ดึงข้อมูล roadmap และ targets พร้อมกัน
+  let roadmap = [];
+  let targets = [];
+
+  try {
+    [roadmap, targets] = await Promise.all([getRoadmap(), getTargets()]);
+  } catch (err) {
+    console.error('[UserDashboardPageServer] ❌ Failed to fetch roadmap/targets:', err);
+    // fallback เป็น array ว่างเพื่อป้องกัน crash ฝั่ง client
+    roadmap = [];
+    targets = [];
+  }
+
+  // 🚀 ส่งข้อมูลไปยัง client component
   return <UserDashboardClient user={user} roadmap={roadmap} targets={targets} />;
 }

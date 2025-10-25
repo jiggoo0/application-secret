@@ -1,188 +1,79 @@
-# Supabase CLI
+🔐 application-secret
 
-[![Coverage Status](https://coveralls.io/repos/github/supabase/cli/badge.svg?branch=main)](https://coveralls.io/github/supabase/cli?branch=main) [![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/supabase-cli/setup-cli/master?style=flat-square&label=Bitbucket%20Canary)](https://bitbucket.org/supabase-cli/setup-cli/pipelines) [![Gitlab Pipeline Status](https://img.shields.io/gitlab/pipeline-status/sweatybridge%2Fsetup-cli?label=Gitlab%20Canary)
-](https://gitlab.com/sweatybridge/setup-cli/-/pipelines)
+ระบบจัดการไฟล์ลับและการอัปโหลดสำหรับแอดมิน พร้อมระบบ preview, approve, และ session tracking  
+สร้างด้วย Next.js + Supabase + React + Tailwind CSS
 
-[Supabase](https://supabase.io) is an open source Firebase alternative. We're building the features of Firebase using enterprise-grade open source tools.
+📦 เทคโนโลยีที่ใช้
 
-This repository contains all the functionality for Supabase CLI.
+- Next.js 15+
+- Supabase (Storage + Auth)
+- React
+- Tailwind CSS
+- Axios
+- ESLint + Prettier + Vite (ถ้ามี)
 
-- [x] Running Supabase locally
-- [x] Managing database migrations
-- [x] Creating and deploying Supabase Functions
-- [x] Generating types directly from your database schema
-- [x] Making authenticated HTTP requests to [Management API](https://supabase.com/docs/reference/api/introduction)
+🚀 วิธีติดตั้ง
 
-## Getting started
+`bash
+git clone https://github.com/jiggoo0/application-secret.git
+cd application-secret
+npm install
+`
 
-### Install the CLI
+ตั้งค่า .env.local สำหรับ Supabase:
 
-Available via [NPM](https://www.npmjs.com) as dev dependency. To install:
+`env
+SUPABASE_URL=your-supabase-url
+SUPABASEANONKEY=your-anon-key
+SUPABASESERVICEROLE_KEY=your-service-role-key
+`
 
-```bash
-npm i supabase --save-dev
-```
+จากนั้นรัน:
 
-To install the beta release channel:
+`bash
+npm run dev
+`
 
-```bash
-npm i supabase@beta --save-dev
-```
+🛠️ โครงสร้างโปรเจกต์
 
-When installing with yarn 4, you need to disable experimental fetch with the following nodejs config.
+`project/
+├── app/                  # Next.js routing
+│   └── api/              # API routes for admin uploads
+├── components/
+│   └── admin/            # UI components (FileList, PreviewModal)
+├── services/             # Client-side API logic
+├── lib/                  # Supabase client
+├── public/               # Static assets
+├── jsconfig.json         # Path alias config
+└── README.md`
 
-```
-NODE_OPTIONS=--no-experimental-fetch yarn add supabase
-```
+📂 ฟีเจอร์หลัก
 
-> **Note**
-> For Bun versions below v1.0.17, you must add `supabase` as a [trusted dependency](https://bun.sh/guides/install/trusted) before running `bun add -D supabase`.
+- ✅ อัปโหลดไฟล์ไปยัง Supabase Storage
+- ✅ แสดงรายการไฟล์ทั้งหมด (admin dashboard)
+- ✅ Preview ไฟล์ (image, video, PDF)
+- ✅ อนุมัติไฟล์ (approve)
+- ✅ รองรับ pagination และ fallback
+- ✅ ใช้ alias path (@/components, @/services, etc.)
 
-<details>
-  <summary><b>macOS</b></summary>
+📸 ตัวอย่างหน้าจอ
 
-Available via [Homebrew](https://brew.sh). To install:
+> เพิ่มภาพหน้าจอในโฟลเดอร์ public/screenshots/ แล้วใส่ลิงก์ที่นี่
 
-```sh
-brew install supabase/tap/supabase
-```
+🧪 การทดสอบ
 
-To install the beta release channel:
+`bash
+npm run lint
+npm run build
+`
 
-```sh
-brew install supabase/tap/supabase-beta
-brew link --overwrite supabase-beta
-```
+🙋‍♂️ ผู้พัฒนา
 
-To upgrade:
+- Jiggoo0 (ดิเรก)
+- 📧 jiggo0@outlook.co.th
+- GitHub: @jiggoo0
 
-```sh
-brew upgrade supabase
-```
+📄 License
 
-</details>
-
-<details>
-  <summary><b>Windows</b></summary>
-
-Available via [Scoop](https://scoop.sh). To install:
-
-```powershell
-scoop bucket add supabase https://github.com/supabase/scoop-bucket.git
-scoop install supabase
-```
-
-To upgrade:
-
-```powershell
-scoop update supabase
-```
-
-</details>
-
-<details>
-  <summary><b>Linux</b></summary>
-
-Available via [Homebrew](https://brew.sh) and Linux packages.
-
-#### via Homebrew
-
-To install:
-
-```sh
-brew install supabase/tap/supabase
-```
-
-To upgrade:
-
-```sh
-brew upgrade supabase
-```
-
-#### via Linux packages
-
-Linux packages are provided in [Releases](https://github.com/supabase/cli/releases). To install, download the `.apk`/`.deb`/`.rpm`/`.pkg.tar.zst` file depending on your package manager and run the respective commands.
-
-```sh
-sudo apk add --allow-untrusted <...>.apk
-```
-
-```sh
-sudo dpkg -i <...>.deb
-```
-
-```sh
-sudo rpm -i <...>.rpm
-```
-
-```sh
-sudo pacman -U <...>.pkg.tar.zst
-```
-
-</details>
-
-<details>
-  <summary><b>Other Platforms</b></summary>
-
-You can also install the CLI via [go modules](https://go.dev/ref/mod#go-install) without the help of package managers.
-
-```sh
-go install github.com/supabase/cli@latest
-```
-
-Add a symlink to the binary in `$PATH` for easier access:
-
-```sh
-ln -s "$(go env GOPATH)/bin/cli" /usr/bin/supabase
-```
-
-This works on other non-standard Linux distros.
-
-</details>
-
-<details>
-  <summary><b>Community Maintained Packages</b></summary>
-
-Available via [pkgx](https://pkgx.sh/). Package script [here](https://github.com/pkgxdev/pantry/blob/main/projects/supabase.com/cli/package.yml).
-To install in your working directory:
-
-```bash
-pkgx install supabase
-```
-
-Available via [Nixpkgs](https://nixos.org/). Package script [here](https://github.com/NixOS/nixpkgs/blob/master/pkgs/development/tools/supabase-cli/default.nix).
-
-</details>
-
-### Run the CLI
-
-```bash
-supabase bootstrap
-```
-
-Or using npx:
-
-```bash
-npx supabase bootstrap
-```
-
-The bootstrap command will guide you through the process of setting up a Supabase project using one of the [starter](https://github.com/supabase-community/supabase-samples/blob/main/samples.json) templates.
-
-## Docs
-
-Command & config reference can be found [here](https://supabase.com/docs/reference/cli/about).
-
-## Breaking changes
-
-We follow semantic versioning for changes that directly impact CLI commands, flags, and configurations.
-
-However, due to dependencies on other service images, we cannot guarantee that schema migrations, seed.sql, and generated types will always work for the same CLI major version. If you need such guarantees, we encourage you to pin a specific version of CLI in package.json.
-
-## Developing
-
-To run from source:
-
-```sh
-# Go >= 1.22
-go run . help
-```
+MIT © jiggoo0
+`
