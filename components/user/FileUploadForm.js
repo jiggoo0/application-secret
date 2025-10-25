@@ -62,12 +62,12 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
       /** @type {UploadResponse} */
       const data = res.data;
 
-      if (!data.url) throw new Error(data.error || 'Upload failed');
+      if (!data.url) throw new Error(data.error || 'การอัปโหลดล้มเหลว');
 
       setFileUrl(data.url);
     } catch (err) {
-      console.error('[FileUploadForm] ❌ Upload failed:', err);
-      setError(err.response?.data?.error || err.message || 'เกิดข้อผิดพลาด');
+      console.error('[FileUploadForm] Upload failed:', err);
+      setError(err.response?.data?.error || err.message || 'เกิดข้อผิดพลาดในการอัปโหลด');
     } finally {
       setUploading(false);
     }
@@ -100,9 +100,7 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
       {/* Preview / Success Message */}
       {fileUrl && (
         <div className="mt-2 space-y-2">
-          <p className="text-sm font-medium text-green-600 dark:text-green-400">
-            ✅ อัปโหลดสำเร็จ!
-          </p>
+          <p className="text-sm font-medium text-green-600 dark:text-green-400">อัปโหลดสำเร็จ</p>
 
           {fileType === 'image' && (
             <div className="relative max-h-80 w-full">
@@ -112,7 +110,7 @@ export default function FileUploadForm({ endpoint = '/api/uploads' }) {
                 fill
                 style={{ objectFit: 'contain' }}
                 className="rounded border border-gray-300 dark:border-gray-600"
-                unoptimized // ถ้าใช้ลิงก์จาก Supabase
+                unoptimized
               />
             </div>
           )}

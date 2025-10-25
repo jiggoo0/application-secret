@@ -1,6 +1,19 @@
 'use client';
 
 import Image from 'next/image';
+import {
+  FileText,
+  CheckCircle,
+  Clock,
+  Shuffle,
+  Map,
+  Target,
+  MessageCircle,
+  User2,
+  Mail,
+  BadgeCheck,
+} from 'lucide-react';
+
 import DashboardSection from '@/components/shared/DashboardSection';
 import FileUploadForm from '@/components/user/FileUploadForm';
 import RoadmapSummary from '@/components/user/RoadmapSummary';
@@ -37,37 +50,37 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
   const DASHBOARD_SECTIONS = [
     {
       title: 'อัปโหลดเอกสารเพิ่มเติม',
-      icon: 'FileText',
+      icon: FileText,
       component: <FileUploadForm {...sectionProps} />,
     },
     {
       title: 'ประกาศผล',
-      icon: 'CheckCircle',
+      icon: CheckCircle,
       component: <ResultAnnouncement {...sectionProps} />,
     },
     {
       title: 'ประวัติการเข้าใช้งาน',
-      icon: 'Clock',
+      icon: Clock,
       component: <UserSessionHistory {...sectionProps} />,
     },
     {
       title: 'รายงานผลการดำเนินงาน',
-      icon: 'Shuffle',
+      icon: Shuffle,
       component: <RandomTransactionTable {...sectionProps} />,
     },
     {
       title: 'แผนงานโดยรวม',
-      icon: 'Map',
+      icon: Map,
       component: <RoadmapSummary roadmap={roadmap} />,
     },
     {
       title: 'เป้าหมายที่ตั้งไว้',
-      icon: 'Target',
+      icon: Target,
       component: <TargetBreakdown targets={targets} />,
     },
     {
-      title: 'CHAT ROOM JP51I0',
-      icon: 'MessageCircle',
+      title: 'Chat Room JP51I0',
+      icon: MessageCircle,
       component: <ChatRoom roomId="main-room" {...sectionProps} />,
     },
   ];
@@ -92,15 +105,21 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
           ยินดีต้อนรับ <span className="text-blue-600 dark:text-blue-400">{user.name}</span>
         </h1>
 
-        <div className="w-full max-w-md rounded-md bg-gray-100 p-4 text-left dark:bg-gray-800">
-          <p>
+        <div className="w-full max-w-md space-y-2 rounded-md bg-gray-100 p-4 text-left dark:bg-gray-800">
+          <p className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <User2 className="h-4 w-4" />
             <strong>ชื่อ:</strong> {user.name}
           </p>
-          <p>
+          <p className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <Mail className="h-4 w-4" />
             <strong>Email:</strong> {user.email}
           </p>
-          <p>
-            <strong>Role:</strong> {user.role}
+          <p className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+            <BadgeCheck className="h-4 w-4" />
+            <strong>Role:</strong>{' '}
+            <span className="rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-800 dark:text-green-200">
+              {user.role}
+            </span>
           </p>
         </div>
 
@@ -125,8 +144,8 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
 
       {/* Dashboard Grid */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        {DASHBOARD_SECTIONS.map(({ title, icon, component }) => (
-          <DashboardSection key={title} title={title} iconName={icon}>
+        {DASHBOARD_SECTIONS.map(({ title, icon: Icon, component }) => (
+          <DashboardSection key={title} title={title} icon={<Icon className="h-5 w-5" />}>
             {component}
           </DashboardSection>
         ))}

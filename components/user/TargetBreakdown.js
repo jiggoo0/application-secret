@@ -21,7 +21,7 @@ export default function TargetBreakdown({ targets = [] }) {
   if (!Array.isArray(targets) || targets.length === 0) {
     return (
       <Alert variant="default" className="text-sm text-muted-foreground">
-        ไม่มีข้อมูลเป้าหมาย
+        ไม่พบข้อมูลเป้าหมาย
       </Alert>
     );
   }
@@ -31,16 +31,16 @@ export default function TargetBreakdown({ targets = [] }) {
       ? new Intl.NumberFormat('th-TH', { maximumFractionDigits: 2 }).format(value)
       : value;
 
-  const statusLabel = 'เริ่มดำเนินการ';
+  const statusLabel = 'กำลังดำเนินการ';
   const statusVariant = 'warning';
 
   return (
     <div className="space-y-4">
-      {/* Summary Header */}
+      {/* Header */}
       <Card className="border border-gray-200 dark:border-gray-700">
         <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
           <h3 className="text-base font-medium text-gray-800 dark:text-white">
-            รายชื่อลูกค้า ตามแผนดำเนินการวันที่ 23 ตุลาคม 2568
+            รายการเป้าหมายตามแผนดำเนินการวันที่ 23 ตุลาคม 2568
           </h3>
           <Badge variant="outline">{targets.length} รายการ</Badge>
         </CardHeader>
@@ -56,14 +56,14 @@ export default function TargetBreakdown({ targets = [] }) {
                 <th className="px-4 py-2 text-right">ยอดที่วางไว้</th>
                 <th className="px-4 py-2 text-right">ยอดที่ได้รับ</th>
                 <th className="px-4 py-2 text-center">สถานะ</th>
-                <th className="px-4 py-2 text-center">ค่าดำเนินงาน</th>
+                <th className="px-4 py-2 text-center">หน่วย</th>
               </tr>
             </thead>
             <tbody>
               {targets.map((item, idx) => (
                 <tr
                   key={idx}
-                  className="hover:bg-muted/50 border-t border-gray-200 transition dark:border-gray-700"
+                  className="border-t border-gray-200 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-900"
                 >
                   <td className="break-words px-4 py-2">{item.name || '—'}</td>
                   <td className="px-4 py-2 text-right">{formatNumber(item.target)}</td>
@@ -98,7 +98,7 @@ export default function TargetBreakdown({ targets = [] }) {
               <Badge variant={statusVariant}>{statusLabel}</Badge>
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-300">
-              ค่าดำเนินงาน: {item.unit || '—'}
+              หน่วย: {item.unit || '—'}
             </div>
           </div>
         ))}

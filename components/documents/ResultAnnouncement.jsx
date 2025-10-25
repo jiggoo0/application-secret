@@ -3,9 +3,9 @@
 import { useEffect, useState } from 'react';
 
 const STATUS_COLORS = {
-  ผ่าน: 'text-green-600',
-  ไม่ผ่าน: 'text-red-600',
-  เอกสารมีปัญหา: 'text-yellow-600',
+  ผ่าน: 'text-green-600 dark:text-green-400',
+  ไม่ผ่าน: 'text-red-600 dark:text-red-400',
+  เอกสารมีปัญหา: 'text-yellow-600 dark:text-yellow-400',
 };
 
 export default function ResultAnnouncement() {
@@ -17,12 +17,12 @@ export default function ResultAnnouncement() {
     const fetchResults = async () => {
       try {
         const res = await fetch('/data/results.json');
-        if (!res.ok) throw new Error('ไม่สามารถโหลดข้อมูลได้');
+        if (!res.ok) throw new Error('ไม่สามารถโหลดข้อมูลผลประกาศ');
         const data = await res.json();
         setResults(data);
       } catch (err) {
-        console.error('❌ Failed to fetch results:', err);
-        setError(err.message || 'เกิดข้อผิดพลาด');
+        console.error('[ResultAnnouncement] fetch error:', err);
+        setError(err.message || 'เกิดข้อผิดพลาดในการโหลดข้อมูล');
       } finally {
         setLoading(false);
       }
@@ -31,23 +31,33 @@ export default function ResultAnnouncement() {
     fetchResults();
   }, []);
 
-  if (loading)
-    return (
-      <p className="py-6 text-center text-gray-500 dark:text-gray-400">⏳ กำลังโหลดผลประกาศ...</p>
-    );
-
-  if (error) return <p className="py-6 text-center text-red-500 dark:text-red-400">❌ {error}</p>;
-
-  if (!results.length)
-    return <p className="py-6 text-center text-gray-500 dark:text-gray-400">ไม่พบข้อมูลผลประกาศ</p>;
-
   const Note = () => (
     <p className="mt-4 px-2 text-xs text-gray-500 dark:text-gray-400 md:px-4">
-      หมายเหตุ: รายละเอียดที่แจ้งไปคือรายละเอียดที่ทางสินเชื่อนั้นๆ ตอบกลับทางบริษัทฯ
-      เอกสารหรือบัตรสำคัญจะส่งถึงภายใน 3-7 วันทำการหลังบริษัทฯ รับเอกสาร
-      กรุณาติดต่อแอดมินหากมีข้อสงสัย
+      หมายเหตุ: รายละเอียดที่แสดงเป็นข้อมูลที่ได้รับจากฝ่ายสินเชื่อ
+      เอกสารหรือบัตรสำคัญจะถูกจัดส่งภายใน 3–7 วันทำการหลังจากบริษัทได้รับเอกสารครบถ้วน หากมีข้อสงสัย
+      กรุณาติดต่อผู้ดูแลระบบ
     </p>
   );
+
+  if (loading) {
+    return (
+      <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        กำลังโหลดข้อมูลผลประกาศ...
+      </p>
+    );
+  }
+
+  if (error) {
+    return <p className="py-6 text-center text-sm text-red-500 dark:text-red-400">{error}</p>;
+  }
+
+  if (!results.length) {
+    return (
+      <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        ไม่พบข้อมูลผลประกาศ
+      </p>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -74,11 +84,7 @@ export default function ResultAnnouncement() {
                 <td className="px-4 py-2 font-medium">{r.id}</td>
                 <td className="px-4 py-2">{r.name}</td>
                 <td className="px-4 py-2">{r.uploadedAt}</td>
-                <td
-                  className={`px-4 py-2 font-semibold ${
-                    STATUS_COLORS[r.status] || 'text-gray-600 dark:text-gray-300'
-                  }`}
-                >
+                <td className={`px-4 py-2 font-semibold ${STATUS_COLORS[r.status] || ''}`}>
                   {r.status}
                 </td>
               </tr>
@@ -106,13 +112,7 @@ export default function ResultAnnouncement() {
             <p className="font-medium">รหัส: {r.id}</p>
             <p>ชื่อ: {r.name}</p>
             <p>วันที่: {r.uploadedAt}</p>
-            <p
-              className={`font-semibold ${
-                STATUS_COLORS[r.status] || 'text-gray-600 dark:text-gray-300'
-              }`}
-            >
-              สถานะ: {r.status}
-            </p>
+            <p className={`font-semibold ${STATUS_COLORS[r.status] || ''}`}>สถานะ: {r.status}</p>
           </div>
         ))}
         <Note />

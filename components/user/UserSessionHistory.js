@@ -21,7 +21,7 @@ export default function UserSessionHistory() {
       const res = await axios.get('/api/user/sessions?limit=5');
       setSessions(Array.isArray(res.data) ? res.data : []);
     } catch (err) {
-      console.error('[UserSessionHistory] ❌', err);
+      console.error('[UserSessionHistory] fetch error:', err);
       setError('ไม่สามารถโหลดข้อมูลประวัติการเข้าสู่ระบบ');
     } finally {
       setLoading(false);
@@ -31,7 +31,7 @@ export default function UserSessionHistory() {
   if (loading) {
     return (
       <div className="space-y-2 py-6">
-        {[...Array(3)].map((_, i) => (
+        {Array.from({ length: 3 }).map((_, i) => (
           <Skeleton key={i} className="h-6 w-full rounded bg-gray-200 dark:bg-gray-700" />
         ))}
       </div>
@@ -49,7 +49,7 @@ export default function UserSessionHistory() {
   if (!sessions.length) {
     return (
       <p className="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
-        ไม่มีประวัติการเข้าสู่ระบบ
+        ไม่พบประวัติการเข้าสู่ระบบ
       </p>
     );
   }
@@ -62,19 +62,22 @@ export default function UserSessionHistory() {
             <th className="border px-4 py-2">การกระทำ</th>
             <th className="border px-4 py-2">IP Address</th>
             <th className="border px-4 py-2">อุปกรณ์</th>
-            <th className="border px-4 py-2">เวลา</th>
+            <th className="border px-4 py-2">วันเวลา</th>
           </tr>
         </thead>
         <tbody>
           {sessions.map((s) => (
-            <tr key={s.id} className="border-b border-gray-200 text-center dark:border-gray-700">
-              <td className="px-4 py-2 capitalize">{s.action}</td>
+            <tr
+              key={s.id}
+              className="border-b border-gray-200 text-center transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-900"
+            >
+              <td className="px-4 py-2 capitalize">{s.action || '-'}</td>
               <td className="px-4 py-2">{s.ip_address || '-'}</td>
               <td className="px-4 py-2">{s.user_agent || '-'}</td>
               <td className="px-4 py-2">
                 {s.created_at
                   ? new Date(s.created_at).toLocaleString('th-TH', {
-                      dateStyle: 'short',
+                      dateStyle: 'medium',
                       timeStyle: 'short',
                     })
                   : '-'}

@@ -23,14 +23,6 @@ const nextConfig = {
     ],
   },
 
-  // ⚡ Turbopack configuration
-  turbopack: {
-    enabled: isVercel,
-    rules: {
-      '*.mdx': ['@mdx-js/loader'],
-    },
-  },
-
   // 🧪 Experimental features
   experimental: {
     serverActions: {}, // ✅ ต้องเป็น object
@@ -40,6 +32,11 @@ const nextConfig = {
       '@radix-ui/react-tooltip',
       '@radix-ui/react-dialog',
     ],
+    turbopack: {
+      rules: {
+        '*.mdx': ['@mdx-js/loader'],
+      },
+    },
   },
 
   // ✅ Typed routes (moved out of experimental)

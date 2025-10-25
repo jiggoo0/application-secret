@@ -18,7 +18,6 @@ export default function ChatInput({ onSend, disabled = false }) {
   };
 
   const handleKeyDown = (e) => {
-    // ✅ Enter เพื่อส่ง, Shift+Enter เพื่อขึ้นบรรทัดใหม่
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSubmit(e);
@@ -44,11 +43,11 @@ export default function ChatInput({ onSend, disabled = false }) {
       <Button
         type="submit"
         disabled={disabled || !text.trim()}
-        className="flex items-center justify-center gap-1 rounded-xl bg-blue-600 px-4 py-2 text-white shadow-md transition-all duration-200 hover:bg-blue-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-500 dark:hover:bg-blue-600 sm:px-5 sm:py-2.5"
+        className="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2 text-white shadow-md transition-all duration-200 hover:bg-blue-700 active:scale-95 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-500 dark:hover:bg-blue-600 sm:px-5 sm:py-2.5"
         aria-label="ส่งข้อความ"
       >
-        <span className="hidden sm:inline">ส่ง</span>
-        <Send className="h-4 w-4 sm:h-5 sm:w-5" />
+        <Send className="h-5 w-5" />
+        <span className="hidden sm:inline-block">ส่ง</span>
       </Button>
     </form>
   );

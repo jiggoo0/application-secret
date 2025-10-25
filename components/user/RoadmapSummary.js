@@ -22,7 +22,7 @@ export default function RoadmapSummary({ roadmap = [] }) {
   if (!Array.isArray(roadmap) || roadmap.length === 0) {
     return (
       <Alert variant="default" className="text-sm text-muted-foreground">
-        ไม่มีข้อมูล Roadmap
+        ไม่พบข้อมูลแผนงาน
       </Alert>
     );
   }
@@ -36,12 +36,10 @@ export default function RoadmapSummary({ roadmap = [] }) {
     const s = status?.toLowerCase();
     if (s?.includes('เสร็จสิ้น')) return 'success';
     if (s?.includes('รอดำเนินการ')) return 'secondary';
-    return 'warning'; // เริ่มดำเนินการ
+    return 'warning';
   };
 
-  const formatStatusLabel = (status) => {
-    return status || 'เริ่มดำเนินการ';
-  };
+  const formatStatusLabel = (status) => status || 'เริ่มดำเนินการ';
 
   const formatRange = (range) => {
     try {
@@ -54,12 +52,10 @@ export default function RoadmapSummary({ roadmap = [] }) {
 
   return (
     <div className="space-y-4">
-      {/* Summary Header */}
+      {/* Header */}
       <Card className="border border-gray-200 dark:border-gray-700">
         <CardHeader className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <h3 className="text-base font-medium text-gray-800 dark:text-white">
-            รายการ Roadmap ทั้งหมด
-          </h3>
+          <h3 className="text-base font-medium text-gray-800 dark:text-white">สรุปแผนงานทั้งหมด</h3>
           <Badge variant="outline">{roadmap.length} รายการ</Badge>
         </CardHeader>
       </Card>
@@ -81,7 +77,7 @@ export default function RoadmapSummary({ roadmap = [] }) {
               {roadmap.map((item, idx) => (
                 <tr
                   key={idx}
-                  className="hover:bg-muted/50 border-t border-gray-200 transition dark:border-gray-700"
+                  className="border-t border-gray-200 transition hover:bg-gray-50 dark:border-gray-700 dark:hover:bg-gray-900"
                 >
                   <td className="break-words px-4 py-2">{item.title || '—'}</td>
                   <td className="px-4 py-2 text-right">{formatNumber(item.target)}</td>

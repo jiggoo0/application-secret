@@ -38,7 +38,7 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
       setData(json);
       setError('');
     } catch (err) {
-      console.error('[RandomTransactionTable] ❌ fetch failed:', err);
+      console.error('[RandomTransactionTable] fetch failed:', err);
       setData([]);
       setError('ไม่สามารถโหลดข้อมูลธุรกรรมได้');
     } finally {
@@ -70,7 +70,7 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
 
   return (
     <div className="space-y-4">
-      {error && <p className="text-center text-sm text-red-500 dark:text-red-400">{error}</p>}
+      {error && <div className="text-center text-sm text-red-500 dark:text-red-400">{error}</div>}
 
       <div className="overflow-x-auto rounded-lg border border-gray-200 shadow-sm dark:border-gray-700">
         <Table className="min-w-[640px] text-sm">
@@ -103,14 +103,14 @@ export default function RandomTransactionTable({ refreshInterval = 5000 }) {
                   colSpan={headers.length}
                   className="p-4 text-center text-sm text-gray-500 dark:text-gray-400"
                 >
-                  ไม่มีข้อมูลรายการ
+                  ไม่พบข้อมูลธุรกรรม
                 </TableCell>
               </TableRow>
             ) : (
               data.map((row) => (
                 <TableRow
                   key={row.id}
-                  className="transition hover:bg-gray-50 dark:hover:bg-gray-900"
+                  className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-900"
                 >
                   <TableCell className="px-4 py-2">{row.customer || '—'}</TableCell>
                   <TableCell className="px-4 py-2">{row.product || '—'}</TableCell>
