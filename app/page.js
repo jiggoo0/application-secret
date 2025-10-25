@@ -59,10 +59,11 @@ export const viewport = {
 };
 
 /**
- * หน้าแรกของเว็บไซต์ JP Visual & Docs
- * - ใช้ layout แบบเต็มหน้าจอ
- * - รองรับ Tailwind theme และ accessibility
- * - พร้อมสำหรับ future expansion เช่น analytics, i18n, structured data
+ * 🏠 หน้าแรกของเว็บไซต์ JP Visual & Docs
+ * ----------------------------------------------------
+ * ✅ ใช้ layout แบบเต็มหน้าจอ
+ * ✅ รองรับ Tailwind theme และ accessibility
+ * ✅ พร้อมสำหรับ future expansion เช่น analytics, i18n, structured data
  */
 export default function Page() {
   return (
@@ -70,7 +71,7 @@ export default function Page() {
       id="main-content"
       role="main"
       aria-label="เนื้อหาหลัก"
-      className="min-h-screen bg-base-100 text-base-content antialiased"
+      className="min-h-screen w-full bg-background text-foreground antialiased transition-colors duration-300"
     >
       <HomePage />
     </main>

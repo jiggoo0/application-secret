@@ -69,7 +69,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
           <button
             type="button"
             onClick={onClose}
-            className="btn btn-outline btn-sm"
+            className="btn-outline btn btn-sm"
             aria-label="ปิดหน้าต่าง"
           >
             ปิด

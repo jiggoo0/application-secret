@@ -12,7 +12,7 @@ import { motion, useAnimation } from 'framer-motion';
 // 🧠 Dynamic Imports (SSR: false) + Loading fallback
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
-    <div className="animate-pulse py-24 text-center text-gray-500 dark:text-gray-400">
+    <div className="animate-pulse py-24 text-center text-muted-foreground">
       🔄 กำลังโหลด Hero...
     </div>
   ),
@@ -21,7 +21,7 @@ const Hero = dynamic(() => import('@/components/Hero/Hero'), {
 
 const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
   loading: () => (
-    <div className="animate-pulse py-24 text-center text-gray-500 dark:text-gray-400">
+    <div className="animate-pulse py-24 text-center text-muted-foreground">
       💬 กำลังโหลดรีวิว...
     </div>
   ),
@@ -30,7 +30,7 @@ const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
 
 const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   loading: () => (
-    <div className="animate-pulse py-24 text-center text-gray-500 dark:text-gray-400">
+    <div className="animate-pulse py-24 text-center text-muted-foreground">
       📰 กำลังโหลดบทความ...
     </div>
   ),
@@ -94,7 +94,7 @@ export default function HomePage() {
         id="main-content"
         role="main"
         aria-label="เนื้อหาหลัก"
-        className="flex flex-col gap-20 bg-white text-gray-900 transition-colors duration-300 dark:bg-gray-950 dark:text-gray-100 sm:gap-28 lg:gap-36"
+        className="flex flex-col gap-20 bg-background text-foreground transition-colors duration-300 sm:gap-28 lg:gap-36"
       >
         {sections.map(({ id, Component, props }) => (
           <motion.section
@@ -105,7 +105,11 @@ export default function HomePage() {
             animate={controls}
             variants={{
               hidden: { opacity: 0, y: 40 },
-              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.5, ease: 'easeOut' },
+              },
             }}
             viewport={{ once: true, amount: 0.2 }}
             className="w-full"

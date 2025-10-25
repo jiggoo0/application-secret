@@ -141,7 +141,7 @@ export default function ReviewCarousel({
             <button
               onClick={loadMore}
               disabled={loading}
-              className={`btn btn-primary px-6 py-3 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
+              className={`btn-primary btn px-6 py-3 ${loading ? 'cursor-not-allowed opacity-50' : ''}`}
               aria-label="โหลดรีวิวเพิ่มเติม"
             >
               {loading ? 'กำลังโหลด...' : 'โหลดรีวิวเพิ่มเติม'}

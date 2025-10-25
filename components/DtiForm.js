@@ -133,7 +133,7 @@ export default function DtiForm({ saveEnabled = false }) {
           name="income"
           inputMode="numeric"
           pattern="[0-9,]*"
-          className="input input-bordered w-full"
+          className="input-bordered input w-full"
           value={income}
           onChange={(e) => setIncome(e.target.value)}
           placeholder="เช่น 25,000"
@@ -163,7 +163,7 @@ export default function DtiForm({ saveEnabled = false }) {
               name={key}
               inputMode="numeric"
               pattern="[0-9,]*"
-              className="input input-bordered w-full"
+              className="input-bordered input w-full"
               value={debts[key]}
               onChange={(e) => setDebts((prev) => ({ ...prev, [key]: e.target.value }))}
               placeholder="เช่น 3,500"
@@ -186,7 +186,7 @@ export default function DtiForm({ saveEnabled = false }) {
               name="dependents"
               type="number"
               min={0}
-              className="input input-bordered w-full"
+              className="input-bordered input w-full"
               value={dependents}
               onChange={(e) => setDependents(e.target.value)}
               placeholder="เช่น 2"
@@ -201,7 +201,7 @@ export default function DtiForm({ saveEnabled = false }) {
               name="contributors"
               type="number"
               min={0}
-              className="input input-bordered w-full"
+              className="input-bordered input w-full"
               value={contributors}
               onChange={(e) => setContributors(e.target.value)}
               placeholder="เช่น 1"
@@ -212,7 +212,7 @@ export default function DtiForm({ saveEnabled = false }) {
 
       {/* Actions */}
       <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-        <button type="submit" className="btn btn-primary" disabled={loading} aria-label="คำนวณ DTI">
+        <button type="submit" className="btn-primary btn" disabled={loading} aria-label="คำนวณ DTI">
           {loading ? 'กำลังบันทึก...' : 'คำนวณ'}
         </button>
 

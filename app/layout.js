@@ -18,27 +18,27 @@ import { Toaster } from '@/components/ui/sonner';
  * ✅ Semantic structure & accessibility ready
  */
 export default function RootLayout({ children }) {
-  const [themeLoaded, setThemeLoaded] = useState(false);
+  const [themeReady, setThemeReady] = useState(false);
 
   useEffect(() => {
     try {
-      const storedTheme = localStorage.getItem('theme');
+      const stored = localStorage.getItem('theme');
       const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const isDark = storedTheme === 'dark' || (!storedTheme && prefersDark);
+      const isDark = stored === 'dark' || (!stored && prefersDark);
 
-      document.documentElement.classList.toggle('dark', isDark);
-      document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
-      document.documentElement.style.backgroundColor = isDark ? '#0f172a' : '#ffffff';
+      const root = document.documentElement;
+      root.classList.toggle('dark', isDark);
+      root.style.colorScheme = isDark ? 'dark' : 'light';
+      root.style.backgroundColor = isDark ? '#0f172a' : '#ffffff';
 
-      // ลด flash effect โดยรอ frame แรกก่อน render
-      requestAnimationFrame(() => setThemeLoaded(true));
-    } catch (err) {
-      console.error('[RootLayout:theme-init]', err);
-      setThemeLoaded(true);
+      requestAnimationFrame(() => setThemeReady(true));
+    } catch (error) {
+      console.error('[RootLayout] Theme init error:', error);
+      setThemeReady(true);
     }
   }, []);
 
-  if (!themeLoaded) {
+  if (!themeReady) {
     return (
       <html lang="th" dir="ltr" suppressHydrationWarning>
         <body
@@ -55,13 +55,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="th" dir="ltr" suppressHydrationWarning>
       <body
-        className={`${inter.className} flex min-h-screen flex-col bg-base-100 text-base-content antialiased transition-colors duration-300`}
+        className={`${inter.className} flex min-h-screen flex-col bg-background text-foreground antialiased transition-colors duration-300`}
       >
         <Providers>
           {/* 🔝 Header */}
           <header
             role="banner"
-            className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/70 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 dark:border-gray-800 dark:bg-gray-900/70"
+            className="sticky top-0 z-40 w-full border-b border-border bg-white/70 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 dark:bg-gray-900/70"
           >
             <Header />
           </header>
@@ -78,7 +78,7 @@ export default function RootLayout({ children }) {
           {/* 🔚 Footer */}
           <footer
             role="contentinfo"
-            className="border-t border-gray-200 bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:border-gray-800 dark:bg-gray-950/60"
+            className="border-t border-border bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:bg-gray-950/60"
           >
             <Footer />
           </footer>

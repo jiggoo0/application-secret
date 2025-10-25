@@ -2,191 +2,83 @@
 const plugin = require('tailwindcss/plugin');
 const theme = require('./config/theme.js');
 
+const isTermux = !!process.env.TERMUX;
+
 module.exports = {
   content: [
-    './app/**/*.{js,jsx}',
-    './components/**/*.{js,jsx}',
-    './lib/**/*.{js,jsx}',
-    './pages/**/*.{js,jsx}',
-    './utils/**/*.{js,jsx}',
-    './hooks/**/*.{js,jsx}',
+    './app/**/*.{js,ts,jsx,tsx}',
+    './components/**/*.{js,ts,jsx,tsx}',
+    './lib/**/*.{js,ts,jsx,tsx}',
+    './utils/**/*.{js,ts,jsx,tsx}',
+    './hooks/**/*.{js,ts,jsx,tsx}',
     './public/**/*.html',
   ],
   darkMode: 'class',
   theme: {
     extend: {
-      colors: {
-        ...theme.colors,
-        background: 'hsl(var(--background, 0 0% 100%))',
-        foreground: 'hsl(var(--foreground, 0 0% 7%))',
-        card: 'hsl(var(--card, 0 0% 100%))',
-        'card-foreground': 'hsl(var(--card-foreground, 0 0% 7%))',
-        popover: 'hsl(var(--popover, 0 0% 100%))',
-        'popover-foreground': 'hsl(var(--popover-foreground, 0 0% 7%))',
-        primary: 'hsl(var(--primary, 0 0% 9%))',
-        'primary-hover': 'hsl(var(--primary-hover, 220 60% 40%))',
-        'primary-foreground': 'hsl(var(--primary-foreground, 0 0% 98%))',
-        secondary: 'hsl(var(--secondary, 0 0% 96.1%))',
-        'secondary-foreground': 'hsl(var(--secondary-foreground, 0 0% 12%))',
-        accent: 'hsl(var(--accent, 0 0% 96.1%))',
-        'accent-foreground': 'hsl(var(--accent-foreground, 0 0% 12%))',
-        muted: 'hsl(var(--muted, 0 0% 96.1%))',
-        'muted-foreground': 'hsl(var(--muted-foreground, 0 0% 30%))',
-        destructive: 'hsl(var(--destructive, 0 84.2% 60.2%))',
-        'destructive-foreground': 'hsl(var(--destructive-foreground, 0 0% 98%))',
-        border: 'hsl(var(--border, 0 0% 89.8%))',
-        input: 'hsl(var(--input, 0 0% 89.8%))',
-        ring: 'hsl(var(--ring, 0 0% 7%))',
-        neutral: 'hsl(var(--neutral, 210 16% 90%))',
-        success: 'hsl(var(--success, 160 70% 40%))',
-        warning: 'hsl(var(--warning, 43 90% 60%))',
-        error: 'hsl(var(--error, 0 70% 45%))',
-        chart: {
-          1: 'hsl(var(--chart-1, 12 76% 61%))',
-          2: 'hsl(var(--chart-2, 173 58% 39%))',
-          3: 'hsl(var(--chart-3, 197 37% 24%))',
-          4: 'hsl(var(--chart-4, 43 74% 66%))',
-          5: 'hsl(var(--chart-5, 27 87% 67%))',
+      ...theme,
+      container: {
+        center: true,
+        padding: {
+          DEFAULT: '1rem',
+          sm: '1.5rem',
+          lg: '2rem',
+          xl: '2.5rem',
         },
       },
-      borderRadius: {
-        ...theme.borderRadius,
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+      gridTemplateColumns: {
+        layout: 'repeat(auto-fit, minmax(280px, 1fr))',
       },
-      boxShadow: {
-        ...theme.boxShadow,
-        inset: 'var(--shadow-inset)',
-        hover: 'var(--shadow-hover)',
-        card: 'var(--shadow-card)',
+      maxWidth: {
+        'screen-xl': '1280px',
+        'screen-2xl': '1536px',
       },
-      fontFamily: {
-        sans: theme.fontFamily.sans,
-        heading: theme.fontFamily.heading,
-        mono: theme.fontFamily.mono,
+      minHeight: {
+        screen: '100vh',
       },
-      fontSize: {
-        ...theme.fontSize,
-        h1: theme.fontSize.h1,
-        h2: theme.fontSize.h2,
-        h3: theme.fontSize.h3,
+      transitionProperty: {
+        layout: 'margin, padding, width, height',
       },
-      fontWeight: {
-        ...theme.fontWeight,
+      lineHeight: {
+        relaxed: '1.75',
+        tight: '1.25',
       },
-      spacing: {
-        ...theme.spacing,
-      },
-      zIndex: {
-        ...theme.zIndex,
-      },
-      screens: {
-        ...theme.screens,
-      },
-      opacity: {
-        ...theme.opacity,
-      },
-      transitionDuration: {
-        fast: '200ms',
-        normal: '300ms',
-      },
-      transitionTimingFunction: {
-        fast: 'ease-in-out',
-        normal: 'ease',
+      aspectRatio: {
+        square: '1 / 1',
+        video: '16 / 9',
       },
     },
   },
   plugins: [
     require('@tailwindcss/forms'),
     require('@tailwindcss/typography'),
-    require('daisyui'),
     require('tailwindcss-animate'),
-    plugin(({ addUtilities, theme }) => {
-      addUtilities(
-        {
-          '.btn': {
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontWeight: theme('fontWeight.medium'),
-            borderRadius: theme('borderRadius.md'),
-            padding: `${theme('spacing.sm')} ${theme('spacing.md')}`,
-            border: `1px solid ${theme('colors.border')}`,
-            boxShadow: theme('boxShadow.inset'),
-            transitionProperty: 'all',
-            transitionDuration: theme('transitionDuration.fast'),
-            transitionTimingFunction: theme('transitionTimingFunction.fast'),
-            backgroundColor: theme('colors.background'),
-            color: theme('colors.foreground'),
+    require('daisyui'),
+    plugin(({ addComponents, theme }) => {
+      addComponents({
+        '.container': {
+          width: '100%',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+          paddingLeft: theme('spacing.4'),
+          paddingRight: theme('spacing.4'),
+          [`@media (min-width: ${theme('screens.sm')})`]: {
+            maxWidth: '640px',
           },
-          '.btn-primary': {
-            backgroundColor: theme('colors.primary'),
-            color: theme('colors.primary-foreground'),
-            borderColor: theme('colors.primary'),
+          [`@media (min-width: ${theme('screens.md')})`]: {
+            maxWidth: '768px',
           },
-          '.btn-primary:hover': {
-            backgroundColor: theme('colors.primary-hover'),
-            boxShadow: theme('boxShadow.hover'),
+          [`@media (min-width: ${theme('screens.lg')})`]: {
+            maxWidth: '1024px',
           },
-          '.btn-secondary': {
-            backgroundColor: theme('colors.secondary'),
-            color: theme('colors.secondary-foreground'),
-            borderColor: theme('colors.secondary'),
+          [`@media (min-width: ${theme('screens.xl')})`]: {
+            maxWidth: '1280px',
           },
-          '.btn-secondary:hover': {
-            backgroundColor: theme('colors.accent'),
-            boxShadow: theme('boxShadow.hover'),
-          },
-          '.btn-outline': {
-            backgroundColor: 'transparent',
-            color: theme('colors.primary'),
-            borderColor: theme('colors.primary'),
-          },
-          '.btn-outline:hover': {
-            backgroundColor: theme('colors.primary-hover'),
-            color: theme('colors.primary-foreground'),
-          },
-          '.btn-disabled': {
-            opacity: theme('opacity.50'),
-            cursor: 'not-allowed',
-            pointerEvents: 'none',
-          },
-          '.card': {
-            backgroundColor: theme('colors.surface'),
-            borderRadius: theme('borderRadius.lg'),
-            boxShadow: theme('boxShadow.card'),
-            border: `1px solid ${theme('colors.border')}`,
-            padding: theme('spacing.lg'),
-            transition: 'box-shadow 0.2s ease-in-out',
-          },
-          '.card:hover': {
-            boxShadow: theme('boxShadow.hover'),
-          },
-          '.badge': {
-            display: 'inline-block',
-            padding: `${theme('spacing.xs')} ${theme('spacing.sm')}`,
-            fontSize: theme('fontSize.xs'),
-            fontWeight: theme('fontWeight.medium'),
-            borderRadius: theme('borderRadius.full'),
-            backgroundColor: theme('colors.neutral'),
-            color: theme('colors.muted-foreground'),
-          },
-          '.badge-success': {
-            backgroundColor: theme('colors.success'),
-            color: theme('colors.background'),
-          },
-          '.badge-warning': {
-            backgroundColor: theme('colors.warning'),
-            color: theme('colors.foreground'),
-          },
-          '.badge-error': {
-            backgroundColor: theme('colors.error'),
-            color: theme('colors.background'),
+          [`@media (min-width: ${theme('screens.2xl')})`]: {
+            maxWidth: '1536px',
           },
         },
-        { variants: ['responsive', 'hover'] },
-      );
+      });
     }),
   ],
   daisyui: {
@@ -209,8 +101,15 @@ module.exports = {
     ],
     darkTheme: 'adosy',
     base: false,
-    styled: true,
+    styled: false,
     utils: true,
     logs: false,
   },
+  ...(isTermux && {
+    watchOptions: {
+      poll: 1000,
+      aggregateTimeout: 300,
+      ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**', '/data', '/data/data', '/'],
+    },
+  }),
 };

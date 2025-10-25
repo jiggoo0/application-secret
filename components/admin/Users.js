@@ -69,7 +69,7 @@ export default function Users() {
     <section className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-bold text-base-content">จัดการผู้ใช้งาน</h1>
-        <button onClick={fetchUsers} className="btn btn-outline btn-sm" disabled={loading}>
+        <button onClick={fetchUsers} className="btn-outline btn btn-sm" disabled={loading}>
           🔄 โหลดใหม่
         </button>
       </div>
@@ -80,11 +80,11 @@ export default function Users() {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="🔍 ค้นหาด้วยชื่อ อีเมล หรือ ID"
-          className="input input-bordered w-full max-w-sm"
+          className="input-bordered input w-full max-w-sm"
         />
         <button
           onClick={handleSearch}
-          className="btn btn-primary"
+          className="btn-primary btn"
           disabled={loading || query.trim().length < 2}
         >
           ค้นหา
