@@ -42,15 +42,16 @@ export default function HeroMetrics({ metrics }) {
           role="group"
           aria-label={label}
         >
-          <dt className="text-xl font-bold text-white sm:text-2xl md:text-3xl">{value}</dt>
-          <dd className="mt-1 text-sm text-white/70 sm:text-base md:text-lg">{label}</dd>
+          <dt className="text-2xl font-semibold text-foreground sm:text-3xl md:text-4xl">
+            {value}
+          </dt>
+          <dd className="mt-1 text-sm text-muted-foreground sm:text-base md:text-lg">{label}</dd>
         </motion.div>
       ))}
     </motion.dl>
   );
 }
 
-// ✅ PropTypes
 HeroMetrics.propTypes = {
   metrics: PropTypes.arrayOf(
     PropTypes.shape({
@@ -60,7 +61,6 @@ HeroMetrics.propTypes = {
   ),
 };
 
-// ✅ Default Props
 HeroMetrics.defaultProps = {
   metrics: [],
 };

@@ -18,10 +18,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent
-        side="right"
-        className="w-[80%] bg-white text-gray-900 dark:bg-gray-900 dark:text-gray-100 sm:w-[400px]"
-      >
+      <SheetContent side="right" className="w-[80%] bg-background text-foreground sm:w-[400px]">
         <SheetHeader>
           <SheetTitle className="text-lg font-semibold text-primary">เมนูหลัก</SheetTitle>
         </SheetHeader>
@@ -37,7 +34,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
                 className={`text-lg transition-colors ${
                   isActive
                     ? 'font-semibold text-primary'
-                    : 'text-gray-600 hover:text-primary dark:text-gray-300'
+                    : 'text-muted-foreground hover:text-primary'
                 }`}
               >
                 {label}
@@ -45,21 +42,12 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
             );
           })}
 
-          <div className="mt-8 flex flex-col gap-3 border-t border-gray-200 pt-6 dark:border-gray-700">
-            <Button
-              asChild
-              className="hover:bg-primary/90 w-full bg-primary text-white"
-              onClick={() => setIsOpen(false)}
-            >
+          <div className="mt-8 flex flex-col gap-3 border-t border-border pt-6">
+            <Button asChild className="w-full" onClick={() => setIsOpen(false)}>
               <Link href="/login">เข้าสู่ระบบ</Link>
             </Button>
 
-            <Button
-              asChild
-              variant="outline"
-              className="hover:bg-primary/10 w-full border-primary text-primary"
-              onClick={() => setIsOpen(false)}
-            >
+            <Button asChild variant="outline" className="w-full" onClick={() => setIsOpen(false)}>
               <Link href="/register">สมัครสมาชิก</Link>
             </Button>
           </div>

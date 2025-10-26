@@ -51,17 +51,15 @@ export default function Blog() {
 
   const renderContent = () => {
     if (loading) {
-      return (
-        <p className="animate-pulse text-gray-500 dark:text-gray-400">⏳ กำลังโหลดบทความ...</p>
-      );
+      return <p className="animate-pulse text-muted-foreground">⏳ กำลังโหลดบทความ...</p>;
     }
 
     if (errorMsg) {
-      return <p className="text-red-600 dark:text-red-400">❌ {errorMsg}</p>;
+      return <p className="text-destructive">❌ {errorMsg}</p>;
     }
 
     if (!articles.length) {
-      return <p className="text-gray-500 dark:text-gray-400">🚫 ยังไม่มีบทความในขณะนี้</p>;
+      return <p className="text-muted-foreground">🚫 ยังไม่มีบทความในขณะนี้</p>;
     }
 
     return (
@@ -80,7 +78,7 @@ export default function Blog() {
   return (
     <section
       aria-labelledby="blog-section-heading"
-      className="mx-auto max-w-7xl px-6 py-20 text-center"
+      className="mx-auto max-w-7xl px-4 py-20 text-foreground"
     >
       <h2 id="blog-section-heading" className="sr-only">
         รายการบทความ

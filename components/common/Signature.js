@@ -22,9 +22,9 @@ export default function Signature({ src, alt, quote }) {
         width={600}
         height={400}
         priority
-        className="mx-auto rounded-lg shadow-lg"
+        className="mx-auto rounded-md shadow-md"
       />
-      <figcaption className="text-sm italic text-gray-600 dark:text-gray-300">“{quote}”</figcaption>
+      <figcaption className="text-sm italic text-muted-foreground">“{quote}”</figcaption>
     </motion.figure>
   );
 }

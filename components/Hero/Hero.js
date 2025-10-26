@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { ShinyButton } from '@/components/ui/shiny-button';
+import { Button } from '@/components/ui/button';
 import { LineShadowText } from '@/components/ui/line-shadow-text';
 import HeroBackground from './HeroBackground';
 import HeroMetrics from './HeroMetrics';
@@ -42,13 +42,13 @@ export default function Hero({
     <section
       id="hero"
       aria-labelledby="hero-heading"
-      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-black px-4 text-center sm:px-6 lg:px-12"
+      className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden bg-background px-4 text-center sm:px-6 lg:px-12"
     >
       {/* Background Slider */}
       {background}
 
       <motion.div
-        className="relative z-20 flex w-full max-w-5xl flex-col items-center gap-6 text-white sm:gap-8 md:gap-10"
+        className="relative z-20 flex w-full max-w-5xl flex-col items-center gap-6 text-foreground sm:gap-8 md:gap-10"
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -57,14 +57,14 @@ export default function Hero({
         {/* Headline */}
         <motion.h1
           id="hero-heading"
-          className="flex flex-wrap justify-center gap-2 text-3xl font-extrabold leading-snug sm:text-4xl md:text-5xl lg:text-6xl"
+          className="flex flex-wrap justify-center gap-2 text-h1 font-bold leading-tight"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
         >
           <span>{headline}</span>
           {highlightText && (
-            <LineShadowText className="ml-2" shadowColor="rgba(255,255,255,0.3)">
+            <LineShadowText className="ml-2" shadowColor="rgba(0,0,0,0.1)">
               {highlightText}
             </LineShadowText>
           )}
@@ -73,7 +73,7 @@ export default function Hero({
         {/* Subtext */}
         {subtext && (
           <motion.p
-            className="max-w-3xl text-base leading-relaxed text-gray-100 dark:text-gray-200 sm:text-lg md:text-xl lg:text-2xl"
+            className="max-w-3xl text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
@@ -85,21 +85,22 @@ export default function Hero({
         {/* CTA Button */}
         {ctaText && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.85 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.35 }}
             className="mt-4"
           >
-            <ShinyButton
+            <Button
               onClick={(e) => {
                 e.preventDefault();
                 router.push(ctaUrl || '/login');
               }}
-              className="px-6 py-3 text-lg sm:px-8 sm:py-4 sm:text-xl"
+              size="lg"
+              variant="default"
               aria-label={`ไปยัง: ${ctaText}`}
             >
               {ctaText}
-            </ShinyButton>
+            </Button>
           </motion.div>
         )}
 

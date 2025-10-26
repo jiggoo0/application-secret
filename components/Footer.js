@@ -35,7 +35,7 @@ export default function Footer() {
 
   return (
     <footer
-      className="bg-blue-900 text-white dark:bg-blue-950 dark:text-blue-100"
+      className="border-t border-border bg-background text-muted-foreground"
       aria-labelledby="footer-heading"
       role="contentinfo"
     >
@@ -57,10 +57,10 @@ export default function Footer() {
             }}
           />
           <div className="text-center md:text-left">
-            <h2 id="footer-heading" className="text-lg font-bold">
+            <h2 id="footer-heading" className="text-lg font-semibold text-foreground">
               JP Visual & Docs
             </h2>
-            <p className="mt-1 text-sm text-blue-200 dark:text-blue-300">
+            <p className="mt-1 text-sm text-muted-foreground">
               © {currentYear} JP Visual & Docs. All rights reserved.
               <span className="sr-only">ปีปัจจุบันคือ {currentYear}</span>
             </p>
@@ -73,7 +73,7 @@ export default function Footer() {
             <li>
               <a
                 href="/privacy"
-                className="rounded transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-white motion-safe:transition-all motion-safe:duration-200"
+                className="rounded text-foreground transition hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Privacy
               </a>
@@ -81,7 +81,7 @@ export default function Footer() {
             <li>
               <a
                 href="/contact"
-                className="rounded transition-colors hover:underline focus:outline-none focus:ring-2 focus:ring-white motion-safe:transition-all motion-safe:duration-200"
+                className="rounded text-foreground transition hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 Contact
               </a>
@@ -91,7 +91,7 @@ export default function Footer() {
       </div>
 
       {/* Social Links */}
-      <address className="border-t border-blue-800 px-6 py-4 not-italic" aria-label="ช่องทางติดต่อ">
+      <address className="border-t border-border px-6 py-4 not-italic" aria-label="ช่องทางติดต่อ">
         <ul
           className="flex flex-wrap items-center justify-center gap-6"
           aria-label="ลิงก์โซเชียลมีเดีย"
@@ -102,7 +102,7 @@ export default function Footer() {
                 href={uri}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 text-white transition-colors hover:text-yellow-400 motion-safe:transition-all motion-safe:duration-200 dark:hover:text-yellow-300"
+                className="flex items-center gap-2 text-foreground transition hover:text-primary"
                 aria-label={`ติดต่อผ่าน ${label}`}
               >
                 <Icon className="text-lg" aria-hidden="true" />
@@ -114,7 +114,7 @@ export default function Footer() {
       </address>
 
       {/* Footer Note */}
-      <div className="border-t border-blue-800 px-6 py-2 text-center text-xs text-blue-300 dark:text-blue-400">
+      <div className="border-t border-border px-6 py-2 text-center text-xs text-muted-foreground">
         Designed & Developed by JP Visual & Docs
       </div>
     </footer>

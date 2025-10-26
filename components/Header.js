@@ -48,7 +48,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-white shadow-sm transition-colors dark:bg-gray-950">
+    <header className="sticky top-0 z-50 border-b border-border bg-background shadow-sm transition-colors">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:px-8">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3" aria-label="กลับสู่หน้าแรก">
@@ -60,7 +60,7 @@ export default function Header() {
             priority
             className="rounded-md"
           />
-          <span className="font-heading text-xl text-primary">JP Visual & Docs</span>
+          <span className="font-heading text-xl font-semibold text-primary">JP Visual & Docs</span>
         </Link>
 
         {/* Desktop Navigation */}
@@ -69,11 +69,9 @@ export default function Header() {
             const isHash = href.startsWith('#');
             const isActive = isHash ? activeHash === href : pathname === href;
             const base =
-              'transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary rounded-sm';
+              'transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm';
             const linkClass = `${base} ${
-              isActive
-                ? 'text-primary font-semibold'
-                : 'text-gray-600 dark:text-gray-300 hover:text-primary'
+              isActive ? 'text-primary font-semibold' : 'text-muted-foreground hover:text-primary'
             }`;
 
             return (
@@ -104,7 +102,7 @@ export default function Header() {
           {mounted && (
             <button
               onClick={toggleTheme}
-              className="ml-2 text-sm text-gray-500 transition hover:text-primary"
+              className="ml-2 text-sm text-muted-foreground transition hover:text-primary"
             >
               {resolvedTheme === 'light' ? '🌙 กลางคืน' : '☀️ กลางวัน'}
             </button>
@@ -114,7 +112,7 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen((prev) => !prev)}
-          className="text-gray-600 dark:text-gray-300 md:hidden"
+          className="text-muted-foreground md:hidden"
           aria-label="เปิด/ปิดเมนูมือถือ"
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}

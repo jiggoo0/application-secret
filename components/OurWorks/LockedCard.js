@@ -56,15 +56,15 @@ export default function LockedCard({ onUnlock }) {
   };
 
   if (loading) return <Loader />;
-  if (errorMsg) return <p className="text-red-600 dark:text-red-400">{errorMsg}</p>;
+  if (errorMsg) return <p className="text-destructive">{errorMsg}</p>;
 
   return (
     <section
       aria-labelledby="locked-card-heading"
-      className="flex flex-col items-center rounded-xl border border-gray-200 bg-gray-100 p-6 dark:border-gray-700 dark:bg-gray-800"
+      className="flex flex-col items-center rounded-lg border border-border bg-muted p-6 text-foreground"
     >
       <div className="mb-3 text-4xl">🔒</div>
-      <h3 id="locked-card-heading" className="mb-2 font-semibold text-black dark:text-white">
+      <h3 id="locked-card-heading" className="mb-2 text-lg font-semibold">
         เข้ารหัสผลงาน
       </h3>
 
@@ -73,13 +73,13 @@ export default function LockedCard({ onUnlock }) {
         value={input}
         onChange={(e) => setInput(e.target.value)}
         placeholder="ใส่รหัส..."
-        className="w-full rounded-md border border-gray-300 p-2 text-center text-sm text-gray-800 dark:border-gray-600 dark:bg-gray-900 dark:text-gray-100"
+        className="w-full rounded-md border border-input bg-background p-2 text-center text-sm text-foreground placeholder-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         aria-label="รหัสปลดล็อก"
       />
 
       <button
         onClick={handleSubmit}
-        className="hover:bg-primaryHover mt-3 w-full rounded bg-primary py-2 text-white"
+        className="mt-3 w-full rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition hover:bg-primary-hover"
       >
         ปลดล็อก
       </button>

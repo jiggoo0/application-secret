@@ -13,18 +13,18 @@ export default function AboutSection() {
       aria-labelledby="about-title"
       role="region"
       aria-label="เกี่ยวกับ JP Visual & Docs"
-      className="relative z-10 mx-auto max-w-screen-lg px-4 py-16 text-neutral-800 dark:text-neutral-100"
+      className="relative z-10 mx-auto max-w-5xl px-4 py-16 text-foreground"
     >
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={staggerContainer}
-        className="grid grid-cols-1 gap-10 md:grid-cols-2"
+        className="grid grid-cols-1 gap-12 md:grid-cols-2"
       >
         {/* 🧾 Content */}
         <motion.div variants={fadeInUp} className="space-y-6 text-base leading-relaxed">
-          <h2 id="about-title" className="text-3xl font-bold text-primary">
+          <h2 id="about-title" className="text-h2 text-primary">
             เกี่ยวกับเรา
           </h2>
 
@@ -51,7 +51,7 @@ export default function AboutSection() {
           </p>
 
           {/* 🏷️ Badges */}
-          <div className="flex flex-wrap gap-4 pt-6">
+          <div className="flex flex-wrap gap-3 pt-6">
             {['8+ ปีประสบการณ์', 'ความลับลูกค้าเป็นอันดับหนึ่ง', 'ดีไซน์เฉพาะทาง'].map((text) => (
               <motion.div key={text} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Badge text={text} />
@@ -62,7 +62,7 @@ export default function AboutSection() {
           {/* 📞 CTA Button */}
           <div className="pt-8">
             <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-              <Button href="/contact" variant="primary">
+              <Button href="/contact" variant="default">
                 ติดต่อทีมงานเจ้าป่า
               </Button>
             </motion.div>

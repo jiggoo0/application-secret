@@ -1,18 +1,12 @@
 'use client';
 
 import { useState } from 'react';
-
+import clsx from 'clsx';
+import { AlertCircle, Lightbulb, TrendingUp, TrendingDown } from 'lucide-react';
 import { calculateDTIWithThresholds, suggestIncomeOrDebtAdjustment } from '@/lib/dti';
 
-/**
- * DtiForm
- * - Controlled inputs (no uncontrolled → controlled warning)
- * - Input sanitization and simple validation
- * - Optional save flow (saveEnabled)
- * - Accessible alerts and aria-live result region
- */
 export default function DtiForm({ saveEnabled = false }) {
-  const [income, setIncome] = useState(''); // string to keep controlled
+  const [income, setIncome] = useState('');
   const [debts, setDebts] = useState({
     house: '',
     car: '',
@@ -27,9 +21,7 @@ export default function DtiForm({ saveEnabled = false }) {
   const [loading, setLoading] = useState(false);
 
   const parseNumber = (v) => {
-    if (v === null || v === undefined || v === '') {
-      return 0;
-    }
+    if (!v) return 0;
     const n = Number(String(v).replace(/[, ]+/g, ''));
     return Number.isFinite(n) ? n : 0;
   };
@@ -89,8 +81,8 @@ export default function DtiForm({ saveEnabled = false }) {
               consentSave: true,
             }),
           });
-        } catch (err) {
-          // non-fatal: show message but keep result
+        } catch {
+          // non-fatal
         } finally {
           setLoading(false);
         }
@@ -123,7 +115,7 @@ export default function DtiForm({ saveEnabled = false }) {
         แบบฟอร์มประเมิน DTI
       </h3>
 
-      {/* Income */}
+      {/* รายได้รวม */}
       <fieldset>
         <label htmlFor="income" className="mb-1 block font-medium">
           รายได้รวมต่อเดือน (บาท)
@@ -140,12 +132,12 @@ export default function DtiForm({ saveEnabled = false }) {
           aria-describedby="income-help"
           required
         />
-        <div id="income-help" className="mt-1 text-xs text-muted">
+        <div id="income-help" className="mt-1 text-xs text-muted-foreground">
           ใส่เฉพาะตัวเลข สามารถใส่ comma เพื่ออ่านง่าย
         </div>
       </fieldset>
 
-      {/* Debts */}
+      {/* หนี้สิน */}
       <fieldset className="space-y-4">
         <legend className="mb-2 font-semibold">ประเภทของหนี้ (จำนวนชำระ/เดือน)</legend>
         {[
@@ -173,7 +165,7 @@ export default function DtiForm({ saveEnabled = false }) {
         ))}
       </fieldset>
 
-      {/* Family counts */}
+      {/* จำนวนสมาชิกครอบครัว */}
       <fieldset className="space-y-4">
         <legend className="mb-2 font-semibold">จำนวนสมาชิกในครอบครัว</legend>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -210,7 +202,7 @@ export default function DtiForm({ saveEnabled = false }) {
         </div>
       </fieldset>
 
-      {/* Actions */}
+      {/* ปุ่ม */}
       <div className="flex flex-col gap-3 pt-2 sm:flex-row">
         <button type="submit" className="btn-primary btn" disabled={loading} aria-label="คำนวณ DTI">
           {loading ? 'กำลังบันทึก...' : 'คำนวณ'}
@@ -221,41 +213,34 @@ export default function DtiForm({ saveEnabled = false }) {
         </button>
       </div>
 
-      {/* Error */}
+      {/* แจ้งเตือน error */}
       {error && (
         <div
           role="alert"
-          className="mt-4 rounded-md border-l-4 border-red-500 bg-red-50 p-3 text-sm text-red-700"
+          className="bg-destructive/10 mt-4 flex items-start gap-2 rounded-md border-l-4 border-destructive p-3 text-sm text-destructive"
         >
-          {error}
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{error}</span>
         </div>
       )}
 
-      {/* Result */}
+      {/* ✅ ผลลัพธ์ DTI */}
       {result && (
         <div
           aria-live="polite"
-          className="mt-6 rounded-md border p-4"
-          style={{
-            backgroundColor:
-              result.dti <= 35 ? '#ecfdf5' : result.dti <= 50 ? '#fff7ed' : '#fff1f2',
-            borderColor: result.dti <= 35 ? '#10b981' : result.dti <= 50 ? '#f59e0b' : '#ef4444',
-          }}
+          className={clsx(
+            'mt-6 rounded-md border p-4 transition-all',
+            result.dti <= 35
+              ? 'bg-success/10 border-success text-success'
+              : result.dti <= 50
+                ? 'bg-warning/10 border-warning text-warning'
+                : 'bg-destructive/10 border-destructive text-destructive',
+          )}
         >
           <div className="text-lg font-semibold">DTI: {result.dti}%</div>
           <div>รวมภาระหนี้ต่อเดือน: {result.totalDebt.toLocaleString()} บาท</div>
 
-          <div
-            className="mt-2 font-medium"
-            style={{
-              color:
-                result.risk === 'safe'
-                  ? '#10b981'
-                  : result.risk === 'caution'
-                    ? '#f59e0b'
-                    : '#ef4444',
-            }}
-          >
+          <div className="mt-2 font-medium">
             {result.risk === 'safe'
               ? 'ระดับปลอดภัย'
               : result.risk === 'caution'
@@ -263,26 +248,41 @@ export default function DtiForm({ saveEnabled = false }) {
                 : 'เสี่ยงสูง'}
           </div>
 
-          {result.warning && <div className="mt-2 text-sm text-red-600">⚠️ {result.warning}</div>}
+          {result.warning && (
+            <div className="mt-2 flex items-center gap-2 text-sm text-destructive">
+              <AlertCircle className="h-4 w-4" />
+              <span>{result.warning}</span>
+            </div>
+          )}
 
-          <div className="mt-2 text-sm text-muted">
+          <div className="mt-2 text-sm text-muted-foreground">
             หนี้ที่ควรไม่เกิน: {result.maxAcceptableDebt.toLocaleString()} บาท (ตามเกณฑ์ DTI{' '}
             {result.thresholds?.maxDTI ?? 50}%)
           </div>
 
           {adjustment && (
-            <div className="mt-4 text-sm text-red-700">
-              💡 เพื่อให้ DTI อยู่ในเกณฑ์:
-              <ul className="ml-5 mt-1 list-disc">
+            <div className="mt-4 text-sm text-destructive">
+              <div className="flex items-center gap-2 font-medium">
+                <Lightbulb className="h-4 w-4" />
+                <span>เพื่อให้ DTI อยู่ในเกณฑ์:</span>
+              </div>
+              <ul className="ml-6 mt-2 list-disc space-y-1">
                 {adjustment.needMoreIncome > 0 && (
-                  <li>
-                    ควรเพิ่มรายได้อย่างน้อย {adjustment.needMoreIncome.toLocaleString()} บาทต่อเดือน
+                  <li className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-success" />
+                    <span>
+                      ควรเพิ่มรายได้อย่างน้อย {adjustment.needMoreIncome.toLocaleString()}{' '}
+                      บาทต่อเดือน
+                    </span>
                   </li>
                 )}
                 {adjustment.needLessDebt > 0 && (
-                  <li>
-                    หรือควรลดภาระหนี้ลงอย่างน้อย {adjustment.needLessDebt.toLocaleString()}{' '}
-                    บาทต่อเดือน
+                  <li className="flex items-center gap-2">
+                    <TrendingDown className="h-4 w-4 text-warning" />
+                    <span>
+                      หรือควรลดภาระหนี้ลงอย่างน้อย {adjustment.needLessDebt.toLocaleString()}{' '}
+                      บาทต่อเดือน
+                    </span>
                   </li>
                 )}
               </ul>

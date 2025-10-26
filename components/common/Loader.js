@@ -3,7 +3,7 @@
 /**
  * Loader Component
  * แสดงสถานะกำลังโหลด พร้อมข้อความและขนาดปรับได้
- * - รองรับ animation ด้วย DaisyUI / Tailwind
+ * - รองรับ animation ด้วย Tailwind
  * - รองรับ accessibility
  */
 export default function Loader({ message = 'กำลังโหลด...', size = 'md' }) {
@@ -20,9 +20,12 @@ export default function Loader({ message = 'กำลังโหลด...', siz
       role="status"
       aria-live="polite"
       aria-label={message}
-      className="flex flex-col items-center justify-center gap-2 py-8 text-center text-base-content"
+      className="flex flex-col items-center justify-center gap-2 py-8 text-center text-muted-foreground"
     >
-      <span className={`loading loading-spinner ${spinnerSize} text-primary`} aria-hidden="true" />
+      <span
+        className={`animate-spin rounded-full border-2 border-primary border-t-transparent ${spinnerSize}`}
+        aria-hidden="true"
+      />
       <span className="text-sm font-medium">{message}</span>
     </div>
   );

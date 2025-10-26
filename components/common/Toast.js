@@ -4,7 +4,7 @@ import { createRoot } from 'react-dom/client';
  * showToast
  * - Displays a temporary toast message
  * - Supports 'success', 'error', and 'info' types
- * - Uses Tailwind and DaisyUI base styles
+ * - Uses Tailwind and theme-based styles
  */
 function showToast(message, type = 'info', duration = 3000) {
   if (typeof document === 'undefined') return;
@@ -15,12 +15,12 @@ function showToast(message, type = 'info', duration = 3000) {
   const root = createRoot(container);
 
   const baseClass =
-    'fixed bottom-6 left-1/2 z-toast -translate-x-1/2 rounded-md px-4 py-3 text-white shadow-lg transition-opacity duration-300';
+    'fixed bottom-6 left-1/2 z-toast -translate-x-1/2 rounded-md px-4 py-3 text-sm font-medium text-white shadow-lg transition-opacity duration-300';
 
   const typeClass = {
-    success: 'bg-success',
-    error: 'bg-error',
-    info: 'bg-primary',
+    success: 'bg-success text-success-foreground',
+    error: 'bg-destructive text-destructive-foreground',
+    info: 'bg-primary text-primary-foreground',
   };
 
   root.render(

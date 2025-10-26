@@ -12,20 +12,14 @@ export default function Modal({ isOpen, onClose, title, children }) {
   const modalRef = useRef(null);
 
   useEffect(() => {
-    if (!isOpen) {
-      return;
-    }
+    if (!isOpen) return;
 
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        onClose?.();
-      }
+      if (e.key === 'Escape') onClose?.();
     };
 
     document.body.classList.add('overflow-hidden');
     document.addEventListener('keydown', handleKeyDown);
-
-    // Focus trap (optional enhancement)
     modalRef.current?.focus();
 
     return () => {
@@ -34,9 +28,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) {
-    return null;
-  }
+  if (!isOpen) return null;
 
   return (
     <div
@@ -49,27 +41,24 @@ export default function Modal({ isOpen, onClose, title, children }) {
       <div
         ref={modalRef}
         tabIndex={-1}
-        className="animate-fadeIn w-full max-w-lg rounded-lg bg-base-100 p-6 shadow-xl transition-all dark:bg-gray-900"
+        className="animate-fadeIn w-full max-w-lg rounded-lg border border-border bg-background p-6 text-foreground shadow-xl transition-all"
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
           <header>
-            <h2
-              id="modal-title"
-              className="mb-4 text-xl font-semibold text-base-content dark:text-white"
-            >
+            <h2 id="modal-title" className="mb-4 text-xl font-semibold text-foreground">
               {title}
             </h2>
           </header>
         )}
 
-        <div className="text-base-content dark:text-gray-300">{children}</div>
+        <div className="text-sm text-muted-foreground">{children}</div>
 
         <footer className="mt-6 text-right">
           <button
             type="button"
             onClick={onClose}
-            className="btn-outline btn btn-sm"
+            className="inline-flex items-center rounded-md border border-input bg-background px-3 py-1.5 text-sm font-medium text-foreground transition hover:bg-accent hover:text-accent-foreground"
             aria-label="ปิดหน้าต่าง"
           >
             ปิด

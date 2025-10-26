@@ -9,7 +9,6 @@ import Section from '@/components/common/Section';
 import { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
-// 🧠 Dynamic Imports (SSR: false) + Loading fallback
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-muted-foreground">
@@ -37,7 +36,6 @@ const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   ssr: false,
 });
 
-// 🧩 Section Config
 const sections = [
   {
     id: 'hero',
@@ -76,7 +74,6 @@ export default function HomePage() {
 
   return (
     <>
-      {/* 🧭 SEO */}
       <SEO
         title="หน้าแรก | Application Secret"
         description="ทำธุรกิจสีเทาให้มีความมาตรฐานมืออาชีพ ยินดีร่วมงานทุกสายวงการ"
@@ -84,12 +81,10 @@ export default function HomePage() {
         url="https://application-secret.vercel.app"
       />
 
-      {/* 🔔 Global Announcements */}
       <AnnouncementBar />
       <AlertBanner />
       <Banner />
 
-      {/* 🌍 Main Content */}
       <main
         id="main-content"
         role="main"

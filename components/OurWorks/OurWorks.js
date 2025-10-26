@@ -50,16 +50,14 @@ export default function OurWorks() {
 
     if (error) {
       return (
-        <p className="text-center text-red-600 dark:text-red-400" role="alert">
+        <p className="text-center text-destructive" role="alert">
           {error}
         </p>
       );
     }
 
     if (works.length === 0) {
-      return (
-        <p className="text-center text-gray-600 dark:text-gray-300">ยังไม่มีผลงานให้แสดงในขณะนี้</p>
-      );
+      return <p className="text-center text-muted-foreground">ยังไม่มีผลงานให้แสดงในขณะนี้</p>;
     }
 
     return works.map((work, index) => {
@@ -83,19 +81,16 @@ export default function OurWorks() {
       id="our-works"
       aria-labelledby="our-works-heading"
       aria-describedby="our-works-description"
-      className="py-20"
+      className="bg-background py-20 text-foreground"
     >
-      <div className="mx-auto max-w-7xl px-6">
+      <div className="mx-auto max-w-7xl px-4">
         <h2
           id="our-works-heading"
-          className="mb-2 text-center text-3xl font-bold text-black dark:text-white"
+          className="mb-2 text-center text-h2 font-semibold text-foreground"
         >
           ตัวอย่างผลงานล่าสุด
         </h2>
-        <p
-          id="our-works-description"
-          className="mb-8 text-center text-base text-gray-700 dark:text-gray-300"
-        >
+        <p id="our-works-description" className="mb-8 text-center text-base text-muted-foreground">
           ผลงานที่ได้รับอนุญาตให้เผยแพร่ เพื่อแสดงคุณภาพงานที่เราส่งมอบ
         </p>
 

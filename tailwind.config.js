@@ -4,7 +4,7 @@ const theme = require('./config/theme.js');
 
 const isTermux = !!process.env.TERMUX;
 
-module.exports = {
+const config = {
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
@@ -25,6 +25,19 @@ module.exports = {
           lg: '2rem',
           xl: '2.5rem',
         },
+      },
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+        heading: ['"Noto Sans Thai"', 'sans-serif'],
+      },
+      borderRadius: {
+        DEFAULT: '6px',
+        lg: '8px',
+        xl: '12px',
+      },
+      boxShadow: {
+        subtle: '0 1px 3px rgba(0, 0, 0, 0.05)',
+        medium: '0 4px 6px rgba(0, 0, 0, 0.1)',
       },
       gridTemplateColumns: {
         layout: 'repeat(auto-fit, minmax(280px, 1fr))',
@@ -85,17 +98,17 @@ module.exports = {
     themes: [
       {
         adosy: {
-          primary: '#2563eb',
-          'primary-focus': '#1d4ed8',
-          secondary: '#f1f5f9',
-          'secondary-focus': '#e0f2fe',
-          accent: '#16a34a',
-          neutral: '#d1d5db',
-          'base-100': '#ffffff',
+          primary: '#1E3A8A',
+          'primary-focus': '#1E40AF',
+          secondary: '#F1F5F9',
+          'secondary-focus': '#E2E8F0',
+          accent: '#0EA5E9',
+          neutral: '#64748B',
+          'base-100': '#FFFFFF',
           info: '#2094f3',
-          success: '#16a34a',
+          success: '#16A34A',
           warning: '#facc15',
-          error: '#dc2626',
+          error: '#DC2626',
         },
       },
     ],
@@ -105,11 +118,14 @@ module.exports = {
     utils: true,
     logs: false,
   },
-  ...(isTermux && {
-    watchOptions: {
-      poll: 1000,
-      aggregateTimeout: 300,
-      ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**', '/data', '/data/data', '/'],
-    },
-  }),
 };
+
+if (isTermux) {
+  config.watchOptions = {
+    poll: 1000,
+    aggregateTimeout: 300,
+    ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**', '/data', '/data/data', '/'],
+  };
+}
+
+module.exports = config;

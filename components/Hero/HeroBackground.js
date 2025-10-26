@@ -33,7 +33,7 @@ export default function HeroBackground({ images, currentIndex }) {
 
       {/* Overlay */}
       <motion.div
-        className="absolute inset-0 bg-black/40 dark:bg-black/60"
+        className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-transparent dark:from-black/70 dark:via-black/50"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: 'easeInOut' }}
@@ -42,13 +42,11 @@ export default function HeroBackground({ images, currentIndex }) {
   );
 }
 
-// ✅ PropTypes
 HeroBackground.propTypes = {
   images: PropTypes.arrayOf(PropTypes.string).isRequired,
   currentIndex: PropTypes.number.isRequired,
 };
 
-// ✅ Default props
 HeroBackground.defaultProps = {
   images: [],
   currentIndex: 0,

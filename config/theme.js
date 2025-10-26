@@ -1,39 +1,40 @@
 /** @type {import('tailwindcss').Config['theme']} */
 module.exports = {
+  extend: true,
   colors: {
-    background: 'hsl(var(--background, 0 0% 100%))',
+    background: 'hsl(var(--background, 210 20% 98%))',
     surface: 'hsl(var(--surface, 0 0% 100%))',
     card: 'hsl(var(--card, 0 0% 100%))',
     popover: 'hsl(var(--popover, 0 0% 100%))',
-    foreground: 'hsl(var(--foreground, 0 0% 7%))',
-    'card-foreground': 'hsl(var(--card-foreground, 0 0% 7%))',
-    'popover-foreground': 'hsl(var(--popover-foreground, 0 0% 7%))',
+    foreground: 'hsl(var(--foreground, 222 47% 11%))',
+    'card-foreground': 'hsl(var(--card-foreground, 222 47% 11%))',
+    'popover-foreground': 'hsl(var(--popover-foreground, 222 47% 11%))',
 
     primary: {
-      DEFAULT: 'hsl(var(--primary, 220 60% 40%))',
-      hover: 'hsl(var(--primary-hover, 220 60% 30%))',
-      foreground: 'hsl(var(--primary-foreground, 0 0% 98%))',
+      DEFAULT: 'hsl(var(--primary, 221 83% 53%))',
+      hover: 'hsl(var(--primary-hover, 221 71% 45%))',
+      foreground: 'hsl(var(--primary-foreground, 0 0% 100%))',
     },
     secondary: {
-      DEFAULT: 'hsl(var(--secondary, 0 0% 96%))',
-      foreground: 'hsl(var(--secondary-foreground, 0 0% 20%))',
+      DEFAULT: 'hsl(var(--secondary, 215 20% 94%))',
+      foreground: 'hsl(var(--secondary-foreground, 215 20% 40%))',
     },
     accent: {
       DEFAULT: 'hsl(var(--accent, 160 70% 40%))',
-      foreground: 'hsl(var(--accent-foreground, 0 0% 98%))',
+      foreground: 'hsl(var(--accent-foreground, 0 0% 100%))',
     },
     muted: {
-      DEFAULT: 'hsl(var(--muted, 0 0% 90%))',
-      foreground: 'hsl(var(--muted-foreground, 0 0% 40%))',
+      DEFAULT: 'hsl(var(--muted, 215 20% 85%))',
+      foreground: 'hsl(var(--muted-foreground, 215 20% 40%))',
     },
     destructive: {
       DEFAULT: 'hsl(var(--destructive, 0 84% 60%))',
-      foreground: 'hsl(var(--destructive-foreground, 0 0% 98%))',
+      foreground: 'hsl(var(--destructive-foreground, 0 0% 100%))',
     },
-    border: 'hsl(var(--border, 0 0% 89%))',
-    input: 'hsl(var(--input, 0 0% 89%))',
-    ring: 'hsl(var(--ring, 220 60% 40%))',
-    neutral: 'hsl(var(--neutral, 210 16% 90%))',
+    border: 'hsl(var(--border, 215 20% 85%))',
+    input: 'hsl(var(--input, 215 20% 80%))',
+    ring: 'hsl(var(--ring, 221 83% 53%))',
+    neutral: 'hsl(var(--neutral, 215 20% 94%))',
     success: 'hsl(var(--success, 160 70% 40%))',
     warning: 'hsl(var(--warning, 43 90% 60%))',
     error: 'hsl(var(--error, 0 70% 45%))',
@@ -49,7 +50,7 @@ module.exports = {
 
   fontFamily: {
     sans: ['Inter', 'system-ui', 'sans-serif'],
-    heading: ['Poppins', 'system-ui', 'sans-serif'],
+    heading: ['"Noto Sans Thai"', 'system-ui', 'sans-serif'],
     mono: ['Fira Code', 'monospace'],
   },
 

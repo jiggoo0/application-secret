@@ -10,7 +10,6 @@ export default function Banner() {
   const [visible, setVisible] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // ✅ โหลดข้อมูล Banner.json ทุกครั้ง (ไม่แคช)
   useEffect(() => {
     const loadBanner = async () => {
       try {
@@ -31,7 +30,6 @@ export default function Banner() {
 
   if (!data || !visible) return null;
 
-  // ✅ ดึงข้อมูลจาก JSON
   const {
     organization = '',
     representative = '',
@@ -43,7 +41,6 @@ export default function Banner() {
     options = {},
   } = data;
 
-  // ✅ aspect ratio
   const aspectRatio =
     layout.aspectRatio === '16/9'
       ? 16 / 9
@@ -65,33 +62,31 @@ export default function Banner() {
     >
       <div
         className={clsx(
-          'relative w-full rounded-2xl bg-white shadow-2xl ring-1 ring-gray-200 dark:bg-zinc-900 dark:ring-gray-800',
+          'relative w-full rounded-lg border border-border bg-background text-foreground shadow-xl',
           options.centered ? 'text-center' : 'text-left',
         )}
         style={{
           fontFamily: theme.font || 'TH Sarabun New, sans-serif',
-          backgroundColor: theme.background || '#ffffff',
-          color: theme.text || '#222',
+          backgroundColor: theme.background || 'var(--background)',
+          color: theme.text || 'var(--foreground)',
           padding: layout.padding || '2rem',
           borderRadius: layout.borderRadius || '12px',
           maxWidth: layout.width || '600px',
           boxShadow: layout.shadow ? '0 10px 30px rgba(0,0,0,0.25)' : 'none',
         }}
       >
-        {/* ปุ่มปิดมุมขวาบน */}
         {options.showCloseButton && (
           <button
             onClick={handleClose}
-            className="absolute right-3 top-3 rounded-full bg-black/10 px-3 py-1 text-sm text-gray-800 transition hover:bg-black/20 dark:bg-white/10 dark:text-gray-100 dark:hover:bg-white/20"
+            className="absolute right-3 top-3 rounded-full bg-muted px-3 py-1 text-sm text-muted-foreground transition hover:bg-accent hover:text-accent-foreground"
             aria-label="ปิดแบนเนอร์"
           >
             ✕
           </button>
         )}
 
-        {/* ภาพหลัก */}
         {options.showPortrait && image && (
-          <AspectRatio ratio={aspectRatio} className="mb-6 overflow-hidden rounded-lg">
+          <AspectRatio ratio={aspectRatio} className="mb-6 overflow-hidden rounded-md">
             <Image
               src={image}
               alt="ภาพไว้อาลัย"
@@ -103,33 +98,29 @@ export default function Banner() {
           </AspectRatio>
         )}
 
-        {/* ข้อความหัวเรื่อง */}
         <h1
           className="mb-2 text-2xl font-bold tracking-tight sm:text-3xl md:text-4xl"
-          style={{ color: theme.accent || '#000066' }}
+          style={{ color: theme.accent || 'var(--primary)' }}
         >
           {title}
         </h1>
 
-        {/* ชื่อองค์กร / ผู้แทน */}
         {(organization || representative) && (
-          <p className="mb-4 text-base font-semibold text-gray-600 dark:text-gray-300 sm:text-lg">
+          <p className="mb-4 text-base font-medium text-muted-foreground sm:text-lg">
             {organization && <span>{organization}</span>}
             {organization && representative && ' — '}
             {representative && <span>{representative}</span>}
           </p>
         )}
 
-        {/* ข้อความอาลัย */}
-        <p className="whitespace-pre-line text-base leading-relaxed text-gray-700 dark:text-gray-300 sm:text-lg md:text-xl">
+        <p className="whitespace-pre-line text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl">
           {message}
         </p>
 
-        {/* ปุ่มปิดด้านล่าง */}
         <div className="mt-8 flex justify-center">
           <button
             onClick={handleClose}
-            className="rounded-lg bg-blue-900 px-6 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-blue-800 dark:bg-blue-600 dark:hover:bg-blue-500 sm:text-base"
+            className="rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary-hover sm:text-base"
             aria-label="ปิดแบนเนอร์ไว้อาลัย"
           >
             ปิด

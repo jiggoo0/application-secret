@@ -23,7 +23,7 @@ export default function WorkCard({ id, title, image, video, description, url }) 
       transition={{ duration: 0.35, ease: 'easeOut' }}
       viewport={{ once: true }}
       aria-labelledby={`work-title-${id}`}
-      className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-transform hover:-translate-y-1 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+      className="group relative flex flex-col overflow-hidden rounded-lg border border-border bg-card text-card-foreground shadow-card transition-transform duration-200 hover:-translate-y-1 hover:shadow-md"
     >
       <figure className="relative h-52 w-full shrink-0 cursor-pointer overflow-hidden">
         {video ? (
@@ -39,7 +39,7 @@ export default function WorkCard({ id, title, image, video, description, url }) 
               onClick={handlePlayWithSound}
             />
             {!isPlaying && (
-              <div className="absolute inset-0 flex items-center justify-center bg-black/25 text-sm font-semibold text-white">
+              <div className="absolute inset-0 flex items-center justify-center bg-black/30 text-sm font-medium text-white">
                 คลิกเพื่อเปิดเสียง 🔊
               </div>
             )}
@@ -56,23 +56,23 @@ export default function WorkCard({ id, title, image, video, description, url }) 
       </figure>
 
       <div className="flex flex-1 flex-col p-6">
-        <h3 id={`work-title-${id}`} className="text-lg font-semibold text-black dark:text-white">
+        <h3 id={`work-title-${id}`} className="text-lg font-semibold leading-tight">
           {title}
         </h3>
-        <p className="mt-2 line-clamp-3 text-sm text-gray-600 dark:text-gray-300">{description}</p>
+        <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">{description}</p>
         <div className="mt-4 flex items-center justify-between">
-          <span className="text-xs font-medium text-gray-500 dark:text-gray-400">ผลงานล่าสุด</span>
+          <span className="text-xs font-medium text-muted-foreground">ผลงานล่าสุด</span>
           {url ? (
             <a
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="hover:bg-primaryHover inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-white"
+              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary-hover"
             >
               ดูรายละเอียด
             </a>
           ) : (
-            <span className="text-xs text-gray-400 dark:text-gray-500">
+            <span className="text-xs text-muted-foreground opacity-70">
               ยังไม่มีข้อมูลเพิ่มเติม
             </span>
           )}
