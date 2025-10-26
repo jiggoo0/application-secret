@@ -15,17 +15,13 @@ const nextConfig = {
   images: {
     unoptimized: !isVercel,
     domains: [
-      'res.cloudinary.com',
-      'avatars.githubusercontent.com',
-      'lh3.googleusercontent.com',
-      'pbs.twimg.com',
-      'cdn.jsdelivr.net',
+      'ksiobbrextlywypdzaze.supabase.co', // ✅ Supabase storage domain
     ],
   },
 
   // 🧪 Experimental features
   experimental: {
-    serverActions: {}, // ✅ ต้องเป็น object
+    serverActions: {},
     optimizePackageImports: [
       'lucide-react',
       '@radix-ui/react-icons',
@@ -39,7 +35,7 @@ const nextConfig = {
     },
   },
 
-  // ✅ Typed routes (moved out of experimental)
+  // ✅ Typed routes
   typedRoutes: true,
 
   // 🔍 ESLint configuration
@@ -56,7 +52,13 @@ const nextConfig = {
       ? {
           poll: 1000,
           aggregateTimeout: 300,
-          ignored: ['/node_modules', '/.git', '/.next/', path.resolve(projectRoot, '/'), '/data/'],
+          ignored: [
+            '/node_modules',
+            '/.git',
+            '/.next/',
+            path.resolve(projectRoot, '/'),
+            '/data/',
+          ],
         }
       : {
           ignored: ['/node_modules', '/.git', '/.next/'],
