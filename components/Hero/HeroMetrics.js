@@ -2,12 +2,11 @@
 
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { Users, Briefcase, CalendarCheck } from 'lucide-react'; // ✅ เพิ่มไอคอน
 
 /**
  * 📊 HeroMetrics
- * - แสดงตัวเลข/สถิติสำคัญใน Hero section
- * - รองรับ animation fade-in + slide
- * - Responsive & accessible
+ * - แสดงตัวเลข/สถิติสำคัญใน Hero section พร้อมไอคอน
  */
 export default function HeroMetrics({ metrics }) {
   if (!metrics?.length) return null;
@@ -23,6 +22,13 @@ export default function HeroMetrics({ metrics }) {
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+  };
+
+  // 🧠 Map label → icon
+  const iconMap = {
+    ลูกค้า: <Users className="h-6 w-6 text-yellow-300" />,
+    โปรเจกต์: <Briefcase className="h-6 w-6 text-yellow-300" />,
+    ปีที่ดำเนินธุรกิจ: <CalendarCheck className="h-6 w-6 text-yellow-300" />,
   };
 
   return (
@@ -42,10 +48,14 @@ export default function HeroMetrics({ metrics }) {
           role="group"
           aria-label={label}
         >
-          <dt className="text-2xl font-semibold text-foreground sm:text-3xl md:text-4xl">
-            {value}
-          </dt>
-          <dd className="mt-1 text-sm text-muted-foreground sm:text-base md:text-lg">{label}</dd>
+          {/* 🔰 Icon */}
+          <div className="mb-2">{iconMap[label] || null}</div>
+
+          {/* 🔢 Value */}
+          <dt className="text-2xl font-semibold text-white sm:text-3xl md:text-4xl">{value}</dt>
+
+          {/* 🏷️ Label */}
+          <dd className="mt-1 text-sm text-white/90 sm:text-base md:text-lg">{label}</dd>
         </motion.div>
       ))}
     </motion.dl>

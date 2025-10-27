@@ -1,4 +1,3 @@
-// .eslintrc.js
 module.exports = {
   root: true,
   env: {
@@ -33,14 +32,4 @@ module.exports = {
     'react/prop-types': 'off',
     'unused-imports/no-unused-imports': 'error',
   },
-  overrides: [
-    {
-      files: ['scripts/**/*.js', 'data/**/*.js'],
-      rules: {
-        'no-unused-vars': 'off',
-        'unused-imports/no-unused-imports': 'off',
-        'prettier/prettier': 'off',
-      },
-    },
-  ],
 };

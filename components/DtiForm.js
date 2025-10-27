@@ -217,7 +217,7 @@ export default function DtiForm({ saveEnabled = false }) {
       {error && (
         <div
           role="alert"
-          className="bg-destructive/10 mt-4 flex items-start gap-2 rounded-md border-l-4 border-destructive p-3 text-sm text-destructive"
+          className="mt-4 flex items-start gap-2 rounded-md border-l-4 border-destructive bg-destructive/10 p-3 text-sm text-destructive"
         >
           <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{error}</span>
@@ -231,10 +231,10 @@ export default function DtiForm({ saveEnabled = false }) {
           className={clsx(
             'mt-6 rounded-md border p-4 transition-all',
             result.dti <= 35
-              ? 'bg-success/10 border-success text-success'
+              ? 'border-success bg-success/10 text-success'
               : result.dti <= 50
-                ? 'bg-warning/10 border-warning text-warning'
-                : 'bg-destructive/10 border-destructive text-destructive',
+                ? 'border-warning bg-warning/10 text-warning'
+                : 'border-destructive bg-destructive/10 text-destructive',
           )}
         >
           <div className="text-lg font-semibold">DTI: {result.dti}%</div>

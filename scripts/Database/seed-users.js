@@ -78,7 +78,7 @@ async function seedAllUsers() {
 
     // 3️⃣ สร้าง user ใน Supabase Auth
     try {
-      const { data, error } = await supabaseServer.auth.admin.createUser({
+      const { error } = await supabaseServer.auth.admin.createUser({
         email: user.email,
         password: user.password, // ใช้รหัสผ่านเดิม (plain text)
         email_confirm: true,

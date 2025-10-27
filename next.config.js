@@ -28,14 +28,9 @@ const nextConfig = {
       '@radix-ui/react-tooltip',
       '@radix-ui/react-dialog',
     ],
-    turbopack: {
-      rules: {
-        '*.mdx': ['@mdx-js/loader'],
-      },
-    },
   },
 
-  // ✅ Typed routes
+  // ✅ Typed routes (safe to keep even in JS)
   typedRoutes: true,
 
   // 🔍 ESLint configuration
@@ -70,9 +65,9 @@ const nextConfig = {
       };
     }
 
-    // 📦 Extension aliasing
+    // 📦 Extension aliasing (เฉพาะ .js เท่านั้น)
     config.resolve.extensionAlias = {
-      '.js': ['.js', '.ts', '.tsx'],
+      '.js': ['.js'],
     };
 
     return config;

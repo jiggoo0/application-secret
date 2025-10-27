@@ -120,7 +120,7 @@ export default function Banner() {
         <div className="mt-8 flex justify-center">
           <button
             onClick={handleClose}
-            className="rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground shadow-sm transition hover:bg-primary-hover sm:text-base"
+            className="hover:bg-primary-hover rounded-md bg-primary px-6 py-2 text-sm font-medium text-primary-foreground shadow-sm transition sm:text-base"
             aria-label="ปิดแบนเนอร์ไว้อาลัย"
           >
             ปิด

@@ -39,7 +39,6 @@ const messageType = () => random(['text', 'image', 'file', 'emoji']);
 const randomBool = (prob = 0.5) => Math.random() < prob;
 
 // 🔹 Config
-const NUM_ROOMS = roomTemplates.length;
 const NUM_USERS = Math.max(sampleNames.length, 20);
 
 // 👤 Generate users
@@ -53,7 +52,7 @@ const users = Array.from({ length: NUM_USERS }, (_, i) => {
 });
 
 // 🏠 Generate chat rooms
-const chatRooms = roomTemplates.map((roomTemplate, i) => {
+const chatRooms = roomTemplates.map((roomTemplate) => {
   const membersCount = Math.floor(Math.random() * 5) + 3;
   const members = Array.from({ length: membersCount }, () => random(users));
   const roomId = `r_${Math.random().toString(36).slice(2, 8)}`;
@@ -81,7 +80,7 @@ const chatRooms = roomTemplates.map((roomTemplate, i) => {
 
   return {
     id: roomId,
-    name: roomTemplate.description, // ✅ ใช้ description เป็นชื่อห้อง
+    name: roomTemplate.description,
     description: roomTemplate.description,
     members,
     ownerId: members[0].id,

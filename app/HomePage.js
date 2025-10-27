@@ -1,13 +1,14 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
+
 import SEO from '@/components/SEO';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import AlertBanner from '@/components/AlertBanner';
 import Banner from '@/components/Banner';
 import Section from '@/components/common/Section';
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
 
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
@@ -39,30 +40,28 @@ const Blog = dynamic(() => import('@/components/Blog/Blog'), {
 const sections = [
   {
     id: 'hero',
-    Component: Hero,
-    props: {
-      headline: 'ทำธุรกิจสีเทาให้มีความมาตรฐานมืออาชีพ',
-      highlightText: 'เจ้าป่า ชัดเจนไม่ขายฝัน',
-      subtext: 'ยินดีร่วมงานทุกสายวงการ',
-      ctaText: 'เข้าสู่ระบบ',
-      ctaUrl: '#services',
-      images: ['/images/hero/hero.webp', '/images/hero/hero2.webp', '/images/hero/hero3.webp'],
-      slideInterval: 5000,
-      metrics: [
-        { label: 'ลูกค้า', value: '180+' },
-        { label: 'โปรเจกต์', value: '80+' },
-        { label: 'ปีที่ดำเนินธุรกิจ', value: '8 ปี' },
-      ],
-    },
+    Component: Hero, // ✅ ไม่มี props แล้ว
   },
-  { id: 'about', Component: dynamic(() => import('@/components/About'), { ssr: false }) },
-  { id: 'services', Component: dynamic(() => import('@/components/Services'), { ssr: false }) },
+  {
+    id: 'about',
+    Component: dynamic(() => import('@/components/About'), { ssr: false }),
+  },
+  {
+    id: 'services',
+    Component: dynamic(() => import('@/components/Services'), { ssr: false }),
+  },
   {
     id: 'works',
     Component: dynamic(() => import('@/components/OurWorks/OurWorks'), { ssr: false }),
   },
-  { id: 'reviews', Component: ReviewCarousel },
-  { id: 'blog', Component: Blog },
+  {
+    id: 'reviews',
+    Component: ReviewCarousel,
+  },
+  {
+    id: 'blog',
+    Component: Blog,
+  },
 ];
 
 export default function HomePage() {
@@ -91,7 +90,7 @@ export default function HomePage() {
         aria-label="เนื้อหาหลัก"
         className="flex flex-col gap-20 bg-background text-foreground transition-colors duration-300 sm:gap-28 lg:gap-36"
       >
-        {sections.map(({ id, Component, props }) => (
+        {sections.map(({ id, Component }) => (
           <motion.section
             key={id}
             id={id}
@@ -115,7 +114,7 @@ export default function HomePage() {
               className="scroll-mt-20 px-4 sm:px-6 lg:px-8"
             >
               <div className="mx-auto max-w-7xl">
-                <Component {...props} />
+                <Component />
               </div>
             </Section>
           </motion.section>

@@ -68,7 +68,7 @@ export default function LoginPage() {
     <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 px-4 py-8 text-gray-800 dark:bg-gray-900 dark:text-gray-100">
       <div className="flex w-full max-w-5xl overflow-hidden rounded-2xl bg-white shadow-xl dark:bg-gray-800 md:grid md:grid-cols-2">
         {/* Left Panel: Branding */}
-        <div className="from-primary/90 relative hidden bg-gradient-to-br to-blue-700 p-8 text-white md:flex md:flex-col md:justify-center">
+        <div className="relative hidden bg-gradient-to-br from-primary/90 to-blue-700 p-8 text-white md:flex md:flex-col md:justify-center">
           <div className="absolute inset-0 opacity-10">
             <Image
               src="/images/hero/hero.webp"
@@ -161,7 +161,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="hover:bg-primary/90 focus:ring-primary/30 flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-white transition-all focus:ring-4 disabled:opacity-70"
+              className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-white transition-all hover:bg-primary/90 focus:ring-4 focus:ring-primary/30 disabled:opacity-70"
             >
               {loading && <Loader2 className="h-4 w-4 animate-spin" />}
               {loading ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ'}

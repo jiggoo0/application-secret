@@ -67,7 +67,7 @@ export default function WorkCard({ id, title, image, video, description, url }) 
               href={url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary-hover"
+              className="hover:bg-primary-hover inline-flex items-center gap-2 rounded-md bg-primary px-3 py-2 text-xs font-medium text-primary-foreground"
             >
               ดูรายละเอียด
             </a>
