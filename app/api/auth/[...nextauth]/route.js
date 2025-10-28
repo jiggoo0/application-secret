@@ -1,77 +1,74 @@
-import CredentialsProvider from 'next-auth/providers/credentials';
 import NextAuth from 'next-auth';
-import fs from 'fs';
-import path from 'path';
-import { compare } from 'bcryptjs';
+import CredentialsProvider from 'next-auth/providers/credentials';
 import { supabaseServer } from '@/lib/supabase/server';
+import { compare } from 'bcryptjs';
+import fs from 'fs/promises';
+import path from 'path';
 
 async function authorize(credentials) {
-  console.log('🔑 Login attempt:', credentials.email);
+  const email = credentials?.email?.toLowerCase().trim();
+  const password = credentials?.password;
+
+  if (!email || !password) {
+    throw new Error('Missing email or password');
+  }
 
   let user = null;
 
-  // 1️⃣ ตรวจสอบจาก Supabase table users
+  // 1️⃣ ตรวจสอบจาก Supabase
   try {
     const { data, error } = await supabaseServer
       .from('users')
       .select('*')
-      .eq('email', credentials.email)
+      .eq('email', email)
       .single();
 
-    if (data) user = data;
-    if (error) console.warn('⚠️ Supabase fetch error:', error.message);
-
-    console.log('ℹ️ Fetched user from Supabase table:', user);
+    if (data && !error) {
+      user = data;
+    }
   } catch (err) {
-    console.error('❌ Supabase fetch exception:', err.message);
+    console.error('❌ Supabase error:', err.message);
   }
 
-  // 2️⃣ Fallback: ตรวจสอบ users.json
+  // 2️⃣ Fallback: local JSON
   if (!user) {
     try {
       const filePath = path.join(process.cwd(), 'data', 'users.json');
-      if (fs.existsSync(filePath)) {
-        const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-        user = jsonData.find((u) => u.email === credentials.email) || null;
-        console.log('ℹ️ Fetched user from users.json:', user);
-      }
+      const raw = await fs.readFile(filePath, 'utf-8');
+      const users = JSON.parse(raw);
+      user = users.find((u) => u.email?.toLowerCase() === email) || null;
     } catch (err) {
-      console.error('❌ Error reading users.json:', err.message);
+      console.error('❌ JSON fallback error:', err.message);
     }
   }
 
   if (!user) {
-    console.error('❌ User not found:', credentials.email);
     throw new Error('No user found with this email');
   }
 
-  // 3️⃣ ตรวจสอบ password
+  // 3️⃣ ตรวจสอบรหัสผ่าน
   let isValid = false;
   try {
-    if (user.password.startsWith('$2')) {
-      isValid = await compare(credentials.password, user.password);
+    if (typeof user.password === 'string' && user.password.startsWith('$2')) {
+      isValid = await compare(password, user.password);
     } else {
-      isValid = credentials.password === user.password;
+      isValid = password === user.password;
     }
   } catch (err) {
-    console.error('❌ Password compare error:', err.message);
+    console.error('❌ Password check error:', err.message);
   }
 
   if (!isValid) {
-    console.error('❌ Invalid password for user:', credentials.email);
     throw new Error('Invalid password');
   }
 
   // 4️⃣ คืนค่า user object
-  const returnedUser = {
-    id: user.id || user.email,
+  return {
+    id: user.id || email,
     email: user.email,
+    name: user.name || email.split('@')[0],
     role: user.role || 'user',
-    name: user.name || user.email.split('@')[0],
   };
-
-  console.log('✅ Authorized user:', returnedUser);
-  return returnedUser;
 }
 
 export const authOptions = {
@@ -85,23 +82,20 @@ export const authOptions = {
       authorize,
     }),
   ],
-
   session: {
     strategy: 'jwt',
-    maxAge: 7 * 24 * 60 * 60, // 7 วัน
+    maxAge: 7 * 24 * 60 * 60,
   },
-
   pages: {
     signIn: '/login',
   },
-
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
         token.email = user.email;
-        token.role = user.role;
         token.name = user.name;
+        token.role = user.role;
       }
       return token;
     },
@@ -109,14 +103,12 @@ export const authOptions = {
       session.user = {
         id: token.id,
         email: token.email,
-        role: token.role,
         name: token.name,
+        role: token.role,
       };
-      console.log('🔄 Session callback:', session);
       return session;
     },
   },
-
   secret: process.env.NEXTAUTH_SECRET,
 };
 

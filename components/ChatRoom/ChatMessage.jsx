@@ -1,50 +1,54 @@
 'use client';
 
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import React from 'react';
+import Image from 'next/image';
+import clsx from 'clsx';
 
-export default function ChatMessage({ message, currentUser }) {
-  const isMe = message.user_email === currentUser.email;
-
+export default function ChatMessage({ message, isOwn }) {
   return (
-    <div className={`mb-2 flex items-end ${isMe ? 'justify-end' : 'justify-start'} space-x-2`}>
-      {/* Avatar ของผู้ส่งข้อความ */}
-      {!isMe && (
-        <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
-          <AvatarFallback>{message.user_name[0]}</AvatarFallback>
-        </Avatar>
+    <div className={clsx('mb-3 flex', isOwn ? 'justify-end' : 'justify-start')}>
+      {!isOwn && (
+        <Image
+          src={message.user_avatar || '/default-avatar.png'}
+          alt={message.user_name}
+          width={36}
+          height={36}
+          className="mr-2 rounded-full"
+          unoptimized
+        />
       )}
 
       <div
-        className={`group relative max-w-[80%] break-words rounded-xl px-3 py-2 shadow-sm sm:max-w-[60%] ${
-          isMe
-            ? 'rounded-br-none bg-blue-500 text-white'
-            : 'rounded-bl-none bg-gray-200 dark:bg-gray-700 dark:text-white'
-        } transition-colors duration-200`}
-      >
-        {/* ชื่อผู้ส่ง (เฉพาะคนอื่น) */}
-        {!isMe && (
-          <p className="mb-1 truncate text-xs font-semibold text-gray-600 dark:text-gray-400">
-            {message.user_name}
-          </p>
+        className={clsx(
+          'max-w-[75%] rounded-2xl px-4 py-2 shadow-sm',
+          isOwn
+            ? 'rounded-br-none bg-blue-600 text-white'
+            : 'rounded-bl-none bg-gray-200 dark:bg-gray-700 dark:text-gray-100',
         )}
-
-        {/* ข้อความ */}
-        <p className="text-sm sm:text-base">{message.text}</p>
-
-        {/* Timestamp */}
-        <p className="mt-1 text-right text-[10px] text-gray-400 opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+      >
+        {!isOwn && (
+          <div className="mb-1 text-xs font-semibold opacity-80">
+            {message.user_name || 'Unknown'}
+          </div>
+        )}
+        <div className="whitespace-pre-wrap break-words">{message.content}</div>
+        <div className="mt-1 text-right text-[10px] text-gray-300">
           {new Date(message.created_at).toLocaleTimeString([], {
             hour: '2-digit',
             minute: '2-digit',
           })}
-        </p>
+        </div>
       </div>
 
-      {/* Avatar ของผู้ส่งตัวเอง (เลือกใช้ในอนาคต ถ้าต้องการ) */}
-      {isMe && (
-        <Avatar className="h-8 w-8 sm:h-10 sm:w-10">
-          <AvatarFallback>{currentUser.name[0]}</AvatarFallback>
-        </Avatar>
+      {isOwn && (
+        <Image
+          src={message.user_avatar || '/default-avatar.png'}
+          alt={message.user_name}
+          width={36}
+          height={36}
+          className="ml-2 rounded-full"
+          unoptimized
+        />
       )}
     </div>
   );

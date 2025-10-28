@@ -17,9 +17,8 @@ import MedicalCertificate from './documents/MedicalCertificate';
 import SalaryCertificate from './documents/SalaryCertificate';
 import { RegistrationPreview } from './documents/RegistrationPreview';
 
-// 💬 ChatRoom
-import ChatRoom from '@/components/ChatRoom/ChatRoom';
-import ChatAllRoom from '@/components/ChatRoom/Chat/ChatAllRoom';
+// 💬 ChatRoom Admin
+import ChatAdminPanel from '@/components/ChatRoom/Admin/ChatAdminPanel';
 
 // 🖼️ Icons
 import {
@@ -33,8 +32,7 @@ import {
   ScrollText,
   Landmark,
   MessageSquare,
-  FolderKanban,
-} from 'lucide-react';
+} from 'lucide-react'; // FolderKanban ลบออกแล้ว
 
 // 🧭 เมนู
 const menuItems = [
@@ -47,8 +45,7 @@ const menuItems = [
   { key: 'salary', label: 'ใบรับรองเงินเดือน', icon: Banknote },
   { key: 'registration', label: 'ทะเบียนพาณิชย์', icon: ScrollText },
   { key: 'kbank', label: 'KBank Live Demo', icon: Landmark },
-  { key: 'chat', label: 'Chat Room', icon: MessageSquare },
-  { key: 'chat-all', label: 'All Chat Rooms', icon: FolderKanban },
+  { key: 'chat-admin', label: 'Chat Admin Panel', icon: MessageSquare },
 ];
 
 // 🔗 Map key → component
@@ -62,8 +59,9 @@ const componentsMap = {
   salary: <SalaryCertificate />,
   registration: <RegistrationPreview />,
   kbank: <KbankLive />,
-  chat: <ChatRoom roomId="main-room" user={{ name: 'Admin', email: 'admin@example.com' }} />,
-  'chat-all': <ChatAllRoom />,
+  'chat-admin': (
+    <ChatAdminPanel adminUser={{ id: 'admin-1', name: 'Admin', email: 'admin@example.com' }} />
+  ),
 };
 
 export default function AdminClient() {

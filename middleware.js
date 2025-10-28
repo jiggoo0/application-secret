@@ -5,6 +5,15 @@ export async function middleware(req) {
   const url = req.nextUrl.clone();
   const token = await getToken({ req });
 
+  // ✅ บังคับ login สำหรับ /chat
+  if (url.pathname.startsWith('/chat')) {
+    if (!token?.email) {
+      url.pathname = `/login?error=unauthorized&redirect=${url.pathname}`;
+      return NextResponse.redirect(url);
+    }
+  }
+
+  // ✅ เงื่อนไขอื่น (admin, works) ตามเดิม
   if (url.pathname.startsWith('/admin')) {
     if (!token) {
       url.pathname = '/login';
@@ -27,4 +36,6 @@ export async function middleware(req) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ['/admin/:path*', '/works/:path*'] };
+export const config = {
+  matcher: ['/admin/:path*', '/works/:path*', '/chat/:path*'], // ✅ เพิ่ม /chat
+};

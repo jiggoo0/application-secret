@@ -1,182 +1,258 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { supabase } from '@/lib/supabase/client';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { toast } from 'sonner';
+import Loader from '@/components/common/Loader';
+import { supabase } from '@/lib/supabase/client';
 import { AnimatePresence, motion } from 'framer-motion';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Lock, Loader2, MessageCircleOff } from 'lucide-react';
+import clsx from 'clsx';
 
-export default function ChatRoom({ roomId, user }) {
+export default function ChatAllRoom() {
+  const [user, setUser] = useState(null);
+  const [rooms, setRooms] = useState([]);
+  const [activeRoom, setActiveRoom] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [sending, setSending] = useState(false);
-  const [unlocked, setUnlocked] = useState(false);
-  const [passwordInput, setPasswordInput] = useState('');
-  const [checkingPassword, setCheckingPassword] = useState(false);
+  const [loadingRooms, setLoadingRooms] = useState(true);
+  const [loadingMessages, setLoadingMessages] = useState(false);
+  const [unreadMap, setUnreadMap] = useState({});
+
   const messagesEndRef = useRef(null);
 
-  // ✅ ปลดล็อกทันทีเมื่อรหัสถูกต้อง
-  const handleUnlock = () => {
-    setCheckingPassword(true);
-    const input = passwordInput.trim();
-    const correctPassword = '999000'; // 🔒 รหัสห้องเดียวที่ใช้
+  const scrollToBottom = useCallback((smooth = true) => {
+    messagesEndRef.current?.scrollIntoView({
+      behavior: smooth ? 'smooth' : 'auto',
+      block: 'end',
+    });
+  }, []);
 
-    if (input === correctPassword) {
-      setUnlocked(true);
-    } else {
-      toast.error('รหัสไม่ถูกต้อง');
-    }
-
-    setCheckingPassword(false);
-  };
-
-  // 📥 โหลดข้อความเมื่อปลดล็อกแล้ว
+  // =====================
+  // ดึงผู้ใช้ปัจจุบัน
+  // =====================
   useEffect(() => {
-    if (!unlocked) return;
-
-    const loadMessages = async () => {
-      setLoading(true);
-      const { data, error } = await supabase
-        .from('chat_messages')
-        .select('*')
-        .eq('room_id', roomId)
-        .order('created_at', { ascending: true });
-
-      if (error) {
-        toast.error('ไม่สามารถโหลดข้อความได้');
+    (async () => {
+      const { data } = await supabase.auth.getUser();
+      if (data?.user) {
+        setUser({
+          id: data.user.id,
+          name: data.user.user_metadata?.full_name || data.user.email,
+          email: data.user.email,
+          avatar: data.user.user_metadata?.avatar_url || '/default-avatar.png',
+        });
       } else {
-        setMessages(data || []);
+        setUser({
+          id: null,
+          name: 'Guest',
+          email: '',
+          avatar: '/default-avatar.png',
+        });
       }
-      setLoading(false);
-    };
+    })();
+  }, []);
 
-    loadMessages();
-  }, [roomId, unlocked]);
-
-  // 🔄 Subscribe realtime
+  // =====================
+  // โหลดรายชื่อห้อง
+  // =====================
   useEffect(() => {
-    if (!unlocked) return;
+    (async () => {
+      try {
+        setLoadingRooms(true);
+        const res = await fetch('/api/chat-rooms');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'โหลดห้องไม่สำเร็จ');
+        setRooms(data.rooms || []);
+        if (!activeRoom && data.rooms?.length > 0) {
+          setActiveRoom(data.rooms[0].id);
+        }
+      } catch (err) {
+        console.error('❌ Load rooms error:', err);
+      } finally {
+        setLoadingRooms(false);
+      }
+    })();
+  }, [activeRoom]);
 
+  // =====================
+  // โหลดข้อความของห้อง
+  // =====================
+  useEffect(() => {
+    if (!activeRoom) return;
+    (async () => {
+      try {
+        setLoadingMessages(true);
+        const res = await fetch(`/api/chat-rooms/${activeRoom}/messages`);
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'โหลดข้อความไม่สำเร็จ');
+        setMessages(data.messages || []);
+        setUnreadMap((prev) => ({ ...prev, [activeRoom]: 0 }));
+        scrollToBottom(false);
+      } catch (err) {
+        console.error('❌ Load messages error:', err);
+      } finally {
+        setLoadingMessages(false);
+      }
+    })();
+  }, [activeRoom, scrollToBottom]);
+
+  // =====================
+  // Realtime listener
+  // =====================
+  useEffect(() => {
+    if (!activeRoom) return;
     const channel = supabase
-      .channel(`room-${roomId}`)
+      .channel(`room-${activeRoom}`)
       .on(
         'postgres_changes',
         {
           event: 'INSERT',
           schema: 'public',
           table: 'chat_messages',
-          filter: `room_id=eq.${roomId}`,
+          filter: `room_id=eq.${activeRoom}`,
         },
         (payload) => {
-          setMessages((prev) => [...prev, payload.new].slice(-50));
+          setMessages((prev) => [...prev, payload.new]);
+          scrollToBottom();
         },
       )
       .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [roomId, unlocked]);
+    return () => supabase.removeChannel(channel);
+  }, [activeRoom, scrollToBottom]);
 
-  // ⬇️ Scroll to bottom
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
-  // ✉️ ส่งข้อความ
+  // =====================
+  // ส่งข้อความ
+  // =====================
   const handleSend = async (text) => {
-    if (!text.trim()) return;
-    if (!user?.name || !user?.email) {
-      toast.error('ไม่พบข้อมูลผู้ใช้');
-      return;
-    }
+    if (!text?.trim() || !activeRoom || !user) return;
 
-    setSending(true);
-    const { error } = await supabase.from('chat_messages').insert([
-      {
-        room_id: roomId,
-        user_name: user.name,
-        user_email: user.email,
-        text,
-      },
-    ]);
+    const newMessage = {
+      user_id: user.id || `guest-${Date.now()}`,
+      user_name: user.name || 'Guest',
+      user_email: user.email || '',
+      content: text.trim(),
+      room_id: activeRoom,
+    };
 
-    if (error) {
-      toast.error('ส่งข้อความไม่สำเร็จ');
+    try {
+      const res = await fetch(`/api/chat-rooms/${activeRoom}/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newMessage),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'ส่งข้อความไม่สำเร็จ');
+    } catch (err) {
+      console.error('❌ Send message error:', err);
     }
-    setSending(false);
   };
 
-  // 🔒 UI ป้อนรหัส
-  if (!unlocked) {
-    return (
-      <div className="mx-auto mt-10 max-w-md rounded-xl border bg-white p-6 shadow-md dark:bg-gray-800">
-        <div className="mb-4 flex items-center justify-center gap-2 text-xl font-semibold text-gray-700 dark:text-gray-200">
-          <Lock className="h-5 w-5" />
-          <span>ห้องนี้ถูกล็อก</span>
-        </div>
-        <input
-          type="password"
-          value={passwordInput}
-          onChange={(e) => setPasswordInput(e.target.value)}
-          className="w-full rounded border p-2"
-          placeholder="กรอกรหัสเพื่อเข้าห้อง"
-        />
-        <button
-          onClick={handleUnlock}
-          disabled={checkingPassword}
-          className="mt-4 flex w-full items-center justify-center gap-2 rounded bg-blue-600 py-2 text-white hover:bg-blue-700"
-        >
-          {checkingPassword ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              <span>กำลังตรวจสอบ...</span>
-            </>
-          ) : (
-            <span>ปลดล็อก</span>
-          )}
-        </button>
-      </div>
-    );
-  }
+  const activeRoomObj = rooms.find((r) => r.id === activeRoom);
 
-  // 💬 UI แชท
+  // =====================
+  // UI
+  // =====================
   return (
-    <div className="flex h-[500px] flex-col rounded-xl border bg-white shadow-md dark:bg-gray-800">
-      <ScrollArea className="flex-1 space-y-2 overflow-auto p-4">
-        {loading ? (
-          Array.from({ length: 5 }).map((_, idx) => (
-            <Skeleton key={idx} className="h-8 w-full rounded-md" />
-          ))
-        ) : messages.length ? (
-          <AnimatePresence initial={false}>
-            {messages.map((msg) => (
-              <motion.div
-                key={msg.id}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.2 }}
-              >
-                <ChatMessage message={msg} currentUser={user} />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        ) : (
-          <div className="flex flex-col items-center justify-center gap-2 py-6 text-gray-400 dark:text-gray-500">
-            <MessageCircleOff className="h-6 w-6" />
-            <p>ยังไม่มีข้อความในห้องนี้</p>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </ScrollArea>
+    <div className="flex h-full w-full bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
+      <div className="mx-auto flex w-full max-w-6xl flex-col overflow-hidden rounded-lg border bg-white shadow-sm dark:bg-gray-800 sm:flex-row">
+        {/* Sidebar */}
+        <aside className="hidden w-80 min-w-[14rem] overflow-y-auto border-r border-gray-200 bg-gray-100 p-3 dark:border-gray-700 dark:bg-gray-900 sm:block">
+          <h3 className="mb-3 text-lg font-semibold">Rooms</h3>
+          {loadingRooms ? (
+            <Loader variant="dots" size="md" />
+          ) : (
+            <div className="space-y-2">
+              {rooms.map((room) => {
+                const unread = unreadMap[room.id] || 0;
+                const isActive = room.id === activeRoom;
+                return (
+                  <button
+                    key={room.id}
+                    onClick={() => {
+                      setActiveRoom(room.id);
+                      setUnreadMap((prev) => ({ ...prev, [room.id]: 0 }));
+                    }}
+                    className={clsx(
+                      'flex w-full items-start gap-3 rounded-lg p-3 text-left transition',
+                      isActive
+                        ? 'bg-blue-600 text-white shadow'
+                        : 'hover:bg-gray-200 dark:hover:bg-gray-700',
+                    )}
+                  >
+                    <Image
+                      src="/default-avatar.png"
+                      alt={room.title}
+                      width={44}
+                      height={44}
+                      className="rounded-full object-cover"
+                      unoptimized
+                    />
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate font-medium">{room.title}</div>
+                      <div className="truncate text-xs opacity-80">
+                        {room.lastMessage || 'ไม่มีข้อความ'}
+                      </div>
+                    </div>
+                    {unread > 0 && (
+                      <span className="rounded-full bg-red-500 px-2 py-0.5 text-xs text-white">
+                        {unread}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </aside>
 
-      <div className="border-t bg-gray-50 p-2 dark:bg-gray-700">
-        <ChatInput onSend={handleSend} disabled={sending} />
+        {/* Main Chat */}
+        <main className="flex min-h-[70vh] flex-1 flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b bg-white p-3 dark:bg-gray-800">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/default-avatar.png"
+                alt={activeRoomObj?.title || 'room'}
+                width={44}
+                height={44}
+                className="rounded-full object-cover"
+                unoptimized
+              />
+              <div>
+                <div className="font-semibold">{activeRoomObj?.title || 'เลือกห้อง'}</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Messages */}
+          <div className="flex-1 space-y-4 overflow-y-auto bg-gray-50 px-4 py-4 dark:bg-gray-900">
+            {loadingMessages ? (
+              <div className="flex h-48 items-center justify-center">
+                <Loader variant="dots" size="md" />
+              </div>
+            ) : (
+              <AnimatePresence initial={false}>
+                {messages.map((msg) => (
+                  <motion.div
+                    key={msg.id}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -6 }}
+                    transition={{ duration: 0.12 }}
+                  >
+                    <ChatMessage message={msg} isOwn={msg.user_id === (user?.id || msg.user_id)} />
+                  </motion.div>
+                ))}
+                <div ref={messagesEndRef} />
+              </AnimatePresence>
+            )}
+          </div>
+
+          {/* Input */}
+          <div className="border-t bg-white p-3 dark:bg-gray-800">
+            <ChatInput onSend={handleSend} />
+          </div>
+        </main>
       </div>
     </div>
   );

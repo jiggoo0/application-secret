@@ -26,63 +26,17 @@ import ChatRoom from '@/components/ChatRoom/ChatRoom';
 import ResultAnnouncement from '@/components/documents/ResultAnnouncement';
 
 /**
- * @typedef {Object} DashboardProps
- * @property {Object} user
- * @property {string} user.name
- * @property {string} user.email
- * @property {string} user.role
- * @property {string | null} user.image
- * @property {any[]} roadmap
- * @property {any[]} targets
- */
-
-/**
- * @param {DashboardProps} props
+ * @param {{ user: any, roadmap: any[], targets: any[] }} props
  */
 export default function UserDashboardClient({ user, roadmap, targets }) {
-  const sectionProps = {
-    user,
-    roadmap,
-    targets,
-    userEmail: user.email,
-  };
-
   const DASHBOARD_SECTIONS = [
-    {
-      title: 'อัปโหลดเอกสารเพิ่มเติม',
-      icon: FileText,
-      component: <FileUploadForm {...sectionProps} />,
-    },
-    {
-      title: 'ประกาศผล',
-      icon: CheckCircle,
-      component: <ResultAnnouncement {...sectionProps} />,
-    },
-    {
-      title: 'ประวัติการเข้าใช้งาน',
-      icon: Clock,
-      component: <UserSessionHistory {...sectionProps} />,
-    },
-    {
-      title: 'รายงานผลการดำเนินงาน',
-      icon: Shuffle,
-      component: <RandomTransactionTable {...sectionProps} />,
-    },
-    {
-      title: 'แผนงานโดยรวม',
-      icon: Map,
-      component: <RoadmapSummary roadmap={roadmap} />,
-    },
-    {
-      title: 'เป้าหมายที่ตั้งไว้',
-      icon: Target,
-      component: <TargetBreakdown targets={targets} />,
-    },
-    {
-      title: 'Chat Room JP51I0',
-      icon: MessageCircle,
-      component: <ChatRoom roomId="main-room" {...sectionProps} />,
-    },
+    { title: 'อัปโหลดเอกสารเพิ่มเติม', icon: FileText, component: <FileUploadForm user={user} /> },
+    { title: 'ประกาศผล', icon: CheckCircle, component: <ResultAnnouncement user={user} /> },
+    { title: 'ประวัติการเข้าใช้งาน', icon: Clock, component: <UserSessionHistory user={user} /> },
+    { title: 'รายงานผลการดำเนินงาน', icon: Shuffle, component: <RandomTransactionTable /> },
+    { title: 'แผนงานโดยรวม', icon: Map, component: <RoadmapSummary roadmap={roadmap} /> },
+    { title: 'เป้าหมายที่ตั้งไว้', icon: Target, component: <TargetBreakdown targets={targets} /> },
+    { title: 'Chat Room', icon: MessageCircle, component: <ChatRoom roomId="main-room" /> },
   ];
 
   return (
@@ -100,7 +54,6 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
             unoptimized
           />
         )}
-
         <h1 className="text-2xl font-bold text-gray-800 dark:text-white sm:text-3xl">
           ยินดีต้อนรับ <span className="text-blue-600 dark:text-blue-400">{user.name}</span>
         </h1>
@@ -124,11 +77,9 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
         </div>
 
         <LogoutButton />
-
         <div className="w-full max-w-2xl">
           <SecurityNotice />
         </div>
-
         <div className="flex justify-center">
           <Image
             src="/images/signatureเจ้าป่า.webp"
