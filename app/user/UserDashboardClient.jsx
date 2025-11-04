@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import {
   FileText,
-  CheckCircle,
   Clock,
   Shuffle,
   Map,
@@ -23,7 +22,6 @@ import UserSessionHistory from '@/components/user/UserSessionHistory';
 import SecurityNotice from '@/components/user/SecurityNotice';
 import LogoutButton from '@/components/common/LogoutButton';
 import ChatRoom from '@/components/ChatRoom/ChatRoom';
-import ResultAnnouncement from '@/components/documents/ResultAnnouncement';
 
 /**
  * @param {{ user: any, roadmap: any[], targets: any[] }} props
@@ -31,7 +29,6 @@ import ResultAnnouncement from '@/components/documents/ResultAnnouncement';
 export default function UserDashboardClient({ user, roadmap, targets }) {
   const DASHBOARD_SECTIONS = [
     { title: 'อัปโหลดเอกสารเพิ่มเติม', icon: FileText, component: <FileUploadForm user={user} /> },
-    { title: 'ประกาศผล', icon: CheckCircle, component: <ResultAnnouncement user={user} /> },
     { title: 'ประวัติการเข้าใช้งาน', icon: Clock, component: <UserSessionHistory user={user} /> },
     { title: 'รายงานผลการดำเนินงาน', icon: Shuffle, component: <RandomTransactionTable /> },
     { title: 'แผนงานโดยรวม', icon: Map, component: <RoadmapSummary roadmap={roadmap} /> },
