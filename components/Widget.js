@@ -3,119 +3,107 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { supabase } from '@/lib/supabase/client';
 
-/**
- * 💬 Widget - แชทเรียลไทม์เชื่อม Supabase
- * ----------------------------------------------------
- * ✅ รองรับ realtime insert
- * ✅ ตรวจสอบ error จาก Supabase อย่างละเอียด
- * ✅ ใช้ table: chat_messages (ไม่มีเครื่องหมาย -)
- * ✅ พร้อมใช้งาน production
- */
 export default function Widget() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
   const [history, setHistory] = useState([]);
+  const [sessionId, setSessionId] = useState(null);
   const chatEndRef = useRef(null);
 
-  // ✅ โหลดข้อความ + เปิด realtime listener
+  // ✅ โหลด session_id จาก localStorage หรือสร้างใหม่
   useEffect(() => {
-    loadMessages();
+    const storedSession = localStorage.getItem('chat_session_id');
+    if (storedSession) {
+      setSessionId(storedSession);
+      loadMessages(storedSession);
+      subscribeMessages(storedSession);
+    } else {
+      createSession();
+    }
+  }, []);
 
+  // สร้าง session ใหม่
+  async function createSession() {
+    const res = await fetch('/api/chat/session', { method: 'POST' });
+    const data = await res.json();
+    if (data.session_id) {
+      localStorage.setItem('chat_session_id', data.session_id);
+      setSessionId(data.session_id);
+      loadMessages(data.session_id);
+      subscribeMessages(data.session_id);
+    }
+  }
+
+  // โหลดข้อความทั้งหมด
+  async function loadMessages(session_id) {
+    const { data, error } = await supabase
+      .from('chat_messages')
+      .select('*')
+      .eq('session_id', session_id)
+      .order('created_at', { ascending: true });
+
+    if (!error && data) setHistory(data);
+  }
+
+  // ตั้งค่า Realtime listener
+  function subscribeMessages(session_id) {
     const channel = supabase
-      .channel('realtime:chat_messages')
+      .channel(`realtime:chat_messages:${session_id}`)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat_messages' },
+        {
+          event: '*',
+          schema: 'public',
+          table: 'chat_messages',
+          filter: `session_id=eq.${session_id}`,
+        },
         (payload) => {
-          if (payload.new) {
-            setHistory((prev) => [...prev, payload.new]);
-          }
+          if (payload.new) setHistory((prev) => [...prev, payload.new]);
         },
       )
       .subscribe();
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, []);
-
-  // ✅ โหลดข้อความทั้งหมด
-  async function loadMessages() {
-    const { data, error } = await supabase
-      .from('chat_messages')
-      .select('*')
-      .order('created_at', { ascending: true });
-
-    if (error) {
-      console.error('❌ โหลดข้อความล้มเหลว:', {
-        message: error.message,
-        details: error.details,
-        hint: error.hint,
-        code: error.code,
-      });
-      return;
-    }
-
-    setHistory(data || []);
+    return () => supabase.removeChannel(channel);
   }
 
-  // ✅ ส่งข้อความใหม่
+  // ส่งข้อความ
   async function sendMessage() {
-    if (!message.trim()) return;
+    if (!message.trim() || !sessionId) return;
 
-    try {
-      const { data, error } = await supabase
-        .from('chat_messages')
-        .insert([
-          {
-            role: 'user',
-            content: message.trim(),
-          },
-        ])
-        .select('*');
+    const res = await fetch('/api/chat/message', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, role: 'user', content: message }),
+    });
 
-      if (error) {
-        console.error('❌ ส่งข้อความล้มเหลว:', {
-          message: error.message,
-          details: error.details,
-          hint: error.hint,
-          code: error.code,
-        });
-        return;
-      }
-
-      setMessage('');
-      console.log('✅ ส่งข้อความสำเร็จ:', data);
-    } catch (err) {
-      console.error('❌ เกิดข้อผิดพลาดขณะส่งข้อความ:', err);
-    }
+    const data = await res.json();
+    if (data.success) setMessage('');
+    else console.error('❌ ส่งข้อความล้มเหลว:', data.error);
   }
 
-  // ✅ Scroll อัตโนมัติเมื่อมีข้อความใหม่
+  // Scroll ลงอัตโนมัติ
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
 
   return (
     <div className="fixed bottom-5 right-5 z-50">
-      {/* ปุ่มเปิด/ปิด Widget */}
       <button
         onClick={() => setOpen(!open)}
         className="rounded-full bg-blue-600 px-4 py-3 text-white shadow-lg transition hover:bg-blue-700"
       >
-        💬 แชทกับเรา
+        💬 แชท
       </button>
 
-      {/* กล่องแชท */}
       {open && (
-        <div className="mt-3 flex h-[600px] w-96 flex-col rounded-xl border border-gray-200 bg-white shadow-2xl dark:bg-gray-900 dark:text-gray-100">
+        <div className="mt-3 flex h-[600px] w-96 flex-col rounded-xl border bg-white shadow-2xl dark:bg-gray-900 dark:text-gray-100">
           {/* Header */}
-          <div className="flex items-center justify-between rounded-t-xl border-b bg-blue-600 p-3 text-white">
-            <span className="font-semibold">ศูนย์แชทลูกค้า</span>
+          <div className="flex items-center justify-between border-b bg-blue-600 p-3 text-white">
+            <span>แชทกับเรา</span>
             <button onClick={() => setOpen(false)}>✖</button>
           </div>
 
-          {/* พื้นที่แสดงข้อความ */}
+          {/* ข้อความ */}
           <div className="flex-1 space-y-2 overflow-y-auto p-3 text-sm">
             {history.map((msg) => (
               <div
@@ -136,7 +124,7 @@ export default function Widget() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* กล่องพิมพ์ข้อความ */}
+          {/* พิมพ์ข้อความ */}
           <div className="flex gap-2 border-t p-2">
             <input
               type="text"

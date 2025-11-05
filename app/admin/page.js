@@ -37,8 +37,8 @@ import MedicalCertificate from '@/components/documents/MedicalCertificate';
 import SalaryCertificate from '@/components/documents/SalaryCertificate';
 import { RegistrationPreview } from '@/components/documents/RegistrationPreview';
 
-// 💬 Chat Admin
-import ChatAdmin from '@/app/admin/chat/page';
+// 💬 Chat Admin Panel (Production-ready)
+import AdminChatPage from '@/app/admin/chat/page';
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -103,7 +103,7 @@ export default function AdminPage() {
     salary: <SalaryCertificate />,
     registration: <RegistrationPreview />,
     kbank: <KbankLive />,
-    'chat-admin': <ChatAdmin />,
+    'chat-admin': <AdminChatPage />, // Production-ready Chat Admin
   };
 
   const renderContent = () => (
@@ -117,7 +117,7 @@ export default function AdminPage() {
   return (
     <main className="min-h-screen bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
       <div className="mx-auto max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
-        {/* 🧭 Header */}
+        {/* Header */}
         <header className="space-y-2 text-center">
           <div className="flex items-center justify-center gap-2 text-red-600 dark:text-red-400">
             <ShieldCheck className="h-6 w-6" />
@@ -128,7 +128,7 @@ export default function AdminPage() {
           </p>
         </header>
 
-        {/* 👤 User Info */}
+        {/* User Info */}
         <section className="mx-auto max-w-md rounded-2xl bg-white p-5 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800">
           <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
             <User2 className="h-5 w-5" />
@@ -153,7 +153,7 @@ export default function AdminPage() {
           </div>
         </section>
 
-        {/* ⚙️ Admin Menu */}
+        {/* Admin Menu */}
         <nav className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-800/70">
           <div className="mx-auto max-w-7xl px-3 sm:px-6">
             <div className="no-scrollbar relative flex overflow-x-auto py-2 sm:grid sm:grid-cols-2 sm:gap-2 md:grid-cols-3 lg:grid-cols-5">
@@ -181,10 +181,10 @@ export default function AdminPage() {
           </div>
         </nav>
 
-        {/* 🧩 Main Content */}
+        {/* Main Content */}
         {renderContent()}
 
-        {/* 🔔 Toast */}
+        {/* Toast */}
         <Toaster position="bottom-right" richColors expand closeButton duration={3000} />
       </div>
     </main>
