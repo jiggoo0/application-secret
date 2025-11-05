@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { supabase } from '@/lib/supabase/client';
 
 export default function Widget() {
@@ -10,78 +10,86 @@ export default function Widget() {
   const [sessionId, setSessionId] = useState(null);
   const chatEndRef = useRef(null);
 
-  // ✅ โหลด session_id จาก localStorage หรือสร้างใหม่
+  // ✅ สร้าง session หรือโหลดจาก localStorage
   useEffect(() => {
-    const storedSession = localStorage.getItem('chat_session_id');
-    if (storedSession) {
-      setSessionId(storedSession);
-      loadMessages(storedSession);
-      subscribeMessages(storedSession);
+    const stored = localStorage.getItem('chat_session_id');
+    if (stored) {
+      setSessionId(stored);
     } else {
       createSession();
     }
   }, []);
 
-  // สร้าง session ใหม่
+  // ✅ สร้าง session ใหม่
   async function createSession() {
-    const res = await fetch('/api/chat/session', { method: 'POST' });
-    const data = await res.json();
-    if (data.session_id) {
-      localStorage.setItem('chat_session_id', data.session_id);
-      setSessionId(data.session_id);
-      loadMessages(data.session_id);
-      subscribeMessages(data.session_id);
+    try {
+      const user_name = `Guest-${Math.floor(Math.random() * 9999)}`;
+      const res = await fetch('/api/chat/session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user_name }),
+      });
+      const data = await res.json();
+      if (data.session_id) {
+        localStorage.setItem('chat_session_id', data.session_id);
+        setSessionId(data.session_id);
+      }
+    } catch (error) {
+      console.error('❌ สร้าง session ล้มเหลว:', error);
     }
   }
 
-  // โหลดข้อความทั้งหมด
-  async function loadMessages(session_id) {
-    const { data, error } = await supabase
-      .from('chat_messages')
-      .select('*')
-      .eq('session_id', session_id)
-      .order('created_at', { ascending: true });
+  // ✅ โหลดข้อความย้อนหลัง
+  const loadMessages = useCallback(async () => {
+    if (!sessionId) return;
+    try {
+      const res = await fetch(`/api/chat/message?session_id=${sessionId}`);
+      const data = await res.json();
+      if (data.messages) setHistory(data.messages);
+    } catch (error) {
+      console.error('❌ โหลดข้อความล้มเหลว:', error);
+    }
+  }, [sessionId]);
 
-    if (!error && data) setHistory(data);
-  }
+  useEffect(() => {
+    if (!sessionId) return;
+    loadMessages();
 
-  // ตั้งค่า Realtime listener
-  function subscribeMessages(session_id) {
     const channel = supabase
-      .channel(`realtime:chat_messages:${session_id}`)
+      .channel('realtime:chat_messages')
       .on(
         'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'chat_messages',
-          filter: `session_id=eq.${session_id}`,
-        },
+        { event: '*', schema: 'public', table: 'chat_messages' },
         (payload) => {
-          if (payload.new) setHistory((prev) => [...prev, payload.new]);
+          if (payload.new?.session_id === sessionId) {
+            setHistory((prev) => [...prev, payload.new]);
+          }
         },
       )
       .subscribe();
 
     return () => supabase.removeChannel(channel);
-  }
+  }, [sessionId, loadMessages]);
 
-  // ส่งข้อความ
+  // ✅ ส่งข้อความ
   async function sendMessage() {
     if (!message.trim() || !sessionId) return;
 
-    const res = await fetch('/api/chat/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ session_id: sessionId, role: 'user', content: message }),
-    });
-
-    const data = await res.json();
-    if (data.success) setMessage('');
-    else console.error('❌ ส่งข้อความล้มเหลว:', data.error);
+    try {
+      const res = await fetch('/api/chat/message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId, role: 'user', content: message }),
+      });
+      const data = await res.json();
+      if (!data.success) throw data.error;
+      setMessage('');
+    } catch (error) {
+      console.error('❌ ส่งข้อความล้มเหลว:', error);
+    }
   }
 
-  // Scroll ลงอัตโนมัติ
+  // ✅ Scroll อัตโนมัติ
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [history]);
@@ -90,20 +98,18 @@ export default function Widget() {
     <div className="fixed bottom-5 right-5 z-50">
       <button
         onClick={() => setOpen(!open)}
-        className="rounded-full bg-blue-600 px-4 py-3 text-white shadow-lg transition hover:bg-blue-700"
+        className="rounded-full bg-blue-600 px-4 py-3 text-white shadow-lg hover:bg-blue-700"
       >
         💬 แชท
       </button>
 
       {open && (
-        <div className="mt-3 flex h-[600px] w-96 flex-col rounded-xl border bg-white shadow-2xl dark:bg-gray-900 dark:text-gray-100">
-          {/* Header */}
-          <div className="flex items-center justify-between border-b bg-blue-600 p-3 text-white">
-            <span>แชทกับเรา</span>
+        <div className="mt-3 flex h-[600px] w-96 flex-col rounded-xl border border-gray-200 bg-white shadow-2xl dark:bg-gray-900 dark:text-gray-100">
+          <div className="flex items-center justify-between rounded-t-xl border-b bg-blue-600 p-3 text-white">
+            <span>ศูนย์แชทลูกค้า</span>
             <button onClick={() => setOpen(false)}>✖</button>
           </div>
 
-          {/* ข้อความ */}
           <div className="flex-1 space-y-2 overflow-y-auto p-3 text-sm">
             {history.map((msg) => (
               <div
@@ -124,7 +130,6 @@ export default function Widget() {
             <div ref={chatEndRef} />
           </div>
 
-          {/* พิมพ์ข้อความ */}
           <div className="flex gap-2 border-t p-2">
             <input
               type="text"

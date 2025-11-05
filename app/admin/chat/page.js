@@ -1,162 +1,176 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { supabase } from '@/lib/supabase/client';
-import { Loader2, MessageSquare } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Loader2 } from 'lucide-react';
 
-export default function AdminChatPage() {
+export default function ChatAdmin() {
   const [sessions, setSessions] = useState([]);
-  const [selectedSession, setSelectedSession] = useState(null);
+  const [activeSession, setActiveSession] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [message, setMessage] = useState('');
-  const chatEndRef = useRef(null);
+  const [newMessage, setNewMessage] = useState('');
+  const messagesEndRef = useRef(null);
+  const [loadingSessions, setLoadingSessions] = useState(false);
 
-  // โหลด session list
-  useEffect(() => {
-    fetchSessions();
+  // ✅ โหลด list ของ chat sessions
+  const loadSessions = useCallback(async () => {
+    setLoadingSessions(true);
+    try {
+      const { data, error } = await supabase
+        .from('chat_sessions')
+        .select('*')
+        .order('created_at', { ascending: false });
+      if (!error) setSessions(data || []);
+    } finally {
+      setLoadingSessions(false);
+    }
   }, []);
 
-  async function fetchSessions() {
-    const { data, error } = await supabase
-      .from('chat_sessions')
-      .select('*')
-      .order('created_at', { ascending: false });
-    if (!error && data) setSessions(data);
-  }
+  useEffect(() => {
+    loadSessions();
 
-  // เลือก session
-  async function selectSession(session) {
-    setSelectedSession(session);
-    await loadMessages(session.id);
-    subscribeMessages(session.id);
-  }
+    const channel = supabase
+      .channel('realtime:chat_sessions')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'chat_sessions' },
+        () => {
+          loadSessions();
+        }
+      )
+      .subscribe();
 
-  // โหลดข้อความ session ที่เลือก
-  async function loadMessages(session_id) {
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [loadSessions]);
+
+  // ✅ โหลดข้อความของ session ที่เลือก
+  const loadMessages = useCallback(async () => {
+    if (!activeSession) return;
     const { data, error } = await supabase
       .from('chat_messages')
       .select('*')
-      .eq('session_id', session_id)
+      .eq('session_id', activeSession.id)
       .order('created_at', { ascending: true });
-    if (!error && data) setMessages(data);
-  }
+    if (!error) setMessages(data || []);
+  }, [activeSession]);
 
-  // Realtime listener
-  function subscribeMessages(session_id) {
+  useEffect(() => {
+    if (!activeSession) return;
+
+    loadMessages();
+
     const channel = supabase
-      .channel(`realtime:chat_messages:${session_id}`)
+      .channel(`realtime:chat_messages:${activeSession.id}`)
       .on(
         'postgres_changes',
         {
           event: '*',
           schema: 'public',
           table: 'chat_messages',
-          filter: `session_id=eq.${session_id}`,
+          filter: `session_id=eq.${activeSession.id}`,
         },
         (payload) => {
           if (payload.new) setMessages((prev) => [...prev, payload.new]);
-        },
+        }
       )
       .subscribe();
 
     return () => supabase.removeChannel(channel);
-  }
+  }, [activeSession, loadMessages]);
 
-  // ส่งข้อความ admin
-  async function sendMessage() {
-    if (!message.trim() || !selectedSession) return;
-    const res = await fetch('/api/chat/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        session_id: selectedSession.id,
-        role: 'admin',
-        content: message.trim(),
-      }),
-    });
-    const data = await res.json();
-    if (data.success) setMessage('');
-    else console.error('❌ ส่งข้อความล้มเหลว:', data.error);
-  }
+  // ✅ ส่งข้อความ
+  const sendMessage = async () => {
+    if (!newMessage.trim() || !activeSession) return;
 
-  // Scroll ลงล่าง
+    await supabase
+      .from('chat_messages')
+      .insert([{ session_id: activeSession.id, role: 'admin', content: newMessage }]);
+
+    setNewMessage('');
+    loadMessages();
+  };
+
+  // ✅ scroll อัตโนมัติ
   useEffect(() => {
-    chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   return (
-    <div className="flex h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Sidebar: Session List */}
-      <div className="w-80 overflow-y-auto border-r border-gray-200 dark:border-gray-800">
-        <h2 className="flex items-center gap-2 p-4 text-lg font-semibold text-gray-700 dark:text-gray-200">
-          <MessageSquare className="h-5 w-5" /> ห้องแชททั้งหมด
-        </h2>
-        <div className="divide-y divide-gray-200 dark:divide-gray-800">
+    <div className="flex h-[calc(100vh-100px)] gap-4 p-4">
+      {/* Sidebar: List of sessions */}
+      <Card className="w-80 flex-shrink-0 overflow-auto">
+        <h2 className="mb-2 font-semibold">Chat Sessions</h2>
+        {loadingSessions && (
+          <div className="flex items-center gap-2 text-gray-500">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            กำลังโหลด...
+          </div>
+        )}
+        {sessions.length === 0 && !loadingSessions && <p>ไม่มี session</p>}
+        <ul>
           {sessions.map((s) => (
-            <button
+            <li
               key={s.id}
-              onClick={() => selectSession(s)}
-              className={`w-full p-3 text-left transition hover:bg-gray-100 dark:hover:bg-gray-800 ${
-                selectedSession?.id === s.id ? 'bg-blue-100 dark:bg-blue-900' : ''
+              className={`cursor-pointer rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                activeSession?.id === s.id ? 'bg-blue-100 dark:bg-blue-800' : ''
               }`}
+              onClick={() => setActiveSession(s)}
             >
-              {s.user_name || 'ผู้ใช้ไม่ระบุ'} <br />
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                {new Date(s.created_at).toLocaleString('th-TH')}
-              </span>
-            </button>
+              {s.user_name || 'Guest'} {s.phone ? `(${s.phone})` : ''}
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </Card>
 
-      {/* Chat Content */}
-      <div className="flex flex-1 flex-col">
-        {selectedSession ? (
+      {/* Main Chat */}
+      <Card className="flex flex-1 flex-col overflow-hidden">
+        {!activeSession ? (
+          <div className="flex h-full items-center justify-center text-gray-500">
+            เลือก session เพื่อดูข้อความ
+          </div>
+        ) : (
           <>
-            <div className="flex-1 space-y-2 overflow-y-auto p-4">
+            <div className="flex-1 overflow-y-auto p-2">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`flex ${msg.role === 'user' ? 'justify-start' : 'justify-end'}`}
+                  className={`mb-1 ${msg.role === 'user' ? 'text-left' : 'text-right'}`}
                 >
-                  <div
-                    className={`max-w-[70%] rounded-lg px-3 py-2 ${
+                  <span
+                    className={`inline-block rounded px-2 py-1 ${
                       msg.role === 'user'
-                        ? 'bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100'
+                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
                         : 'bg-blue-600 text-white'
                     }`}
                   >
                     {msg.content}
-                  </div>
+                  </span>
                 </div>
               ))}
-              <div ref={chatEndRef} />
+              <div ref={messagesEndRef} />
             </div>
-
-            {/* Input */}
-            <div className="flex gap-2 border-t border-gray-300 p-3 dark:border-gray-700">
+            <div className="flex gap-2 border-t p-2">
               <input
                 type="text"
-                value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                placeholder="พิมพ์ข้อความ..."
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                placeholder="พิมพ์ข้อความตอบกลับ..."
-                className="flex-1 rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-gray-100"
+                className="flex-1 rounded border px-2 py-1"
               />
               <button
                 onClick={sendMessage}
-                className="rounded-lg bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+                className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700"
               >
                 ส่ง
               </button>
             </div>
           </>
-        ) : (
-          <div className="flex flex-1 items-center justify-center text-gray-500 dark:text-gray-400">
-            <Loader2 className="mr-2 h-6 w-6 animate-spin" /> เลือกห้องแชทเพื่อดูข้อความ
-          </div>
         )}
-      </div>
+      </Card>
     </div>
   );
 }
