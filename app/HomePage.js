@@ -10,6 +10,7 @@ import AlertBanner from '@/components/AlertBanner';
 import Banner from '@/components/Banner';
 import Section from '@/components/common/Section';
 
+// ✅ โหลด Hero แบบ dynamic + placeholder loading
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-muted-foreground">
@@ -19,6 +20,7 @@ const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   ssr: false,
 });
 
+// ✅ โหลด Carousel รีวิว
 const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-muted-foreground">
@@ -28,6 +30,7 @@ const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
   ssr: false,
 });
 
+// ✅ โหลด Blog
 const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-muted-foreground">
@@ -37,42 +40,30 @@ const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   ssr: false,
 });
 
+// ✅ รวมแต่ละ Section ไว้ใน array เพื่อ loop render ได้
 const sections = [
-  {
-    id: 'hero',
-    Component: Hero, // ✅ ไม่มี props แล้ว
-  },
-  {
-    id: 'about',
-    Component: dynamic(() => import('@/components/About'), { ssr: false }),
-  },
-  {
-    id: 'services',
-    Component: dynamic(() => import('@/components/Services'), { ssr: false }),
-  },
+  { id: 'hero', Component: Hero },
+  { id: 'about', Component: dynamic(() => import('@/components/About'), { ssr: false }) },
+  { id: 'services', Component: dynamic(() => import('@/components/Services'), { ssr: false }) },
   {
     id: 'works',
     Component: dynamic(() => import('@/components/OurWorks/OurWorks'), { ssr: false }),
   },
-  {
-    id: 'reviews',
-    Component: ReviewCarousel,
-  },
-  {
-    id: 'blog',
-    Component: Blog,
-  },
+  { id: 'reviews', Component: ReviewCarousel },
+  { id: 'blog', Component: Blog },
 ];
 
 export default function HomePage() {
   const controls = useAnimation();
 
+  // ✅ เริ่ม animation ทันทีเมื่อ component mount
   useEffect(() => {
     controls.start('visible');
   }, [controls]);
 
   return (
     <>
+      {/* ✅ SEO / OpenGraph metadata */}
       <SEO
         title="หน้าแรก | Application Secret"
         description="ทำธุรกิจสีเทาให้มีความมาตรฐานมืออาชีพ ยินดีร่วมงานทุกสายวงการ"
@@ -80,10 +71,12 @@ export default function HomePage() {
         url="https://application-secret.vercel.app"
       />
 
+      {/* ✅ ส่วนประกาศ + แบนเนอร์ */}
       <AnnouncementBar />
       <AlertBanner />
       <Banner />
 
+      {/* ✅ ส่วนเนื้อหาหลัก */}
       <main
         id="main-content"
         role="main"
@@ -108,12 +101,14 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.2 }}
             className="w-full"
           >
+            {/* ✅ Section wrapper */}
             <Section
               id={id}
               ariaLabelledBy={`section-${id}`}
               className="scroll-mt-20 px-4 sm:px-6 lg:px-8"
             >
               <div className="mx-auto max-w-7xl">
+                {/* ✅ render component แบบ dynamic */}
                 <Component />
               </div>
             </Section>

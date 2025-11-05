@@ -1,17 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import {
-  FileText,
-  Clock,
-  Shuffle,
-  Map,
-  Target,
-  MessageCircle,
-  User2,
-  Mail,
-  BadgeCheck,
-} from 'lucide-react';
+import { FileText, Clock, Shuffle, Map, Target, User2, Mail, BadgeCheck } from 'lucide-react';
 
 import DashboardSection from '@/components/shared/DashboardSection';
 import FileUploadForm from '@/components/user/FileUploadForm';
@@ -21,7 +11,6 @@ import RandomTransactionTable from '@/components/user/RandomTransactionTable';
 import UserSessionHistory from '@/components/user/UserSessionHistory';
 import SecurityNotice from '@/components/user/SecurityNotice';
 import LogoutButton from '@/components/common/LogoutButton';
-import ChatRoom from '@/components/ChatRoom/ChatRoom';
 
 /**
  * @param {{ user: any, roadmap: any[], targets: any[] }} props
@@ -33,7 +22,6 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
     { title: 'รายงานผลการดำเนินงาน', icon: Shuffle, component: <RandomTransactionTable /> },
     { title: 'แผนงานโดยรวม', icon: Map, component: <RoadmapSummary roadmap={roadmap} /> },
     { title: 'เป้าหมายที่ตั้งไว้', icon: Target, component: <TargetBreakdown targets={targets} /> },
-    { title: 'Chat Room', icon: MessageCircle, component: <ChatRoom roomId="main-room" /> },
   ];
 
   return (
