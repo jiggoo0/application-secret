@@ -19,13 +19,13 @@ const socialLinks = [
   {
     type: 'facebook',
     label: 'Facebook',
-    uri: 'https://www.facebook.com/profile.php?id=61573307616115&mibextid=ZbWKwL',
+    uri: 'https://www.facebook.com/share/1BvXE1cCvo/',
     icon: FaFacebook,
   },
   {
     type: 'messenger',
     label: 'Messenger',
-    uri: 'https://m.me/61573307616115?hash=AbZf0L5cSZ8XvIYw&source=qr_link_share',
+    uri: 'https://m.me/547760041764856?source=qr_link_share',
     icon: FaFacebookMessenger,
   },
 ];

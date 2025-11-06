@@ -1,176 +1,176 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase/client';
-import { Card } from '@/components/ui/card';
-import { Loader2 } from 'lucide-react';
 
-export default function ChatAdmin() {
-  const [sessions, setSessions] = useState([]);
-  const [activeSession, setActiveSession] = useState(null);
+/**
+ * ✅ หน้า Admin Chat (ดูข้อความลูกค้าทั้งหมดแบบเรียลไทม์)
+ * - แสดงรายชื่อผู้ใช้งานที่เคยเริ่มแชท
+ * - คลิกเลือกผู้ใช้เพื่อเปิดดูข้อความสนทนาแบบเรียลไทม์
+ * - แอดมินสามารถตอบกลับได้ในช่องแชท
+ */
+
+export default function AdminChatPage() {
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState('');
-  const messagesEndRef = useRef(null);
-  const [loadingSessions, setLoadingSessions] = useState(false);
+  const [reply, setReply] = useState('');
 
-  // ✅ โหลด list ของ chat sessions
-  const loadSessions = useCallback(async () => {
-    setLoadingSessions(true);
-    try {
+  // โหลดรายชื่อผู้ใช้งานที่เคยแชท
+  useEffect(() => {
+    const loadUsers = async () => {
       const { data, error } = await supabase
-        .from('chat_sessions')
-        .select('*')
+        .from('chat_messages')
+        .select('user_id, user_name, user_email')
         .order('created_at', { ascending: false });
-      if (!error) setSessions(data || []);
-    } finally {
-      setLoadingSessions(false);
-    }
+
+      if (!error && data) {
+        const uniqueUsers = Object.values(
+          data.reduce((acc, cur) => {
+            if (!acc[cur.user_id]) acc[cur.user_id] = cur;
+            return acc;
+          }, {}),
+        );
+        setUsers(uniqueUsers);
+      }
+    };
+
+    loadUsers();
   }, []);
 
+  // โหลดข้อความของผู้ใช้ที่เลือก
   useEffect(() => {
-    loadSessions();
+    if (!selectedUser) return;
 
+    const loadMessages = async () => {
+      const { data, error } = await supabase
+        .from('chat_messages')
+        .select('*')
+        .eq('user_id', selectedUser.user_id)
+        .order('created_at', { ascending: true });
+      if (!error && data) setMessages(data);
+    };
+
+    loadMessages();
+
+    // ฟังข้อความใหม่แบบเรียลไทม์
     const channel = supabase
-      .channel('realtime:chat_sessions')
+      .channel(`admin_chat:${selectedUser.user_id}`)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'chat_sessions' },
-        () => {
-          loadSessions();
-        }
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'chat_messages',
+          filter: `user_id=eq.${selectedUser.user_id}`,
+        },
+        (payload) => {
+          setMessages((prev) => [...prev, payload.new]);
+        },
       )
       .subscribe();
 
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [loadSessions]);
+  }, [selectedUser]);
 
-  // ✅ โหลดข้อความของ session ที่เลือก
-  const loadMessages = useCallback(async () => {
-    if (!activeSession) return;
-    const { data, error } = await supabase
-      .from('chat_messages')
-      .select('*')
-      .eq('session_id', activeSession.id)
-      .order('created_at', { ascending: true });
-    if (!error) setMessages(data || []);
-  }, [activeSession]);
+  // ส่งข้อความตอบกลับลูกค้า
+  const handleSendReply = async (e) => {
+    e.preventDefault();
+    if (!reply.trim() || !selectedUser) return;
 
-  useEffect(() => {
-    if (!activeSession) return;
+    const { error } = await supabase.from('chat_messages').insert({
+      user_id: selectedUser.user_id,
+      user_name: 'Admin',
+      user_email: 'admin@system.local',
+      message: reply.trim(),
+    });
 
-    loadMessages();
-
-    const channel = supabase
-      .channel(`realtime:chat_messages:${activeSession.id}`)
-      .on(
-        'postgres_changes',
-        {
-          event: '*',
-          schema: 'public',
-          table: 'chat_messages',
-          filter: `session_id=eq.${activeSession.id}`,
-        },
-        (payload) => {
-          if (payload.new) setMessages((prev) => [...prev, payload.new]);
-        }
-      )
-      .subscribe();
-
-    return () => supabase.removeChannel(channel);
-  }, [activeSession, loadMessages]);
-
-  // ✅ ส่งข้อความ
-  const sendMessage = async () => {
-    if (!newMessage.trim() || !activeSession) return;
-
-    await supabase
-      .from('chat_messages')
-      .insert([{ session_id: activeSession.id, role: 'admin', content: newMessage }]);
-
-    setNewMessage('');
-    loadMessages();
+    if (!error) setReply('');
   };
 
-  // ✅ scroll อัตโนมัติ
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   return (
-    <div className="flex h-[calc(100vh-100px)] gap-4 p-4">
-      {/* Sidebar: List of sessions */}
-      <Card className="w-80 flex-shrink-0 overflow-auto">
-        <h2 className="mb-2 font-semibold">Chat Sessions</h2>
-        {loadingSessions && (
-          <div className="flex items-center gap-2 text-gray-500">
-            <Loader2 className="h-5 w-5 animate-spin" />
-            กำลังโหลด...
-          </div>
-        )}
-        {sessions.length === 0 && !loadingSessions && <p>ไม่มี session</p>}
-        <ul>
-          {sessions.map((s) => (
-            <li
-              key={s.id}
-              className={`cursor-pointer rounded p-2 hover:bg-gray-100 dark:hover:bg-gray-700 ${
-                activeSession?.id === s.id ? 'bg-blue-100 dark:bg-blue-800' : ''
-              }`}
-              onClick={() => setActiveSession(s)}
-            >
-              {s.user_name || 'Guest'} {s.phone ? `(${s.phone})` : ''}
-            </li>
-          ))}
-        </ul>
-      </Card>
+    <div className="flex h-screen">
+      {/* Sidebar — รายชื่อผู้ใช้ */}
+      <div className="w-1/3 overflow-y-auto border-r border-gray-300 bg-gray-50 dark:border-gray-700 dark:bg-gray-900">
+        <h2 className="border-b border-gray-200 p-4 text-xl font-semibold dark:border-gray-700">
+          รายชื่อผู้ใช้งาน
+        </h2>
+        {users.map((u) => (
+          <button
+            key={u.user_id}
+            onClick={() => setSelectedUser(u)}
+            className={`w-full px-4 py-3 text-left hover:bg-blue-100 dark:hover:bg-gray-800 ${
+              selectedUser?.user_id === u.user_id ? 'bg-blue-200 dark:bg-gray-700' : ''
+            }`}
+          >
+            <div className="font-medium">{u.user_name}</div>
+            <div className="text-xs text-gray-500">{u.user_email}</div>
+          </button>
+        ))}
+      </div>
 
-      {/* Main Chat */}
-      <Card className="flex flex-1 flex-col overflow-hidden">
-        {!activeSession ? (
-          <div className="flex h-full items-center justify-center text-gray-500">
-            เลือก session เพื่อดูข้อความ
-          </div>
-        ) : (
+      {/* กล่องแชท */}
+      <div className="flex flex-1 flex-col bg-white dark:bg-gray-950">
+        {selectedUser ? (
           <>
-            <div className="flex-1 overflow-y-auto p-2">
+            <div className="border-b border-gray-200 p-4 dark:border-gray-700">
+              <h3 className="text-lg font-semibold">
+                {selectedUser.user_name} ({selectedUser.user_email})
+              </h3>
+            </div>
+
+            <div className="flex-1 space-y-2 overflow-y-auto bg-gray-50 p-4 dark:bg-gray-900">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
-                  className={`mb-1 ${msg.role === 'user' ? 'text-left' : 'text-right'}`}
+                  className={`flex ${msg.user_name === 'Admin' ? 'justify-end' : 'justify-start'}`}
                 >
-                  <span
-                    className={`inline-block rounded px-2 py-1 ${
-                      msg.role === 'user'
-                        ? 'bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100'
-                        : 'bg-blue-600 text-white'
+                  <div
+                    className={`max-w-xs rounded-lg p-2 text-sm shadow ${
+                      msg.user_name === 'Admin'
+                        ? 'rounded-br-none bg-blue-600 text-white'
+                        : 'rounded-bl-none bg-gray-200 text-gray-900 dark:bg-gray-700 dark:text-gray-100'
                     }`}
                   >
-                    {msg.content}
-                  </span>
+                    {msg.message}
+                    <div className="mt-1 text-right text-[10px] opacity-70">
+                      {new Date(msg.created_at).toLocaleTimeString('th-TH', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                      })}
+                    </div>
+                  </div>
                 </div>
               ))}
-              <div ref={messagesEndRef} />
             </div>
-            <div className="flex gap-2 border-t p-2">
+
+            <form
+              onSubmit={handleSendReply}
+              className="flex gap-2 border-t border-gray-200 p-4 dark:border-gray-700"
+            >
               <input
                 type="text"
-                placeholder="พิมพ์ข้อความ..."
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && sendMessage()}
-                className="flex-1 rounded border px-2 py-1"
+                value={reply}
+                onChange={(e) => setReply(e.target.value)}
+                placeholder="พิมพ์ข้อความตอบกลับ..."
+                className="flex-1 rounded border border-gray-300 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800"
               />
               <button
-                onClick={sendMessage}
-                className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700"
+                type="submit"
+                className="rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
               >
                 ส่ง
               </button>
-            </div>
+            </form>
           </>
+        ) : (
+          <div className="flex h-full items-center justify-center text-gray-500">
+            เลือกผู้ใช้งานเพื่อดูข้อความ
+          </div>
         )}
-      </Card>
+      </div>
     </div>
   );
 }

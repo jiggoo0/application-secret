@@ -24,20 +24,20 @@ import {
   MessageSquare,
 } from 'lucide-react';
 
-// 🧩 Admin Components
+// 🧩 ส่วนประกอบหลักของผู้ดูแลระบบ
 import Uploads from '@/components/admin/Uploads';
 import Users from '@/components/admin/Users';
 import FileList from '@/components/admin/FileList';
 import UserSessionsTable from '@/components/admin/UserSessionsTable';
 import KbankLive from '@/components/admin/KbankLive';
 
-// 📄 Document Components
+// 📄 เอกสารระบบ
 import CompanyAccount from '@/components/documents/CompanyAccount';
 import MedicalCertificate from '@/components/documents/MedicalCertificate';
 import SalaryCertificate from '@/components/documents/SalaryCertificate';
 import { RegistrationPreview } from '@/components/documents/RegistrationPreview';
 
-// 💬 Chat Admin Panel (Production-ready)
+// 💬 ระบบแชทผู้ดูแล
 import AdminChatPage from '@/app/admin/chat/page';
 
 export default function AdminPage() {
@@ -48,12 +48,11 @@ export default function AdminPage() {
 
   useEffect(() => {
     if (status === 'loading') return;
+
     const isAdmin = session?.user?.role === 'admin';
     setAuthorized(isAdmin);
 
-    if (!isAdmin) {
-      router.replace('/login?error=unauthorized');
-    }
+    if (!isAdmin) router.replace('/login?error=unauthorized');
   }, [status, session, router]);
 
   if (status === 'loading') {
@@ -61,7 +60,7 @@ export default function AdminPage() {
       <main className="flex h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
           <Loader2 className="h-5 w-5 animate-spin" />
-          <span>กำลังตรวจสอบสิทธิ์ผู้ดูแลระบบ...</span>
+          <span>กำลังตรวจสอบสิทธิ์...</span>
         </div>
       </main>
     );
@@ -83,14 +82,14 @@ export default function AdminPage() {
   const menuItems = [
     { key: 'uploads', label: 'อัปโหลด', icon: Upload },
     { key: 'users', label: 'ผู้ใช้งาน', icon: UsersIcon },
-    { key: 'files', label: 'รายการไฟล์', icon: FileText },
+    { key: 'files', label: 'ไฟล์ทั้งหมด', icon: FileText },
     { key: 'user-sessions', label: 'ประวัติผู้ใช้', icon: Clock },
     { key: 'company', label: 'บัญชีบริษัท', icon: Building2 },
     { key: 'medical', label: 'ใบรับรองแพทย์', icon: Stethoscope },
     { key: 'salary', label: 'ใบรับรองเงินเดือน', icon: Banknote },
     { key: 'registration', label: 'ทะเบียนพาณิชย์', icon: ScrollText },
-    { key: 'kbank', label: 'KBank Live Demo', icon: Landmark },
-    { key: 'chat-admin', label: 'Chat Admin Panel', icon: MessageSquare },
+    { key: 'kbank', label: 'KBank Live', icon: Landmark },
+    { key: 'chat-admin', label: 'ระบบแชท', icon: MessageSquare },
   ];
 
   const componentsMap = {
@@ -103,7 +102,7 @@ export default function AdminPage() {
     salary: <SalaryCertificate />,
     registration: <RegistrationPreview />,
     kbank: <KbankLive />,
-    'chat-admin': <AdminChatPage />, // Production-ready Chat Admin
+    'chat-admin': <AdminChatPage />,
   };
 
   const renderContent = () => (
@@ -119,20 +118,20 @@ export default function AdminPage() {
       <div className="mx-auto max-w-7xl space-y-8 p-4 sm:p-6 lg:p-8">
         {/* Header */}
         <header className="space-y-2 text-center">
-          <div className="flex items-center justify-center gap-2 text-red-600 dark:text-red-400">
+          <div className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
             <ShieldCheck className="h-6 w-6" />
             <h1 className="text-3xl font-bold">Admin Dashboard</h1>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-300 sm:text-base">
-            จัดการข้อมูลทั้งหมดของระบบได้จากที่นี่
+            ระบบจัดการข้อมูลทั้งหมดในที่เดียว
           </p>
         </header>
 
         {/* User Info */}
-        <section className="mx-auto max-w-md rounded-2xl bg-white p-5 shadow-md transition-all duration-300 hover:shadow-lg dark:bg-gray-800">
+        <section className="mx-auto max-w-md rounded-2xl bg-white p-5 shadow-md dark:bg-gray-800">
           <h2 className="mb-3 flex items-center gap-2 text-lg font-semibold text-gray-800 dark:text-gray-100">
             <User2 className="h-5 w-5" />
-            ข้อมูลผู้ดูแลระบบ
+            ข้อมูลผู้ดูแล
           </h2>
           <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
             <p className="flex items-center gap-2">
@@ -141,19 +140,19 @@ export default function AdminPage() {
             </p>
             <p className="flex items-center gap-2">
               <Mail className="h-4 w-4" />
-              <strong>Email:</strong> {user.email || '-'}
+              <strong>อีเมล:</strong> {user.email || '-'}
             </p>
             <p className="flex items-center gap-2">
               <BadgeCheck className="h-4 w-4" />
-              <strong>Role:</strong>{' '}
-              <span className="rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-800 dark:text-green-200">
+              <strong>Role:</strong>
+              <span className="ml-2 rounded bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700 dark:bg-green-800 dark:text-green-200">
                 {user.role || 'unknown'}
               </span>
             </p>
           </div>
         </section>
 
-        {/* Admin Menu */}
+        {/* Navigation Menu */}
         <nav className="sticky top-0 z-40 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-800/70">
           <div className="mx-auto max-w-7xl px-3 sm:px-6">
             <div className="no-scrollbar relative flex overflow-x-auto py-2 sm:grid sm:grid-cols-2 sm:gap-2 md:grid-cols-3 lg:grid-cols-5">
@@ -181,10 +180,9 @@ export default function AdminPage() {
           </div>
         </nav>
 
-        {/* Main Content */}
+        {/* Main Section */}
         {renderContent()}
 
-        {/* Toast */}
         <Toaster position="bottom-right" richColors expand closeButton duration={3000} />
       </div>
     </main>
