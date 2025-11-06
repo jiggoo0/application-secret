@@ -7,19 +7,17 @@ const projectRoot = __dirname;
 
 const nextConfig = {
   reactStrictMode: true,
-
-  // 🏗️ Output mode for Vercel
   output: isVercel ? 'standalone' : undefined,
 
-  // 🖼️ Image optimization
   images: {
     unoptimized: !isVercel,
     domains: [
-      'ksiobbrextlywypdzaze.supabase.co', // ✅ Supabase storage domain
+      'ksiobbrextlywypdzaze.supabase.co', // ✅ Supabase storage
     ],
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
   },
 
-  // 🧪 Experimental features
   experimental: {
     serverActions: {},
     optimizePackageImports: [
@@ -30,30 +28,30 @@ const nextConfig = {
     ],
   },
 
-  // ✅ Typed routes (safe to keep even in JS)
   typedRoutes: true,
 
-  // 🔍 ESLint configuration
   eslint: {
     dirs: ['app', 'components', 'lib', 'utils', 'config'],
   },
 
-  // ⚙️ Webpack customization
   webpack: (config, { isServer }) => {
     config.cache = false;
 
-    // 👀 Watcher settings
     config.watchOptions = isTermux
       ? {
           poll: 1000,
           aggregateTimeout: 300,
-          ignored: ['/node_modules', '/.git', '/.next/', path.resolve(projectRoot, '/'), '/data/'],
+          ignored: [
+            '**/node_modules/**',
+            '**/.git/**',
+            '**/.next/**',
+            path.resolve(projectRoot, '/data/'),
+          ],
         }
       : {
-          ignored: ['/node_modules', '/.git', '/.next/'],
+          ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**'],
         };
 
-    // 🛡️ Fallback for client-side
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,
@@ -65,10 +63,7 @@ const nextConfig = {
       };
     }
 
-    // 📦 Extension aliasing (เฉพาะ .js เท่านั้น)
-    config.resolve.extensionAlias = {
-      '.js': ['.js'],
-    };
+    config.resolve.extensionAlias = { '.js': ['.js'] };
 
     return config;
   },
