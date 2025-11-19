@@ -6,22 +6,24 @@ import jsPDF from 'jspdf';
 
 function SalaryCertificate({ data }) {
   const {
-    companyName = '',
-    companyNameEn = '',
+    companyName = 'BANPHO CONSTRUCTION AND ENGINEERING CO., LTD.',
+    companyNameEn = 'บริษัท บ้านโพธิ์ คอนสตรัคชั่น แอนด์ เอ็นจิเนียริ่ง จำกัด',
     certificateNumber = '',
     employeeName = '',
     startDate = '',
     position = '',
     department = '',
-    salary = 0,
-    positionAllowance = 0,
-    costOfLiving = 0,
+    salary = 43500,
+    positionAllowance = 3500,
+    costOfLiving = 500,
     issueDate = '',
-    signPosition = '',
-    phone = '',
-    addressLine1 = '',
-    addressLine2 = '',
+    signPosition = '(หัวหน้าแผนกทรัพยากรฝ่ายบุคคล)',
+    phone = '032-3726-2662',
+    addressLine1 = '52/8 ม.1 ซ.31 ต. หนองข้างคอก',
+    addressLine2 = 'อ.เมือง จ.ชลบุรี 20000',
   } = data || {};
+
+  const fullAddress = `${addressLine1}\n${addressLine2}`;
 
   const downloadPDF = async () => {
     const element = document.getElementById('salary-certificate');
@@ -33,6 +35,7 @@ function SalaryCertificate({ data }) {
     const imgProps = pdf.getImageProperties(imgData);
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
     pdf.save(`SalaryCertificate_${employeeName}.pdf`);
   };
@@ -51,71 +54,78 @@ function SalaryCertificate({ data }) {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col items-center gap-6">
+      {/* 📄 A4 PAPER */}
       <div
         id="salary-certificate"
-        className="mx-auto h-[297mm] w-[210mm] max-w-full overflow-auto bg-white p-10 font-[THSarabunNew] text-[16pt] leading-[1.6] text-black shadow print:m-0 print:border print:p-8 print:shadow-none"
+        className="relative min-h-[297mm] max-w-[210mm] overflow-hidden bg-white p-12 pb-10 font-[THSarabunNew] text-[16pt] leading-[1.65] text-black shadow"
       >
-        <header className="mb-6 flex items-start justify-between">
-          <div className="text-right leading-tight">
-            <p className="text-[18pt] font-bold">{companyName}</p>
-            <p className="text-[16pt] font-bold">{companyNameEn}</p>
-            <p>เลขที่ {certificateNumber}</p>
-          </div>
+        {/* HEADER */}
+        <header className="mb-10">
+          <p className="text-[20pt] font-bold">{companyName}</p>
+          <p className="text-[18pt] font-bold">{companyNameEn}</p>
+          <p className="mt-4 text-[15pt]">เลขที่เอกสาร 89380019112568 {certificateNumber}</p>
         </header>
 
-        <h1 className="my-6 text-center text-[20pt] font-bold underline">หนังสือรับรองเงินเดือน</h1>
+        {/* TITLE */}
+        <h1 className="mb-10 text-center text-[22pt] font-bold underline">
+          หนังสือรับรองเงินเดือน
+        </h1>
 
-        <main className="whitespace-pre-line text-justify tracking-wide">
-          บริษัทฯ ขอรับรองว่า <strong>นาย {employeeName}</strong> เป็นพนักงานของบริษัทฯ
-          โดยเริ่มปฏิบัติงานตั้งแต่วันที่ {startDate} จนถึงปัจจุบัน ดำรงตำแหน่ง {position}{' '}
-          สังกัดแผนก {department}.
+        {/* BODY */}
+        <main className="text-justify tracking-wide">
+          บริษัทฯ ขอรับรองว่า
+          <strong> นางธนภร จรหมาน (893800) {employeeName}</strong>
+          เป็นพนักงานของบริษัทฯ สังกัดแผนกฝ่ายขาย {department}
+          โดยเริ่มปฏิบัติงานตั้งแต่วันที่ 9 มกราคม 2564 {startDate}
+          ดำรงตำแหน่ง พนักงานขาย {position}
           <br />
           <br />
           โดยมีรายได้ประจำดังนี้:
-          <ul className="ml-8 list-disc">
+          <ul className="ml-10 mt-2 list-disc">
             <li>เงินเดือนประจำ: {salary.toLocaleString()} บาท / เดือน</li>
             <li>ค่าตำแหน่ง: {positionAllowance.toLocaleString()} บาท / เดือน</li>
             <li>ค่าครองชีพ: {costOfLiving.toLocaleString()} บาท / เดือน</li>
           </ul>
           <br />
-          ออกให้ ณ วันที่ {issueDate} เพื่อใช้เป็นหลักฐานประกอบการยืนยันการเป็นพนักงานของบริษัทฯ
-          เท่านั้น
+          ออกให้ ณ วันที่ 19 พฤษจิกายน 2568 {issueDate}
         </main>
 
-        <section className="mt-16 text-right">
-          <p>ลงชื่อ.......................................................</p>
-          <p>(นาย {employeeName})</p>
-          <p>{signPosition}</p>
+        {/* SIGN */}
+        <section className="mt-20 text-right leading-[1.6]">
+          <p>ลงชื่อ ............................................</p>
+          <p className="mt-4">{signPosition}</p>
         </section>
 
-        <section className="mt-10 text-[14pt]">
+        {/* NOTES */}
+        <section className="mt-14 text-[15pt]">
           <p className="font-bold underline">หมายเหตุ</p>
-          <ol className="ml-6 list-decimal">
+          <ol className="ml-6 mt-2 list-decimal">
             <li>หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น</li>
-            <li>หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด จึงจะถือว่าสมบูรณ์</li>
+            <li>หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด</li>
           </ol>
         </section>
 
-        <section className="mt-6 text-[14pt]">
+        {/* CONTACT */}
+        <section className="mt-10 text-[15pt] leading-[1.5]">
           <p className="mb-1 font-bold">ติดต่อฝ่ายทรัพยากรบุคคล</p>
           <p>โทรศัพท์: {phone}</p>
-          <p className="mt-1">ที่อยู่บริษัท:</p>
-          <p>{addressLine1}</p>
-          <p>{addressLine2}</p>
+          <p className="mt-2">ที่อยู่บริษัท:</p>
+          <div className="whitespace-pre-line">{fullAddress}</div>
         </section>
       </div>
 
-      <div className="mt-4 flex justify-end gap-4">
+      {/* BUTTONS OUTSIDE PAPER */}
+      <div className="flex justify-center gap-4">
         <button
           onClick={downloadPDF}
-          className="rounded bg-blue-600 px-4 py-2 text-white transition hover:bg-blue-700"
+          className="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
         >
           Download PDF
         </button>
         <button
           onClick={downloadPNG}
-          className="rounded bg-green-600 px-4 py-2 text-white transition hover:bg-green-700"
+          className="rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700"
         >
           Download PNG
         </button>

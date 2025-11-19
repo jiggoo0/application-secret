@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lottery Generator - Stable Fixed Version</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background: #f0f0f0;
+        transition: 0.3s;
+      }
+      .dark {
+        background: #1b1b1b;
+        color: #eaeaea;
+      }
+      .section {
+        background: #fff;
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      .dark .section {
+        background: #2a2a2a;
+      }
+      input {
+        width: 100px;
+        padding: 6px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+      button {
+        padding: 10px 18px;
+        font-size: 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        background: #007bff;
+        color: #fff;
+        margin-right: 6px;
+      }
+      button:hover {
+        background: #005fce;
+      }
+      #historyBox {
+        max-height: 200px;
+        overflow-y: auto;
+        background: #fff;
+        padding: 10px;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>โปรแกรมสุ่มตัวเลข 0-999 (เวอร์ชันเสถียรแก้แล้ว)</h1>
+
+    <button onclick="toggleTheme()">สลับโหมด Dark/Light</button>
+
+    <div class="section">
+      <h2>ตั้งค่าเปอร์เซ็นต์</h2>
+      <label
+        >เปอร์เซ็นต์ติดเลข 3 ตัว:
+        <input id="p3" type="number" value="10" min="0" max="100" /></label
+      >%<br />
+      <label
+        >เปอร์เซ็นต์ติดเลข 2 ตัว:
+        <input id="p2" type="number" value="20" min="0" max="100" /></label
+      >%<br />
+      <label
+        >เปอร์เซ็นต์ติดเลข 1 ตัว:
+        <input id="p1" type="number" value="30" min="0" max="100" /></label
+      >%<br />
+      <label
+        >เปอร์เซ็นต์ติดแจ็คพอต: <input id="pj" type="number" value="5" min="0" max="100" /></label
+      >%
+    </div>
+
+    <div class="section">
+      <h2>ล็อคเลขตามรางวัล</h2>
+      <label>ล็อคเลข 3 ตัว: <input id="lock3" maxlength="3" placeholder="000" /></label><br />
+      <label>ล็อคเลข 2 ตัว: <input id="lock2" maxlength="2" placeholder="00" /></label><br />
+      <label>ล็อคเลข 1 ตัว: <input id="lock1" maxlength="1" placeholder="0" /></label><br />
+      <label>ล็อคแจ็คพอต: <input id="lockj" maxlength="3" placeholder="000" /></label>
+    </div>
+
+    <button onclick="generate()">สุ่มผล</button>
+    <button onclick="copyResult()">คัดลอกผล</button>
+    <button onclick="exportTxt()">ดาวน์โหลด TXT</button>
+
+    <div id="output" class="section"></div>
+
+    <div class="section">
+      <h2>ประวัติการสุ่ม</h2>
+      <div id="historyBox"></div>
+    </div>
+
+    <script>
+      let historyList = [];
+
+      function toggleTheme() {
+        document.body.classList.toggle('dark');
+      }
+
+      function rand(max) {
+        return Math.floor(Math.random() * (max + 1));
+      }
+
+      function format(n, d) {
+        return n.toString().padStart(d, '0');
+      }
+
+      function sanitize(value, d) {
+        if (!value) return null;
+        return value.replace(/\D/g, '').padStart(d, '0').slice(-d);
+      }
+
+      function roll(percent, locked, max, digits) {
+        if (locked && Math.random() * 100 < percent) return locked;
+        return format(rand(max), digits);
+      }
+
+      function noDuplicateGenerate(times, func) {
+        const set = new Set();
+        while (set.size < times) set.add(func());
+        return [...set];
+      }
+
+      function generate() {
+        const p3 = Number(document.getElementById('p3').value);
+        const p2 = Number(document.getElementById('p2').value);
+        const p1 = Number(document.getElementById('p1').value);
+        const pj = Number(document.getElementById('pj').value);
+
+        const l3 = sanitize(document.getElementById('lock3').value, 3);
+        const l2 = sanitize(document.getElementById('lock2').value, 2);
+        const l1 = sanitize(document.getElementById('lock1').value, 1);
+        const lj = sanitize(document.getElementById('lockj').value, 3);
+
+        const three = noDuplicateGenerate(5, () => roll(p3, l3, 999, 3));
+        const two = noDuplicateGenerate(10, () => roll(p2, l2, 99, 2));
+        const one = [roll(p1, l1, 9, 1)];
+        const jackpot = [roll(pj, lj, 999, 3)];
+
+        const result = `เลข 3 ตัว: ${three.join(', ')}\nเลข 2 ตัว: ${two.join(', ')}\nเลข 1 ตัว: ${one}\nแจ็คพอต: ${jackpot}`;
+
+        document.getElementById('output').innerHTML = `
+        <h2>ผลการสุ่ม</h2>
+        <div>เลข 3 ตัว (5 รางวัล): ${three.join(', ')}</div>
+        <div>เลข 2 ตัว (10 รางวัล): ${two.join(', ')}</div>
+        <div>เลข 1 ตัว (1 รางวัล): ${one}</div>
+        <div style="font-size:22px;color:red;margin-top:10px;">💥 แจ็คพอต: ${jackpot}</div>
+      `;
+
+        historyList.unshift(result);
+        updateHistory();
+      }
+
+      function updateHistory() {
+        document.getElementById('historyBox').innerHTML = historyList
+          .map(
+            (r) =>
+              `<div style='margin-bottom:8px;border-bottom:1px solid #ccc;padding-bottom:5px;'>${r.replace(/\n/g, '<br>')}</div>`,
+          )
+          .join('');
+      }
+
+      function copyResult() {
+        const text = historyList[0] || 'ยังไม่มีผลสุ่ม';
+        navigator.clipboard.writeText(text);
+        alert('คัดลอกผลเรียบร้อย!');
+      }
+
+      function exportTxt() {
+        const text = historyList.join('\n-----------------------\n');
+        const blob = new Blob([text], { type: 'text/plain' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'lottery_results.txt';
+        a.click();
+      }
+    </script>
+  </body>
+</html>
