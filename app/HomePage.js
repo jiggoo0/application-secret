@@ -1,10 +1,8 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useEffect } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 
-import SEO from '@/components/SEO';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import AlertBanner from '@/components/AlertBanner';
 import Banner from '@/components/Banner';
@@ -54,23 +52,8 @@ const sections = [
 ];
 
 export default function HomePage() {
-  const controls = useAnimation();
-
-  // ✅ เริ่ม animation ทันทีเมื่อ component mount
-  useEffect(() => {
-    controls.start('visible');
-  }, [controls]);
-
   return (
     <>
-      {/* ✅ SEO / OpenGraph metadata */}
-      <SEO
-        title="หน้าแรก | Application Secret"
-        description="ทำธุรกิจสีเทาให้มีความมาตรฐานมืออาชีพ ยินดีร่วมงานทุกสายวงการ"
-        image="/images/og-image.webp"
-        url="https://application-secret.vercel.app"
-      />
-
       {/* ✅ ส่วนประกาศ + แบนเนอร์ */}
       <AnnouncementBar />
       <AlertBanner />
@@ -89,16 +72,12 @@ export default function HomePage() {
             id={id}
             aria-labelledby={`section-${id}`}
             initial="hidden"
-            animate={controls}
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
             variants={{
               hidden: { opacity: 0, y: 40 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.5, ease: 'easeOut' },
-              },
+              visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
             }}
-            viewport={{ once: true, amount: 0.2 }}
             className="w-full"
           >
             <Section
