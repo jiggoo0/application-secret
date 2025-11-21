@@ -1,92 +1,86 @@
 [
   {
     "email": "admin2517@example.com",
-    "password": "$2b$10$xfvbGYV0iMfSgHw9cnE9OuQOPLie9WID/AJ05BBikhFyRdrMDMdDi",
+    "password": "$2b$10$swImPVZzNZ4OxV0AogqH4OH4ioChrsISpIIdr.7gbd/8tn4pHDnXe",
     "role": "admin",
     "name": "admin2517"
   },
   {
     "email": "admin@applicationsecret.com",
-    "password": "$2b$10$quHs6gNUX.p5wqKi.xSGY.TSpaQKx.RDclCqrNtQESxqD2e3/3mD2",
+    "password": "$2b$10$qUuto9mACgf1rnyncSiUWeQVVxvEJMIom8uuwOxklZHU.c2PX9sXC",
     "role": "admin",
     "name": "applicationsecret"
   },
   {
     "email": "Addmintest@example.com",
-    "password": "$2b$10$jq38aHIYjoHubQudk82hBuV6tarzybud075PMNOvzGONc0ogye9Pq",
+    "password": "$2b$10$3FaiDw6nyI9L8oe.ZYiz2eE6qoro3bhW7JzXP234v0Oqbtdz21jZy",
     "role": "admin",
     "name": "Addmintest"
   },
   {
     "email": "SEOCARCARE@example.com",
-    "password": "$2b$10$BHzYqqJlrdVyFB8nNoHCWuaYRKJuOLmIpc3l4R7WQhALYK7mPwsoq",
+    "password": "$2b$10$L8h6g8YiwgsP2iZmcy.2A.OLWaas5CGN5g8eO3hlmOl0X8M2Wbsci",
     "role": "user",
     "name": "SEOCARCARE"
   },
   {
     "email": "phawit@applicationsecret.com",
-    "password": "$2b$10$FZKl20gohzMIwshWGR1sFe4iHBv.eCjCdRIz3kKiyz8GsFgYhWNca",
+    "password": "$2b$10$85jzBcym1TB1TAoeAOKGZuWjCdj2GpSAB7rBwPwJ2Z7ruzKqg7s5q",
     "role": "user",
     "name": "phawit"
   },
   {
     "email": "phatcharin@applicationsecret.com",
-    "password": "$2b$10$ETVVRFSonHLfc71LRlAjKe71mL6A8YWm0/2PPcel6mFZ7Ly.K5TJS",
+    "password": "$2b$10$zTLqCX.akj6SHay6sYwQ.eli4Ydd.v0nstW4vwJH1iWEdpQvijZhy",
     "role": "user",
     "name": "phatcharin"
   },
   {
     "email": "usertest@applicationsecret.com",
-    "password": "$2b$10$t2bOJsPYA/ePClxdMAXNTum6Zu/RnbjdG.Jrq74jlixi.5vUY/ZAC",
+    "password": "$2b$10$QfVgbplkml4orpgIwnme1.hwWRx9V3pOAaKXi6o/5xNrmHkv5sVA2",
     "role": "user",
     "name": "usertest"
   },
   {
     "email": "Managertest@example.com",
-    "password": "$2b$10$Ji8ZGVEyuj3cRp4jCKGuOOHeN0x3XRLKYDhGHcHXynqZ5vtjNcRRC",
+    "password": "$2b$10$vHQyUjTixWB6JiFjsqRMwOSnlhbV2UBw9tI5Z6f/EvaMSpd3Ud17S",
     "role": "user",
     "name": "Managertest"
   },
   {
     "email": "parinya@applicationsecret.com",
-    "password": "$2b$10$ARtuOYSibiyYf1gUcX.z8e1M9OmJC/Eby.hn7Uqmv2McjFoozdIXG",
+    "password": "$2b$10$LPPUj9FXgQJ5L2Lo0xQOr.WN4V7qfJwWpdeQ9FxanajjHm0TnJI2q",
     "role": "user",
     "name": "parinya"
   },
   {
     "email": "JPKYETONKEY201@example.com",
-    "password": "$2b$10$mR180SSg2cJEu3v42HR5c.pooutv4kG3QgPNhoKq6mCmBzRKs0RoS",
+    "password": "$2b$10$AiGapJ7hPuU9QZvMKHT9uOl5pt8.54Qh0UlnP1z2s7NHF6p.8EyLC",
     "role": "user",
     "name": "JPKYETONKEY201"
   },
   {
     "email": "JPusertest01@example.com",
-    "password": "$2b$10$36xIQRptplN.EDm6WCC3Iubh3MfdPYg5.oRUc2Xc7GIZfFduzXikW",
+    "password": "$2b$10$cE3hA/.dn0flbn634peTF./yOjGs8zRP5vf0DyfiQwB7y9.RE7au.",
     "role": "user",
     "name": "JPusertest01"
   },
   {
     "email": "JPusertest02@example.com",
-    "password": "$2b$10$rBR43Mq504DBaLXUNwQnbuXS9LLiJVoBlOVMKw68nFMxULt9OoLIu",
+    "password": "$2b$10$2rNcJ.P/EQtffGj6VkRm7.FByLnRaVVsMx9CwE.iCcIe0lc483vbC",
     "role": "user",
     "name": "JPusertest02"
   },
   {
-    "email": "apple@example.com",
-    "password": "$2b$10$WwmLGTw1ul9/zyuWpSAIyOFst4FvOtbI9cQIq4It.LNRPy/6k/Xdm",
+    "email": "JPusertest03@example.com",
+    "password": "$2b$10$g9ENK6Zg0hwWaFG9A8oLh.WhJYXOBv5wsxwcE2n7os.WXw0tA0GP2",
     "role": "user",
-    "name": "apple"
+    "name": "JPusertest03"
   },
   {
     "email": "JPusertest04@example.com",
-    "password": "$2b$10$75ptNgEix1EXlfM3.O2jV.6Z.I1xkm8d.vF.vnziEFFU3eLMVX6Tq",
+    "password": "$2b$10$AOko3D5fhkOEG608MgFtK.yUX1g7KBUXMAOBoZiOSD6DVDkaJJ9GW",
     "role": "user",
     "name": "JPusertest04"
-  },
-  {
-    "email": "thawatchai@example.com",
-    "password": "$2b$10$c65EDO3YeqFW.7ugvR8Q/O3Ev64Ra1rHUO7Yd2t5B0lp2ASWawJLC",
-    "role": "user",
-    "name": "thawatchai"
   }
 ]
