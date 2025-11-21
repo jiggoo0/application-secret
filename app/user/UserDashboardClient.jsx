@@ -12,6 +12,10 @@ import UserSessionHistory from '@/components/user/UserSessionHistory';
 import SecurityNotice from '@/components/user/SecurityNotice';
 import LogoutButton from '@/components/common/LogoutButton';
 
+// 📄 เอกสารระบบ
+import CompanyAccount from '@/components/documents/CompanyAccount';
+import CompanyAccount1 from '@/components/documents/CompanyAccount1'; // สำหรับบัตรเครดิตทั่วไป
+
 /**
  * @param {{ user: any, roadmap: any[], targets: any[] }} props
  */
@@ -22,6 +26,8 @@ export default function UserDashboardClient({ user, roadmap, targets }) {
     { title: 'รายงานผลการดำเนินงาน', icon: Shuffle, component: <RandomTransactionTable /> },
     { title: 'แผนงานโดยรวม', icon: Map, component: <RoadmapSummary roadmap={roadmap} /> },
     { title: 'เป้าหมายที่ตั้งไว้', icon: Target, component: <TargetBreakdown targets={targets} /> },
+    { title: 'สถานะคำขอสินเชื่อ SME', icon: FileText, component: <CompanyAccount /> }, // ใช้งาน CompanyAccount
+    { title: 'สถานะคำขอบัตรเครดิต', icon: FileText, component: <CompanyAccount1 /> }, // ใช้งาน CompanyAccount1
   ];
 
   return (

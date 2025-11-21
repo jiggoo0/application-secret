@@ -33,6 +33,7 @@ import KbankLive from '@/components/admin/KbankLive';
 
 // 📄 เอกสารระบบ
 import CompanyAccount from '@/components/documents/CompanyAccount';
+import CompanyAccount1 from '@/components/documents/CompanyAccount1'; // บัตรเครดิตทั่วไป
 import MedicalCertificate from '@/components/documents/MedicalCertificate';
 import SalaryCertificate from '@/components/documents/SalaryCertificate';
 import { RegistrationPreview } from '@/components/documents/RegistrationPreview';
@@ -46,6 +47,7 @@ export default function AdminPage() {
   const [authorized, setAuthorized] = useState(false);
   const [activeKey, setActiveKey] = useState('uploads');
 
+  // ตรวจสอบสิทธิ์ผู้ดูแล
   useEffect(() => {
     if (status === 'loading') return;
 
@@ -79,12 +81,14 @@ export default function AdminPage() {
 
   const user = session?.user || {};
 
+  // 🌐 เมนูผู้ดูแล
   const menuItems = [
     { key: 'uploads', label: 'อัปโหลด', icon: Upload },
     { key: 'users', label: 'ผู้ใช้งาน', icon: UsersIcon },
     { key: 'files', label: 'ไฟล์ทั้งหมด', icon: FileText },
     { key: 'user-sessions', label: 'ประวัติผู้ใช้', icon: Clock },
-    { key: 'company', label: 'บัญชีบริษัท', icon: Building2 },
+    { key: 'company', label: 'สถานะคำขอสินเชื่อ SME', icon: Building2 },
+    { key: 'company-card', label: 'สถานะคำขอบัตรเครดิต', icon: Building2 },
     { key: 'medical', label: 'ใบรับรองแพทย์', icon: Stethoscope },
     { key: 'salary', label: 'ใบรับรองเงินเดือน', icon: Banknote },
     { key: 'registration', label: 'ทะเบียนพาณิชย์', icon: ScrollText },
@@ -92,12 +96,14 @@ export default function AdminPage() {
     { key: 'chat-admin', label: 'ระบบแชท', icon: MessageSquare },
   ];
 
+  // Mapping ของเมนูไปยัง component
   const componentsMap = {
     uploads: <Uploads />,
     users: <Users />,
     files: <FileList />,
     'user-sessions': <UserSessionsTable />,
     company: <CompanyAccount />,
+    'company-card': <CompanyAccount1 />,
     medical: <MedicalCertificate />,
     salary: <SalaryCertificate />,
     registration: <RegistrationPreview />,
@@ -120,10 +126,10 @@ export default function AdminPage() {
         <header className="space-y-2 text-center">
           <div className="flex items-center justify-center gap-2 text-blue-600 dark:text-blue-400">
             <ShieldCheck className="h-6 w-6" />
-            <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+            <h1 className="text-3xl font-bold">ADMIN JP-VISOUL&DOCS</h1>
           </div>
           <p className="text-sm text-gray-600 dark:text-gray-300 sm:text-base">
-            ระบบจัดการข้อมูลทั้งหมดในที่เดียว
+            ให้แอดมินทุกคนทำตามขั้นตอนดำเนินตามคำสั่ง ต้องการผลรับที่ถูกต้องเท่านั้น
           </p>
         </header>
 
