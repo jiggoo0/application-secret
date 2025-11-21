@@ -1,127 +1,68 @@
 import Image from 'next/image';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
 
-const FALLBACK_IMAGE = '/images/placeholder.webp';
-
-const blogUrls = [
-  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog1.json',
-  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog2.json',
-  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog3.json',
-  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog4.json',
-  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog5.json',
-  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog6.json',
-];
-
-// 🔹 โหลดบทความทั้งหมด
-async function getAllArticles() {
-  const responses = await Promise.all(blogUrls.map((url) => fetch(url)));
-  const jsonData = await Promise.all(
-    responses.map(async (res) => {
-      if (!res.ok) {
-        console.warn(`⚠️ ไม่สามารถโหลด: ${res.url}`);
-        return [];
-      }
-      try {
-        const data = await res.json();
-        return Array.isArray(data) ? data : [data];
-      } catch {
-        return [];
-      }
-    }),
-  );
-  return jsonData.flat().filter((article) => article?.published !== false);
-}
-
-// 🔹 สร้าง static params สำหรับ dynamic route
+// ✅ สร้าง static params สำหรับ blog id (SSG)
 export async function generateStaticParams() {
-  const articles = await getAllArticles();
-  return articles.map((article) => ({ id: article.id }));
+  const blogIds = [1, 2, 3, 4, 5, 6];
+  return blogIds.map((id) => ({ id: id.toString() }));
 }
 
-// 🔹 แสดงบทความตาม id
-export default async function BlogPage({ params }) {
-  const { id } = params;
-  const articles = await getAllArticles();
-  const article = articles.find((a) => a.id === id);
+// ✅ หน้าแสดงรายละเอียดบทความ
+export default async function BlogDetailPage({ params }) {
+  const { id } = await params; // ต้อง await params ใน Next.js 15+
 
-  if (!article) {
-    return (
-      <section className="px-6 py-20 text-center text-red-600 dark:text-red-400">
-        <h1 className="text-2xl font-bold">❌ ไม่พบบทความ</h1>
-        <p>บทความที่คุณค้นหาอาจถูกลบหรือยังไม่เผยแพร่</p>
-        <Link href="/blog" className="mt-6 inline-block">
-          <Button variant="outline">← กลับไปหน้าบทความทั้งหมด</Button>
-        </Link>
-      </section>
-    );
+  const res = await fetch(
+    `https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog${id}.json`,
+    { next: { revalidate: 60 } }, // ISR: revalidate ทุก 60 วินาที
+  );
+
+  if (!res.ok) {
+    return <div className="py-10 text-center text-destructive">❌ ไม่สามารถโหลดบทความได้</div>;
   }
 
-  const { title, image, summary, content } = article;
+  let data = await res.json();
+  const blog = Array.isArray(data) ? data[0] : data;
+
+  if (!blog?.published) {
+    return <div className="py-10 text-center text-muted-foreground">❌ บทความนี้ยังไม่เผยแพร่</div>;
+  }
 
   return (
-    <section className="mx-auto max-w-4xl space-y-8 px-6 py-20">
-      <h1 className="text-center text-3xl font-bold text-black dark:text-white">{title}</h1>
+    <article className="mx-auto max-w-4xl px-4 py-10">
+      <h1 className="mb-6 text-3xl font-bold text-foreground">{blog.title}</h1>
 
-      <div className="relative h-64 w-full overflow-hidden rounded-lg">
-        <Image
-          src={image?.startsWith('/') ? image : image || FALLBACK_IMAGE}
-          alt={`ภาพประกอบบทความ: ${title}`}
-          fill
-          className="object-cover"
-          sizes="100vw"
-          priority
-        />
-      </div>
+      {blog.image && (
+        <div className="relative mb-6 h-72 w-full">
+          <Image
+            src={blog.image}
+            alt={blog.title}
+            fill
+            className="rounded-lg object-cover"
+            sizes="100vw"
+            priority
+          />
+        </div>
+      )}
 
-      {summary && <p className="text-center text-lg text-gray-700 dark:text-gray-300">{summary}</p>}
+      <p className="text-muted-foreground">{blog.summary}</p>
 
-      <article className="space-y-6 text-left leading-relaxed text-gray-800 dark:text-gray-300">
-        {Array.isArray(content) &&
-          content.map((block, index) => {
-            if (!block || typeof block !== 'object') return null;
-
-            switch (block.type) {
-              case 'heading':
-                return (
-                  <h2
-                    key={index}
-                    className="mb-3 mt-10 text-xl font-semibold text-black dark:text-white"
-                  >
-                    {block.text}
-                  </h2>
-                );
-              case 'paragraph':
-                return <p key={index}>{block.text}</p>;
-              case 'separator':
-                return <hr key={index} className="my-8 border-gray-300 dark:border-gray-700" />;
-              case 'list':
-                return (
-                  <ul key={index} className="list-disc space-y-1 pl-6">
-                    {block.items?.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ul>
-                );
-              case 'numbered-list':
-                return (
-                  <ol key={index} className="list-decimal space-y-1 pl-6">
-                    {block.items?.map((item, i) => (
-                      <li key={i}>{item}</li>
-                    ))}
-                  </ol>
-                );
-              default:
-                return null;
+      <div className="prose prose-lg mt-6 max-w-none dark:prose-invert">
+        {Array.isArray(blog.content) &&
+          blog.content.map((block, i) => {
+            if (block.type === 'paragraph') {
+              return <p key={i}>{block.text}</p>;
             }
+            if (block.type === 'list') {
+              return (
+                <ul key={i} className="list-disc pl-6">
+                  {block.items.map((item, j) => (
+                    <li key={j}>{item}</li>
+                  ))}
+                </ul>
+              );
+            }
+            return null;
           })}
-      </article>
-
-      <div className="pt-8 text-center">
-        <Link href="/blog" className="inline-block">
-          <Button className="w-full sm:w-auto">← กลับไปหน้าบทความทั้งหมด</Button>
-        </Link>
       </div>
-    </section>
+    </article>
   );
 }

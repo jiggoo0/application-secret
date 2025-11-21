@@ -7,115 +7,144 @@ import jsPDF from 'jspdf';
 function SalaryCertificate({ data }) {
   const {
     companyName = 'BANPHO CONSTRUCTION AND ENGINEERING CO., LTD.',
-    companyNameEn = 'บริษัท บ้านโพธิ์ คอนสตรัคชั่น แอนด์ เอ็นจิเนียริ่ง จำกัด',
+    companyNameEn = 'Banpho Construction and Engineering Co., Ltd.',
     certificateNumber = '',
     employeeName = '',
-    startDate = '',
-    position = '',
-    department = '',
+    startDate = '9 January 2021',
+    position = 'Sales Representative',
+    department = 'Sales Department',
     salary = 43500,
     positionAllowance = 3500,
     costOfLiving = 500,
-    issueDate = '',
-    signPosition = '(หัวหน้าแผนกทรัพยากรฝ่ายบุคคล)',
+    issueDate = '19 November 2025',
+    signPosition = 'Head of Human Resources Department',
     phone = '032-3726-2662',
-    addressLine1 = '52/8 ม.1 ซ.31 ต. หนองข้างคอก',
-    addressLine2 = 'อ.เมือง จ.ชลบุรี 20000',
+    addressLine1 = '52/8 Moo 1, Soi 31, Nong Khangkaok Subdistrict',
+    addressLine2 = 'Mueang District, Chonburi 20000',
   } = data || {};
 
   const fullAddress = `${addressLine1}\n${addressLine2}`;
 
-  const downloadPDF = async () => {
+  const getCanvas = async () => {
     const element = document.getElementById('salary-certificate');
-    if (!element) return;
+    if (!element) return null;
 
-    const canvas = await html2canvas(element, { scale: 2 });
+    return await html2canvas(element, {
+      scale: 3, // ความคมชัดสูง
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      windowWidth: element.scrollWidth,
+      windowHeight: element.scrollHeight,
+    });
+  };
+
+  const downloadPDF = async () => {
+    const canvas = await getCanvas();
+    if (!canvas) return;
+
     const imgData = canvas.toDataURL('image/png');
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgProps = pdf.getImageProperties(imgData);
+
+    const pdf = new jsPDF('p', 'pt', 'a4');
     const pdfWidth = pdf.internal.pageSize.getWidth();
-    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
 
     pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
     pdf.save(`SalaryCertificate_${employeeName}.pdf`);
   };
 
   const downloadPNG = async () => {
-    const element = document.getElementById('salary-certificate');
-    if (!element) return;
-
-    const canvas = await html2canvas(element, { scale: 2 });
-    const imgData = canvas.toDataURL('image/png');
+    const canvas = await getCanvas();
+    if (!canvas) return;
 
     const link = document.createElement('a');
-    link.href = imgData;
+    link.href = canvas.toDataURL('image/png');
     link.download = `SalaryCertificate_${employeeName}.png`;
     link.click();
   };
 
   return (
     <div className="flex flex-col items-center gap-6">
-      {/* 📄 A4 PAPER */}
+      {/* A4 PAPER fixed size, overflow visible */}
       <div
         id="salary-certificate"
-        className="relative min-h-[297mm] max-w-[210mm] overflow-hidden bg-white p-12 pb-10 font-[THSarabunNew] text-[16pt] leading-[1.65] text-black shadow"
+        className="relative bg-white p-12 pb-10 font-[THSarabunNew] text-[16pt] leading-[1.6] text-black shadow-lg"
+        style={{
+          width: '794px', // A4 pixel
+          minHeight: '1123px',
+          overflow: 'visible',
+          boxSizing: 'border-box',
+        }}
       >
         {/* HEADER */}
-        <header className="mb-10">
+        <header className="mb-8">
           <p className="text-[20pt] font-bold">{companyName}</p>
           <p className="text-[18pt] font-bold">{companyNameEn}</p>
-          <p className="mt-4 text-[15pt]">เลขที่เอกสาร 89380019112568 {certificateNumber}</p>
+          <p className="mt-4 text-[15pt]">Document No.89380019112568 {certificateNumber}</p>
         </header>
 
         {/* TITLE */}
-        <h1 className="mb-10 text-center text-[22pt] font-bold underline">
-          หนังสือรับรองเงินเดือน
-        </h1>
+        <h1 className="mb-8 text-center text-[22pt] font-bold underline">Salary Certificate</h1>
 
         {/* BODY */}
-        <main className="text-justify tracking-wide">
-          บริษัทฯ ขอรับรองว่า
-          <strong> นางธนภร จรหมาน (893800) {employeeName}</strong>
-          เป็นพนักงานของบริษัทฯ สังกัดแผนกฝ่ายขาย {department}
-          โดยเริ่มปฏิบัติงานตั้งแต่วันที่ 9 มกราคม 2564 {startDate}
-          ดำรงตำแหน่ง พนักงานขาย {position}
+        <main className="text-justify">
+          This is to certify that
+          <strong> Mrs. Thanaporn Jorhaman (893800) {employeeName}</strong>, is an employee of the
+          company under the {department} Department, and has been employed since {startDate},
+          holding the position of {position}.
           <br />
           <br />
-          โดยมีรายได้ประจำดังนี้:
-          <ul className="ml-10 mt-2 list-disc">
-            <li>เงินเดือนประจำ: {salary.toLocaleString()} บาท / เดือน</li>
-            <li>ค่าตำแหน่ง: {positionAllowance.toLocaleString()} บาท / เดือน</li>
-            <li>ค่าครองชีพ: {costOfLiving.toLocaleString()} บาท / เดือน</li>
-          </ul>
+          The employee receives the following monthly compensation:
+          {/* Bullet list */}
+          <div className="ml-10 mt-2">
+            <div className="flex gap-3">
+              <span>•</span>
+              <span>Base Salary: {salary.toLocaleString()} Baht / month</span>
+            </div>
+            <div className="mt-1 flex gap-3">
+              <span>•</span>
+              <span>Position Allowance: {positionAllowance.toLocaleString()} Baht / month</span>
+            </div>
+            <div className="mt-1 flex gap-3">
+              <span>•</span>
+              <span>Cost of Living Allowance: {costOfLiving.toLocaleString()} Baht / month</span>
+            </div>
+          </div>
           <br />
-          ออกให้ ณ วันที่ 19 พฤษจิกายน 2568 {issueDate}
+          Issued on {issueDate}
         </main>
 
         {/* SIGN */}
-        <section className="mt-20 text-right leading-[1.6]">
-          <p>ลงชื่อ ............................................</p>
+        <section className="mt-16 text-right leading-[1.6]">
+          <p>Signature ............................................</p>
           <p className="mt-4">{signPosition}</p>
         </section>
 
         {/* NOTES */}
-        <section className="mt-14 text-[15pt]">
-          <p className="font-bold underline">หมายเหตุ</p>
-          <ol className="ml-6 mt-2 list-decimal">
-            <li>หนังสือรับรองนี้ให้ไว้เพื่อยืนยันการเป็นพนักงานของบริษัทเท่านั้น</li>
-            <li>หนังสือรับรองฉบับนี้ต้องไม่มีรอยขูด ขีด ลบ แต่อย่างใด</li>
-          </ol>
+        <section className="mt-10 text-[15pt]">
+          <p className="font-bold underline">Notes</p>
+          <div className="ml-6 mt-2">
+            <div className="flex gap-3">
+              <span>1.</span>
+              <span>This certificate is issued solely to verify employment with the company.</span>
+            </div>
+            <div className="mt-1 flex gap-3">
+              <span>2.</span>
+              <span>This certificate must not contain erasures or alterations.</span>
+            </div>
+          </div>
         </section>
 
         {/* CONTACT */}
-        <section className="mt-10 text-[15pt] leading-[1.5]">
-          <p className="mb-1 font-bold">ติดต่อฝ่ายทรัพยากรบุคคล</p>
-          <p>โทรศัพท์: {phone}</p>
-          <p className="mt-2">ที่อยู่บริษัท:</p>
+        <section className="mt-8 text-[15pt] leading-[1.5]">
+          <p className="font-bold">Human Resources Contact</p>
+          <p>Phone: {phone}</p>
+          <p className="mt-2">Company Address:</p>
           <div className="whitespace-pre-line">{fullAddress}</div>
         </section>
       </div>
 
-      {/* BUTTONS OUTSIDE PAPER */}
+      {/* BUTTONS */}
       <div className="flex justify-center gap-4">
         <button
           onClick={downloadPDF}

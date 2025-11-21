@@ -16,6 +16,7 @@ const SUPABASE_DOMAIN = 'ksiobbrextlywypdzaze.supabase.co';
  */
 
 /**
+ * BlogCard component
  * @param {{ blog: BlogArticle }} props
  */
 export default function BlogCard({ blog }) {
@@ -25,7 +26,9 @@ export default function BlogCard({ blog }) {
 
   const imageSrc =
     image && !image.startsWith('http')
-      ? `https://${SUPABASE_DOMAIN}/storage/v1/object/public/user-uploads/Blog/${image}`
+      ? `https://${SUPABASE_DOMAIN}/storage/v1/object/public/user-uploads/Blog/${encodeURIComponent(
+          image,
+        )}`
       : image || FALLBACK_IMAGE;
 
   return (
@@ -37,10 +40,10 @@ export default function BlogCard({ blog }) {
       <div className="relative h-48 w-full overflow-hidden rounded-md">
         <Image
           src={imageSrc}
-          alt={`ภาพประกอบบทความ: ${title}`}
+          alt={title ? `ภาพประกอบบทความ: ${title}` : 'ภาพประกอบบทความ'}
           fill
           className="object-cover transition-transform duration-300 hover:scale-105"
-          sizes="(max-width:768px) 100vw,33vw"
+          sizes="(max-width:768px) 100vw, (max-width:1200px) 50vw, 33vw"
           priority
         />
       </div>

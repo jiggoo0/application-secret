@@ -101,14 +101,12 @@ export default function HomePage() {
             viewport={{ once: true, amount: 0.2 }}
             className="w-full"
           >
-            {/* ✅ Section wrapper */}
             <Section
               id={id}
               ariaLabelledBy={`section-${id}`}
               className="scroll-mt-20 px-4 sm:px-6 lg:px-8"
             >
               <div className="mx-auto max-w-7xl">
-                {/* ✅ render component แบบ dynamic */}
                 <Component />
               </div>
             </Section>
