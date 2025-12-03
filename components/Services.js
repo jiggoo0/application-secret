@@ -26,7 +26,10 @@ export default function ServiceList() {
                 <CardTitle className="text-lg font-semibold text-foreground">
                   {service.title}
                 </CardTitle>
-                {isNew && <Badge variant="secondary">ใหม่</Badge>}
+                <div className="flex gap-2">
+                  {isNew && <Badge variant="secondary">ใหม่</Badge>}
+                  {isComingSoon && <Badge variant="outline">Coming Soon</Badge>}
+                </div>
               </div>
               {!isComingSoon && <Badge className="mt-2 text-sm font-medium">{service.price}</Badge>}
             </CardHeader>
@@ -40,16 +43,28 @@ export default function ServiceList() {
             </CardContent>
 
             <CardFooter>
-              <Button asChild className="w-full" variant={isComingSoon ? 'secondary' : 'default'}>
-                <a
-                  href={service.ctaUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  {service.ctaText}
-                </a>
+              <Button
+                asChild
+                className="w-full"
+                variant={isComingSoon ? 'secondary' : 'default'}
+                disabled={isComingSoon}
+              >
+                {isComingSoon ? (
+                  <span className="flex items-center justify-center gap-2 text-muted-foreground">
+                    <MessageCircle className="h-4 w-4" />
+                    กำลังเปิดบริการ
+                  </span>
+                ) : (
+                  <a
+                    href={service.ctaUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-2"
+                  >
+                    <MessageCircle className="h-4 w-4" />
+                    {service.ctaText}
+                  </a>
+                )}
               </Button>
             </CardFooter>
           </Card>

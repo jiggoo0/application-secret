@@ -24,6 +24,7 @@ export default function BlogCard({ blog }) {
 
   const { id, title, image, summary } = blog;
 
+  // กำหนด image fallback / Supabase URL
   const imageSrc =
     image && !image.startsWith('http')
       ? `https://${SUPABASE_DOMAIN}/storage/v1/object/public/user-uploads/Blog/${encodeURIComponent(
@@ -37,6 +38,7 @@ export default function BlogCard({ blog }) {
       aria-labelledby={`blog-title-${id}`}
       className="flex flex-col gap-4 rounded-xl bg-white p-6 shadow-md transition hover:shadow-lg dark:bg-gray-900"
     >
+      {/* ภาพประกอบ */}
       <div className="relative h-48 w-full overflow-hidden rounded-md">
         <Image
           src={imageSrc}
@@ -48,6 +50,7 @@ export default function BlogCard({ blog }) {
         />
       </div>
 
+      {/* ชื่อบทความ */}
       <h3
         id={`blog-title-${id}`}
         className="line-clamp-2 text-lg font-semibold text-black dark:text-white"
@@ -55,8 +58,10 @@ export default function BlogCard({ blog }) {
         {title}
       </h3>
 
+      {/* สรุปบทความ */}
       <p className="line-clamp-3 text-gray-700 dark:text-gray-300">{summary}</p>
 
+      {/* ปุ่มอ่านต่อ */}
       <Link href={`/blog/${id}`} className="mt-auto w-full">
         <Button className="w-full" aria-label={`อ่านบทความ: ${title}`}>
           อ่านต่อ

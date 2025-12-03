@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import BlogCard from '@/components/Blog/BlogCard';
 
-// ✅ ใช้ domain ที่ถูกต้อง
+// ✅ URLs ของไฟล์ JSON บทความ
 const blogUrls = [
   'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog1.json',
   'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog2.json',
@@ -37,7 +37,7 @@ export default function Blog() {
           }),
         );
 
-        // รวมข้อมูลจากหลายไฟล์
+        // รวมข้อมูลจากหลายไฟล์เป็น array เดียว
         const merged = responses
           .filter(Boolean)
           .flatMap((data) => (Array.isArray(data) ? data : [data]));
@@ -45,13 +45,13 @@ export default function Blog() {
         // กรองเฉพาะบทความที่เผยแพร่แล้ว
         const publishedBlogs = merged.filter((blog) => blog?.published);
 
-        // เรียงตาม id
+        // เรียงตาม id (number)
         publishedBlogs.sort((a, b) => Number(a.id) - Number(b.id));
 
         setBlogs(publishedBlogs);
       } catch (err) {
-        setError('❌ เกิดข้อผิดพลาดในการโหลดข้อมูลบทความ');
         console.error(err);
+        setError('❌ เกิดข้อผิดพลาดในการโหลดข้อมูลบทความ');
       } finally {
         setLoading(false);
       }
@@ -60,7 +60,7 @@ export default function Blog() {
     fetchAllBlogs();
   }, []);
 
-  // ✅ Loading state
+  // Loading state
   if (loading) {
     return (
       <div className="flex justify-center py-10 text-muted-foreground" role="status">
@@ -69,7 +69,7 @@ export default function Blog() {
     );
   }
 
-  // ✅ Error state
+  // Error state
   if (error) {
     return (
       <div className="flex justify-center py-10 text-destructive" role="alert">
@@ -78,7 +78,7 @@ export default function Blog() {
     );
   }
 
-  // ✅ Empty state
+  // Empty state
   if (blogs.length === 0) {
     return (
       <div className="flex justify-center py-10 text-muted-foreground" role="status">
@@ -87,7 +87,7 @@ export default function Blog() {
     );
   }
 
-  // ✅ Render blog list
+  // Render blog list
   return (
     <section className="mx-auto max-w-6xl px-4 py-10">
       <h1 className="mb-8 text-center text-h2 font-semibold text-foreground">

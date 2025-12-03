@@ -8,22 +8,35 @@ export async function generateStaticParams() {
 
 // ✅ หน้าแสดงรายละเอียดบทความ
 export default async function BlogDetailPage({ params }) {
-  const { id } = await params; // ต้อง await params ใน Next.js 15+
+  const { id } = params; // ไม่ต้อง await
 
-  const res = await fetch(
-    `https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog${id}.json`,
-    { next: { revalidate: 60 } }, // ISR: revalidate ทุก 60 วินาที
-  );
+  let blog;
+  try {
+    const res = await fetch(
+      `https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog${id}.json`,
+      { next: { revalidate: 60 } }, // ISR: revalidate ทุก 60 วินาที
+    );
 
-  if (!res.ok) {
-    return <div className="py-10 text-center text-destructive">❌ ไม่สามารถโหลดบทความได้</div>;
+    if (!res.ok) {
+      return <div className="py-10 text-center text-destructive">❌ ไม่สามารถโหลดบทความได้</div>;
+    }
+
+    const data = await res.json();
+    blog = Array.isArray(data) ? data[0] : data;
+  } catch (err) {
+    console.error(err);
+    return (
+      <div className="py-10 text-center text-destructive">❌ เกิดข้อผิดพลาดในการโหลดบทความ</div>
+    );
   }
 
-  let data = await res.json();
-  const blog = Array.isArray(data) ? data[0] : data;
-
+  // ถ้าบทความยังไม่เผยแพร่
   if (!blog?.published) {
-    return <div className="py-10 text-center text-muted-foreground">❌ บทความนี้ยังไม่เผยแพร่</div>;
+    return (
+      <div className="py-10 text-center text-muted-foreground">
+        ⏳ บทความนี้กำลังอยู่ระหว่างการปรับปรุง
+      </div>
+    );
   }
 
   return (
@@ -51,7 +64,7 @@ export default async function BlogDetailPage({ params }) {
             if (block.type === 'paragraph') {
               return <p key={i}>{block.text}</p>;
             }
-            if (block.type === 'list') {
+            if (block.type === 'list' && Array.isArray(block.items)) {
               return (
                 <ul key={i} className="list-disc pl-6">
                   {block.items.map((item, j) => (
