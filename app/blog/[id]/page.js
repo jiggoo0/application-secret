@@ -1,16 +1,9 @@
+// /app/blog/[id]/page.js
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
-// ✅ สร้าง static params สำหรับ blog id (SSG)
-export async function generateStaticParams() {
-  const blogIds = [1, 2, 3, 4, 5, 6];
-  return blogIds.map((id) => ({ id: id.toString() }));
-}
-
-// ✅ หน้าแสดงรายละเอียดบทความ
-export default async function BlogDetailPage({ params }) {
-  const { id } = params; // ไม่ต้อง await
-
-  let blog;
+// ฟังก์ชันดึงข้อมูลร่วมกัน (เพื่อลดความซ้ำซ้อน)
+async function fetchBlogData(id) {
   try {
     const res = await fetch(
       `https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Blog${id}.json`,
@@ -18,20 +11,58 @@ export default async function BlogDetailPage({ params }) {
     );
 
     if (!res.ok) {
-      return <div className="py-10 text-center text-destructive">❌ ไม่สามารถโหลดบทความได้</div>;
+      return null;
     }
 
     const data = await res.json();
-    blog = Array.isArray(data) ? data[0] : data;
+    const blog = Array.isArray(data) ? data[0] : data;
+    return blog;
   } catch (err) {
     console.error(err);
-    return (
-      <div className="py-10 text-center text-destructive">❌ เกิดข้อผิดพลาดในการโหลดบทความ</div>
-    );
+    return null;
+  }
+}
+
+// ✅ 1. สร้าง Dynamic Metadata
+export async function generateMetadata({ params }) {
+  const { id } = params;
+  const blog = await fetchBlogData(id);
+
+  if (!blog?.published) {
+    return { title: 'บทความกำลังปรับปรุง | Dev Jp' };
+  }
+
+  // 💡 การแก้ไข SyntaxError มักจะอยู่ตรงนี้:
+  // หาก blog.image มี Backslash เดี่ยว (มักเกิดใน Windows path/URL)
+  // การเรียก .replace(/\\/g, '\\\\') จะช่วยหลีกอักขระให้ถูกต้องก่อนนำไปสร้าง JSON Metadata
+  const safeImageUrl = blog.image ? blog.image.replace(/\\/g, '\\\\') : '/default-blog-image.jpg'; // ใช้ภาพสำรอง
+
+  return {
+    title: blog.title || 'บทความใหม่ล่าสุด | Dev Jp',
+    description: blog.summary || 'อัพเดทข้อมูลใหม่ ๆ จาก Dev Jp',
+    openGraph: {
+      images: [safeImageUrl],
+    },
+  };
+}
+
+// ✅ 2. สร้าง static params สำหรับ blog id (SSG)
+export async function generateStaticParams() {
+  const blogIds = [1, 2, 3, 4, 5, 6];
+  return blogIds.map((id) => ({ id: id.toString() }));
+}
+
+// ✅ 3. หน้าแสดงรายละเอียดบทความ (ใช้ฟังก์ชัน fetchBlogData ซ้ำ)
+export default async function BlogDetailPage({ params }) {
+  const { id } = params;
+  const blog = await fetchBlogData(id);
+
+  if (!blog) {
+    return notFound(); // ใช้ notFound() แทนการ return div
   }
 
   // ถ้าบทความยังไม่เผยแพร่
-  if (!blog?.published) {
+  if (!blog.published) {
     return (
       <div className="py-10 text-center text-muted-foreground">
         ⏳ บทความนี้กำลังอยู่ระหว่างการปรับปรุง
