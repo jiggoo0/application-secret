@@ -21,7 +21,7 @@ import {
   Banknote,
   ScrollText,
   Landmark,
-  MessageSquare,
+  // ⛔ MessageSquare ถูกลบออก
 } from 'lucide-react';
 
 // 🧩 ส่วนประกอบหลักของผู้ดูแลระบบ
@@ -39,7 +39,7 @@ import SalaryCertificate from '@/components/documents/SalaryCertificate';
 import { RegistrationPreview } from '@/components/documents/RegistrationPreview';
 
 // 💬 ระบบแชทผู้ดูแล
-import AdminChatPage from '@/app/admin/chat/page';
+// ⛔ import AdminChatPage ถูกลบออก
 
 export default function AdminPage() {
   const { data: session, status } = useSession();
@@ -93,7 +93,7 @@ export default function AdminPage() {
     { key: 'salary', label: 'ใบรับรองเงินเดือน', icon: Banknote },
     { key: 'registration', label: 'ทะเบียนพาณิชย์', icon: ScrollText },
     { key: 'kbank', label: 'KBank Live', icon: Landmark },
-    { key: 'chat-admin', label: 'ระบบแชท', icon: MessageSquare },
+    // ⛔ 'chat-admin' ถูกลบออก
   ];
 
   // Mapping ของเมนูไปยัง component
@@ -108,7 +108,7 @@ export default function AdminPage() {
     salary: <SalaryCertificate />,
     registration: <RegistrationPreview />,
     kbank: <KbankLive />,
-    'chat-admin': <AdminChatPage />,
+    // ⛔ 'chat-admin' ถูกลบออก
   };
 
   const renderContent = () => (

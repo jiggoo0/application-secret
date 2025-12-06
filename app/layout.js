@@ -1,60 +1,29 @@
-'use client';
+// app/layout.js (Refactored to Server Component)
+// 💡 ลบ 'use client' ออก
 
 import './globals.css';
-import { inter } from '@/lib/fonts';
+import { inter } from '@/lib/fonts'; // สมมติว่า inter เป็น font object ที่ถูกต้อง
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Widget from '@/components/Widget';
 import Providers from './providers';
-import { useEffect, useState } from 'react';
 import { Toaster } from '@/components/ui/sonner';
 
 /**
- * 🌐 Root Layout - Production Optimized
+ * 🌐 Root Layout - Standard Next.js App Router (RSC)
  * ----------------------------------------------------
- * ✅ ป้องกัน hydration mismatch
- * ✅ รองรับ dark mode (SSR + system + localStorage)
- * ✅ Responsive + smooth transition
- * ✅ Semantic structure & accessibility ready
+ * ✅ โครงสร้างหลัก (HTML, Body)
+ * ✅ ห่อหุ้มด้วย Providers สำหรับ Theme/Context
  */
 export default function RootLayout({ children }) {
-  const [themeReady, setThemeReady] = useState(false);
-
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const isDark = stored === 'dark' || (!stored && prefersDark);
-
-      const root = document.documentElement;
-      root.classList.toggle('dark', isDark);
-      root.style.colorScheme = isDark ? 'dark' : 'light';
-      root.style.backgroundColor = isDark ? '#0f172a' : '#ffffff';
-
-      requestAnimationFrame(() => setThemeReady(true));
-    } catch (error) {
-      console.error('[RootLayout] Theme init error:', error);
-      setThemeReady(true);
-    }
-  }, []);
-
-  if (!themeReady) {
-    return (
-      <html lang="th" dir="ltr" suppressHydrationWarning>
-        <body
-          className={`${inter.className} flex min-h-screen items-center justify-center bg-gray-50 text-gray-600 transition-colors duration-300 dark:bg-gray-900 dark:text-gray-300`}
-        >
-          <div role="status" aria-live="polite" className="animate-pulse text-sm opacity-70">
-            กำลังโหลด...
-          </div>
-        </body>
-      </html>
-    );
-  }
+  // 💡 ใน RSC เราไม่สามารถใช้ useState/useEffect ได้
+  // การจัดการ Theme จะถูกย้ายไปที่ Providers.js
 
   return (
+    // 💡 การใช้ suppressHydrationWarning ใน <html> เป็นมาตรฐานในการจัดการ Theme/Class
     <html lang="th" dir="ltr" suppressHydrationWarning>
       <body
+        // กำหนด class พื้นฐานสำหรับการจัดการ Theme
         className={`${inter.className} flex min-h-screen flex-col bg-background text-foreground antialiased transition-colors duration-300`}
       >
         <Providers>
@@ -95,3 +64,17 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
+
+// 💡 Bonus: เพิ่ม Default Metadata เพื่อช่วย SEO
+export const metadata = {
+  title: {
+    default: 'Dev Jp - Visoul&Docs | บริการเอกสาร การเงิน และการตลาดครบวงจร',
+    template: '%s | Dev Jp',
+  },
+  description:
+    'บริการที่ปรึกษายื่นกู้สินเชื่อ, เอกสารยื่นวีซ่า, สลิปโอนเงินดิจิทัล, และงานออกแบบ/การตลาด สำหรับทุกสายอาชีพ',
+  keywords: ['สินเชื่อ', 'วีซ่า', 'ตั๋วเครื่องบิน', 'เอกสารดิจิทัล', 'การตลาด', 'ออกแบบ'],
+  icons: {
+    icon: '/favicon.ico',
+  },
+};

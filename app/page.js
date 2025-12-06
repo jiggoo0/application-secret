@@ -1,79 +1,28 @@
-import HomePage from './HomePage';
+// app/page.js
+// PURE SERVER COMPONENT (NO 'use client')
 
-export const metadata = {
-  title: 'JP Visual & Docs',
-  description: 'ยกระดับธุรกิจด้วยบริการ Visual & Documentation แบบมืออาชีพ',
-  metadataBase: new URL('https://application-secret.vercel.app'),
-  openGraph: {
-    title: 'JP Visual & Docs',
-    description: 'บริการออกแบบภาพลักษณ์ดิจิทัลและเอกสารธุรกิจที่ดูมืออาชีพ',
-    url: 'https://application-secret.vercel.app',
-    siteName: 'JP Visual & Docs',
-    images: [
-      {
-        url: '/images/hero/hero.webp',
-        alt: 'JP Visual & Docs Hero',
-        width: 1200,
-        height: 630,
-        type: 'image/webp',
-      },
-    ],
-    locale: 'th_TH',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'JP Visual & Docs',
-    description: 'บริการออกแบบภาพลักษณ์ดิจิทัลและเอกสารธุรกิจที่ดูมืออาชีพ',
-    images: ['/images/hero/hero.webp'],
-    site: '@jpvisualdocs',
-    creator: '@jpvisualdocs',
-  },
-  robots: {
-    index: true,
-    follow: true,
-    nocache: false,
-    googleBot: {
-      index: true,
-      follow: true,
-      maxVideoPreview: -1,
-      maxImagePreview: 'large',
-      maxSnippet: -1,
-    },
-  },
-  alternates: {
-    canonical: 'https://application-secret.vercel.app',
-    languages: {
-      th: 'https://application-secret.vercel.app/th',
-      en: 'https://application-secret.vercel.app/en',
-    },
-  },
-};
+import { Suspense } from 'react';
 
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
-  themeColor: '#ffffff',
-};
+// Import Client Component ที่ถูก Refactor
+import HomePageClient from '@/components/HomePageClient';
+// Import Async RSC Wrapper ที่ดึงข้อมูล
+import ServiceRSCWrapper from '@/components/ServiceRSCWrapper';
+// Import Skeleton (Client Component)
+import ServiceListSkeleton from '@/components/ServiceListSkeleton';
 
 /**
- * 🏠 หน้าแรกของเว็บไซต์ JP Visual & Docs
- * ----------------------------------------------------
- * ✅ ใช้ layout แบบเต็มหน้าจอ
- * ✅ รองรับ Tailwind theme และ accessibility
- * ✅ พร้อมสำหรับ future expansion เช่น analytics, i18n, structured data
+ * Page: เป็น Server Component หลัก
  */
 export default function Page() {
+  const serviceSection = (
+    // RSC ถูกห่อด้วย Suspense ใน Server Component นี้ ก่อนส่งไปยัง Client Component
+    <Suspense fallback={<ServiceListSkeleton />}>
+      <ServiceRSCWrapper />
+    </Suspense>
+  );
+
   return (
-    <main
-      id="main-content"
-      role="main"
-      aria-label="เนื้อหาหลัก"
-      className="min-h-screen w-full bg-background text-foreground antialiased transition-colors duration-300"
-    >
-      <HomePage />
-    </main>
+    // ส่ง RSC Content ที่ถูก Render/Suspended แล้ว เป็น prop ไปยัง Client Component
+    <HomePageClient serviceSection={serviceSection} />
   );
 }

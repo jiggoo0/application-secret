@@ -1,18 +1,15 @@
+// utils/formatCurrency.js
+
 /**
- * แปลงตัวเลขเป็นรูปแบบสกุลเงินไทย เช่น ฿12,345.67
- * รองรับ null, undefined, string, number และ fallback เมื่อไม่ใช่ตัวเลข
- * @param {string|number|null|undefined} value
- * @returns {string} สกุลเงินที่จัดรูปแบบแล้ว
+ * จัดรูปแบบตัวเลขให้เป็นสกุลเงินบาทไทย
+ * @param {number} price - ราคาที่ต้องการจัดรูปแบบ
+ * @returns {string} - สตริงที่จัดรูปแบบแล้ว เช่น "฿1,000"
  */
-export function formatCurrency(value) {
-  const num = typeof value === 'string' ? parseFloat(value.replace(/,/g, '')) : Number(value);
-
-  if (isNaN(num) || num === null || num === undefined) {
-    return '฿0.00';
-  }
-
-  return `฿${num.toLocaleString('th-TH', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
+export const formatPrice = (price) => {
+  if (typeof price !== 'number') return 'N/A';
+  return new Intl.NumberFormat('th-TH', {
+    style: 'currency',
+    currency: 'THB',
+    minimumFractionDigits: 0,
+  }).format(price);
+};

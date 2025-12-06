@@ -1,36 +1,22 @@
-'use client';
+// app/providers.js
+'use client'; // <-- ต้องมี 'use client'
 
-import PropTypes from 'prop-types';
-import ClientProviders from './providers/ClientProviders';
+import { SessionProvider } from 'next-auth/react';
+import { ThemeProvider } from 'next-themes'; // สมมติว่าใช้ next-themes สำหรับ Dark Mode
 
 /**
- * ✅ Global Providers Wrapper (Next.js App Router)
- * -----------------------------------------------------
- * - ครอบ global context ทั้งหมด (Theme, Query, Modal, Toast)
- * - ป้องกัน crash จาก provider ภายใน (safety fallback)
- * - ใช้ใน layout.js
+ * 💡 Providers Component (Client Side)
+ * ใช้สำหรับห่อหุ้ม Context/Theme/Auth Providers ทั้งหมด
+ * เพื่อให้สามารถใช้งาน Hooks เช่น useSession() หรือ useTheme() ได้
  */
 export default function Providers({ children }) {
-  try {
-    return (
-      <ClientProviders>
-        {/* 🔧 สามารถเพิ่ม Global Context อื่นได้ที่นี่ */}
+  return (
+    // 1. SessionProvider สำหรับ NextAuth
+    <SessionProvider>
+      {/* 2. ThemeProvider (ถ้ามี) */}
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         {children}
-      </ClientProviders>
-    );
-  } catch (err) {
-    console.error('Providers Error:', err);
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-red-50 text-red-700">
-        <p className="text-sm font-medium sm:text-base">
-          Provider initialization failed — check console for details.
-        </p>
-      </div>
-    );
-  }
+      </ThemeProvider>
+    </SessionProvider>
+  );
 }
-
-Providers.propTypes = {
-  /** เนื้อหา React ทั้งหมดที่จะอยู่ภายใต้ provider */
-  children: PropTypes.node.isRequired,
-};
