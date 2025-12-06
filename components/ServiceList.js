@@ -1,5 +1,5 @@
 // components/ServiceList.js
-// เป็น Server Component (Async Component) - ห้ามมี 'use client'
+// Server Component (Async Component) - ไม่มี 'use client'
 
 import Link from 'next/link';
 import ServiceCard from '@/components/ServiceCard';
@@ -17,7 +17,7 @@ const ServiceList = async () => {
   let error = null;
 
   try {
-    // RSC Data Fetching - Fast, no client-side JS needed for data fetching
+    // Fetch data จาก server
     services = await getServicesData();
   } catch (err) {
     console.error('Failed to fetch services:', err);
@@ -35,7 +35,7 @@ const ServiceList = async () => {
     );
   }
 
-  // Loading UI Fallback (ในกรณีที่ไม่มีข้อมูล)
+  // Loading Fallback
   if (!services) {
     return <ServiceListSkeleton />;
   }
@@ -43,24 +43,25 @@ const ServiceList = async () => {
   // Normal UI
   return (
     <section className="container mx-auto max-w-7xl px-4 py-12 md:py-16">
+      {/* Header */}
       <header className="mb-12">
         <h2 className="mb-4 text-center text-4xl font-extrabold tracking-tight text-gray-900 lg:text-5xl">
           บริการทั้งหมดของเรา: ครบวงจรสำหรับเอกสารและการเงิน
         </h2>
-
         <p className="mx-auto max-w-4xl text-center text-lg text-gray-600 md:text-xl">
           เลือกบริการที่ตอบโจทย์ความต้องการของคุณ ไม่ว่าจะเป็นเอกสารเฉพาะทาง การเงิน หรือการตลาด
           ด้วยมาตรฐานความน่าเชื่อถือระดับสูง
         </p>
       </header>
 
+      {/* Service Grid */}
       <div className="grid grid-cols-1 items-stretch gap-8 md:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => (
-          // ServiceCard เป็น Client Component (use client) ที่รับ props มาจาก RSC
           <ServiceCard key={service.title} service={service} />
         ))}
       </div>
 
+      {/* CTA Button */}
       <div className="mt-16 text-center">
         <Link href="https://lin.ee/G8s8rKp" target="_blank">
           <Button className="transform rounded-lg bg-blue-700 px-10 py-3 text-lg text-white shadow-xl transition-all duration-300 hover:scale-[1.01] hover:bg-blue-800">

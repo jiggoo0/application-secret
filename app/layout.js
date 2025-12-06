@@ -1,8 +1,8 @@
-// app/layout.js (Refactored to Server Component)
-// 💡 ลบ 'use client' ออก
+// app/layout.js
+// 💡 Server Component - ไม่มี 'use client'
 
 import './globals.css';
-import { inter } from '@/lib/fonts'; // สมมติว่า inter เป็น font object ที่ถูกต้อง
+import { inter } from '@/lib/fonts';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Widget from '@/components/Widget';
@@ -16,14 +16,9 @@ import { Toaster } from '@/components/ui/sonner';
  * ✅ ห่อหุ้มด้วย Providers สำหรับ Theme/Context
  */
 export default function RootLayout({ children }) {
-  // 💡 ใน RSC เราไม่สามารถใช้ useState/useEffect ได้
-  // การจัดการ Theme จะถูกย้ายไปที่ Providers.js
-
   return (
-    // 💡 การใช้ suppressHydrationWarning ใน <html> เป็นมาตรฐานในการจัดการ Theme/Class
     <html lang="th" dir="ltr" suppressHydrationWarning>
       <body
-        // กำหนด class พื้นฐานสำหรับการจัดการ Theme
         className={`${inter.className} flex min-h-screen flex-col bg-background text-foreground antialiased transition-colors duration-300`}
       >
         <Providers>
@@ -65,7 +60,7 @@ export default function RootLayout({ children }) {
   );
 }
 
-// 💡 Bonus: เพิ่ม Default Metadata เพื่อช่วย SEO
+// 💡 Default Metadata + SEO + OG + Twitter
 export const metadata = {
   title: {
     default: 'Dev Jp - Visoul&Docs | บริการเอกสาร การเงิน และการตลาดครบวงจร',
@@ -76,5 +71,30 @@ export const metadata = {
   keywords: ['สินเชื่อ', 'วีซ่า', 'ตั๋วเครื่องบิน', 'เอกสารดิจิทัล', 'การตลาด', 'ออกแบบ'],
   icons: {
     icon: '/favicon.ico',
+  },
+  metadataBase: new URL('https://www.jpvisouldocs.online/'),
+  openGraph: {
+    title: 'Dev Jp - Visoul&Docs',
+    description:
+      'บริการที่ปรึกษายื่นกู้สินเชื่อ, เอกสารยื่นวีซ่า, สลิปโอนเงินดิจิทัล, และงานออกแบบ/การตลาด สำหรับทุกสายอาชีพ',
+    url: 'https://www.jpvisouldocs.online/',
+    siteName: 'JP Visoul&Docs',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+      },
+    ],
+    locale: 'th_TH',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@jpvisouldocs', // ถ้ามี Twitter
+    title: 'Dev Jp - Visoul&Docs',
+    description:
+      'บริการที่ปรึกษายื่นกู้สินเชื่อ, เอกสารยื่นวีซ่า, สลิปโอนเงินดิจิทัล, และงานออกแบบ/การตลาด สำหรับทุกสายอาชีพ',
+    images: ['/og-image.png'],
   },
 };

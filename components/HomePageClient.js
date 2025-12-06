@@ -1,4 +1,3 @@
-// components/HomePageClient.js
 'use client';
 
 import dynamic from 'next/dynamic';
@@ -10,7 +9,7 @@ import AlertBanner from '@/components/AlertBanner';
 import Banner from '@/components/Banner';
 import Section from '@/components/common/Section';
 
-// โหลด Hero
+// Dynamic imports ของ Client Components
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-muted-foreground">
@@ -20,7 +19,6 @@ const Hero = dynamic(() => import('@/components/Hero/Hero'), {
   ssr: false,
 });
 
-// โหลด Carousel รีวิว
 const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-muted-foreground">
@@ -30,7 +28,6 @@ const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
   ssr: false,
 });
 
-// โหลด Blog
 const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   loading: () => (
     <div className="animate-pulse py-24 text-center text-muted-foreground">
@@ -40,7 +37,7 @@ const Blog = dynamic(() => import('@/components/Blog/Blog'), {
   ssr: false,
 });
 
-// sections array สำหรับ Client Components/Dynamic Imports ที่เหลือ
+// Sections array สำหรับ Loop
 const sections = [
   { id: 'hero', Component: Hero },
   { id: 'about', Component: dynamic(() => import('@/components/About'), { ssr: false }) },
@@ -53,8 +50,8 @@ const sections = [
 ];
 
 /**
- * HomePageClient: Client Component ที่รับ RSC Content มาแสดงผลผ่าน props
- * @param {React.ReactNode} serviceSection - เนื้อหา Service Section ที่ถูก Render มาจาก Server แล้ว
+ * HomePageClient: Client Component
+ * @param {React.ReactNode} serviceSection - Server Rendered Service Section
  */
 export default function HomePageClient({ serviceSection }) {
   return (
@@ -69,7 +66,7 @@ export default function HomePageClient({ serviceSection }) {
         aria-label="เนื้อหาหลัก"
         className="flex flex-col gap-20 bg-background text-foreground transition-colors duration-300 sm:gap-28 lg:gap-36"
       >
-        {/* 1. Loop ผ่าน Client/Dynamic Components */}
+        {/* 1. Loop ผ่าน Client/Dynamic Sections */}
         {sections.map(({ id, Component }) => (
           <Suspense
             key={id}
@@ -87,11 +84,7 @@ export default function HomePageClient({ serviceSection }) {
               viewport={{ once: true, amount: 0.2 }}
               variants={{
                 hidden: { opacity: 0, y: 40 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.5, ease: 'easeOut' },
-                },
+                visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
               }}
               className="w-full"
             >
@@ -108,7 +101,7 @@ export default function HomePageClient({ serviceSection }) {
           </Suspense>
         ))}
 
-        {/* 2. แสดง Service Section ที่ถูกส่งมาจาก Server (ServiceRSCWrapper) */}
+        {/* 2. Service Section (Server Rendered) */}
         <motion.section
           id="services"
           aria-labelledby="section-services"
@@ -117,15 +110,10 @@ export default function HomePageClient({ serviceSection }) {
           viewport={{ once: true, amount: 0.2 }}
           variants={{
             hidden: { opacity: 0, y: 40 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.5, ease: 'easeOut' },
-            },
+            visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
           }}
           className="w-full"
         >
-          {/* ✅ FIX: เรียกใช้ Service Section ที่ถูก Render มาแล้ว */}
           {serviceSection}
         </motion.section>
       </main>
