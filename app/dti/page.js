@@ -1,13 +1,14 @@
-import SEO from '@/components/SEO';
+// app/dti/page.js
 import DtiClientWrapper from '@/components/DtiClientWrapper';
 
+// 💡 Next.js 13+ Metadata API (RSC) - จัดการ SEO/Title/Description โดยตรง
 export const metadata = {
   title: 'แบบประเมิน DTI',
   description: 'ประเมินสัดส่วนหนี้ต่อรายได้ (DTI) และให้คำแนะนำเบื้องต้น',
   openGraph: {
     title: 'แบบประเมิน DTI',
     description: 'ใช้เครื่องมือคำนวณ DTI เพื่อวางแผนการเงินอย่างมั่นใจ',
-    url: 'https://application-secret.vercel.app/dti',
+    url: 'https://www.jpvisouldocs.online/dti', // ควรใช้ URL จริงของโดเมนคุณ
     images: [
       {
         url: '/images/og-image.webp',
@@ -27,12 +28,14 @@ export const viewport = {
   initialScale: 1,
 };
 
+// DtiPage เป็น Server Component (RSC)
 export default function DtiPage() {
+  // อ่าน Environment Variable จาก Server Side (RSC Context)
   const saveEnabled = process.env.NEXT_PUBLIC_DTI_SAVE === 'true';
 
   return (
     <>
-      <SEO title="ประเมิน DTI" description="เครื่องมือคำนวณ DTI เพื่อวางแผนการเงิน" />
+      {/* 🛑 ลบ <SEO> Component ออก เนื่องจาก Metadata ถูกจัดการด้วย export const metadata แล้ว */}
 
       <main
         className="mx-auto w-full max-w-3xl px-4 py-6 sm:px-6 sm:py-8"
@@ -76,7 +79,7 @@ export default function DtiPage() {
           </div>
         </section>
 
-        {/* DTI Form */}
+        {/* DTI Form - Client Component */}
         <DtiClientWrapper saveEnabled={saveEnabled} />
       </main>
     </>

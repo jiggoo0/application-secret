@@ -25,11 +25,12 @@ module.exports = {
   rules: {
     'react/react-in-jsx-scope': 'off',
     'no-console': 'off',
-    'no-unused-vars': 'warn',
+    'no-unused-vars': 'off',
+    'unused-imports/no-unused-imports': 'error',
     'prettier/prettier': 'warn',
     semi: ['error', 'always'],
     quotes: ['error', 'single'],
+    'quote-props': ['error', 'as-needed'],
     'react/prop-types': 'off',
-    'unused-imports/no-unused-imports': 'error',
   },
 };

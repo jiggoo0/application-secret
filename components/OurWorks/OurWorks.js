@@ -1,17 +1,16 @@
+// components/OurWorks/OurWorks.js
 'use client';
 
-import { useEffect, useState, useCallback, useMemo, Fragment } from 'react';
+// 💡 แก้ไข: ลบ useCallback และ Fragment ออกจากรายการ Import
+import { useEffect, useState, useMemo } from 'react';
 import WorkCard from './WorkCard';
-import LockedCard from './LockedCard';
 import SkeletonCard from './SkeletonCard';
 
 const WORKS_LIMIT = 6;
-const ACCESS_CODE_REQUIRED_INDEX = 0;
 
 export default function OurWorks() {
   const [works, setWorks] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [authorized, setAuthorized] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
@@ -31,10 +30,6 @@ export default function OurWorks() {
     };
 
     loadWorks();
-  }, []);
-
-  const handleUnlock = useCallback(() => {
-    setAuthorized(true);
   }, []);
 
   const skeletons = useMemo(
@@ -60,20 +55,9 @@ export default function OurWorks() {
       return <p className="text-center text-muted-foreground">ยังไม่มีผลงานให้แสดงในขณะนี้</p>;
     }
 
-    return works.map((work, index) => {
-      const isLocked = index === ACCESS_CODE_REQUIRED_INDEX && !authorized;
-      const unlocked = index !== ACCESS_CODE_REQUIRED_INDEX || authorized;
-
-      return (
-        <Fragment key={work.id || `work-${index}`}>
-          {isLocked ? (
-            <LockedCard onUnlock={handleUnlock} />
-          ) : (
-            <WorkCard {...work} unlocked={unlocked} />
-          )}
-        </Fragment>
-      );
-    });
+    return works.map((work, index) => (
+      <WorkCard key={work.id || `work-${index}`} {...work} unlocked={true} />
+    ));
   };
 
   return (

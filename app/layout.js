@@ -1,12 +1,19 @@
 // app/layout.js
 // 💡 Server Component - ไม่มี 'use client'
 
+// 1. Local/Context Imports (Styles & Providers)
 import './globals.css';
-import { inter } from '@/lib/fonts';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import Widget from '@/components/Widget';
 import Providers from './providers';
+
+// 2. Project Libraries/Utilities
+import { inter } from '@/lib/fonts';
+
+// ✅ FIX IMPORT: เปลี่ยน Header และ Footer ให้ชี้ไปยัง components/layout
+import Header from '@/components/layout/Header';
+import Footer from '@/components/layout/Footer';
+
+// 3. Project Components (UI, General)
+import Widget from '@/components/Widget';
 import { Toaster } from '@/components/ui/sonner';
 
 /**
@@ -27,6 +34,7 @@ export default function RootLayout({ children }) {
             role="banner"
             className="sticky top-0 z-40 w-full border-b border-border bg-white/70 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 dark:bg-gray-900/70"
           >
+            {/* Component ที่ถูก Import ใหม่ */}
             <Header />
           </header>
 
@@ -44,6 +52,7 @@ export default function RootLayout({ children }) {
             role="contentinfo"
             className="border-t border-border bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:bg-gray-950/60"
           >
+            {/* Component ที่ถูก Import ใหม่ */}
             <Footer />
           </footer>
 
