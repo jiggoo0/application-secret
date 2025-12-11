@@ -1,7 +1,11 @@
+// components/AnnouncementBar.jsx
+
 'use client';
 
 import { useEffect, useState } from 'react';
-import Loader from './common/Loader';
+// ❌ BEFORE: import Loader from './common/Loader';
+// ✅ AFTER: ใช้ Absolute Import Path ชี้ไปที่โฟลเดอร์ UI ที่ถูกยุบรวม
+import Loader from '@/components/ui/Loader';
 
 // กำหนดสีตาม status
 const STATUS_COLORS = {
@@ -16,6 +20,7 @@ export default function AnnouncementBar() {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
+    // ... (ไม่เปลี่ยนแปลง)
     const fetchAnnouncements = async () => {
       try {
         const res = await fetch('/data/announcements.json');
@@ -38,6 +43,7 @@ export default function AnnouncementBar() {
   if (loading) {
     return (
       <div className="flex justify-center py-2" aria-busy="true" aria-label="กำลังโหลดประกาศ">
+        {/* Loader ถูกเรียกใช้ต่อได้ทันที */}
         <Loader size="sm" />
       </div>
     );
@@ -51,7 +57,8 @@ export default function AnnouncementBar() {
     );
   }
 
-  const repeated = [...announcements, ...announcements]; // ทำให้ loop ต่อเนื่อง
+  // ... (ส่วนที่เหลือของโค้ดไม่เปลี่ยนแปลง)
+  const repeated = [...announcements, ...announcements];
 
   return (
     <section className="relative overflow-hidden py-2" aria-label="แถบประกาศ" aria-live="polite">

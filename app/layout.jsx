@@ -3,7 +3,9 @@
 
 // 1. Local/Context Imports (Styles & Providers)
 import './globals.css';
-import Providers from './providers';
+// 💥 Component Architect Provider Consolidation: เปลี่ยนจาก Providers ให้ชี้ไปที่ RootProvider
+// และลบไฟล์ app/providers.jsx ทิ้ง หรือเปลี่ยนชื่อเป็น LayoutWrapper ตามคำสั่ง
+import RootProvider from './providers/RootProvider';
 
 // 2. Project Libraries/Utilities
 import { inter } from '@/lib/fonts';
@@ -28,13 +30,13 @@ export default function RootLayout({ children }) {
       <body
         className={`${inter.className} flex min-h-screen flex-col bg-background text-foreground antialiased transition-colors duration-300`}
       >
-        <Providers>
+        {/* 🚀 Provider Consolidation: ใช้ RootProvider ที่ถูกยุบรวมแล้ว */}
+        <RootProvider>
           {/* 🔝 Header */}
           <header
             role="banner"
             className="sticky top-0 z-40 w-full border-b border-border bg-white/70 backdrop-blur-md supports-[backdrop-filter]:bg-white/60 dark:bg-gray-900/70"
           >
-            {/* Component ที่ถูก Import ใหม่ */}
             <Header />
           </header>
 
@@ -52,7 +54,6 @@ export default function RootLayout({ children }) {
             role="contentinfo"
             className="border-t border-border bg-white/60 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:bg-gray-950/60"
           >
-            {/* Component ที่ถูก Import ใหม่ */}
             <Footer />
           </footer>
 
@@ -63,7 +64,7 @@ export default function RootLayout({ children }) {
           <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 sm:bottom-8 sm:right-8">
             <Widget />
           </div>
-        </Providers>
+        </RootProvider>
       </body>
     </html>
   );
@@ -100,7 +101,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@jpvisouldocs', // ถ้ามี Twitter
+    site: '@jpvisouldocs',
     title: 'Dev Jp - Visoul&Docs',
     description:
       'บริการที่ปรึกษายื่นกู้สินเชื่อ, เอกสารยื่นวีซ่า, สลิปโอนเงินดิจิทัล, และงานออกแบบ/การตลาด สำหรับทุกสายอาชีพ',

@@ -1,3 +1,5 @@
+// components/HomePageClient.jsx
+
 'use client';
 
 import dynamic from 'next/dynamic';
@@ -7,7 +9,9 @@ import { Suspense } from 'react';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import AlertBanner from '@/components/AlertBanner';
 import Banner from '@/components/Banner';
-import Section from '@/components/common/Section';
+// ❌ FIX: Module not found
+// เปลี่ยนการ Import จาก '@/components/common/Section' ไปใช้ '@/components/ui/Section'
+import Section from '@/components/ui/Section';
 
 // Dynamic imports ของ Client Components
 const Hero = dynamic(() => import('@/components/Hero/Hero'), {
@@ -88,6 +92,7 @@ export default function HomePageClient({ serviceSection }) {
               }}
               className="w-full"
             >
+              {/* Section Component ที่แก้ไข Path แล้ว */}
               <Section
                 id={id}
                 ariaLabelledBy={`section-${id}`}

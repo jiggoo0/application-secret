@@ -1,9 +1,13 @@
+// components/ReviewCarousel.jsx
+
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 import { motion } from 'framer-motion';
-import ReviewCard from './common/ReviewCard'; // ✅ ใช้ component เดิม
+// ❌ FIX: Module not found
+// เปลี่ยนการ Import จาก './common/ReviewCard' ไปใช้ '@/components/ui/ReviewCard'
+import ReviewCard from '@/components/ui/ReviewCard';
 
 export default function ReviewCarousel({
   initialLimit = 5,
@@ -20,6 +24,7 @@ export default function ReviewCarousel({
   const hoverRef = useRef(false);
 
   const loadMore = useCallback(async () => {
+    // ... (ไม่เปลี่ยนแปลง)
     if (!hasMore || loading) return;
     setLoading(true);
     try {

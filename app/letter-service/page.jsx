@@ -1,257 +1,110 @@
+// 🚀 File: app/letter-service/page.jsx (Final Code - เปิดใช้งานลายน้ำ & FIX Unused Import)
 'use client';
 
-import React, { useMemo, useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import React, { useState } from 'react';
+// 🚨 ลบ import PropTypes ออกแล้ว
 
-// --- Business Logic Schemas (Zod) ---
-// Schema: กำหนดให้ recipientEmail สามารถเป็น optional string หรือ empty string ได้
-const LetterSchema = z.object({
-  recipientName: z.string().min(1, 'กรุณาระบุชื่อผู้รับ'),
-  // แก้ไข: .optional() อนุญาตให้เป็น undefined, .or(z.literal('')) อนุญาตให้เป็น empty string (ฟอร์มส่วนใหญ่มักส่งค่าเป็น '')
-  recipientEmail: z.string().email('รูปแบบอีเมลไม่ถูกต้อง').optional().or(z.literal('')),
-  subject: z.string().min(5, 'หัวข้อต้องมีความยาวอย่างน้อย 5 ตัวอักษร'),
-  content: z.string().min(20, 'เนื้อหาต้องมีความยาวอย่างน้อย 20 ตัวอักษร'),
-  serviceType: z.enum(['standard', 'express'], {
-    errorMap: () => ({ message: 'กรุณาเลือกประเภทบริการที่ถูกต้อง' }),
-  }),
-});
+// Components
+import DocumentForm from './components/DocumentForm.jsx';
+import DocumentPreviewPanel from './components/DocumentPreviewPanel.jsx';
 
-// --- Component หลัก ---
-/**
- * @fileoverview Page Component สำหรับหน้าบริการจดหมาย (Letter Service)
- * ปรับปรุง: แก้ไข Unused Import, ปรับ Zod Schema, Optimize UI/UX ด้วย Tailwind
- */
-export default function LetterServicePage() {
-  const router = useRouter();
+// Logic Hook
+import useCoverLetterGenerator from './hooks/useCoverLetterGenerator.js';
 
-  // 1. Setup Form with Zod validation
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-    watch,
-  } = useForm({
-    resolver: zodResolver(LetterSchema),
-    defaultValues: {
-      recipientName: '',
-      recipientEmail: '',
-      subject: '',
-      content: '',
-      serviceType: 'standard',
-    },
-  });
+const INITIAL_FORM_DATA = {
+  // สมมติว่านี่คือโครงสร้างข้อมูลเริ่มต้น
+  applicantName: '',
+  passportNumber: '',
+  address: '',
+  phone: '',
+  email: '',
+  jobTitle: '',
+  companyName: '',
+  visaType: '',
+  destinationCountry: '',
+  entryDate: '',
+  departureDate: '',
+  purpose: '',
+  accommodationName: '',
+  fundingSource: '',
+  returnTiesDescription: '',
+  supportingDocs: ['Passport Copy', 'Visa Application Form'], // ควรมีค่าเริ่มต้นเป็น Array
+};
 
-  const serviceType = watch('serviceType');
+const LetterServicePage = () => {
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [isFormMinimized, setIsFormMinimized] = useState(false);
 
-  // 2. Business Logic: Handle Form Submission (Server Action / API Call)
-  const onSubmit = useCallback(
-    async (data) => {
-      // Clean data: แปลง empty string ที่อาจมาจาก optional fields ให้เป็น undefined ก่อนส่ง API หาก Server Action/API รับเฉพาะ String หรือ Undefined
-      const submitData = {
-        ...data,
-        recipientEmail: data.recipientEmail || undefined, // Business Pattern: Cleanse Data
-      };
+  const { documentData } = useCoverLetterGenerator(formData);
 
-      console.log('Form Data:', submitData);
+  const handleFormChange = (fieldName, value) => {
+    setFormData((prevData) => ({
+      ...prevData,
+      [fieldName]: value,
+    }));
+  };
 
-      // **จำลองการส่งข้อมูลไปยัง Server Action หรือ API**
-      try {
-        // ตัวอย่าง: การเรียก Server Action (ต้องสร้างใน /app/actions/letterActions.js)
-        // const response = await sendLetterAction(submitData);
+  const handleToggleFormMinimize = () => {
+    setIsFormMinimized((prev) => !prev);
+  };
 
-        // การจำลองการหน่วงเวลาเพื่อแสดงสถานะ Loading (isSubmitting)
-        await new Promise((resolve) => setTimeout(resolve, 2000));
-
-        alert('จดหมายถูกส่งสำเร็จ! (จำลอง)');
-        router.push('/dashboard');
-      } catch (error) {
-        console.error('Error sending letter:', error);
-        // Error Pattern: แสดงผลที่ผู้ใช้เข้าใจง่าย
-        alert('เกิดข้อผิดพลาดในการส่งจดหมาย: กรุณาลองใหม่อีกครั้ง');
-      }
-    },
-    [router],
-  );
-
-  // 3. UI/UX: Service Cost Calculation
-  const serviceCost = useMemo(() => {
-    // Pattern: ธุรกิจกำหนดราคาสูงสุดและต่ำสุดชัดเจน
-    return serviceType === 'express' ? 150 : 50;
-  }, [serviceType]);
+  // Responsive Width Calculation
+  const formWidthClass = isFormMinimized ? 'w-[70px]' : 'w-full md:w-1/3';
+  const previewWidthClass = isFormMinimized ? 'w-full md:w-[calc(100%-70px)]' : 'w-full md:w-2/3';
 
   return (
-    <div className="container mx-auto max-w-3xl p-4 md:p-8">
-      <h1 className="mb-8 text-3xl font-extrabold text-gray-900">📝 บริการส่งจดหมาย</h1>
-      <div className="rounded-xl bg-white p-6 shadow-2xl">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          {/* Input: ชื่อผู้รับ */}
-          <div>
-            <label htmlFor="recipientName" className="mb-1 block text-sm font-medium text-gray-700">
-              ชื่อผู้รับ *
-            </label>
-            <input
-              id="recipientName"
-              type="text"
-              {...register('recipientName')}
-              className="block w-full rounded-lg border border-gray-300 p-3 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="ชื่อ-นามสกุล ผู้รับ"
-            />
-            {errors.recipientName && (
-              <p className="mt-2 text-sm text-red-600">{errors.recipientName.message}</p>
-            )}
-          </div>
-
-          {/* Input: อีเมลผู้รับ (Optional) */}
-          <div>
-            <label
-              htmlFor="recipientEmail"
-              className="mb-1 block text-sm font-medium text-gray-700"
-            >
-              อีเมลผู้รับ (ตัวเลือกเสริม)
-            </label>
-            <input
-              id="recipientEmail"
-              type="email"
-              {...register('recipientEmail')}
-              className="block w-full rounded-lg border border-gray-300 p-3 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="example@mail.com"
-            />
-            {errors.recipientEmail && (
-              <p className="mt-2 text-sm text-red-600">{errors.recipientEmail.message}</p>
-            )}
-          </div>
-
-          {/* Input: หัวข้อ */}
-          <div>
-            <label htmlFor="subject" className="mb-1 block text-sm font-medium text-gray-700">
-              หัวข้อจดหมาย *
-            </label>
-            <input
-              id="subject"
-              type="text"
-              {...register('subject')}
-              className="block w-full rounded-lg border border-gray-300 p-3 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="ระบุหัวข้อที่กระชับ"
-            />
-            {errors.subject && (
-              <p className="mt-2 text-sm text-red-600">{errors.subject.message}</p>
-            )}
-          </div>
-
-          {/* Textarea: เนื้อหา */}
-          <div>
-            <label htmlFor="content" className="mb-1 block text-sm font-medium text-gray-700">
-              เนื้อหาจดหมาย *
-            </label>
-            <textarea
-              id="content"
-              rows={6}
-              {...register('content')}
-              className="block w-full rounded-lg border border-gray-300 p-3 shadow-sm placeholder:text-gray-400 focus:border-indigo-500 focus:ring-indigo-500"
-              placeholder="พิมพ์เนื้อหาจดหมายที่นี่..."
-            />
-            {errors.content && (
-              <p className="mt-2 text-sm text-red-600">{errors.content.message}</p>
-            )}
-          </div>
-
-          {/* Radio Group: ประเภทบริการ (Pattern: เพิ่ม Conversion/ลดขั้นตอน) */}
-          <fieldset className="border-t pt-6">
-            <legend className="text-base font-semibold text-gray-900">ประเภทบริการ *</legend>
-            <div className="mt-4 space-y-3">
-              <div
-                className={`flex items-center rounded-lg border p-3 transition-colors duration-200 ${
-                  serviceType === 'standard'
-                    ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-500'
-                    : 'border-gray-200 hover:bg-gray-50'
-                }`}
+    <div className="flex min-h-screen w-full flex-col bg-gray-50 md:flex-row">
+      {/* 1. Form Block */}
+      <div
+        className={`${formWidthClass} overflow-y-auto border-r border-gray-200 bg-white p-4 shadow-lg transition-all duration-300`}
+      >
+        {!isFormMinimized ? (
+          <>
+            <h2 className="mb-4 flex items-center justify-between text-xl font-bold">
+              Document Inputs
+              <button
+                onClick={handleToggleFormMinimize}
+                className="hidden p-2 text-gray-500 hover:text-gray-900 md:block"
               >
-                <input
-                  id="standard"
-                  type="radio"
-                  value="standard"
-                  {...register('serviceType')}
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label htmlFor="standard" className="ml-3 flex cursor-pointer flex-col">
-                  <span className="text-sm font-medium text-gray-900">Standard (50 บาท)</span>
-                  <span className="text-xs text-gray-500">จัดส่งภายใน 3-5 วันทำการ</span>
-                </label>
-              </div>
-              <div
-                className={`flex items-center rounded-lg border p-3 transition-colors duration-200 ${
-                  serviceType === 'express'
-                    ? 'border-indigo-500 bg-indigo-50 ring-2 ring-indigo-500'
-                    : 'border-gray-200 hover:bg-gray-50'
-                }`}
-              >
-                <input
-                  id="express"
-                  type="radio"
-                  value="express"
-                  {...register('serviceType')}
-                  className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                />
-                <label htmlFor="express" className="ml-3 flex cursor-pointer flex-col">
-                  <span className="text-sm font-medium text-gray-900">Express (150 บาท)</span>
-                  <span className="text-xs text-gray-500">จัดส่งภายใน 1-2 วันทำการ</span>
-                </label>
-              </div>
+                ◀️
+              </button>
+            </h2>
+
+            <div className="mb-6 rounded-lg border border-yellow-300 bg-yellow-50 p-3 text-sm text-gray-800">
+              <p className="mb-1 font-bold">💡 เอกสารตัวอย่างและบริการจัดทำ</p>
+              <p>แบบฟอร์มที่คุณกรอกคือ **รูปแบบตัวอย่าง** เพื่อใช้ในการแสดงผลพรีวิวเท่านั้น</p>
+              <p className="mt-2">
+                ถ้าท่านต้องการได้เอกสารตัวจริงที่มีความน่าเชื่อถือสูง ติดต่อทาง **Line Official**
+                ของทางเรา เราสามารถจัดทำทุกภาษาทุกประเทศในรูปแบบการเขียนจดหมายมาตรฐานสากล
+              </p>
             </div>
-            {errors.serviceType && (
-              <p className="mt-2 text-sm text-red-600">{errors.serviceType.message}</p>
-            )}
-          </fieldset>
 
-          {/* สรุปราคาและปุ่มส่ง */}
-          <div className="flex items-center justify-between border-t pt-6">
-            <p className="text-xl font-bold text-gray-900">
-              ค่าบริการรวม: <span className="text-indigo-600">{serviceCost.toLocaleString()}</span>{' '}
-              บาท
-            </p>
+            <DocumentForm initialData={formData} onFieldChange={handleFormChange} />
+          </>
+        ) : (
+          <div className="flex flex-col items-center">
             <button
-              type="submit"
-              disabled={isSubmitting}
-              className={`inline-flex items-center justify-center rounded-lg border border-transparent px-8 py-3 text-lg font-semibold text-white shadow-lg transition-all duration-200 ${
-                isSubmitting
-                  ? 'cursor-not-allowed bg-indigo-400 opacity-70'
-                  : 'bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500/50'
-              }`}
+              onClick={handleToggleFormMinimize}
+              className="hover:text-900 p-2 text-gray-500"
+              title="Expand Input Panel"
             >
-              {isSubmitting ? (
-                <>
-                  <svg
-                    className="-ml-1 mr-3 h-5 w-5 animate-spin text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  กำลังดำเนินการ...
-                </>
-              ) : (
-                'ยืนยันและส่งจดหมาย'
-              )}
+              ▶️
             </button>
           </div>
-        </form>
+        )}
+      </div>
+
+      {/* 2. Preview Block */}
+      <div className={`${previewWidthClass} h-full p-4 transition-all duration-300`}>
+        <DocumentPreviewPanel
+          documentData={documentData}
+          isDraftMode={true} // เปิดใช้งานลายน้ำที่นี่
+          onToggleFormMinimize={handleToggleFormMinimize}
+          isFormMinimized={isFormMinimized}
+        />
       </div>
     </div>
   );
-}
+};
+
+export default LetterServicePage;

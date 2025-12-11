@@ -1,68 +1,72 @@
 #!/bin/bash
+# Next.js Architectural Refactoring Script - FINAL EXECUTION
+# WARNING: MANUAL CODE REFACTORING (Import Paths/Logic) IS REQUIRED AFTER THIS.
 
-BASE_APP_PATH="app/admin"
-BASE_COMPONENTS_PATH="components/admin"
-REPORT_COMPONENTS_PATH="${BASE_COMPONENTS_PATH}/reports"
+echo "--- Performance Optimizer: FINAL Refactoring Run ---"
 
-echo "--- 🛠️ เริ่มต้นสร้าง Root Pages และโครงสร้าง Admin Features ---"
+# --- 1. Component Architect: Module Centralization (Document Service) ---
+echo -e "\n[STEP 1/2] Module Centralization (Document Service: letter-service -> modules/document-service)"
 
-# ===================================================
-# ส่วนที่ 1: แก้ไขปัญหา 404 (สร้าง Root Pages ที่ขาดหาย)
-# ===================================================
+TARGET_DIR="components/modules/document-service"
+LETTER_SERVICE_DIR="app/letter-service"
 
-echo "[1/3] สร้าง Root Pages สำหรับ /users, /reports, /letters"
+# สร้างโฟลเดอร์ปลายทาง
+mkdir -p "${TARGET_DIR}/hooks"
 
-# 1. สร้าง Path สำหรับ /admin/users
-mkdir -p "${BASE_APP_PATH}/users"
-# สร้างไฟล์ Page ที่ว่างเปล่าพร้อม Export default component
-echo "export default function AdminUsersPage() { return <div className=\"p-8\"><h1 className=\"text-3xl font-bold\">User Management</h1><p>This page is under construction.</p></div>; }" > "${BASE_APP_PATH}/users/page.jsx"
+# 1.1 ย้าย Component (DocumentControls)
+if [ -f "${LETTER_SERVICE_DIR}/components/DocumentControls.jsx" ]; then
+    echo "Moving DocumentControls.jsx..."
+    mv "${LETTER_SERVICE_DIR}/components/DocumentControls.jsx" "${TARGET_DIR}/DocumentControls.jsx"
+else
+    echo "DocumentControls.jsx not found in old location. Skipping move."
+fi
 
-# 2. สร้าง Path สำหรับ /admin/reports
-mkdir -p "${BASE_APP_PATH}/reports"
-# สร้างไฟล์ Page ที่ว่างเปล่าพร้อม Export default component (จะถูกแทนที่ด้วยโค้ดเต็มในภายหลัง)
-echo "export default function AdminReportsPage() { return <h1>Admin Reports Page - WIP (Will be replaced)</h1>; }" > "${BASE_APP_PATH}/reports/page.jsx"
+# 1.2 ย้าย Hooks (useDocumentGeneration, useDocumentControlsLogic)
+if [ -f "${LETTER_SERVICE_DIR}/hooks/useDocumentGeneration.js" ]; then
+    echo "Moving useDocumentGeneration.js..."
+    mv "${LETTER_SERVICE_DIR}/hooks/useDocumentGeneration.js" "${TARGET_DIR}/hooks/useDocumentGeneration.js"
+else
+    echo "useDocumentGeneration.js not found. Skipping move."
+fi
 
-# 3. สร้าง Path สำหรับ /admin/letters
-mkdir -p "${BASE_APP_PATH}/letters"
-# สร้างไฟล์ Page ที่ว่างเปล่าพร้อม Export default component
-echo "export default function AdminLettersPage() { return <div className=\"p-8\"><h1 className=\"text-3xl font-bold\">Letters Management</h1><p>This page is under construction.</p></div>; }" > "${BASE_APP_PATH}/letters/page.jsx"
+if [ -f "${LETTER_SERVICE_DIR}/hooks/useDocumentControlsLogic.js" ]; then
+    echo "Moving useDocumentControlsLogic.js..."
+    mv "${LETTER_SERVICE_DIR}/hooks/useDocumentControlsLogic.js" "${TARGET_DIR}/hooks/useDocumentControlsLogic.js"
+else
+    echo "useDocumentControlsLogic.js not found. Skipping move."
+fi
 
-
-# ===================================================
-# ส่วนที่ 2: สร้างโครงสร้างโฟลเดอร์สำหรับ Admin Reports
-# ===================================================
-
-echo "[2/3] สร้างโฟลเดอร์สำหรับ Feature /admin/reports"
-
-# สร้างโฟลเดอร์หลักสำหรับ Reports
-mkdir -p "${REPORT_COMPONENTS_PATH}/Layout"
-mkdir -p "${REPORT_COMPONENTS_PATH}/Sections"
-mkdir -p "${REPORT_COMPONENTS_PATH}/UI"
-mkdir -p "${REPORT_COMPONENTS_PATH}/hooks"
-
-echo "   - โครงสร้าง reports/ ถูกสร้างแล้ว"
+echo "!! MANUAL ACTION: แก้ไข Import Paths ใน app/letter-service/page.jsx และไฟล์ที่เกี่ยวข้อง ให้ชี้ไปที่ components/modules/document-service/..."
 
 
-# ===================================================
-# ส่วนที่ 3: สร้างไฟล์เริ่มต้นสำหรับ Reports (เพื่อให้โครงสร้างสมบูรณ์)
-# ===================================================
+# --- 2. Component Architect: Provider Consolidation (Cleanup) ---
+echo -e "\n[STEP 2/2] Provider Consolidation (Cleanup)"
 
-echo "[3/3] สร้างไฟล์หลักเริ่มต้นสำหรับ Reports"
+PROVIDER_DIR="app/providers"
+ROOT_PROVIDER="app/providers/RootProvider.jsx"
+LEGACY_PROVIDER="app/providers.jsx"
 
-# Layout Files
-echo "// components/admin/reports/Layout/ReportLayout.jsx\nexport default function ReportLayout({ children, title }) { return <div className=\"p-8\">{children}</div>; }" > "${REPORT_COMPONENTS_PATH}/Layout/ReportLayout.jsx"
-echo "// components/admin/reports/Layout/ReportNavigation.jsx\nexport default function ReportNavigation() { return <nav>Navigation</nav>; }" > "${REPORT_COMPONENTS_PATH}/Layout/ReportNavigation.jsx"
+# 2.1 สร้าง RootProvider.jsx เปล่าสำหรับเริ่มต้น (ต้องใส่ Logic เอง)
+if [ ! -f "${ROOT_PROVIDER}" ]; then
+    echo "Creating empty RootProvider.jsx as consolidation target."
+    echo "// app/providers/RootProvider.jsx" > "${ROOT_PROVIDER}"
+    echo "// ⚠️ MANUAL ACTION: Move all provider logic here and uncomment 'use client'." >> "${ROOT_PROVIDER}"
+fi
 
-# Hook File
-echo "// components/admin/reports/hooks/useReportData.js\n\"use client\";\nimport { useState, useEffect } from 'react';\nexport function useFetchFinancialReport(params) { /* Logic here */ return { reportData: null, isLoading: false }; }" > "${REPORT_COMPONENTS_PATH}/hooks/useReportData.js"
+# 2.2 ลบ Providers ที่กระจายตัวอยู่ (Legacy)
+echo "Removing legacy provider files (ClientProviders.js, SessionProviderClient.js)."
+rm -f "${PROVIDER_DIR}/ClientProviders.js"
+rm -f "${PROVIDER_DIR}/SessionProviderClient.js"
 
-# Section Files
-echo "// components/admin/reports/Sections/FinancialReport.js\n\"use client\";\nimport { useFetchFinancialReport } from '../hooks/useReportData';\nimport FinancialReport from './FinancialReport.jsx';\nexport const FinancialReportContainer = () => { const { reportData } = useFetchFinancialReport({}); return <FinancialReport reportData={reportData} />; };" > "${REPORT_COMPONENTS_PATH}/Sections/FinancialReport.js"
-echo "// components/admin/reports/Sections/FinancialReport.jsx\nexport default function FinancialReport({ reportData }) { return <div>Financial Report Content</div>; }" > "${REPORT_COMPONENTS_PATH}/Sections/FinancialReport.jsx"
+# 2.3 ลบ app/providers.jsx
+if [ -f "${LEGACY_PROVIDER}" ]; then
+    echo "Removing app/providers.jsx..."
+    rm "${LEGACY_PROVIDER}"
+else
+    echo "app/providers.jsx not found. Skipping delete."
+fi
 
-# UI Files (Placeholder)
-echo "// components/admin/reports/UI/ChartContainer.jsx\nexport default function ChartContainer() { return <div>Chart Area</div>; }" > "${REPORT_COMPONENTS_PATH}/UI/ChartContainer.jsx"
+echo "!! MANUAL ACTION: ย้าย Logic ของ Providers ทั้งหมดไปที่ app/providers/RootProvider.jsx"
+echo "!! MANUAL ACTION: ตรวจสอบ app/layout.jsx ว่ามีการ Import และใช้ RootProvider อย่างถูกต้อง"
 
-
-echo "--- ✅ สคริปต์ทั้งหมดเสร็จสมบูรณ์. Build ควรผ่านได้แล้ว ---"
-
+echo -e "\n--- ✅ Refactoring script execution complete. ---"

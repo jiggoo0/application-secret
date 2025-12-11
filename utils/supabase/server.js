@@ -1,26 +1,38 @@
 // utils/supabase/server.js
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+
+import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 
-// 💡 เราจะใช้ Named Export (export function) เพื่อให้ Server Action สามารถ Import ได้อย่างถูกต้อง
-
-// 1. Client สำหรับการจัดการ User Session (ใช้ Anon Key/Auth)
-export function createAuthClient() {
-  const cookieStore = cookies();
-  // ใช้ค่า default จาก Auth Helper เพื่อจัดการ Session/Token
-  return createServerComponentClient({ cookies: () => cookieStore });
-}
-
-// 2. Client สำหรับ Service Role Key (ใช้สำหรับ Admin/File Upload)
-// ซึ่งจำเป็นใน Server Action ของเรา (app/actions/dti.js)
-export function createServerClient() {
-  const cookieStore = cookies();
-
-  return createServerComponentClient(
-    { cookies: () => cookieStore },
+/**
+ * 💡 FIXED: ต้องมั่นใจว่ามีการส่งออกฟังก์ชันชื่อ 'createClient'
+ * เพื่อให้ Server Component และ Server Action อื่นๆ เรียกใช้งานได้
+ * * @param {ReturnType<typeof cookies>} cookieStore
+ * @returns {import('@supabase/supabase-js').SupabaseClient}
+ */
+export const createClient = (cookieStore) => {
+  return createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
-      supabaseUrl: process.env.SUPABASE_URL, // ใช้ Service URL
-      supabaseKey: process.env.SUPABASE_SERVICE_ROLE_KEY, // ใช้ Service Role Key ที่มีสิทธิ์สูง
+      cookies: {
+        get: (name) => cookieStore.get(name)?.value,
+        // สำหรับการตั้งค่า/ลบคุกกี้ใน Server Action
+        // (จำเป็นสำหรับ Session Management)
+        set: (name, value, options) => {
+          try {
+            cookieStore.set({ name, value, ...options });
+          } catch (error) {
+            // ป้องกันการ crash เมื่อพยายามตั้งค่าใน Server Component
+          }
+        },
+        remove: (name, options) => {
+          try {
+            cookieStore.set({ name, value: '', ...options });
+          } catch (error) {
+            // ป้องกันการ crash เมื่อพยายามลบใน Server Component
+          }
+        },
+      },
     },
   );
-}
+};

@@ -1,74 +1,69 @@
-// components/admin/DashboardWidgets.jsx
-'use client';
+// 🚀 File: components/admin/DashboardWidgets.jsx (Server Component Container)
 
-import Link from 'next/link';
-import * as LucideIcons from 'lucide-react';
-
-// --- Helper Functions (แก้ไข: ใช้ export const เพื่อแก้ ReferenceError) ---
-
-export const getIconComponent = (name) => {
-  // @ts-ignore
-  const Icon = LucideIcons[name];
-  return Icon || null;
-};
-
-export const getColorClasses = (color) => {
-  switch (color) {
-    case 'green':
-      return 'bg-success/10 text-success border-success/50 hover:shadow-lg hover:border-success';
-    case 'blue':
-      return 'bg-primary/10 text-primary border-primary/50 hover:shadow-lg hover:border-primary';
-    case 'purple':
-      return 'bg-secondary/10 text-secondary border-secondary/50 hover:shadow-lg hover:border-secondary';
-    case 'indigo':
-      return 'bg-indigo-100 text-indigo-700 border-indigo-300 hover:shadow-lg hover:border-indigo-500';
-    default:
-      return 'bg-muted/50 text-foreground border-border hover:shadow-lg hover:border-foreground';
-  }
-};
+import DashboardWidgetsUI from './DashboardWidgetsUI';
 
 // ----------------------------------------------------
-// 2.1 Atomic UI Component: FeatureCard (แก้ไข: ใช้ function เพื่อแก้ ReferenceError)
+// Data Layer (Defined on the Server)
 // ----------------------------------------------------
+const ADMIN_FEATURE_LINKS = [
+  {
+    id: 1,
+    title: 'จัดการเอกสารราชการ',
+    description: 'สร้างและดาวน์โหลด ใบรับรองแพทย์, เงินเดือน, และทะเบียนพาณิชย์',
+    // 💡 ลิงก์ไปยังหน้า Document Builder
+    href: '/admin/documents',
+    iconName: 'FileText',
+    color: 'blue',
+  },
 
-function FeatureCard({ title, description, href, iconName, color }) {
-  // ✅ เรียกใช้ Helper Function ที่ถูก Export แล้ว
-  const colorClasses = getColorClasses(color);
-  const IconComponent = getIconComponent(iconName);
+  // 🟢 NEW: เพิ่มลิงก์สำหรับจัดการจดหมายนำ (Cover Letter)
+  {
+    id: 2, // เปลี่ยน id ให้เป็น 2 เดิม (และปรับ id ของรายการเดิมลงมา 1)
+    title: 'จัดการจดหมายนำ (Cover Letter)',
+    description: 'สร้างและจัดการจดหมายนำ (Cover Letter) และเอกสารทั่วไปสำหรับองค์กร',
+    // 💡 ชี้ไปที่หน้า Document Builder เดียวกัน แต่ผู้ใช้จะเลือก "จดหมายนำ" ใน dropdown
+    href: '/admin/documents',
+    iconName: 'Mail', // ใช้ไอคอน Mail หรือ Send
+    color: 'orange',
+  },
+
+  // 💡 รายการเดิม (ปรับ ID ลงมา 1)
+  {
+    id: 3,
+    title: 'ข้อมูลพนักงาน',
+    description: 'จัดการฐานข้อมูลพนักงาน, เงินเดือน, และตำแหน่ง (Users, Payroll)',
+    href: '/admin/employees',
+    iconName: 'Users',
+    color: 'green',
+  },
+  {
+    id: 4,
+    title: 'รายงาน & สถิติ',
+    description: 'สรุปการใช้งานระบบและข้อมูลการ Export เอกสาร',
+    href: '/admin/reports',
+    iconName: 'BarChart3',
+    color: 'purple',
+  },
+  {
+    id: 5,
+    title: 'ตั้งค่าระบบ',
+    description: 'จัดการผู้ใช้, สิทธิ์เข้าถึง, และการตั้งค่าทั่วไปขององค์กร',
+    href: '/admin/settings',
+    iconName: 'Settings',
+    color: 'indigo',
+  },
+];
+
+/**
+ * @component DashboardWidgets
+ * @description Server Component Container ที่ดึงข้อมูล (หรือกำหนด Hardcoded Data)
+ * และส่งต่อไปยัง UI Component เพื่อ Render
+ */
+export default function DashboardWidgets() {
+  const featureLinks = ADMIN_FEATURE_LINKS;
 
   return (
-    <Link
-      href={href}
-      className={`group block overflow-hidden rounded-xl border p-6 transition-all duration-300 ${colorClasses}`}
-    >
-      <div className="flex items-start space-x-4">
-        <span
-          className={`flex-shrink-0 rounded-full bg-card p-3 transition-colors duration-200 group-hover:bg-card/90`}
-        >
-          {IconComponent && <IconComponent className="h-6 w-6" />}
-        </span>
-
-        <div className="flex-1">
-          <h3 className="text-xl font-bold text-foreground transition-colors duration-200 group-hover:text-primary">
-            {title}
-          </h3>
-          <p className="mt-1 text-sm text-muted-foreground opacity-90">{description}</p>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-// ----------------------------------------------------
-// 2.2 Main Presentation Component: DashboardWidgets
-// ----------------------------------------------------
-
-export default function DashboardWidgets({ featureLinks }) {
-  return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      {featureLinks.map((feature) => (
-        <FeatureCard key={feature.id} {...feature} />
-      ))}
-    </div>
+    // ส่งข้อมูลลงไปยัง Client Component (DashboardWidgetsUI)
+    <DashboardWidgetsUI featureLinks={featureLinks} />
   );
 }
