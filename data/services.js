@@ -2,11 +2,14 @@
 
 const escapeString = (str) => {
   if (typeof str !== 'string') return str;
-  return str
-    .replace(/\\/g, '\\\\')
-    .replace(/"/g, '\\"')
-    .replace(/\n/g, '\\n')
-    .replace(/\r/g, '\\r');
+  return (
+    str
+      // การแก้ไขปัญหา Backslash Serialization: ค้นหา \ (Backslash เดี่ยว) และแทนที่ด้วย \\ (Double Backslash)
+      .replace(/\\/g, '\\\\')
+      .replace(/"/g, '\\"')
+      .replace(/\n/g, '\\n')
+      .replace(/\r/g, '\\r')
+  );
 };
 
 export const ALL_SERVICES = [
@@ -138,5 +141,6 @@ export async function getServicesData() {
     features: service.features.map((f) => escapeString(f)),
   }));
 
+  // ตรวจสอบว่าไม่มี function component ถูกส่งออกไป
   return sanitizedServices;
 }

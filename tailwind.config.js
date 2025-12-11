@@ -26,10 +26,14 @@ const config = {
           xl: '2.5rem',
         },
       },
+      // 🚀 START: OPTIMIZED FONT FAMILY CONFIGURATION
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        heading: ['"Noto Sans Thai"', 'sans-serif'], // ✅ แก้ quote ให้ถูกต้อง
+        sans: ['var(--font-inter)', '"Noto Sans Thai"', 'sans-serif'],
+        inter: ['var(--font-inter)', '"Noto Sans Thai"', 'sans-serif'],
+        heading: ['"Noto Sans Thai"', 'sans-serif'],
       },
+      // 🚀 END: OPTIMIZED FONT FAMILY CONFIGURATION
+
       borderRadius: {
         DEFAULT: '6px',
         lg: 'var(--radius)',
@@ -63,6 +67,7 @@ const config = {
         video: '16 / 9',
       },
       colors: {
+        // Existing colors (Mapped to: Surface, Text, Primary/Secondary Brand/Structure)
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         card: {
@@ -90,12 +95,26 @@ const config = {
           foreground: 'hsl(var(--accent-foreground))',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
+          DEFAULT: 'hsl(var(--destructive))', // Mapped to Transaction FAILED
           foreground: 'hsl(var(--destructive-foreground))',
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+
+        // --- START: Semantic Status Colors for Admin Transaction Management ---
+        success: {
+          // Mapped to Transaction SUCCESS (Emerald/Trust Green)
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
+        },
+        warning: {
+          // Mapped to Transaction PENDING (Amber/Alert Yellow)
+          DEFAULT: 'hsl(var(--warning))',
+          foreground: 'hsl(var(--warning-foreground))',
+        },
+        // --- END: Semantic Status Colors ---
+
         chart: {
           1: 'hsl(var(--chart-1))',
           2: 'hsl(var(--chart-2))',
