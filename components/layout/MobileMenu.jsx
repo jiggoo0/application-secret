@@ -2,7 +2,6 @@
 
 import Link from 'next/link';
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
 import { usePathname } from 'next/navigation';
 
 export default function MobileMenu({ isOpen, setIsOpen }) {
@@ -26,6 +25,7 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
         <nav className="mt-6 flex flex-col gap-4">
           {navLinks.map(({ label, href }) => {
             const isActive = pathname === href;
+
             return (
               <Link
                 key={href}
@@ -41,16 +41,6 @@ export default function MobileMenu({ isOpen, setIsOpen }) {
               </Link>
             );
           })}
-
-          <div className="mt-8 flex flex-col gap-3 border-t border-border pt-6">
-            <Button asChild className="w-full" onClick={() => setIsOpen(false)}>
-              <Link href="/login">เข้าสู่ระบบ</Link>
-            </Button>
-
-            <Button asChild variant="outline" className="w-full" onClick={() => setIsOpen(false)}>
-              <Link href="/register">สมัครสมาชิก</Link>
-            </Button>
-          </div>
         </nav>
       </SheetContent>
     </Sheet>
