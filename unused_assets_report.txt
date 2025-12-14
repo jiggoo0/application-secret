@@ -1,0 +1,249 @@
+--- Public Asset Usage Report (Generated: Sun Dec 14 21:37:26 +07 2025) ---
+Searching for unused assets in: public
+--------------------------------------------------------
+[❌ UNUSED]: public/about.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/apple-touch-icon.png (Referenced 1 time(s) as: /apple-touch-icon.png)
+[✅ USED]: public/data/Banner.json (Referenced 1 time(s) as: /data/Banner.json)
+[✅ USED]: public/data/announcements.json (Referenced 1 time(s) as: /data/announcements.json)
+[✅ USED]: public/data/contact.json (Referenced 2 time(s) as: /data/contact.json)
+[❌ UNUSED]: public/data/reviews.json
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/data/widget.json
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/data/works.json (Referenced 1 time(s) as: /data/works.json)
+[❌ UNUSED]: public/default-avatar.png
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/file.svg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/THSarabunNew.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/krut.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/THSarabun-Italic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/THSarabun-Bold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/THSarabunNew(1).ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/THSarabun-Regular.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-BoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-BlackItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-Regular.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-LightItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-Thin.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-ExtraBold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-Bold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-Italic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-ExtraBoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-MediumItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-SemiBold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-ThinItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-LightItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-Medium.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-Regular.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-Black.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-ThinItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-ExtraLightItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-Thin.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-Light.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-ExtraBoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-Light.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-Regular.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-ExtraLight.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-Italic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-MediumItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-Bold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-Bold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-Light.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-SemiBoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-BlackItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-BlackItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-MediumItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-ExtraLight.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-ThinItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-ExtraBoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-ExtraLight.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-Black.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-ExtraBold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-SemiBoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-SemiBoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-BoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-Medium.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-Black.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-ExtraLightItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-SemiBold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-Thin.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-ExtraLightItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-BoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-LightItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-SemiBold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_SemiCondensed-ExtraBold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto-Medium.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/static/Roboto_Condensed-Italic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/TH Sarabun New Bold.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/fonts/THSarabun-BoldItalic.ttf
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/globe.svg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/hero-abstract1.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/about/เจ้าป่า.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/blog/blog1-1.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/blog/blog1.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/blog/blog2.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/blog/blog3.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/images/blog/placeholder.webp (Referenced 1 time(s) as: /images/blog/placeholder.webp)
+[✅ USED]: public/images/blog/default-hero.webp (Referenced 1 time(s) as: /images/blog/default-hero.webp)
+[✅ USED]: public/images/default-avatar.webp (Referenced 1 time(s) as: /images/default-avatar.webp)
+[✅ USED]: public/images/hero/hero.webp (Referenced 2 time(s) as: /images/hero/hero.webp)
+[✅ USED]: public/images/hero/hero2.webp (Referenced 1 time(s) as: /images/hero/hero2.webp)
+[✅ USED]: public/images/hero/hero3.webp (Referenced 1 time(s) as: /images/hero/hero3.webp)
+[❌ UNUSED]: public/images/idcard/id1.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/idcard/id2.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/idcard/id3.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/krut.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/logo.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/images/og-image.webp (Referenced 2 time(s) as: /images/og-image.webp)
+[✅ USED]: public/images/placeholder.webp (Referenced 1 time(s) as: /images/placeholder.webp)
+[❌ UNUSED]: public/images/portfolio1.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/profile/default-avatar.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/signatureเจ้าป่า.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/images/work1.webp (Referenced 1 time(s) as: /images/work1.webp)
+[❌ UNUSED]: public/images/work2.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/images/work3.webp (Referenced 1 time(s) as: /images/work3.webp)
+[✅ USED]: public/images/work4.webp (Referenced 1 time(s) as: /images/work4.webp)
+[✅ USED]: public/images/work5.webp (Referenced 1 time(s) as: /images/work5.webp)
+[✅ USED]: public/images/work6.webp (Referenced 1 time(s) as: /images/work6.webp)
+[❌ UNUSED]: public/images/worklock/sample1.jpg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/worklock/sample2.jpg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/worklock/sample3.jpg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/images/เจ้าป่า.webp (Referenced 1 time(s) as: /images/เจ้าป่า.webp)
+[❌ UNUSED]: public/images/เจ้าป่า1.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/images/เจ้าป่า2.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/logo.webp (Referenced 2 time(s) as: /logo.webp)
+[❌ UNUSED]: public/next.svg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service1.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service10.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service2.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service3.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service4.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service5.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service6.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service7.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service8.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/service/service9.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/service/ตั๋วเครื่องบิน.webp (Referenced 1 time(s) as: /service/ตั๋วเครื่องบิน.webp)
+[❌ UNUSED]: public/service/น้องได้พัก.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/service/บริการจดหมาย.webp (Referenced 1 time(s) as: /service/บริการจดหมาย.webp)
+[✅ USED]: public/service/บัตร.webp (Referenced 1 time(s) as: /service/บัตร.webp)
+[✅ USED]: public/service/ภาพลักษณ์.webp (Referenced 1 time(s) as: /service/ภาพลักษณ์.webp)
+[❌ UNUSED]: public/service/รอเปิดตัว.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/service/วีซ่า.webp (Referenced 1 time(s) as: /service/วีซ่า.webp)
+[❌ UNUSED]: public/service/สลิปโอนเงิน.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[✅ USED]: public/service/สินเชื่อ.webp (Referenced 1 time(s) as: /service/สินเชื่อ.webp)
+[✅ USED]: public/service/แก้ไขเอกสาร.webp (Referenced 1 time(s) as: /service/แก้ไขเอกสาร.webp)
+[✅ USED]: public/service/โลโก้.webp (Referenced 1 time(s) as: /service/โลโก้.webp)
+[❌ UNUSED]: public/service/โลโก้99.webp
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/vercel.svg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/window.svg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+[❌ UNUSED]: public/og-image.jpg
+   -> (POTENTIAL DEAD ASSET - Recommend review for deletion)
+--------------------------------------------------------
+Script finished. Check unused_assets_report.txt for results.

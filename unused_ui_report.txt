@@ -1,0 +1,60 @@
+--- UI Component Usage Report (Generated: Sun Dec 14 21:30:51 +07 2025) ---
+Searching for unused files in: components/ui
+--------------------------------------------------------
+[✅ USED]: components/ui/alert.jsx (Found 30 reference(s))
+[❌ UNUSED]: components/ui/animated-shiny-text.jsx
+   -> (POTENTIAL DEAD CODE - Recommend review for deletion)
+[✅ USED]: components/ui/aspect-ratio.jsx (Found 2 reference(s))
+[❌ UNUSED]: components/ui/aurora-text.jsx
+   -> (POTENTIAL DEAD CODE - Recommend review for deletion)
+[✅ USED]: components/ui/avatar.jsx (Found 6 reference(s))
+[✅ USED]: components/ui/badge.jsx (Found 11 reference(s))
+[✅ USED]: components/ui/button.jsx (Found 149 reference(s))
+[✅ USED]: components/ui/card.jsx (Found 33 reference(s))
+[✅ USED]: components/ui/input.jsx (Found 89 reference(s))
+[✅ USED]: components/ui/label.jsx (Found 237 reference(s))
+[✅ USED]: components/ui/line-shadow-text.jsx (Found 1 reference(s))
+[✅ USED]: components/ui/marquee.jsx (Found 3 reference(s))
+[✅ USED]: components/ui/navigation-menu.jsx (Found 2 reference(s))
+[✅ USED]: components/ui/scroll-area.jsx (Found 1 reference(s))
+[❌ UNUSED]: components/ui/scroll-based-velocity.jsx
+   -> (POTENTIAL DEAD CODE - Recommend review for deletion)
+[✅ USED]: components/ui/sheet.jsx (Found 5 reference(s))
+[❌ UNUSED]: components/ui/shiny-button.jsx
+   -> (POTENTIAL DEAD CODE - Recommend review for deletion)
+[✅ USED]: components/ui/skeleton.jsx (Found 11 reference(s))
+[✅ USED]: components/ui/sonner.jsx (Found 4 reference(s))
+[❌ UNUSED]: components/ui/sparkles-text.jsx
+   -> (POTENTIAL DEAD CODE - Recommend review for deletion)
+[✅ USED]: components/ui/spinner.jsx (Found 4 reference(s))
+[✅ USED]: components/ui/table.jsx (Found 19 reference(s))
+[✅ USED]: components/ui/tabs.jsx (Found 3 reference(s))
+[❌ UNUSED]: components/ui/text-reveal.jsx
+   -> (POTENTIAL DEAD CODE - Recommend review for deletion)
+[✅ USED]: components/ui/textarea.jsx (Found 17 reference(s))
+[✅ USED]: components/ui/tooltip.jsx (Found 10 reference(s))
+[✅ USED]: components/ui/InputGroup.jsx (Found 3 reference(s))
+[✅ USED]: components/ui/use-toast.jsx (Found 1 reference(s))
+[✅ USED]: components/ui/toast.jsx (Found 36 reference(s))
+[✅ USED]: components/ui/toaster.jsx (Found 9 reference(s))
+[✅ USED]: components/ui/Badge.jsx (Found 11 reference(s))
+[✅ USED]: components/ui/Button.jsx (Found 149 reference(s))
+[✅ USED]: components/ui/Card.jsx (Found 33 reference(s))
+[✅ USED]: components/ui/Carousel.jsx (Found 4 reference(s))
+[✅ USED]: components/ui/FilePreview.jsx (Found 1 reference(s))
+[✅ USED]: components/ui/Input.jsx (Found 89 reference(s))
+[✅ USED]: components/ui/Loader.jsx (Found 7 reference(s))
+[✅ USED]: components/ui/LogoutButton.jsx (Found 2 reference(s))
+[✅ USED]: components/ui/Modal.jsx (Found 6 reference(s))
+[✅ USED]: components/ui/PDFPreview.jsx (Found 2 reference(s))
+[✅ USED]: components/ui/Rating.jsx (Found 19 reference(s))
+[✅ USED]: components/ui/Section.tsx (Found 87 reference(s))
+[✅ USED]: components/ui/Select.jsx (Found 13 reference(s))
+[✅ USED]: components/ui/Signature.jsx (Found 10 reference(s))
+[✅ USED]: components/ui/Textarea.jsx (Found 17 reference(s))
+[✅ USED]: components/ui/Toast.jsx (Found 36 reference(s))
+[✅ USED]: components/ui/Tooltip.jsx (Found 10 reference(s))
+[✅ USED]: components/ui/Alert.jsx (Found 30 reference(s))
+[✅ USED]: components/ui/ReviewCard.tsx (Found 4 reference(s))
+--------------------------------------------------------
+Script finished. Check unused_ui_report.txt for results.

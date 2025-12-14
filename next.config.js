@@ -52,6 +52,17 @@ const nextConfig = {
           ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**'],
         };
 
+    // ----------------------------------------------------------------------
+    // 🚨 FINAL WORKAROUND FOR TERMUX/I18N ERROR (data.trie)
+    // Externalize 'pdfmake' เพื่อให้ Node.js โหลดโมดูลโดยตรง ไม่ผ่าน Webpack
+    // ซึ่งช่วยหลีกเลี่ยงการพยายามโหลด I18n Data ภายในของ Node.js
+    // ----------------------------------------------------------------------
+    if (isServer) {
+      config.externals.push({
+        pdfmake: 'commonjs pdfmake',
+      });
+    }
+
     if (!isServer) {
       config.resolve.fallback = {
         fs: false,

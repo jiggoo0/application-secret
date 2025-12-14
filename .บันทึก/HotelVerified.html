@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>HOTEL VOUCHER - JP Hotel Pattaya (Confirmed)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      :root {
+        --page-width: 750px;
+        --accent: #c62828; /* JP Hotel Red */
+        --success: #2e7d32;
+        --muted: #666;
+        --border: #e0e0e0;
+        --bg: #ffffff;
+        --paper-bg: #f4f4f6;
+        --mono: 'Courier New', Courier, monospace;
+        --font-sans: 'Arial', 'Helvetica', sans-serif;
+      }
+
+      /* Page */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--paper-bg);
+        font-family: var(--font-sans);
+        color: #111;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .container {
+        max-width: var(--page-width);
+        margin: 28px auto;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+        padding: 28px 36px;
+      }
+
+      /* Header */
+      header {
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--accent);
+      }
+      .brand-logo {
+        height: 35px;
+        margin-bottom: 8px;
+        color: var(--accent);
+        font-weight: 700;
+        font-size: 24px;
+        letter-spacing: 1px;
+      }
+      .main-title {
+        font-weight: 700;
+        font-size: 26px;
+        letter-spacing: 0.5px;
+        margin: 5px 0 10px 0;
+        color: var(--accent);
+        text-transform: uppercase;
+      }
+      .sub-title {
+        font-size: 14px;
+        color: #222;
+      }
+      .verification-status {
+        background: var(--success);
+        color: white;
+        padding: 5px 10px;
+        font-size: 13px;
+        font-weight: 700;
+        display: inline-block;
+        border-radius: 3px;
+        margin-top: 10px;
+      }
+
+      /* --- NEW QR CODE SECTION STYLES --- */
+      .verification-block {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px dashed var(--accent);
+        padding: 10px 15px;
+        margin-bottom: 25px;
+        background: #fff8f8; /* Light background for the QR box */
+        border-radius: 4px;
+      }
+      .qr-box {
+        text-align: center;
+        width: 120px;
+        flex-shrink: 0;
+        border: 1px solid var(--border);
+        padding: 5px;
+        border-radius: 3px;
+        background: var(--bg);
+      }
+      .qr-box img {
+        width: 100px;
+        height: 100px;
+        display: block;
+        margin: 5px auto;
+      }
+      .qr-box .qr-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--accent);
+        margin-top: 5px;
+        text-transform: uppercase;
+      }
+      .verification-text {
+        flex-grow: 1;
+        text-align: left;
+        padding-right: 20px;
+      }
+      .verification-text .title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      .verification-text .link-text {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      /* --- END QR CODE SECTION STYLES --- */
+
+      /* Grid Layout for Details */
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0 40px;
+        margin-bottom: 25px;
+        /* border-bottom: 1px solid var(--border); <- Removed this border */
+        padding-bottom: 15px;
+      }
+      .detail-block {
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      .detail-block h2 {
+        font-size: 15px;
+        margin: 0 0 10px 0;
+        color: #333;
+        font-weight: 700;
+        padding-bottom: 3px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .field {
+        margin: 4px 0;
+        display: flex;
+      }
+      .label {
+        font-weight: 700;
+        flex-shrink: 0;
+        margin-right: 8px;
+      }
+      .value {
+        flex-grow: 1;
+        text-align: right;
+      }
+      .mono {
+        font-family: var(--mono);
+        color: #222;
+        font-weight: 700;
+      }
+
+      /* Special Sections */
+      .check-dates {
+        background: #ffebeb; /* Light Red Background */
+        border: 1px solid var(--accent);
+        padding: 10px 15px;
+        margin-bottom: 25px;
+        font-size: 14px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 4px;
+      }
+      .check-dates .label {
+        color: #8d0000;
+      }
+
+      .remark-section,
+      .attention-section {
+        margin-top: 25px;
+        padding: 15px;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+      }
+      .remark-section {
+        background: #f9f9f9;
+      }
+      .attention-section {
+        background: #fff8f8;
+        border-color: #f2d6d6;
+      }
+      .remark-section h2,
+      .attention-section h2 {
+        border: none;
+        margin-bottom: 5px;
+        font-size: 15px;
+        color: #333;
+      }
+      .remark-section p,
+      .attention-section ul {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+      .attention-section ul {
+        padding-left: 18px;
+        margin-top: 8px;
+      }
+
+      /* Footer/Rate */
+      .footer-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-top: 30px;
+        border-top: 1px solid var(--border);
+        padding-top: 15px;
+      }
+      .rate-box {
+        text-align: center;
+        width: 45%;
+        border: 2px solid var(--success); /* Green border for payment verified */
+        padding: 15px;
+        border-radius: 4px;
+      }
+      .rate-box .label {
+        font-size: 14px;
+        color: var(--muted);
+      }
+      .rate-box .total {
+        font-size: 30px;
+        font-weight: 700;
+        color: var(--success);
+        margin: 5px 0;
+      }
+      .rate-box .policy {
+        font-size: 14px;
+        font-weight: 700;
+        color: #cc0000;
+      }
+
+      .reservation-contact {
+        width: 45%;
+        font-size: 13px;
+        line-height: 1.6;
+        padding-top: 5px;
+        text-align: right;
+      }
+      .reservation-contact address {
+        font-style: normal;
+      }
+
+      /* Print-friendly */
+      @media print {
+        body {
+          background: #fff;
+          margin: 0;
+        }
+        .container {
+          box-shadow: none;
+          border: none;
+          width: 100%;
+          padding: 10mm;
+          margin: 0;
+        }
+        header,
+        .verification-block,
+        .detail-grid,
+        .check-dates,
+        .remark-section,
+        .attention-section,
+        .footer-info {
+          page-break-inside: avoid;
+        }
+        /* Ensure QR code box looks clean on print */
+        .verification-block {
+          border: 1px solid #000 !important;
+          background: #fff !important;
+        }
+        .qr-box {
+          border: 1px solid #000 !important;
+          background: #fff !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="container" role="main" aria-labelledby="voucher-title">
+      <header>
+        <div class="brand-logo">JP HOTEL PATTAYA</div>
+        <div id="voucher-title" class="main-title">HOTEL VOUCHER</div>
+        <div class="sub-title">Your reservation is **CONFIRMED** and **PREPAID**.</div>
+        <div class="verification-status">RESERVATION VERIFIED</div>
+      </header>
+
+      <div class="verification-block">
+        <div class="verification-text">
+          <div class="title">RESERVATION VALIDATION / QUICK CHECK-IN</div>
+          <p style="font-size: 13px; color: #333; margin: 5px 0 0 0">
+            Please present this voucher to the front desk. The QR code can be scanned for quick
+            check-in and instant online status verification.
+            <br /><span class="link-text"
+              >Verification Link: https://verify.jphotel.com/BOOK00001861</span
+            >
+          </p>
+        </div>
+        <div class="qr-box">
+          <div class="qr-label">Booking ID: <span class="mono">1861</span></div>
+          <img
+            src="https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://verify.jphotel.com/BOOK00001861"
+            alt="Verification QR Code for Booking ID BOOK00001861"
+            aria-label="QR Code link to reservation verification page"
+          />
+          <div class="qr-label" style="color: var(--success)">FULLY PREPAID</div>
+        </div>
+      </div>
+      <div class="detail-grid">
+        <div class="detail-block" aria-label="Customer Details">
+          <h2>Customer Information</h2>
+          <div class="field">
+            <span class="label">Booking ID:</span> <span class="value mono">BOOK00001861</span>
+          </div>
+          <div class="field">
+            <span class="label">Customer Name:</span>
+            <span class="value">Mr. Jyoti Ranjan Ray</span>
+          </div>
+          <div class="field">
+            <span class="label">City:</span> <span class="value">Bhubaneswar</span>
+          </div>
+          <div class="field">
+            <span class="label">Nationality:</span> <span class="value">INDIA</span>
+          </div>
+          <div class="field"><span class="label">Email:</span> <span class="value">-</span></div>
+          <div class="field">
+            <span class="label">Phone:</span> <span class="value">919937027191</span>
+          </div>
+        </div>
+
+        <div class="detail-block" aria-label="Room & Rate Details">
+          <h2>Reservation Details</h2>
+          <div class="field">
+            <span class="label">Room Type:</span> <span class="value">Superior B (Double)</span>
+          </div>
+          <div class="field">
+            <span class="label">Rate Plan:</span> <span class="value">Internet Rate (Daily)</span>
+          </div>
+          <div class="field">
+            <span class="label">Number of Rooms:</span> <span class="value">2</span>
+          </div>
+          <div class="field">
+            <span class="label">Adult / Room:</span> <span class="value">2</span>
+          </div>
+          <div class="field"><span class="label">Children:</span> <span class="value">0</span></div>
+          <div class="field">
+            <span class="label">Breakfast:</span> <span class="value">Included (2 guests)</span>
+          </div>
+          <div class="field">
+            <span class="label">Room Night(s):</span> <span class="value">1</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="check-dates" aria-label="Check-in and Check-out Times">
+        <div class="date-in">
+          <span class="label">Check In Date:</span> 2013-04-12 <br />
+          <span class="muted">(After 14:00 Hrs.)</span>
+        </div>
+        <div class="date-out">
+          <span class="label">Check Out Date:</span> 2013-04-13 <br />
+          <span class="muted">(Before 12:00 Hrs.)</span>
+        </div>
+      </div>
+
+      <div class="remark-section" aria-labelledby="remark-head">
+        <h2 id="remark-head">Remark</h2>
+        <p>
+          The main booking (13th April'13 to 16th April'13) under BOOK00001765 is noted. This
+          current voucher covers the **additional night on 12th April'13** due to the early arrival
+          (Bangkok 13th April, 1.55am). *Note for Front Desk: All charges for this specific night
+          have been prepaid.*
+        </p>
+      </div>
+
+      <div class="footer-info">
+        <div class="rate-box">
+          <div class="label">Total Amount Paid</div>
+          <div class="total">1,800.00 THB</div>
+          <div class="policy">PREPAID - Non-refundable</div>
+          <div class="muted" style="margin-top: 10px; font-size: 12px">
+            Rate Date: 2013-04-12 (Rate per Room: 900.00 THB)
+          </div>
+        </div>
+
+        <div class="reservation-contact">
+          <div style="font-weight: 700; margin-bottom: 5px">Reservation Office & Hotel Address</div>
+          <address>
+            JP Hotel Pattaya (Formerly Sabai Lodge) <br />
+            380 Moo 9, Pattaya Soi 2, Pattaya Beach Road,<br />
+            Pattaya City, Chonburi, Thailand, 20150<br />
+            Phone: +66 (0) 3836 1836-8<br />
+            E-Mail: reception@jphotel.com
+          </address>
+        </div>
+      </div>
+
+      <div class="attention-section" aria-labelledby="attention-head">
+        <h2 id="attention-head">ATTENTION TO GUEST</h2>
+        <ul>
+          <li>Guest must present this printed voucher and valid ID/Passport at check-in.</li>
+          <li>
+            This specific booking (BOOK00001861) is fully prepaid. No payment is due for this night.
+          </li>
+          <li>
+            For the remainder of the stay (BOOK00001765), please confirm payment status upon
+            check-in.
+          </li>
+        </ul>
+      </div>
+    </main>
+  </body>
+</html>

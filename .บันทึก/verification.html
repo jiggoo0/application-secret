@@ -1,0 +1,493 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <title>ตรวจสอบสถานะเอกสาร - JP VISOUL</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <style>
+      :root {
+        --accent: #c62828; /* JP VISOUL Red */
+        --success: #2e7d32;
+        --failure: #cc0000;
+        --pending: #ff9800;
+        --muted: #666;
+        --bg: #f5f5f5;
+        --border: #e0e0e0;
+        --font-sans: 'Arial', 'Helvetica', sans-serif;
+        --text-dark: #111;
+      }
+
+      /* ----------------------------------------------------
+           1. BASE & LAYOUT
+           ---------------------------------------------------- */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        background: var(--bg);
+        font-family: var(--font-sans);
+        color: #333;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        text-align: center;
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      main {
+        flex-grow: 1;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        /* Align content to the center of the page vertically */
+        align-items: center;
+        padding: 40px 0;
+      }
+
+      .verification-card {
+        max-width: 650px;
+        width: 90%;
+        padding: 30px;
+        border: 1px solid var(--border);
+        background: #ffffff;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        text-align: left;
+      }
+
+      /* ----------------------------------------------------
+           2. HEADER & STATUS
+           ---------------------------------------------------- */
+      .header-brand {
+        width: 100%;
+        padding: 15px 0;
+        background: var(--accent);
+        color: white;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 0; /* Adjusted for cleaner look */
+      }
+
+      /* Status Block (Used for results) */
+      .status-block {
+        padding: 15px 20px;
+        margin-bottom: 25px;
+        border-radius: 6px;
+        text-align: center;
+        color: white;
+      }
+
+      .status-verified {
+        background-color: var(--success);
+      }
+      .status-pending {
+        background-color: var(--pending);
+      }
+      .status-invalid,
+      .status-expired {
+        background-color: var(--failure);
+      }
+
+      .status-title {
+        font-size: 28px;
+        font-weight: 800;
+        margin: 0;
+        text-transform: uppercase;
+      }
+
+      /* ----------------------------------------------------
+           3. SMART FORM STYLES
+           ---------------------------------------------------- */
+      .search-form-container {
+        text-align: center;
+        padding: 20px;
+      }
+      .search-form-container h2 {
+        font-size: 24px;
+        color: var(--accent);
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+      .search-form-container p {
+        font-size: 15px;
+        color: var(--muted);
+        margin-bottom: 25px;
+      }
+
+      .form-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+        justify-content: center;
+      }
+
+      .form-group input[type='text'] {
+        padding: 12px 15px;
+        font-size: 16px;
+        border: 2px solid var(--border);
+        border-radius: 4px;
+        width: 70%;
+        max-width: 350px;
+        transition: border-color 0.3s;
+      }
+
+      .form-group input[type='text']:focus {
+        outline: none;
+        border-color: var(--accent);
+        box-shadow: 0 0 0 2px rgba(198, 40, 40, 0.2);
+      }
+
+      .form-group button {
+        padding: 12px 25px;
+        font-size: 16px;
+        background: var(--accent);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: background 0.3s;
+      }
+
+      .form-group button:hover {
+        background: #a51d1d;
+      }
+
+      .error-message {
+        color: var(--failure);
+        font-weight: 700;
+        margin-top: 15px;
+        font-size: 14px;
+      }
+
+      /* ----------------------------------------------------
+           4. DETAILS GRID (Remains the same)
+           ---------------------------------------------------- */
+      .document-type {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+        border-bottom: 1px dashed var(--border);
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px 30px;
+        font-size: 15px;
+        margin-bottom: 25px;
+      }
+
+      .detail-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+        border-bottom: 1px dotted #f0f0f0;
+      }
+
+      .label {
+        font-weight: 700;
+        color: #333;
+        flex-shrink: 0;
+        margin-right: 10px;
+      }
+      .value {
+        text-align: right;
+        font-weight: 500;
+        color: var(--text-dark);
+        word-break: break-all;
+      }
+      .mono {
+        font-family: 'Courier New', Courier, monospace;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      /* ----------------------------------------------------
+           5. FOOTER & ACTIONS
+           ---------------------------------------------------- */
+      .footer-note {
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        padding-top: 15px;
+        border-top: 1px solid var(--border);
+        margin-top: 25px;
+      }
+
+      .action-link {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 10px 20px;
+        background: var(--accent);
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: 700;
+        transition: background 0.3s ease;
+      }
+      .action-link:hover {
+        background: #a51d1d;
+      }
+
+      /* Mobile Adjustments */
+      @media (max-width: 600px) {
+        .detail-grid {
+          grid-template-columns: 1fr;
+          gap: 10px 0;
+        }
+        .verification-card {
+          padding: 20px 15px;
+        }
+        .status-title {
+          font-size: 24px;
+        }
+        .form-group {
+          flex-direction: column;
+          gap: 15px;
+        }
+        .form-group input[type='text'],
+        .form-group button {
+          width: 100%;
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header-brand">JP VISOUL - DOCUMENT VERIFICATION SERVICE</div>
+
+    <main role="main">
+      <div class="verification-card" id="verification-content" role="alert" aria-live="assertive">
+        <div class="search-form-container" id="search-form">
+          <h2>ตรวจสอบสถานะเอกสารของคุณ</h2>
+          <p>
+            โปรดระบุ **รหัสอ้างอิง** หรือ **หมายเลข Voucher/E-Ticket**
+            เพื่อตรวจสอบสถานะล่าสุดของเอกสาร
+          </p>
+
+          <form onsubmit="return handleVerification(event);">
+            <div class="form-group">
+              <input
+                type="text"
+                id="ref-input"
+                placeholder="ตัวอย่าง: JPTOUR-20251214-001"
+                required
+              />
+              <button type="submit">ค้นหาสถานะ</button>
+            </div>
+          </form>
+
+          <div class="error-message" id="search-error"></div>
+        </div>
+        <div id="verification-result" style="display: none">
+          <div class="status-block" id="result-status-block">
+            <div class="status-title" id="result-status-title">สถานะ: [LOADING...]</div>
+            <p style="margin: 5px 0 0 0; font-size: 14px" id="result-status-message">
+              สถานะการจองนี้ได้รับการยืนยันและชำระเงินเรียบร้อยแล้ว
+            </p>
+          </div>
+
+          <div class="document-type">
+            ✅ เอกสารประเภท: <span id="result-document-type">[DOCUMENT_TYPE]</span>
+          </div>
+
+          <div class="detail-grid">
+            <div>
+              <div class="detail-row">
+                <span class="label">รหัสอ้างอิง (Ref. ID):</span>
+                <span class="value mono" id="result-ref-code">[REFERENCE_CODE]</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">ชื่อผู้เดินทาง/ผู้จอง:</span>
+                <span class="value" id="result-passenger-name">[PASSENGER_NAME]</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">วันที่ใช้งานหลัก:</span>
+                <span class="value" id="result-primary-date">[PRIMARY_DATE]</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">สินค้า/บริการ:</span>
+                <span class="value" id="result-service-name">[SERVICE_NAME]</span>
+              </div>
+            </div>
+
+            <div>
+              <div class="detail-row">
+                <span class="label">หมายเลข E-Ticket/Voucher:</span>
+                <span class="value" id="result-voucher-no">[TICKET_VOUCHER_NO]</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">จำนวนผู้เดินทาง:</span>
+                <span class="value" id="result-pax-count">[PAX_COUNT] ท่าน</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">ยอดรวมที่ชำระ:</span>
+                <span class="value" id="result-total-amount">[TOTAL_AMOUNT] THB</span>
+              </div>
+              <div class="detail-row">
+                <span class="label">วันที่ยืนยันเอกสาร:</span>
+                <span class="value" id="result-verification-date">[VERIFICATION_DATE]</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-note">
+            เอกสารนี้ได้รับการตรวจสอบความถูกต้อง ณ วันที่ [CURRENT_DATE_TIME] โดยระบบ JP VISOUL
+            <br />
+            หากมีข้อสงสัย โปรดติดต่อฝ่ายบริการลูกค้า
+          </div>
+
+          <div style="text-align: center">
+            <button class="action-link" onclick="resetForm()" style="margin-right: 15px">
+              ตรวจสอบเอกสารอื่น
+            </button>
+            <a href="https://www.jpvisouldocs.online/" class="action-link">กลับสู่หน้าหลัก</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      // *** หมายเหตุ: โค้ด JavaScript นี้เป็นตัวอย่าง (Placeholder) เพื่อจำลองการทำงานของฟอร์ม
+      //     ในการใช้งานจริง จะต้องมีการเชื่อมต่อ AJAX/Fetch API ไปยัง Back-end Server
+
+      const searchFormDiv = document.getElementById('search-form');
+      const resultDiv = document.getElementById('verification-result');
+      const errorMsg = document.getElementById('search-error');
+      const refInput = document.getElementById('ref-input');
+      const statusBlock = document.getElementById('result-status-block');
+
+      // Function to simulate backend data fetching
+      function fetchVerificationData(refCode) {
+        // Simulate API calls and responses
+        refCode = refCode.toUpperCase();
+        if (refCode === 'JPTOUR-001') {
+          return {
+            status: 'verified',
+            status_th: 'ยืนยันสำเร็จ (Verified)',
+            message:
+              'สถานะการจองนี้ได้รับการยืนยันและชำระเงินเรียบร้อยแล้ว กรุณาแสดงเอกสารนี้กับผู้ให้บริการ',
+            doc_type: 'ทัวร์แบบกลุ่ม (Group Tour)',
+            passenger: 'Mr. Jyoti Ranjan Ray',
+            primary_date: '2025-12-25',
+            service_name: 'ทัวร์เกาะพีพี (Speedboat Full Day)',
+            voucher_no: 'JP-VP02511',
+            pax: 4,
+            amount: '4,500.00',
+            verify_date: '2025-12-14 10:30',
+          };
+        } else if (refCode === 'JPTOUR-002') {
+          return {
+            status: 'pending',
+            status_th: 'รอดำเนินการ (Pending)',
+            message:
+              'เอกสารนี้อยู่ในระหว่างการตรวจสอบหรือรอการชำระเงิน โปรดรอการยืนยันจากเจ้าหน้าที่',
+            doc_type: 'ตั๋วเข้าชม (Admission Ticket)',
+            passenger: 'Mrs. Suman Ray',
+            primary_date: '2026-01-05',
+            service_name: 'บัตรเข้าชม Universal Studios',
+            voucher_no: 'JP-UTI001',
+            pax: 2,
+            amount: '0.00',
+            verify_date: 'N/A',
+          };
+        } else if (refCode === 'JPTOUR-003') {
+          return {
+            status: 'invalid',
+            status_th: 'เอกสารไม่ถูกต้อง (Invalid/Expired)',
+            message:
+              'เอกสารนี้ถูกยกเลิก ไม่อยู่ในระบบ หรือหมดอายุแล้ว โปรดติดต่อฝ่ายบริการลูกค้าเพื่อความช่วยเหลือ',
+            doc_type: 'N/A',
+            passenger: 'N/A',
+            primary_date: 'N/A',
+            service_name: 'N/A',
+            voucher_no: 'N/A',
+            pax: 0,
+            amount: '0.00',
+            verify_date: 'N/A',
+          };
+        }
+        return null; // Not found
+      }
+
+      // Main verification handler
+      function handleVerification(event) {
+        event.preventDefault(); // Stop form submission
+        const refCode = refInput.value.trim();
+        errorMsg.textContent = ''; // Clear previous errors
+
+        if (!refCode) {
+          errorMsg.textContent = 'กรุณากรอกรหัสอ้างอิงหรือหมายเลข Voucher ที่ถูกต้อง';
+          return false;
+        }
+
+        // Simulate loading (optional)
+        // refInput.disabled = true;
+
+        const data = fetchVerificationData(refCode);
+
+        if (data) {
+          displayResult(refCode, data);
+        } else {
+          errorMsg.textContent = `ไม่พบข้อมูลสำหรับรหัส: ${refCode} โปรดตรวจสอบรหัสอีกครั้งหรือติดต่อเจ้าหน้าที่`;
+          // refInput.disabled = false;
+        }
+
+        return false;
+      }
+
+      // Function to populate and show results
+      function displayResult(refCode, data) {
+        // 1. Hide form and show result
+        searchFormDiv.style.display = 'none';
+        resultDiv.style.display = 'block';
+
+        // 2. Update status block colors and text
+        statusBlock.className = `status-block status-${data.status}`;
+        document.getElementById('result-status-title').textContent = data.status_th;
+        document.getElementById('result-status-message').textContent = data.message;
+
+        // 3. Populate details grid
+        document.getElementById('result-document-type').textContent = data.doc_type;
+        document.getElementById('result-ref-code').textContent = refCode;
+        document.getElementById('result-passenger-name').textContent = data.passenger;
+        document.getElementById('result-primary-date').textContent = data.primary_date;
+        document.getElementById('result-service-name').textContent = data.service_name;
+        document.getElementById('result-voucher-no').textContent = data.voucher_no;
+        document.getElementById('result-pax-count').textContent = `${data.pax} ท่าน`;
+        document.getElementById('result-total-amount').textContent = `${data.amount} THB`;
+        document.getElementById('result-verification-date').textContent = data.verify_date;
+      }
+
+      // Function to reset the view back to the form
+      function resetForm() {
+        searchFormDiv.style.display = 'block';
+        resultDiv.style.display = 'none';
+        refInput.value = '';
+        refInput.disabled = false;
+        errorMsg.textContent = '';
+      }
+
+      // Initial check if a ref code is in the URL (e.g., /verification.html?ref=JPTOUR-001)
+      document.addEventListener('DOMContentLoaded', () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const refParam = urlParams.get('ref');
+
+        if (refParam) {
+          refInput.value = refParam;
+          handleVerification({ preventDefault: () => {} }); // Trigger verification automatically
+        } else {
+          // By default, only the form is visible (as defined in the HTML structure)
+          resetForm();
+        }
+      });
+    </script>
+  </body>
+</html>

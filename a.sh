@@ -1,72 +1,68 @@
 #!/bin/bash
-# Next.js Architectural Refactoring Script - FINAL EXECUTION
-# WARNING: MANUAL CODE REFACTORING (Import Paths/Logic) IS REQUIRED AFTER THIS.
 
-echo "--- Performance Optimizer: FINAL Refactoring Run ---"
+# ----------------------------------------------------------------------
+# Script: find_unused_generic.sh
+# Description: ค้นหาไฟล์ที่ไม่ได้ถูก import/เรียกใช้ ในไดเรกทอรีที่กำหนด
+# ----------------------------------------------------------------------
 
-# --- 1. Component Architect: Module Centralization (Document Service) ---
-echo -e "\n[STEP 1/2] Module Centralization (Document Service: letter-service -> modules/document-service)"
+# ⚠️ 1. กำหนดไดเรกทอรีที่ต้องการตรวจสอบ (ต้องเปลี่ยนค่านี้ทุกครั้ง)
+# *** แก้ไขเป็น "hooks" แล้ว ***
+SOURCE_DIR="hooks"
 
-TARGET_DIR="components/modules/document-service"
-LETTER_SERVICE_DIR="app/letter-service"
+# 2. กำหนดไดเรกทอรีที่ต้องการค้นหาการใช้งาน (ค้นหาในทุกส่วนของโค้ด)
+SEARCH_DIRS="./app ./components ./lib ./hooks ./data ./config ./utils ./types"
 
-# สร้างโฟลเดอร์ปลายทาง
-mkdir -p "${TARGET_DIR}/hooks"
+# 3. สร้างไฟล์ Log สำหรับเก็บผลลัพธ์
+LOG_FILE="unused_${SOURCE_DIR}_report.txt"
 
-# 1.1 ย้าย Component (DocumentControls)
-if [ -f "${LETTER_SERVICE_DIR}/components/DocumentControls.jsx" ]; then
-    echo "Moving DocumentControls.jsx..."
-    mv "${LETTER_SERVICE_DIR}/components/DocumentControls.jsx" "${TARGET_DIR}/DocumentControls.jsx"
-else
-    echo "DocumentControls.jsx not found in old location. Skipping move."
+# ตรวจสอบว่าได้กำหนด SOURCE_DIR แล้ว
+if [ "$SOURCE_DIR" == "[SET_YOUR_DIRECTORY_HERE]" ]; then
+    # บรรทัดนี้จะถูกข้ามไปเพราะเราตั้งค่า SOURCE_DIR แล้ว
+    echo "ERROR: Please set the SOURCE_DIR variable (e.g., 'hooks', 'data') inside the script before running."
+    exit 1
 fi
 
-# 1.2 ย้าย Hooks (useDocumentGeneration, useDocumentControlsLogic)
-if [ -f "${LETTER_SERVICE_DIR}/hooks/useDocumentGeneration.js" ]; then
-    echo "Moving useDocumentGeneration.js..."
-    mv "${LETTER_SERVICE_DIR}/hooks/useDocumentGeneration.js" "${TARGET_DIR}/hooks/useDocumentGeneration.js"
-else
-    echo "useDocumentGeneration.js not found. Skipping move."
-fi
-
-if [ -f "${LETTER_SERVICE_DIR}/hooks/useDocumentControlsLogic.js" ]; then
-    echo "Moving useDocumentControlsLogic.js..."
-    mv "${LETTER_SERVICE_DIR}/hooks/useDocumentControlsLogic.js" "${TARGET_DIR}/hooks/useDocumentControlsLogic.js"
-else
-    echo "useDocumentControlsLogic.js not found. Skipping move."
-fi
-
-echo "!! MANUAL ACTION: แก้ไข Import Paths ใน app/letter-service/page.jsx และไฟล์ที่เกี่ยวข้อง ให้ชี้ไปที่ components/modules/document-service/..."
+# ล้างไฟล์ log เก่า
+> "$LOG_FILE"
+echo "--- ${SOURCE_DIR} Usage Report (Generated: $(date)) ---" >> "$LOG_FILE"
+echo "Searching for unused files in: $SOURCE_DIR" >> "$LOG_FILE"
+echo "--------------------------------------------------------" >> "$LOG_FILE"
 
 
-# --- 2. Component Architect: Provider Consolidation (Cleanup) ---
-echo -e "\n[STEP 2/2] Provider Consolidation (Cleanup)"
+# 4. ค้นหาไฟล์ทั้งหมดในไดเรกทอรีที่กำหนด
+find "$SOURCE_DIR" -type f \( -name "*.tsx" -o -name "*.jsx" -o -name "*.ts" -o -name "*.js" -o -name "*.json" \) | while read TARGET_FILE; do
 
-PROVIDER_DIR="app/providers"
-ROOT_PROVIDER="app/providers/RootProvider.jsx"
-LEGACY_PROVIDER="app/providers.jsx"
+    # 4.1. สกัดชื่อไฟล์ (เช่น useAuth.ts -> useAuth)
+    FILENAME=$(basename "$TARGET_FILE")
+    FILENAME_NO_EXT="${FILENAME%.*}"
+    
+    # 4.2. กำหนดคำที่ใช้ค้นหา (ใช้ชื่อไฟล์ที่ไม่มีนามสกุลในการค้นหา)
+    SEARCH_TERM="$FILENAME_NO_EXT"
+    
+    # 4.3. ค้นหาการอ้างอิงของชื่อไฟล์นั้นใน Source Files
+    
+    # เราใช้ .ts, .tsx, .js, .jsx, .json ในการค้นหา
+    RAW_COUNT=$(grep -r -h -F -i --include=\*.{ts,tsx,js,jsx,json} "$SEARCH_TERM" $SEARCH_DIRS | grep -v 'import type')
 
-# 2.1 สร้าง RootProvider.jsx เปล่าสำหรับเริ่มต้น (ต้องใส่ Logic เอง)
-if [ ! -f "${ROOT_PROVIDER}" ]; then
-    echo "Creating empty RootProvider.jsx as consolidation target."
-    echo "// app/providers/RootProvider.jsx" > "${ROOT_PROVIDER}"
-    echo "// ⚠️ MANUAL ACTION: Move all provider logic here and uncomment 'use client'." >> "${ROOT_PROVIDER}"
-fi
+    # กรองการอ้างอิงในไฟล์ตัวเองออก:
+    USAGE_COUNT=$(echo "$RAW_COUNT" | grep -v "$TARGET_FILE" | wc -l)
+    
+    if [ "$USAGE_COUNT" -gt 0 ]; then
+        echo "[✅ USED]: $TARGET_FILE (Found $USAGE_COUNT reference(s))" >> "$LOG_FILE"
+    else
+        echo "[❌ UNUSED]: $TARGET_FILE" >> "$LOG_FILE"
+        echo "   -> (POTENTIAL DEAD CODE - Recommend review for deletion)" >> "$LOG_FILE"
+    fi
 
-# 2.2 ลบ Providers ที่กระจายตัวอยู่ (Legacy)
-echo "Removing legacy provider files (ClientProviders.js, SessionProviderClient.js)."
-rm -f "${PROVIDER_DIR}/ClientProviders.js"
-rm -f "${PROVIDER_DIR}/SessionProviderClient.js"
+done
 
-# 2.3 ลบ app/providers.jsx
-if [ -f "${LEGACY_PROVIDER}" ]; then
-    echo "Removing app/providers.jsx..."
-    rm "${LEGACY_PROVIDER}"
-else
-    echo "app/providers.jsx not found. Skipping delete."
-fi
+# 5. แสดงผลลัพธ์
+echo "--------------------------------------------------------" >> "$LOG_FILE"
+echo "Script finished. Check $LOG_FILE for results." >> "$LOG_FILE"
+echo ""
 
-echo "!! MANUAL ACTION: ย้าย Logic ของ Providers ทั้งหมดไปที่ app/providers/RootProvider.jsx"
-echo "!! MANUAL ACTION: ตรวจสอบ app/layout.jsx ว่ามีการ Import และใช้ RootProvider อย่างถูกต้อง"
-
-echo -e "\n--- ✅ Refactoring script execution complete. ---"
+# แสดงสรุปผลลัพธ์ใน Terminal
+echo "--- SUMMARY OF UNUSED FILES IN ${SOURCE_DIR}/ ---"
+grep "\[❌ UNUSED\]" "$LOG_FILE" | sed 's/\[❌ UNUSED\]://g'
+echo "-------------------------------------------------"
+cat "$LOG_FILE"
