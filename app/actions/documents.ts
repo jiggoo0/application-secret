@@ -1,8 +1,14 @@
 // app/actions/documents.ts
 'use server';
 
-// 💡 ต้องมีการ Import Supabase Client ที่ตั้งค่าด้วย Service Role Key
-// import { supabaseServer } from '@/lib/supabase/server';
+// ❌ ลบ import Buffer ออก เนื่องจากมันเป็น Global ใน Node/Next.js Server Environment
+// import { Buffer } from 'buffer';
+// ✅ แก้ไข Warning: 'Buffer' is defined but never used
+
+// 💡 NEW: Import Logic การสร้าง PDF จริง
+import { generatePdfDocument } from '@/lib/pdf/generate_pdf';
+
+// 💡 อ้างอิง Type จากไฟล์ Bookings
 import type { BookingSchema } from '@/app/actions/bookings';
 
 // ----------------------------------------------------
@@ -25,20 +31,21 @@ interface IssueDocumentResult {
  * @description Server Action สำหรับสร้างเอกสาร PDF และส่ง Base64 กลับไปยัง Client
  */
 export async function issueDocument(booking: BookingSchema): Promise<IssueDocumentResult> {
-  const pnr = booking.pnr_code;
+  const pnr = booking.pnr_code?.toUpperCase().trim();
   const projectId = booking.project_id;
 
-  if (!pnr) {
-    return { success: false, error: 'PNR code is missing.' };
+  if (!pnr || !projectId) {
+    return { success: false, error: 'PNR code or Project ID is missing.' };
   }
 
   try {
-    // 💡 [PRODUCTION]: แทนที่โค้ด Mock นี้ด้วย Logic การสร้าง PDF จริง
-    // const pdfBase64 = await generatePdfFromBooking(booking);
+    // 💡 [PRODUCTION]: เปิดใช้งาน Logic การสร้าง PDF จริง
+    // 1. สร้าง PDF Buffer จาก HTML Template
+    const pdfBuffer = await generatePdfDocument(booking);
 
-    // 🔥 Mock Base64 (ใช้สำหรับการทดสอบว่า Client Side Download Logic ทำงานได้)
-    const mockPdfContent = `PNR: ${pnr} - Document Type: ${projectId} - Issued successfully on ${new Date().toISOString()}`;
-    const pdfBase64 = Buffer.from(mockPdfContent, 'utf-8').toString('base64');
+    // 2. แปลง Buffer เป็น Base64 String เพื่อส่งไปยัง Client
+    // pdfBuffer เป็น Buffer object ที่ได้จาก generatePdfDocument
+    const pdfBase64 = pdfBuffer.toString('base64');
 
     return {
       success: true,
@@ -47,7 +54,14 @@ export async function issueDocument(booking: BookingSchema): Promise<IssueDocume
       project_id: projectId,
     };
   } catch (e) {
+    const errorMsg = e instanceof Error ? e.message : 'Unknown internal error';
     console.error(`Error issuing document for PNR ${pnr}:`, e);
-    return { success: false, error: 'Internal Server Error during PDF generation or logging.' };
+
+    return {
+      success: false,
+      error: `ไม่สามารถสร้างเอกสาร PDF ได้: ${errorMsg}`,
+      pnr_code: pnr,
+      project_id: projectId,
+    };
   }
 }

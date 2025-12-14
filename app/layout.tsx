@@ -2,14 +2,15 @@
 // Server Component (RSC) สำหรับ Root Layout
 
 import './globals.css';
-import RootProvider from './providers/RootProvider'; // Client Context Wrapper
-// สมมติว่าไฟล์นี้ถูกเปลี่ยนชื่อเป็น ChunkErrorBoundary.jsx แล้ว
-import ChunkErrorBoundary from '@/components/utils/ChunkErrorBoundary';
-import CleanUrl from '@/components/utils/CleanUrl'; // Utility
-import type { Metadata } from 'next'; // Import Type สำหรับ Metadata
 import React from 'react';
+import type { Metadata } from 'next';
 
-// 💡 Imports (สมมติว่า Path ถูกต้อง)
+// Providers & Utilities
+import RootProvider from './providers/RootProvider';
+import ChunkErrorBoundary from '@/components/utils/ChunkErrorBoundary';
+import CleanUrl from '@/components/utils/CleanUrl';
+
+// Components
 import { inter } from '@/lib/fonts';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -17,7 +18,7 @@ import Widget from '@/components/Widget';
 import { Toaster } from '@/components/ui/sonner';
 
 // ----------------------------------------------------
-// 1. Metadata (SEO Configuration)
+// 1. Metadata (SEO & Social Sharing)
 // ----------------------------------------------------
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.jpvisouldocs.online'),
@@ -39,13 +40,13 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Dev Jp - Visoul&Docs',
     description: 'แพลตฟอร์มเอกสารและบริการด้านการเงิน วีซ่า และการตลาด',
-    url: '/',
+    url: 'https://www.jpvisouldocs.online/',
     siteName: 'JP Visoul&Docs',
     locale: 'th_TH',
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: 'https://www.jpvisouldocs.online/og-image.png',
         width: 1200,
         height: 630,
         alt: 'JP Visoul & Docs Image',
@@ -57,26 +58,30 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Dev Jp - Visoul&Docs',
     description: 'แพลตฟอร์มเอกสารและบริการด้านการเงิน วีซ่า และการตลาด',
-    images: ['/og-image.png'],
+    images: ['https://www.jpvisouldocs.online/og-image.png'],
+  },
+
+  robots: {
+    index: true,
+    follow: true,
+    nocache: true,
   },
 };
 
 // ----------------------------------------------------
 // 2. Root Layout Component
 // ----------------------------------------------------
-// กำหนด Type สำหรับ Props
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
-  // 💡 สร้างตัวแปรสำหรับ Children ทั้งหมดที่จะถูกห่อด้วย ChunkErrorBoundary
   const layoutChildren = (
     <RootProvider>
-      {/* Utility: ทำความสะอาด Query Params */}
+      {/* Utility: Clean query parameters */}
       <CleanUrl />
 
-      {/* Header (Sticky, Global) */}
+      {/* Header */}
       <header
         role="banner"
         className="sticky top-0 z-40 w-full border-b border-border bg-white/70 backdrop-blur dark:bg-gray-900/70"
@@ -84,7 +89,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <Header />
       </header>
 
-      {/* Main Content Area */}
+      {/* Main Content */}
       <main
         id="main-content"
         role="main"
@@ -116,10 +121,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
       <body
         className={`${inter.className} flex min-h-screen flex-col bg-background text-foreground antialiased`}
       >
-        {/*
-          ✅ FIX: กลับไปใช้ JSX Nesting Syntax ตามมาตรฐาน
-          เนื่องจาก ChunkErrorBoundary เป็นไฟล์ .jsx แล้ว จึงไม่เกิด Type Error อีก
-        */}
+        {/* Error Boundary */}
         <ChunkErrorBoundary>{layoutChildren}</ChunkErrorBoundary>
       </body>
     </html>

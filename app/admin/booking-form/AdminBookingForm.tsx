@@ -1,40 +1,26 @@
 // app/admin/booking-form/AdminBookingForm.tsx
 'use client';
 
-import React, { useState, useTransition, useCallback } from 'react';
+import React, { useState, useTransition, useCallback, useMemo } from 'react';
+// 💡 Import Server Action ที่ใช้ในการบันทึกและสร้าง PDF
 import { saveBooking } from '@/app/actions/bookings';
+
 // 💡 Assumed imports for types (adjust path if needed)
 import type {
   BookingSchema,
-  TravellerDetails,
   FlightSegment,
   HotelDetails,
   FareSummary,
+  ProjectType, // 💡 FIX: นำเข้า ProjectType จากไฟล์ types/booking-types
 } from '@/types/booking-types';
 
 // ----------------------------------------------------
-// 1. CONSTANTS AND TYPES (Moved from component body for clarity)
+// 1. UTILITY TYPES & CONSTANTS
 // ----------------------------------------------------
 
-// 💡 RECOMMENDATION: ย้าย Type เหล่านี้ไปรวมใน '@/types/booking-types'
-type ProjectType = 'FLIGHT' | 'HOTEL' | 'TOUR';
-type CurrencyType = 'THB' | 'USD' | 'EUR';
-
-const initialTravellerDetails: TravellerDetails = {
-  name: '',
-  passport_no: '',
-  nationality: 'THAI',
-  email: '',
-  phone: '',
-  currency: 'THB',
-};
-
-const initialFareSummary: FareSummary = {
-  base_fare: 0.0,
-  taxes: 0.0,
-  total_paid: 0.0,
-  currency: 'THB',
-};
+// 💡 FIX: ลบ Local Type Definition ออก เพราะเราใช้ Type ที่ Import มา
+// type ProjectType = 'FLIGHT' | 'HOTEL' | 'TOUR' | '';
+// type CurrencyType = 'THB' | 'USD' | 'EUR';
 
 const initialFlightSegment: FlightSegment = {
   flight_no: '',
@@ -50,685 +36,542 @@ const initialFlightSegment: FlightSegment = {
 
 const initialHotelDetails: HotelDetails = {
   hotel_name: '',
-  location: '',
-  booking_ref: '',
+  room_type: '',
   check_in_date: '',
   check_out_date: '',
-  num_rooms: 1,
   num_nights: 1,
-  guest_names: '',
-  confirmation_policy: 'Fully Paid',
+  num_rooms: 1,
 };
 
+// 💡 Initial State ของฟอร์มที่สมบูรณ์ตาม BookingSchema
+const initialFormData: BookingSchema = {
+  pnr_code: '',
+  // 💡 FIX: ไม่ต้องใช้ Type Assertion แล้ว เพราะ ProjectType หลักมี '' รวมอยู่แล้ว
+  project_id: '',
+  traveller_name: '',
+  booking_status: 'CONFIRMED',
+  is_active: true, // เพิ่ม field ที่ขาดไป
+  eticket_no: null, // Optional DB Field
+  payment_method: null, // Optional DB Field
+
+  traveller_details: {
+    name: '',
+    nationality: 'THAI',
+    email: '',
+    phone: '',
+  },
+  fare_summary: {
+    base_fare: 0.0,
+    taxes: 0.0,
+    total_paid: 0.0,
+    currency: 'THB',
+  },
+  flight_details: [initialFlightSegment], // เริ่มต้นด้วย 1 Segment
+  hotel_details: initialHotelDetails,
+  tour_details: null, // JSONB Object ที่อาจถูกละเว้นหรือเป็น null
+};
+
+interface StatusMessage {
+  message: string;
+  type: 'idle' | 'success' | 'error' | 'info';
+}
+
 // ----------------------------------------------------
-// 2. UTILITY FUNCTIONS (Client-side PDF Download Logic)
+// 2. UTILITY FUNCTIONS (PDF Download)
 // ----------------------------------------------------
 
 /**
- * @description แปลง Base64 String เป็น Blob และ Force Download เป็นไฟล์ PDF
- * ✅ Pattern: แยก Logic ที่ซับซ้อนออกจาก Handler หลัก
+ * @description แปลง Base64 String ที่ได้จาก Server Action เป็น Blob และ Force Download เป็นไฟล์ PDF
  */
-const downloadPdfFromBase64 = (base64String: string, pnr: string, projectId: string) => {
-  // 1. แปลง Base64 กลับเป็น Binary Data (Standard Atob Conversion)
-  const binaryString = atob(base64String);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
+const downloadPdfFromBase64 = (base64String: string, pnr: string, projectId: ProjectType) => {
+  try {
+    const base64Cleaned = base64String.replace(/^data:application\/pdf;base64,/, '');
+    // ใช้ atob สำหรับ Client-side Base64 decode
+    const binaryString = atob(base64Cleaned);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safePnr = pnr.replace(/[^a-zA-Z0-9-]/g, '_');
+    // 💡 ปรับการตั้งชื่อไฟล์โดยป้องกันค่าว่าง
+    const safeProjectId = projectId || 'UNKNOWN';
+    a.download = `${safeProjectId}-${safePnr}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    return true;
+  } catch (e) {
+    console.error('Error during PDF download:', e);
+    return false;
   }
-  const blob = new Blob([bytes], { type: 'application/pdf' });
-
-  // 2. จัดการดาวน์โหลดไฟล์
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.href = url;
-  link.setAttribute('download', `${projectId}_${pnr}.pdf`);
-  document.body.appendChild(link);
-  link.click();
-
-  // 3. Cleanup
-  link.remove();
-  window.URL.revokeObjectURL(url);
 };
 
 // ----------------------------------------------------
-// 3. MAIN COMPONENT
+// 3. SUB-COMPONENTS (Input Fields)
 // ----------------------------------------------------
 
-export const AdminBookingForm: React.FC = () => {
-  const [isPending, startTransition] = useTransition();
+// 💡 Component นี้จะแสดงเมื่อ project_id คือ FLIGHT
+const FlightDetailsInputs = ({
+  formData,
+  setFormData,
+}: {
+  formData: BookingSchema;
+  setFormData: React.Dispatch<React.SetStateAction<BookingSchema>>;
+}) => {
+  const handleSegmentChange = (index: number, field: keyof FlightSegment, value: string) => {
+    // 💡 เนื่องจาก flight_details เป็น Array, ต้องมั่นใจว่ามันไม่เป็น null
+    if (!formData.flight_details) return;
 
-  // Primary State
-  const [pnrCode, setPnrCode] = useState<string>('');
-  const [projectType, setProjectType] = useState<ProjectType>('FLIGHT');
-  const [bookingStatus, setBookingStatus] = useState<'CONFIRMED' | 'PENDING' | 'CANCELLED'>(
-    'CONFIRMED',
+    const newSegments = [...formData.flight_details];
+    // 💡 Type check: segment ใน Array ต้องเป็น FlightSegment
+    const currentSegment = newSegments[index] as FlightSegment;
+
+    newSegments[index] = { ...currentSegment, [field]: value };
+    setFormData((prev) => ({ ...prev, flight_details: newSegments }));
+  };
+
+  const segments = formData.flight_details || [];
+
+  return (
+    <div className="space-y-6">
+      <h2 className="border-b pb-2 text-xl font-semibold text-indigo-700">
+        รายละเอียดเที่ยวบิน (Segment)
+      </h2>
+      {segments.map((segment, index) => (
+        <div key={index} className="space-y-3 rounded-lg border bg-gray-50 p-4">
+          <p className="text-sm font-bold text-gray-600">เที่ยวบินที่: {index + 1}</p>
+          <input
+            type="text"
+            placeholder="หมายเลขเที่ยวบิน (เช่น JP532)"
+            value={segment.flight_no}
+            onChange={(e) => handleSegmentChange(index, 'flight_no', e.target.value)}
+            className="w-full rounded border px-3 py-2"
+            required
+          />
+          <input
+            type="text"
+            placeholder="เส้นทาง (เช่น กรุงเทพฯ-กัวลาลัมเปอร์)"
+            value={segment.route}
+            onChange={(e) => handleSegmentChange(index, 'route', e.target.value)}
+            className="w-full rounded border px-3 py-2"
+            required
+          />
+          <input
+            type="text"
+            placeholder="ชื่อสายการบิน (เช่น Thai Airways)"
+            value={segment.airline_name}
+            onChange={(e) => handleSegmentChange(index, 'airline_name', e.target.value)}
+            className="w-full rounded border px-3 py-2"
+            required
+          />
+          <div className="flex space-x-4">
+            <input
+              type="date"
+              placeholder="วันที่ออกเดินทาง"
+              value={segment.date}
+              onChange={(e) => handleSegmentChange(index, 'date', e.target.value)}
+              className="w-1/2 rounded border px-3 py-2"
+              required
+            />
+            <input
+              type="time"
+              placeholder="เวลาออกเดินทาง"
+              value={segment.depart_time}
+              onChange={(e) => handleSegmentChange(index, 'depart_time', e.target.value)}
+              className="w-1/2 rounded border px-3 py-2"
+              required
+            />
+          </div>
+          {/* ... Add more Flight Segment fields here (depart_airport, arrive_airport, etc.) ... */}
+          {segments.length > 1 && (
+            <button
+              type="button"
+              onClick={() =>
+                setFormData((prev) => ({
+                  ...prev,
+                  flight_details: prev.flight_details!.filter((_, i) => i !== index),
+                }))
+              }
+              className="mt-2 text-sm text-red-500 hover:text-red-700"
+            >
+              ลบเที่ยวบินนี้
+            </button>
+          )}
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() =>
+          setFormData((prev) => ({
+            ...prev,
+            flight_details: [...(prev.flight_details || []), initialFlightSegment],
+          }))
+        }
+        className="text-sm font-semibold text-indigo-600 hover:text-indigo-800"
+      >
+        + เพิ่มเที่ยวบิน (Segment)
+      </button>
+    </div>
   );
-  const [status, setStatus] = useState<{
-    message: string;
-    type: 'idle' | 'success' | 'error' | 'loading';
-  }>({
-    message: 'กรอกข้อมูลการจองและเลือกประเภทเอกสาร',
+};
+
+// 💡 Component นี้จะแสดงเมื่อ project_id คือ HOTEL
+const HotelDetailsInputs = ({
+  formData,
+  setFormData,
+}: {
+  formData: BookingSchema;
+  setFormData: React.Dispatch<React.SetStateAction<BookingSchema>>;
+}) => {
+  const hotelDetails = formData.hotel_details || initialHotelDetails;
+
+  const handleHotelChange = (field: keyof HotelDetails, value: string | number) => {
+    setFormData((prev) => ({
+      ...prev,
+      hotel_details: { ...hotelDetails, [field]: value },
+    }));
+  };
+
+  return (
+    <div className="space-y-4">
+      <h2 className="border-b pb-2 text-xl font-semibold text-indigo-700">รายละเอียดโรงแรม</h2>
+      <input
+        type="text"
+        placeholder="ชื่อโรงแรม"
+        value={hotelDetails.hotel_name}
+        onChange={(e) => handleHotelChange('hotel_name', e.target.value)}
+        className="w-full rounded border px-3 py-2"
+        required
+      />
+      <input
+        type="text"
+        placeholder="ประเภทห้องพัก"
+        value={hotelDetails.room_type}
+        onChange={(e) => handleHotelChange('room_type', e.target.value)}
+        className="w-full rounded border px-3 py-2"
+        required
+      />
+      <div className="flex space-x-4">
+        <input
+          type="date"
+          placeholder="วันเช็คอิน"
+          value={hotelDetails.check_in_date}
+          onChange={(e) => handleHotelChange('check_in_date', e.target.value)}
+          className="w-full rounded border px-3 py-2"
+          required
+        />
+        <input
+          type="date"
+          placeholder="วันเช็คเอาท์"
+          value={hotelDetails.check_out_date}
+          onChange={(e) => handleHotelChange('check_out_date', e.target.value)}
+          className="w-full rounded border px-3 py-2"
+          required
+        />
+      </div>
+      <div className="flex space-x-4">
+        <input
+          type="number"
+          placeholder="จำนวนคืน (Nights)"
+          min="1"
+          value={hotelDetails.num_nights}
+          onChange={(e) => handleHotelChange('num_nights', parseInt(e.target.value) || 1)}
+          className="w-1/2 rounded border px-3 py-2"
+          required
+        />
+        <input
+          type="number"
+          placeholder="จำนวนห้อง (Rooms)"
+          min="1"
+          value={hotelDetails.num_rooms}
+          onChange={(e) => handleHotelChange('num_rooms', parseInt(e.target.value) || 1)}
+          className="w-1/2 rounded border px-3 py-2"
+          required
+        />
+      </div>
+    </div>
+  );
+};
+
+// ----------------------------------------------------
+// 4. MAIN COMPONENT
+// ----------------------------------------------------
+
+export function AdminBookingForm() {
+  const [formData, setFormData] = useState<BookingSchema>(initialFormData);
+  const [status, setStatus] = useState<StatusMessage>({
+    message: 'กรอกข้อมูลการจองเพื่อบันทึกและออกเอกสาร',
     type: 'idle',
   });
+  const [isPending, startTransition] = useTransition();
 
-  // Detail States
-  const [traveller, setTraveller] = useState<TravellerDetails>(initialTravellerDetails);
-  const [fareSummary, setFareSummary] = useState<FareSummary>(initialFareSummary);
-  const [flightSegments, setFlightSegments] = useState<FlightSegment[]>([initialFlightSegment]);
-  const [hotelData, setHotelData] = useState<HotelDetails>(initialHotelDetails);
-
-  // ----------------------------------------------------
-  // HANDLERS
-  // ----------------------------------------------------
-
-  // Handler สำหรับอัปเดต Field ทั่วไปและ Fare Summary (รวม logic คำนวณ)
-  const handleDetailChange = (
-    setter: React.Dispatch<React.SetStateAction<any>>,
-    currentState: any,
-    field: string,
-    value: string | number,
-  ) => {
-    // แปลงค่าเป็นตัวเลข (ใช้ NaN แทน 0 เพื่อแยกความแตกต่างระหว่าง 'ว่าง' กับ '0')
-    let numericValue = typeof value === 'string' && value !== '' ? parseFloat(value) : value;
-
-    if (setter === setFareSummary) {
-      const newSummary = { ...currentState, [field]: numericValue };
-
-      // 🎯 Logic: คำนวณ Total Paid อัตโนมัติ (Base Fare + Taxes)
-      if (field === 'base_fare' || field === 'taxes') {
-        const base = parseFloat(newSummary.base_fare) || 0;
-        const taxes = parseFloat(newSummary.taxes) || 0;
-        newSummary.total_paid = base + taxes;
+  // 4.1. Helper function สำหรับการอัปเดต Field หลัก
+  const handleFieldChange = useCallback(
+    // 💡 ใช้ ProjectType ที่ถูก Import มา
+    (field: keyof BookingSchema, value: string | ProjectType) => {
+      // 💡 Logic พิเศษ: เมื่อเปลี่ยน Project ID ให้ Reset รายละเอียดเฉพาะบริการ
+      if (field === 'project_id') {
+        let newFormData = { ...formData, [field]: value };
+        if (value === 'FLIGHT') {
+          newFormData.hotel_details = null;
+          newFormData.tour_details = null;
+          if (!newFormData.flight_details || newFormData.flight_details.length === 0) {
+            newFormData.flight_details = [initialFlightSegment];
+          }
+        } else if (value === 'HOTEL') {
+          newFormData.flight_details = null;
+          newFormData.tour_details = null;
+          newFormData.hotel_details = initialHotelDetails;
+        } else if (value === 'TOUR') {
+          newFormData.flight_details = null;
+          newFormData.hotel_details = null;
+          // 💡 Type Safety: กำหนดให้เป็น null หรือตามโครงสร้าง TourDetails ที่คาดหวัง
+          newFormData.tour_details = {} as any; // ใช้ as any ชั่วคราว หรือกำหนดโครงสร้างให้ TourDetails
+        } else {
+          newFormData.flight_details = null;
+          newFormData.hotel_details = null;
+          newFormData.tour_details = null;
+        }
+        setFormData(newFormData);
+        return;
       }
 
-      // Currency Field ไม่ใช่ตัวเลข
-      if (field === 'currency') {
-        newSummary.currency = value as CurrencyType;
-      }
-      // ใส่ค่ากลับไปเป็นเลข 0 หากเป็น NaN หรือ undefined เพื่อให้ Type สอดคล้องกับ FareSummary
-      setter({ ...newSummary, [field]: isNaN(numericValue as number) ? 0 : numericValue });
-    } else {
-      // Logic สำหรับ States อื่น ๆ (Traveller, Hotel)
-      setter({ ...currentState, [field]: value });
-    }
-  };
-
-  const updateFlightSegment = useCallback(
-    (index: number, field: keyof FlightSegment, value: string | number) => {
-      setFlightSegments((prevSegments) => {
-        const newSegments = [...prevSegments];
-        (newSegments[index][field] as string | number) = value;
-        return newSegments;
-      });
+      setFormData((prev) => ({ ...prev, [field]: value }));
     },
-    [],
+    [formData],
   );
 
-  const addFlightSegment = () => {
-    setFlightSegments((prevSegments) => [...prevSegments, initialFlightSegment]);
-  };
+  // 4.2. Helper function สำหรับการอัปเดต Fare Summary (แก้ไขปัญหาเลข 0)
+  const handleFareChange = useCallback((field: keyof FareSummary, value: string) => {
+    // 💡 แก้ไข: ถ้าค่าเป็น Empty String ให้ถือว่าเป็น 0.0 เพื่อให้กรอกง่าย
+    const cleanedValue = value.trim();
+    const numValue = cleanedValue === '' ? 0.0 : parseFloat(cleanedValue);
 
-  const removeFlightSegment = (index: number) => {
-    setFlightSegments((prevSegments) => prevSegments.filter((_, i) => i !== index));
-  };
+    setFormData((prev) => ({
+      ...prev,
+      fare_summary: { ...prev.fare_summary, [field]: numValue || 0.0 }, // Ensure it's always a number
+    }));
+  }, []);
 
-  // ----------------------------------------------------
-  // SUBMIT HANDLER (บันทึก + ดาวน์โหลด PDF)
-  // ----------------------------------------------------
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const pnr = pnrCode.trim().toUpperCase();
-
-    if (!pnr || !traveller.name) {
-      setStatus({ message: 'PNR Code และชื่อผู้เดินทางหลักเป็นสิ่งจำเป็น', type: 'error' });
-      return;
+  // 4.3. Helper: Styling for Status Box
+  const statusStyle = useMemo(() => {
+    switch (status.type) {
+      case 'success':
+        return 'bg-green-50 border-green-400 text-green-800';
+      case 'error':
+        return 'bg-red-50 border-red-400 text-red-800';
+      case 'info':
+      case 'idle':
+      default:
+        return 'bg-blue-50 border-blue-400 text-blue-800';
     }
+  }, [status.type]);
 
-    setStatus({ message: 'กำลังบันทึกข้อมูลและสร้างเอกสาร...', type: 'loading' });
+  // 4.4. Submission Logic
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
 
-    // 🎯 Business Logic: จัดการข้อมูลก่อนส่ง Server Action
-    const baseData: BookingSchema = {
-      project_id: projectType,
-      pnr_code: pnr,
-      traveller_name: traveller.name.trim().toUpperCase(),
-      booking_status: bookingStatus,
-      traveller_details: traveller,
-      fare_summary: fareSummary,
-      flight_details: projectType === 'FLIGHT' ? flightSegments : undefined,
-      hotel_details: projectType === 'HOTEL' ? hotelData : undefined,
-    };
+      if (!formData.pnr_code || !formData.project_id || !formData.traveller_name) {
+        setStatus({
+          message: 'กรุณากรอก PNR Code, ประเภทบริการ และชื่อผู้เดินทางหลัก ให้ครบถ้วน',
+          type: 'error',
+        });
+        return;
+      }
 
-    startTransition(async () => {
-      // 💡 เรียกใช้ Server Action
-      const result = await saveBooking(baseData);
+      // 💡 Validation: project_id ต้องไม่ใช่ '' ก่อนส่งไป Server Action
+      if (formData.project_id === '') {
+        setStatus({
+          message: 'กรุณาเลือกประเภทบริการ (Project Type)',
+          type: 'error',
+        });
+        return;
+      }
 
-      if (result.success && result.pdf_base64) {
+      // 💡 Server Action Call
+      startTransition(async () => {
+        setStatus({
+          message: `กำลังบันทึกข้อมูลและสร้าง PDF สำหรับ ${formData.pnr_code}...`,
+          type: 'info',
+        });
+
         try {
-          // --- Client-side PDF Download --- (ใช้ Utility Function)
-          downloadPdfFromBase64(result.pdf_base64, result.pnr_code, result.project_id);
+          // 💡 saveBooking: บันทึกข้อมูลและส่ง Base64 ของ PDF กลับมา
+          const result = await saveBooking(formData);
 
+          if (result.success && result.pdf_base64 && result.pnr_code && result.project_id) {
+            // 💡 PDF Generation Success: Trigger Download
+            const isDownloaded = downloadPdfFromBase64(
+              result.pdf_base64,
+              result.pnr_code,
+              // 💡 Type Assertion ตรงนี้เพื่อความปลอดภัย
+              result.project_id as ProjectType,
+            );
+
+            if (isDownloaded) {
+              setStatus({
+                message: result.message || `บันทึก PNR: ${result.pnr_code} และออกเอกสารสำเร็จ`,
+                type: 'success',
+              });
+              // 💡 Reset form to initial state after successful save
+              setFormData(initialFormData);
+            } else {
+              setStatus({
+                message:
+                  'บันทึกสำเร็จ แต่การดาวน์โหลดไฟล์ PDF ล้มเหลว (ข้อมูลยังถูกบันทึกในระบบแล้ว)',
+                type: 'error',
+              });
+            }
+          } else {
+            // DB Save or PDF Generation Failed (Server Side)
+            setStatus({
+              message: result.error || 'การบันทึกข้อมูลล้มเหลว โปรดตรวจสอบ Server logs',
+              type: 'error',
+            });
+          }
+        } catch (error) {
+          console.error('Server Action Error:', error);
           setStatus({
-            message: `🎉 บันทึก PNR: ${result.pnr_code} และดาวน์โหลดเอกสารสำเร็จ!`,
-            type: 'success',
-          });
-          // ✅ Pattern: รีเซ็ตเฉพาะ PNR เพื่อให้ผู้ใช้คีย์รายการต่อไปได้เร็วขึ้น
-          setPnrCode('');
-        } catch (pdfDownloadError) {
-          setStatus({
-            message: `⚠️ บันทึกข้อมูลสำเร็จ แต่ดาวน์โหลด PDF ล้มเหลว: ${(pdfDownloadError as Error).message}`,
+            message: 'เกิดข้อผิดพลาดในการเชื่อมต่อ Server Action.',
             type: 'error',
           });
         }
-      } else {
-        // Handle Error จาก Server Action
-        setStatus({
-          message: `❌ ${result.error || 'เกิดข้อผิดพลาดที่ไม่ทราบสาเหตุจากเซิร์ฟเวอร์'}`,
-          type: 'error',
-        });
-      }
-    });
-  };
+      });
+    },
+    [formData, startTransition],
+  );
 
-  // ----------------------------------------------------
-  // UI UTILITIES
-  // ----------------------------------------------------
-
-  const statusStyle =
-    status.type === 'success'
-      ? 'bg-green-100 border-green-500 text-green-700'
-      : status.type === 'error'
-        ? 'bg-red-100 border-red-500 text-red-700'
-        : status.type === 'loading'
-          ? 'bg-blue-100 border-blue-500 text-blue-700'
-          : 'bg-gray-100 border-gray-400 text-gray-700';
-
-  // ----------------------------------------------------
-  // RENDER
-  // ----------------------------------------------------
+  // 💡 คำนวณยอดรวมสุทธิแบบ Real-time
+  const calculatedTotal = formData.fare_summary.base_fare + formData.fare_summary.taxes;
 
   return (
-    <div className="mx-auto max-w-6xl rounded-lg bg-white p-8 shadow-2xl">
-      <h2 className="mb-8 border-b pb-4 text-3xl font-bold text-gray-800">
-        <span className="text-indigo-600">JP-VISOUL-DOCS</span>: ระบบคีย์ข้อมูลและออกเอกสาร
-      </h2>
+    <form onSubmit={handleSubmit} className="space-y-8 rounded-xl bg-white p-8 shadow-2xl">
+      {/* 4.5. Status Alert */}
+      <div className={`rounded border-l-4 p-4 ${statusStyle} transition-all`}>
+        <p className="font-medium">{status.message}</p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-10">
-        {/* 1. Project Type Selector */}
-        <div className="flex space-x-4 rounded-xl border border-indigo-200 bg-indigo-50 p-3 shadow-inner">
-          {(['FLIGHT', 'HOTEL', 'TOUR'] as ProjectType[]).map((type) => (
-            <button
-              key={type}
-              type="button"
-              onClick={() => setProjectType(type)}
-              className={`flex-1 rounded-lg py-3 font-semibold transition duration-200 ${
-                projectType === type
-                  ? 'bg-indigo-600 text-white shadow-lg ring-2 ring-indigo-500'
-                  : 'bg-white text-gray-700 hover:bg-indigo-100/70'
-              }`}
-              disabled={isPending}
-            >
-              {type === 'FLIGHT'
-                ? '✈️ ตั๋วเครื่องบิน'
-                : type === 'HOTEL'
-                  ? '🏨 ที่พัก/โรงแรม'
-                  : '🗺️ แพ็คเกจทัวร์'}
-            </button>
-          ))}
+      {/* 4.6. Core Booking Information */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold text-indigo-700">1. ข้อมูลการจองหลัก</h2>
+        <div className="flex space-x-4">
+          <input
+            type="text"
+            placeholder="รหัส PNR/Voucher (จำเป็น)"
+            value={formData.pnr_code}
+            onChange={(e) => handleFieldChange('pnr_code', e.target.value)}
+            className="w-1/2 rounded-lg border border-gray-300 px-4 py-2 text-lg font-bold uppercase"
+            maxLength={15}
+            required
+            disabled={isPending}
+          />
+          <select
+            value={formData.project_id}
+            onChange={(e) => handleFieldChange('project_id', e.target.value as ProjectType)}
+            className="w-1/2 rounded-lg border border-gray-300 px-4 py-2 text-lg"
+            required
+            disabled={isPending}
+          >
+            <option value="" disabled>
+              เลือกประเภทบริการ (Project Type)
+            </option>
+            <option value="FLIGHT">FLIGHT (เที่ยวบิน)</option>
+            <option value="HOTEL">HOTEL (โรงแรม)</option>
+            <option value="TOUR">TOUR (ทัวร์/กิจกรรม)</option>
+          </select>
         </div>
+        <input
+          type="text"
+          placeholder="ชื่อผู้เดินทางหลัก (Main Traveller Name)"
+          value={formData.traveller_name}
+          onChange={(e) => handleFieldChange('traveller_name', e.target.value)}
+          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-lg"
+          required
+          disabled={isPending}
+        />
+        <select
+          value={formData.booking_status}
+          onChange={(e) => handleFieldChange('booking_status', e.target.value)}
+          className="w-full rounded-lg border border-gray-300 px-4 py-2 text-lg"
+          disabled={isPending}
+        >
+          <option value="CONFIRMED">สถานะ: CONFIRMED (ยืนยันแล้ว)</option>
+          <option value="PENDING">สถานะ: PENDING (รอดำเนินการ)</option>
+          <option value="CANCELLED">สถานะ: CANCELLED (ยกเลิกแล้ว)</option>
+        </select>
+      </section>
 
-        {/* 2. Main Booking & Traveller Details */}
-        <div className="space-y-6 rounded-lg border border-gray-200 p-6 shadow-md">
-          <h3 className="border-b pb-2 text-xl font-semibold text-indigo-700">
-            2. ข้อมูลหลัก (Required)
-          </h3>
-
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {/* PNR */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                PNR / Reference No. <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={pnrCode}
-                onChange={(e) => setPnrCode(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 font-bold uppercase focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="เช่น ABCXYZ"
-                required
-                disabled={isPending}
-              />
-            </div>
-
-            {/* Booking Status */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Booking Status</label>
-              <select
-                value={bookingStatus}
-                onChange={(e) =>
-                  setBookingStatus(e.target.value as 'CONFIRMED' | 'PENDING' | 'CANCELLED')
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                disabled={isPending}
-              >
-                <option value="CONFIRMED">CONFIRMED (ชำระเงินแล้ว)</option>
-                <option value="PENDING">PENDING (รอชำระ)</option>
-                <option value="CANCELLED">CANCELLED (ยกเลิก)</option>
-              </select>
-            </div>
-
-            {/* Project ID (Read-only) */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Document Type</label>
-              <input
-                type="text"
-                value={projectType}
-                className="w-full rounded-lg border border-gray-300 bg-gray-100 px-4 py-2 font-bold text-gray-600"
-                disabled={true}
-              />
-            </div>
-          </div>
-
-          <h4 className="mt-4 border-t pt-4 text-lg font-semibold text-gray-600">
-            ข้อมูลผู้เดินทางหลัก
-          </h4>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-            {/* Name */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                ชื่อ-นามสกุล (หลัก) <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                value={traveller.name}
-                onChange={(e) =>
-                  handleDetailChange(setTraveller, traveller, 'name', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 uppercase focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="MR. SOMCHAI DEEJAI"
-                required
-                disabled={isPending}
-              />
-            </div>
-            {/* Passport */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Passport No.</label>
-              <input
-                type="text"
-                value={traveller.passport_no}
-                onChange={(e) =>
-                  handleDetailChange(setTraveller, traveller, 'passport_no', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                disabled={isPending}
-              />
-            </div>
-            {/* Nationality */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Nationality</label>
-              <input
-                type="text"
-                value={traveller.nationality}
-                onChange={(e) =>
-                  handleDetailChange(setTraveller, traveller, 'nationality', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                disabled={isPending}
-              />
-            </div>
-            {/* Email */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Email</label>
-              <input
-                type="email"
-                value={traveller.email}
-                onChange={(e) =>
-                  handleDetailChange(setTraveller, traveller, 'email', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                disabled={isPending}
-              />
-            </div>
-          </div>
+      {/* 4.7. Fare Summary */}
+      <section className="space-y-4 rounded-lg border bg-gray-50 p-6">
+        <h2 className="text-xl font-semibold text-indigo-700">2. สรุปค่าใช้จ่าย (THB)</h2>
+        <div className="grid grid-cols-3 gap-4">
+          <input
+            type="number"
+            placeholder="ค่าโดยสาร/ค่าบริการพื้นฐาน"
+            // 💡 แก้ไข: ใช้ String เพื่อให้สามารถลบเลข 0 แล้วกรอกค่าใหม่ได้ง่าย
+            value={formData.fare_summary.base_fare === 0.0 ? '' : formData.fare_summary.base_fare}
+            onChange={(e) => handleFareChange('base_fare', e.target.value)}
+            className="rounded border px-3 py-2"
+            disabled={isPending}
+          />
+          <input
+            type="number"
+            placeholder="ภาษี/ค่าธรรมเนียม"
+            value={formData.fare_summary.taxes === 0.0 ? '' : formData.fare_summary.taxes}
+            onChange={(e) => handleFareChange('taxes', e.target.value)}
+            className="rounded border px-3 py-2"
+            disabled={isPending}
+          />
+          <input
+            type="number"
+            placeholder="ยอดชำระเงินจริงทั้งหมด"
+            value={formData.fare_summary.total_paid === 0.0 ? '' : formData.fare_summary.total_paid}
+            onChange={(e) => handleFareChange('total_paid', e.target.value)}
+            className="rounded border px-3 py-2"
+            required
+            disabled={isPending}
+          />
         </div>
+        {/* 💡 Total calculation preview */}
+        <p className="pt-2 text-sm font-semibold text-gray-700">
+          ยอดรวมสุทธิ (Base + Taxes):{' '}
+          <span className="font-bold text-indigo-600">
+            {' '}
+            {calculatedTotal.toFixed(2)} {formData.fare_summary.currency}
+          </span>
+        </p>
+      </section>
 
-        {/* 3. Dynamic Details Section (Flight / Hotel) */}
-        <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-md">
-          <h3 className="border-b pb-2 text-xl font-semibold text-indigo-700">
-            3. รายละเอียดการจอง ({projectType})
-          </h3>
+      {/* 4.8. Project Specific Details (Conditional Rendering) */}
+      <section className="space-y-4">
+        <h2 className="text-2xl font-bold text-indigo-700">3. รายละเอียดเฉพาะบริการ</h2>
+        {formData.project_id === 'FLIGHT' && (
+          <FlightDetailsInputs formData={formData} setFormData={setFormData} />
+        )}
+        {formData.project_id === 'HOTEL' && (
+          <HotelDetailsInputs formData={formData} setFormData={setFormData} />
+        )}
+        {formData.project_id === 'TOUR' && (
+          <p className="text-gray-500">รายละเอียดทัวร์/กิจกรรม (ยังไม่ได้นำมาใช้ในเวอร์ชันนี้)</p>
+        )}
+        {!formData.project_id && (
+          <p className="text-gray-500">กรุณาเลือกประเภทบริการด้านบนเพื่อกรอกรายละเอียด</p>
+        )}
+      </section>
 
-          {/* --- FLIGHT SEGMENTS --- */}
-          {projectType === 'FLIGHT' && (
-            <div className="space-y-5 pt-4">
-              {flightSegments.map((segment, index) => (
-                <div
-                  key={index}
-                  className="relative rounded-xl border border-blue-200 bg-blue-50 p-4 shadow-inner"
-                >
-                  <h4 className="mb-3 font-bold text-blue-700">Segment {index + 1}</h4>
-
-                  <div className="grid grid-cols-4 gap-3">
-                    {/* Row 1 */}
-                    <input
-                      type="text"
-                      value={segment.airline_name}
-                      onChange={(e) => updateFlightSegment(index, 'airline_name', e.target.value)}
-                      className="col-span-2 rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Airline Name (e.g., THAI AIRWAYS)"
-                      disabled={isPending}
-                    />
-                    <input
-                      type="text"
-                      value={segment.flight_no}
-                      onChange={(e) => updateFlightSegment(index, 'flight_no', e.target.value)}
-                      className="col-span-1 rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Flight No. (e.g., TG921)"
-                      disabled={isPending}
-                    />
-                    <input
-                      type="text"
-                      value={segment.route}
-                      onChange={(e) => updateFlightSegment(index, 'route', e.target.value)}
-                      className="col-span-1 rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Route (e.g., BKK-FRA)"
-                      disabled={isPending}
-                    />
-
-                    {/* Row 2 */}
-                    <input
-                      type="date"
-                      value={segment.date}
-                      onChange={(e) => updateFlightSegment(index, 'date', e.target.value)}
-                      className="rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Date"
-                      disabled={isPending}
-                    />
-                    <input
-                      type="text"
-                      value={segment.depart_airport}
-                      onChange={(e) => updateFlightSegment(index, 'depart_airport', e.target.value)}
-                      className="rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Depart Airport"
-                      disabled={isPending}
-                    />
-                    <input
-                      type="text"
-                      value={segment.arrive_airport}
-                      onChange={(e) => updateFlightSegment(index, 'arrive_airport', e.target.value)}
-                      className="rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Arrive Airport"
-                      disabled={isPending}
-                    />
-                    <input
-                      type="text"
-                      value={segment.duration}
-                      onChange={(e) => updateFlightSegment(index, 'duration', e.target.value)}
-                      className="rounded-lg border px-3 py-2 focus:border-blue-500 focus:ring-blue-500"
-                      placeholder="Duration (e.g., 11H 30M)"
-                      disabled={isPending}
-                    />
-                  </div>
-
-                  {flightSegments.length > 1 && (
-                    <button
-                      type="button"
-                      onClick={() => removeFlightSegment(index)}
-                      className="absolute right-4 top-4 text-lg font-bold text-red-600 transition hover:text-red-800"
-                      disabled={isPending}
-                    >
-                      &times;
-                    </button>
-                  )}
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={addFlightSegment}
-                className="mt-3 block rounded-md bg-blue-500 px-3 py-1 text-sm font-semibold text-white transition hover:bg-blue-600"
-                disabled={isPending}
-              >
-                + เพิ่ม Flight Segment
-              </button>
-            </div>
-          )}
-
-          {/* --- HOTEL DETAILS --- */}
-          {projectType === 'HOTEL' && (
-            <div className="space-y-4 pt-4">
-              <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  value={hotelData.hotel_name}
-                  onChange={(e) =>
-                    handleDetailChange(setHotelData, hotelData, 'hotel_name', e.target.value)
-                  }
-                  className="col-span-2 rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="Hotel Name (e.g., The Grand JP Visoul)"
-                  required
-                  disabled={isPending}
-                />
-                <input
-                  type="text"
-                  value={hotelData.booking_ref}
-                  onChange={(e) =>
-                    handleDetailChange(setHotelData, hotelData, 'booking_ref', e.target.value)
-                  }
-                  className="rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="Hotel Booking Ref (ถ้ามี)"
-                  disabled={isPending}
-                />
-                <input
-                  type="text"
-                  value={hotelData.confirmation_policy}
-                  onChange={(e) =>
-                    handleDetailChange(
-                      setHotelData,
-                      hotelData,
-                      'confirmation_policy',
-                      e.target.value,
-                    )
-                  }
-                  className="rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                  placeholder="Confirmation Policy (e.g., Fully Paid)"
-                  disabled={isPending}
-                />
-              </div>
-
-              <input
-                type="text"
-                value={hotelData.location}
-                onChange={(e) =>
-                  handleDetailChange(setHotelData, hotelData, 'location', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="Full Hotel Address (สำหรับยื่นวีซ่า)"
-                required
-                disabled={isPending}
-              />
-
-              <div className="grid grid-cols-4 gap-4">
-                {/* Check-in Date */}
-                <div>
-                  <label className="mb-1 text-sm font-medium text-gray-700">Check-in Date</label>
-                  <input
-                    type="date"
-                    value={hotelData.check_in_date || ''}
-                    onChange={(e) =>
-                      handleDetailChange(setHotelData, hotelData, 'check_in_date', e.target.value)
-                    }
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                    required
-                    disabled={isPending}
-                  />
-                </div>
-
-                {/* Check-out Date */}
-                <div>
-                  <label className="mb-1 text-sm font-medium text-gray-700">Check-out Date</label>
-                  <input
-                    type="date"
-                    value={hotelData.check_out_date || ''}
-                    onChange={(e) =>
-                      handleDetailChange(setHotelData, hotelData, 'check_out_date', e.target.value)
-                    }
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                    required
-                    disabled={isPending}
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-1 text-sm font-medium text-gray-700">No. of Rooms</label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={hotelData.num_rooms}
-                    onChange={(e) =>
-                      handleDetailChange(
-                        setHotelData,
-                        hotelData,
-                        'num_rooms',
-                        parseInt(e.target.value) || 1,
-                      )
-                    }
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                    disabled={isPending}
-                  />
-                </div>
-                <div>
-                  <label className="mb-1 text-sm font-medium text-gray-700">No. of Nights</label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={hotelData.num_nights}
-                    onChange={(e) =>
-                      handleDetailChange(
-                        setHotelData,
-                        hotelData,
-                        'num_nights',
-                        parseInt(e.target.value) || 1,
-                      )
-                    }
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                    disabled={isPending}
-                  />
-                </div>
-              </div>
-
-              <textarea
-                value={hotelData.guest_names}
-                onChange={(e) =>
-                  handleDetailChange(setHotelData, hotelData, 'guest_names', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                rows={2}
-                placeholder="Guest Names (Comma separated, including main traveller)"
-                disabled={isPending}
-              />
-            </div>
-          )}
-
-          {/* --- TOUR / DEFAULT (Simplified) --- */}
-          {projectType === 'TOUR' && (
-            <div className="rounded-xl border border-yellow-400 bg-yellow-50 p-4 shadow-sm">
-              <p className="font-medium text-yellow-800">
-                โปรดระบุรายละเอียดทัวร์/แพ็คเกจในช่องหมายเหตุ (ถ้ามี) ข้อมูลหลักจะถูกบันทึกตาม PNR
-                และ Traveller Details ด้านบน
-              </p>
-            </div>
-          )}
-        </div>
-
-        {/* 4. Fare Summary (Payment Summary) */}
-        <div className="space-y-4 rounded-lg border border-gray-200 p-6 shadow-md">
-          <h3 className="border-b pb-2 text-xl font-semibold text-indigo-700">
-            4. สรุปค่าใช้จ่าย (Payment Summary)
-          </h3>
-          <div className="grid grid-cols-4 gap-4">
-            {/* Base Fare */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Base Fare</label>
-              <input
-                type="number"
-                step="0.01"
-                // ✅ Fix UX: แสดงค่าว่างถ้าเป็น 0 เพื่อให้ผู้ใช้ป้อนข้อมูลได้ง่าย
-                value={fareSummary.base_fare === 0 ? '' : fareSummary.base_fare}
-                onChange={(e) =>
-                  handleDetailChange(setFareSummary, fareSummary, 'base_fare', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="0.00"
-                disabled={isPending}
-              />
-            </div>
-
-            {/* Taxes / Surcharges */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                Taxes / Surcharges
-              </label>
-              <input
-                type="number"
-                step="0.01"
-                value={fareSummary.taxes === 0 ? '' : fareSummary.taxes}
-                onChange={(e) =>
-                  handleDetailChange(setFareSummary, fareSummary, 'taxes', e.target.value)
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                placeholder="0.00"
-                disabled={isPending}
-              />
-            </div>
-
-            {/* Total Paid (Auto-calculated) */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">
-                Total Paid (Auto)
-              </label>
-              <input
-                type="text" // เปลี่ยนเป็น text เพื่อการแสดงผลที่สวยงามกว่า number
-                value={`${fareSummary.total_paid.toFixed(2)} ${fareSummary.currency}`}
-                className="w-full rounded-lg border border-indigo-400 bg-indigo-50 px-4 py-2 text-lg font-bold text-indigo-800"
-                required
-                disabled={true} // ปิดการแก้ไข
-              />
-            </div>
-
-            {/* Currency */}
-            <div>
-              <label className="mb-1 block text-sm font-medium text-gray-700">Currency</label>
-              <select
-                value={fareSummary.currency}
-                onChange={(e) =>
-                  handleDetailChange(
-                    setFareSummary,
-                    fareSummary,
-                    'currency',
-                    e.target.value as CurrencyType,
-                  )
-                }
-                className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:ring-indigo-500"
-                required
-                disabled={isPending}
-              >
-                {(['THB', 'USD', 'EUR'] as CurrencyType[]).map((c) => (
-                  <option key={c} value={c}>
-                    {c}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Submit Button */}
+      {/* 4.9. Submission Button */}
+      <div className="pt-4">
         <button
           type="submit"
-          disabled={isPending}
+          disabled={isPending || !formData.pnr_code || !formData.project_id}
           className={`w-full rounded-lg px-4 py-4 text-lg font-semibold text-white shadow-xl transition duration-200 ${
             isPending ? 'cursor-not-allowed bg-indigo-400' : 'bg-indigo-600 hover:bg-indigo-700'
           }`}
@@ -755,18 +598,13 @@ export const AdminBookingForm: React.FC = () => {
                   d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                 ></path>
               </svg>
-              <span>กำลังบันทึกและออกเอกสาร...</span>
+              กำลังบันทึกและสร้าง PDF...
             </div>
           ) : (
-            '💾 บันทึกและดาวน์โหลดเอกสารทันที'
+            '💾 บันทึกข้อมูลการจอง & สร้างเอกสาร PDF'
           )}
         </button>
-      </form>
-
-      {/* Status Alert */}
-      <div className={`mt-8 rounded border-l-4 p-4 ${statusStyle}`} role="alert">
-        <p className="font-medium">{status.message}</p>
       </div>
-    </div>
+    </form>
   );
-};
+}

@@ -1,22 +1,24 @@
 // lib/supabase/public.ts
-// Pattern: Supabase Client สำหรับ Public Read (Anon Key)
-
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.SUPABASE_URL; // ใช้ URL หลัก
+// 💡 ใช้ Public URL และ Anon Key
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  // Error Pattern: Throwing error on server startup if critical ENV vars are missing
-  throw new Error('FATAL ERROR: Missing SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY.');
+  // ข้อผิดพลาดนี้จะถูกโยนในระหว่าง Build/Runtime หาก Environment Variables หายไป
+  throw new Error(
+    'Supabase Public Client Error: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY is missing',
+  );
 }
 
 /**
- * @name supabasePublic
- * @description Supabase Client สำหรับการเข้าถึงข้อมูลสาธารณะ (Anon Key)
+ * @description Supabase Client สำหรับการเข้าถึงข้อมูลสาธารณะ (ใช้ Anon Key)
+ * ใช้ใน Route Handler เช่น /verify/[pnr]/route.js
  */
 export const supabasePublic = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
+    autoRefreshToken: false,
     persistSession: false,
   },
 });

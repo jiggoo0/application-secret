@@ -1,3 +1,4 @@
+// app/actions/bookings.ts
 'use server';
 
 import { createClient } from '@supabase/supabase-js';
@@ -16,7 +17,6 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceRoleKey) {
-  // ควร throw error นอก try/catch block เพื่อหยุดการทำงานทันที
   throw new Error('Supabase Server Error: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is missing');
 }
 
@@ -60,8 +60,8 @@ export async function fetchBookingDetails(pnr: string): Promise<FetchResult> {
       .single();
 
     if (error) {
-      // PGRST116 คือ Error Code สำหรับ 'No rows found' (ไม่พบข้อมูล)
       if (error.code === 'PGRST116') {
+        // No Rows Found
         return { success: false, error: `ไม่พบ PNR: ${pnr.toUpperCase()}` };
       }
 
@@ -69,7 +69,6 @@ export async function fetchBookingDetails(pnr: string): Promise<FetchResult> {
       return { success: false, error: error.message };
     }
 
-    // ข้อมูลที่ได้จาก Supabase ตรงตาม BookingSchema
     return {
       success: true,
       data: data as BookingSchema,
@@ -110,24 +109,49 @@ export async function saveBooking(data: BookingSchema): Promise<SaveResult> {
   }
 
   try {
-    // 3.1. เตรียม Payload สำหรับ Upsert
-    // กำหนดค่าที่ต้องการบันทึกอย่างชัดเจน
+    // 💡 FIX: ใช้ Destructuring เพื่อให้โค้ดสะอาด แต่รวมทุก field ที่จำเป็นกลับเข้าสู่ Payload
+    const {
+      pnr_code,
+      project_id,
+      traveller_name,
+      booking_status,
+      is_active,
+      // Optional DB Fields:
+      eticket_no,
+      payment_method,
+      // JSONB Fields:
+      traveller_details,
+      fare_summary,
+      flight_details,
+      hotel_details,
+      tour_details, // 💡 FIX: ต้องรวม tour_details เพื่อรองรับ ProjectType: TOUR
+      // Fields อื่นๆ ที่ไม่ได้ใช้ (เช่น id, created_at) จะถูกละเว้น
+    } = data;
+
+    // 3.1. เตรียม Payload สำหรับ Upsert (ต้องมี Field ตรงกับ Supabase Table)
     const payload = {
-      pnr_code: pnr,
+      pnr_code: pnr, // ใช้ pnr ที่ถูก UpperCase/Trim แล้ว
       project_id: projectId,
-      traveller_name: data.traveller_name.toUpperCase().trim(),
-      booking_status: data.booking_status ?? 'CONFIRMED',
+      traveller_name: traveller_name.toUpperCase().trim(),
+      booking_status: booking_status ?? 'CONFIRMED',
+      is_active: is_active ?? true, // สมมติว่ามี field นี้ใน DB
+
+      // Optional DB Fields
+      eticket_no: eticket_no || null,
+      payment_method: payment_method || null,
 
       // JSONB fields
-      traveller_details: data.traveller_details,
-      fare_summary: data.fare_summary,
-      flight_details: data.flight_details,
-      hotel_details: data.hotel_details,
+      traveller_details: traveller_details,
+      fare_summary: fare_summary,
+      flight_details: flight_details,
+      hotel_details: hotel_details,
+      tour_details: tour_details, // 💡 FIX: ถูกรวมแล้ว
     };
 
     // 3.2. Upsert ข้อมูล (Insert หรือ Update ถ้า PNR ซ้ำ)
+    //
     const { error: dbError } = await supabaseServer.from('bookings').upsert(payload, {
-      onConflict: 'pnr_code', // ใช้ PNR Code เป็น key ในการตรวจสอบ conflict
+      onConflict: 'pnr_code',
     });
 
     if (dbError) {
@@ -135,8 +159,7 @@ export async function saveBooking(data: BookingSchema): Promise<SaveResult> {
       return { success: false, error: dbError.message };
     }
 
-    // 3.3. สร้าง PDF Document (ใช้ Buffer)
-    // 💡 generatePdfDocument ต้องถูก Implement ให้รับ BookingSchema และส่งคืน Buffer
+    // 3.3. สร้าง PDF Document
     const pdfBuffer = await generatePdfDocument(data);
     const pdfBase64 = pdfBuffer.toString('base64');
 
@@ -151,6 +174,7 @@ export async function saveBooking(data: BookingSchema): Promise<SaveResult> {
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown save error (PDF or DB)';
     console.error('Save booking failed:', message);
-    return { success: false, error: message };
+    // 💡 ปรับข้อความ Error ในกรณี PDF Generation ล้มเหลว แต่ DB อาจสำเร็จแล้ว
+    return { success: false, error: `สร้างเอกสาร PDF ล้มเหลว: ${message}` };
   }
 }

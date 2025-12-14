@@ -2,10 +2,10 @@
 'use client';
 
 import React, { useState, useCallback, useMemo } from 'react';
-// 💡 Import Server Actions
+// 💡 Import Server Actions: ใช้ fetchBookingDetails (จาก bookings) และ issueDocument (จาก documents)
 import { fetchBookingDetails } from '@/app/actions/bookings';
 import { issueDocument } from '@/app/actions/documents';
-// 💡 Assumed types
+// 💡 Assumed types (อ้างอิงจาก actions/bookings.ts)
 import type { BookingSchema } from '@/app/actions/bookings';
 
 // ----------------------------------------------------
@@ -16,9 +16,9 @@ interface IssueStatus {
   type: 'idle' | 'loading' | 'success' | 'error';
 }
 
-interface FetchedBooking extends BookingSchema {
-  id: number;
-  created_at: string;
+// 💡 FIX: นำ 'adminApiKey' ออกจาก Props interface
+interface ClientIssueFormProps {
+  // ไม่รับ Props ใด ๆ อีกต่อไป (เนื่องจาก Server Actions ใช้ Key โดยตรง)
 }
 
 // ----------------------------------------------------
@@ -29,77 +29,138 @@ interface FetchedBooking extends BookingSchema {
  * @description แปลง Base64 String ที่ได้จาก Server Action เป็น Blob และ Force Download เป็นไฟล์ PDF
  */
 const downloadPdfFromBase64 = (base64String: string, pnr: string, projectId: string) => {
-  const base64Cleaned = base64String.replace(/^data:application\/pdf;base64,/, '');
+  try {
+    // ทำความสะอาด Base64 string หากมี prefix
+    const base64Cleaned = base64String.replace(/^data:application\/pdf;base64,/, '');
 
-  const binaryString = atob(base64Cleaned);
-  const len = binaryString.length;
-  const bytes = new Uint8Array(len);
-  for (let i = 0; i < len; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
+    // แปลง Base64 เป็น ArrayBuffer และ Blob
+    const binaryString = atob(base64Cleaned);
+    const len = binaryString.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+      bytes[i] = binaryString.charCodeAt(i);
+    }
+    const blob = new Blob([bytes], { type: 'application/pdf' });
+
+    // Force download
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    const safePnr = pnr.replace(/[^a-zA-Z0-9-]/g, '_');
+    a.download = `${projectId}-${safePnr}.pdf`; // ตั้งชื่อไฟล์ตาม Project ID และ PNR
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+    return true;
+  } catch (e) {
+    console.error('Error during PDF download:', e);
+    return false;
   }
-  const blob = new Blob([bytes], { type: 'application/pdf' });
-
-  const url = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-
-  link.href = url;
-  link.setAttribute('download', `${projectId}_${pnr}.pdf`);
-  document.body.appendChild(link);
-  link.click();
-
-  link.remove();
-  window.URL.revokeObjectURL(url);
 };
 
 // ----------------------------------------------------
-// 3. MAIN COMPONENT
+// 3. SUB-COMPONENTS
 // ----------------------------------------------------
 
-export const ClientIssueForm: React.FC = () => {
-  const [pnrInput, setPnrInput] = useState<string>('');
-  const [bookingData, setBookingData] = useState<FetchedBooking | null>(null);
+/**
+ * @component BookingDetailsView
+ * @description แสดงรายละเอียดการจองที่ดึงมาเพื่อ Preview
+ */
+const BookingDetailsView = ({ data }: { data: BookingSchema }) => {
+  if (!data) return null;
+
+  // 💡 ใช้ข้อมูลจาก BookingSchema
+  const voucher_id = data.pnr_code || 'N/A';
+  // 💡 ProjectType อาจมีค่าเป็น '' (Empty String) สำหรับ Initial State
+  const display_type = (data.project_id || 'UNKNOWN').toUpperCase();
+
+  return (
+    <div className="mb-6 rounded-lg border border-gray-200 bg-white p-6 shadow-md">
+      <h2 className="mb-4 text-xl font-bold text-indigo-600">Booking Preview: {voucher_id}</h2>
+      <div className="grid grid-cols-2 gap-4">
+        <p>
+          <span className="font-semibold">Type:</span>{' '}
+          <span className="uppercase text-green-700">{display_type}</span>
+        </p>
+        <p>
+          <span className="font-semibold">Customer:</span> {data.traveller_name || 'N/A'}
+        </p>
+        <p>
+          <span className="font-semibold">Total Paid:</span> {data.fare_summary?.total_paid}{' '}
+          {data.fare_summary?.currency || 'THB'}
+        </p>
+        <p>
+          <span className="font-semibold">Status:</span> {data.booking_status || 'N/A'}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+// ----------------------------------------------------
+// 4. MAIN COMPONENT
+// ----------------------------------------------------
+
+// ✅ FIX: ลบ Empty Object Pattern ({}) ออกจาก Destructuring เพื่อแก้ Error: Unexpected empty object pattern
+export function ClientIssueForm() {
+  const [pnrInput, setPnrInput] = useState('');
+  const [bookingData, setBookingData] = useState<BookingSchema | null>(null);
+  const [isSearching, setIsSearching] = useState(false);
+  const [isIssuing, setIsIssuing] = useState(false);
   const [status, setStatus] = useState<IssueStatus>({
-    message: 'กรอก PNR Code เพื่อค้นหาการจอง',
+    message: 'Enter a PNR or Voucher ID to search.',
     type: 'idle',
   });
-  const [isSearching, setIsSearching] = useState<boolean>(false);
-  const [isIssuing, setIsIssuing] = useState<boolean>(false);
 
-  // ----------------------------------------------------
-  // HANDLER: Search Booking Data by PNR (Unchanged)
-  // ----------------------------------------------------
+  const statusStyle = useMemo(() => {
+    switch (status.type) {
+      case 'loading':
+        return 'bg-blue-50 border-blue-400 text-blue-800';
+      case 'success':
+        return 'bg-green-50 border-green-400 text-green-800';
+      case 'error':
+        return 'bg-red-50 border-red-400 text-red-800';
+      case 'idle':
+      default:
+        return 'bg-gray-50 border-gray-400 text-gray-800';
+    }
+  }, [status.type]);
+
+  /**
+   * @description Handle PNR search via Server Action (fetchBookingDetails)
+   */
   const handleSearch = useCallback(
     async (e: React.FormEvent) => {
       e.preventDefault();
-      const pnr = pnrInput.trim().toUpperCase();
-      if (!pnr) {
-        setStatus({ message: 'โปรดระบุ PNR Code', type: 'error' });
-        return;
-      }
+      const pnrClean = pnrInput.toUpperCase().trim();
+      if (!pnrClean) return;
 
       setIsSearching(true);
-      setStatus({ message: `กำลังค้นหา PNR: ${pnr}...`, type: 'loading' });
       setBookingData(null);
+      setStatus({ message: `Searching for PNR: ${pnrClean}...`, type: 'loading' });
 
       try {
-        const result = await fetchBookingDetails(pnr);
+        // 💡 Call Server Action: fetchBookingDetails (จัดการ Key บน Server)
+        const result = await fetchBookingDetails(pnrClean);
 
         if (result.success && result.data) {
-          setBookingData(result.data as FetchedBooking);
+          // หากข้อมูลถูกดึงมาแล้ว ให้ set BookingData เพื่อใช้ในการ Issue ต่อไป
+          setBookingData(result.data);
           setStatus({
-            message: `✅ พบข้อมูลการจอง PNR: ${pnr} (ประเภท: ${result.data.project_id})`,
+            message: `Found booking for ${result.data.traveller_name || 'N/A'}. Ready to issue document.`,
             type: 'success',
           });
         } else {
           setStatus({
-            message: `❌ ไม่พบข้อมูลการจอง PNR: ${pnr}`,
+            message: result.error || `Error: PNR ${pnrClean} not found or data is incomplete.`,
             type: 'error',
           });
         }
       } catch (error) {
-        console.error('Search Error:', error);
+        console.error('Search error:', error);
         setStatus({
-          message: `❌ เกิดข้อผิดพลาดในการเชื่อมต่อ: ${(error as Error).message}`,
+          message: 'An internal error occurred during search.',
           type: 'error',
         });
       } finally {
@@ -109,143 +170,63 @@ export const ClientIssueForm: React.FC = () => {
     [pnrInput],
   );
 
-  // ----------------------------------------------------
-  // HANDLER: Generate and Download PDF (Using Server Action)
-  // ----------------------------------------------------
-  const handleIssueDocument = async () => {
+  /**
+   * @description Handle PDF issuance via Server Action (issueDocument)
+   * 💡 Action นี้จะใช้ข้อมูลที่ Fetch มาได้ (bookingData) แล้วส่งไปสร้าง PDF
+   */
+  const handleIssueDocument = useCallback(async () => {
     if (!bookingData) return;
 
     setIsIssuing(true);
-    setStatus({ message: 'กำลังสร้างเอกสาร PDF...', type: 'loading' });
+    // 💡 Status เปลี่ยนเป็น 'Issuing'
+    setStatus({ message: 'Generating PDF document...', type: 'loading' });
 
     try {
+      // 💡 Call the DEDICATED issueDocument Server Action
       const result = await issueDocument(bookingData);
 
-      if (!result.success || !result.pdf_base64) {
-        throw new Error(
-          result.error || `Server failed to generate document for ${bookingData.pnr_code}`,
+      if (result.success && result.pdf_base64 && result.pnr_code && result.project_id) {
+        // 💡 Trigger client-side download
+        const isSuccess = downloadPdfFromBase64(
+          result.pdf_base64,
+          result.pnr_code,
+          result.project_id,
         );
+
+        if (isSuccess) {
+          setStatus({
+            message: `Successfully generated and downloaded Voucher: ${result.pnr_code}.`,
+            type: 'success',
+          });
+        } else {
+          setStatus({
+            message: 'Generated PDF but failed to trigger download on the browser.',
+            type: 'error',
+          });
+        }
+      } else {
+        setStatus({
+          message: result.error || 'Failed to generate PDF. Check PNR and server logs.',
+          type: 'error',
+        });
       }
-
-      downloadPdfFromBase64(
-        result.pdf_base64,
-        result.pnr_code || bookingData.pnr_code,
-        result.project_id || bookingData.project_id,
-      );
-
-      setStatus({
-        message: `🎉 สร้างและดาวน์โหลดเอกสารสำเร็จ: ${bookingData.pnr_code}.pdf`,
-        type: 'success',
-      });
     } catch (error) {
-      console.error('PDF Issue Error:', error);
+      console.error('Issue error:', error);
       setStatus({
-        message: `❌ ไม่สามารถสร้างเอกสารได้: ${(error as Error).message}`,
+        message: 'An internal error occurred during document generation.',
         type: 'error',
       });
     } finally {
       setIsIssuing(false);
     }
-  };
-
-  // ----------------------------------------------------
-  // UI UTILITIES (Memoized for better Performance)
-  // ----------------------------------------------------
-
-  // 🔥 FIX: getStatusStyle ถูกกำหนดให้เป็นค่า (value) โดย useMemo ไม่ใช่ฟังก์ชัน
-  const statusStyle = useMemo(() => {
-    switch (status.type) {
-      case 'success':
-        return 'bg-green-100 border-green-500 text-green-700';
-      case 'error':
-        return 'bg-red-100 border-red-500 text-red-700';
-      case 'loading':
-        return 'bg-blue-100 border-blue-500 text-blue-700';
-      default:
-        return 'bg-gray-100 border-gray-400 text-gray-700';
-    }
-  }, [status.type]);
-
-  // Component ย่อยสำหรับการแสดงรายละเอียดที่ดึงมา
-  const BookingDetailsView = ({ data }: { data: FetchedBooking }) => (
-    <div className="space-y-6">
-      <h3 className="border-b pb-2 text-2xl font-bold text-indigo-700">
-        รายละเอียดการจอง: {data.pnr_code}
-        <span
-          className={`ml-4 rounded p-1 text-sm font-semibold ${data.booking_status === 'CONFIRMED' ? 'bg-green-500 text-white' : 'bg-yellow-500 text-gray-900'}`}
-        >
-          {data.booking_status}
-        </span>
-      </h3>
-      {/* Traveller and Booking Info */}
-      <div className="grid grid-cols-3 gap-4 rounded-lg bg-white p-4 shadow-inner">
-        <div className="font-semibold text-gray-700">ผู้เดินทางหลัก:</div>
-        <div className="col-span-2">
-          {data.traveller_name} (Passport: {data.traveller_details?.passport_no || 'N/A'})
-        </div>
-        <div className="font-semibold text-gray-700">ประเภทเอกสาร:</div>
-        <div className="col-span-2">{data.project_id}</div>
-        <div className="font-semibold text-gray-700">วันที่บันทึก:</div>
-        <div className="col-span-2">{new Date(data.created_at).toLocaleDateString('th-TH')}</div>
-      </div>
-      {/* Flight Details */}
-      {data.project_id === 'FLIGHT' && data.flight_details && data.flight_details.length > 0 && (
-        <div className="rounded-lg border bg-blue-50 p-4">
-          <h4 className="mb-3 font-semibold text-blue-800">
-            ✈️ Flight Itinerary ({data.flight_details.length} Segment(s))
-          </h4>
-          {data.flight_details.map((f, i) => (
-            <p key={i} className="border-b py-1 text-sm">
-              **{f.airline_name}** ({f.flight_no}) | {f.route} | {f.date}
-            </p>
-          ))}
-        </div>
-      )}
-      {/* Hotel Details */}
-      {data.project_id === 'HOTEL' && data.hotel_details && (
-        <div className="rounded-lg border bg-green-50 p-4">
-          <h4 className="mb-3 font-semibold text-green-800">🏨 Accommodation Details</h4>
-          <p className="text-sm">**{data.hotel_details.hotel_name}**</p>
-          <p className="text-xs text-gray-600">{data.hotel_details.location}</p>
-          <p className="text-sm">
-            Check-in: {data.hotel_details.check_in_date} / Check-out:{' '}
-            {data.hotel_details.check_out_date}
-          </p>
-        </div>
-      )}
-      {/* Fare Summary */}
-      {data.fare_summary && (
-        <div className="rounded-lg border bg-gray-50 p-4 text-right">
-          <span className="text-lg font-bold text-indigo-800">
-            Total Paid: {data.fare_summary.total_paid.toLocaleString()} {data.fare_summary.currency}
-          </span>
-        </div>
-      )}
-      {/* Issue Button */}
-      <button
-        type="button"
-        onClick={handleIssueDocument}
-        disabled={isIssuing || isSearching}
-        className={`w-full rounded-lg px-4 py-3 text-lg font-semibold text-white transition duration-150 ${
-          isIssuing
-            ? 'cursor-not-allowed bg-purple-400'
-            : 'bg-purple-600 shadow-xl hover:bg-purple-700'
-        }`}
-      >
-        {isIssuing ? '⏳ กำลังสร้าง PDF...' : '⬇️ สร้างและดาวน์โหลดเอกสาร (PDF)'}
-      </button>
-    </div>
-  );
-
-  // ----------------------------------------------------
-  // RENDER
-  // ----------------------------------------------------
+  }, [bookingData]);
 
   return (
-    <div className="mx-auto max-w-4xl rounded-lg bg-white p-8 shadow-2xl">
-      <h2 className="mb-8 border-b pb-4 text-3xl font-bold text-gray-800">
-        <span className="text-purple-600">Admin</span>: ออกเอกสารยืนยันการจอง
-      </h2>
+    <div className="mx-auto w-full max-w-2xl">
+      <h1 className="mb-6 text-center text-3xl font-bold text-indigo-700">
+        Issue Verified Documents
+      </h1>
+
       {/* 1. Search Form */}
       <form
         onSubmit={handleSearch}
@@ -272,7 +253,6 @@ export const ClientIssueForm: React.FC = () => {
       </form>
 
       {/* 2. Status Alert */}
-      {/* 🔥 FIX: เปลี่ยนการเรียก getStatusStyle() เป็นการเข้าถึงค่า statusStyle โดยตรง */}
       <div className={`mb-6 rounded border-l-4 p-4 ${statusStyle}`}>
         <p className="font-medium">{status.message}</p>
       </div>
@@ -280,11 +260,29 @@ export const ClientIssueForm: React.FC = () => {
       {/* 3. Booking Details View */}
       {bookingData && <BookingDetailsView data={bookingData} />}
 
+      {/* 4. Issue Button */}
+      {bookingData && (
+        <div className="mt-8 text-center">
+          <button
+            onClick={handleIssueDocument}
+            disabled={isIssuing || isSearching}
+            className={`w-full rounded-lg px-8 py-4 text-xl font-bold text-white shadow-xl transition ${
+              isIssuing ? 'cursor-not-allowed bg-green-400' : 'bg-green-600 hover:bg-green-700'
+            }`}
+          >
+            {isIssuing ? '✅ Generating PDF...' : '⬇️ Issue & Download Document'}
+          </button>
+        </div>
+      )}
+
+      {/* 5. Fallback for no data found */}
       {!bookingData && status.type === 'success' && (
-        <div className="rounded-lg border border-dashed bg-white p-6 text-center text-gray-500">
-          โปรดกรอก PNR เพื่อเริ่มต้นค้นหาและออกเอกสาร
+        <div className="rounded border border-gray-300 bg-gray-50 p-6 text-center">
+          <p className="text-lg font-medium text-gray-600">
+            No active booking data to display for PNR: {pnrInput}
+          </p>
         </div>
       )}
     </div>
   );
-};
+}

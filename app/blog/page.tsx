@@ -1,16 +1,15 @@
 // app/blog/page.tsx
-
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 
+// สมมติว่าไฟล์นี้มีอยู่จริง และใช้ Post type ที่มี featuredImage
 import { getPosts } from '@/lib/blog';
-import { formatThaiDate } from '@/lib/dateUtils';
+import { formatThaiDate } from '@/lib/dateUtils'; // สมมติว่าไฟล์นี้มีอยู่จริง
 
 // ----------------------------------------------------
 // 1. METADATA
 // ----------------------------------------------------
-
 export const metadata: Metadata = {
   title: 'บทความและข่าวสารล่าสุด',
   description: 'รวบรวมบทความ, ข่าวสาร, และเคล็ดลับของเราทั้งหมด',
@@ -19,8 +18,8 @@ export const metadata: Metadata = {
 // ----------------------------------------------------
 // 2. MAIN COMPONENT (Server Component)
 // ----------------------------------------------------
-
 export default async function BlogListPage() {
+  // 💡 Optimization: เพิ่มการจัดการ Cache หรือ Revalidation ตาม Next.js
   const posts = await getPosts();
 
   if (!posts || posts.length === 0) {
@@ -51,16 +50,22 @@ export default async function BlogListPage() {
             key={post.slug}
             className="flex flex-col overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl dark:border-gray-700 dark:bg-gray-800"
           >
-            {/* Featured Image */}
-            {post.featuredImage && (
+            {/* Featured Image (ใช้ post.featuredImage อย่างถูกต้อง) */}
+            {post.featuredImage && post.featuredImage.trim() ? (
               <div className="relative h-48 w-full">
                 <Image
                   src={post.featuredImage}
                   alt={post.title}
                   fill
-                  sizes="(max-width: 640px) 100vw, 33vw"
+                  // 💡 Responsive sizes for better performance
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover"
                 />
+              </div>
+            ) : (
+              // 💡 Optional: Placeholder for server component rendering
+              <div className="flex h-48 w-full items-center justify-center bg-gray-200 text-gray-500 dark:bg-gray-700 dark:text-gray-400">
+                ไม่มีภาพประกอบ
               </div>
             )}
 
@@ -89,7 +94,11 @@ export default async function BlogListPage() {
                 <div className="text-sm">
                   <p className="font-medium text-gray-900 dark:text-white">{post.author}</p>
                   <p className="text-gray-500 dark:text-gray-400">
-                    <time dateTime={post.publishedAt}>{formatThaiDate(post.publishedAt)}</time>
+                    {/* ✅ ใช้ post.publishedAt เป็น ISO String ใน dateTime */}
+                    <time dateTime={post.publishedAt}>
+                      {/* สมมติว่า formatThaiDate(publishedAt) ใช้งานได้ */}
+                      {formatThaiDate(post.publishedAt)}
+                    </time>
                   </p>
                 </div>
               </div>

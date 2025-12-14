@@ -12,12 +12,12 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'JP Visoul&Docs',
     description: 'Business documentation & services platform.',
-    url: 'https://www.yourdomain.com/fb', // 🔁 เปลี่ยนเป็นโดเมนจริง
+    url: 'https://www.jpvisouldocs.online/fb', // ใช้โดเมนจริง
     siteName: 'JP Visoul&Docs',
     type: 'website',
     images: [
       {
-        url: '/og-image.png', // ต้องอยู่ใน /public
+        url: 'https://www.jpvisouldocs.online/og-image.png', // Absolute URL
         width: 1200,
         height: 630,
         alt: 'JP Visoul&Docs Official Logo and Banner',
@@ -28,11 +28,11 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'JP Visoul&Docs',
     description: 'Business documentation & services platform.',
-    images: ['/og-image.png'],
+    images: ['https://www.jpvisouldocs.online/og-image.png'], // Absolute URL
   },
   robots: {
-    index: false,
-    follow: false,
+    index: true, // ให้ social bots สามารถอ่าน metadata
+    follow: true,
     nocache: true,
   },
 };
@@ -41,7 +41,6 @@ export const metadata: Metadata = {
 // Page (Dynamic Server Component)
 // ----------------------------------------------------
 export default async function FBPage() {
-  // Next.js 15+: headers() เป็น async
   const headersList = await headers();
   const ua = headersList.get('user-agent') ?? '';
 
@@ -59,11 +58,11 @@ export default async function FBPage() {
 
   const isCrawler = socialCrawlers.some((crawler) => ua.toLowerCase().includes(crawler));
 
-  // 🤖 Bot / Crawler → ให้ Metadata ทำงาน (ไม่ redirect)
+  // 🤖 Bot / Crawler → ให้ Metadata ทำงาน
   if (isCrawler) {
     return null;
   }
 
-  // 👤 Human → redirect (App Router ไม่มี replace/push)
+  // 👤 Human → redirect ไปหน้าแรก
   redirect('/');
 }

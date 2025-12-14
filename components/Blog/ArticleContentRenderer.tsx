@@ -1,4 +1,5 @@
 // components/Blog/ArticleContentRenderer.tsx
+'use client';
 
 import React from 'react';
 import type { ContentElement } from '@/types/blog';
@@ -8,18 +9,17 @@ interface ArticleContentRendererProps {
 }
 
 /**
- * @description
- * Render Rich Article Content (Array-based schema) → Semantic HTML
- * รองรับ paragraph, headings, lists, quote, separator
+ * Render Rich Article Content → Semantic HTML
+ * รองรับ: paragraph, headings, lists, quote, separator
  */
 export default function ArticleContentRenderer({ content }: ArticleContentRendererProps) {
-  // --- Preview text (ใช้เฉพาะ paragraph แรก) ---
+  // --- Preview text (paragraph แรก) ---
   const firstParagraph = content.find(
     (item) => item.type === 'paragraph' && typeof item.text === 'string',
   );
 
   const previewText =
-    firstParagraph?.text && firstParagraph.text.length > 0
+    firstParagraph?.text?.length && firstParagraph.text.length > 0
       ? firstParagraph.text.slice(0, 100)
       : null;
 
