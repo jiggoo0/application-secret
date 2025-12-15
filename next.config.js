@@ -53,14 +53,17 @@ const nextConfig = {
         };
 
     // ----------------------------------------------------------------------
-    // 🚨 FINAL WORKAROUND FOR TERMUX/I18N ERROR (data.trie)
-    // Externalize 'pdfmake' เพื่อให้ Node.js โหลดโมดูลโดยตรง ไม่ผ่าน Webpack
-    // ซึ่งช่วยหลีกเลี่ยงการพยายามโหลด I18n Data ภายในของ Node.js
+    // 🚨 FIX: Externalize Modules for Server-Side Libraries (PDF Generation)
     // ----------------------------------------------------------------------
     if (isServer) {
+      // 1. Externalize pdfmake (เดิม)
       config.externals.push({
         pdfmake: 'commonjs pdfmake',
       });
+
+      // 2. Externalize html-pdf-node, puppeteer, และ Batch (โมดูลที่ติดปัญหา 'emitter')
+      // เพื่อให้ Node.js โหลดโมดูลเหล่านี้โดยตรง ไม่ใช่ผ่าน Webpack
+      config.externals.push('html-pdf-node', 'puppeteer', 'batch');
     }
 
     if (!isServer) {

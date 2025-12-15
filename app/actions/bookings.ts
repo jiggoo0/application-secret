@@ -17,7 +17,7 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl || !supabaseServiceRoleKey) {
-  throw new Error('Supabase Server Error: SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY is missing');
+  throw new Error('Supabase Server Error: SUPABASE_URL หรือ SUPABASE_SERVICE_ROLE_KEY ขาดหายไป');
 }
 
 // สร้าง Supabase Client ด้วย Service Role Key (ทำงานบน Server เท่านั้น)
@@ -109,32 +109,29 @@ export async function saveBooking(data: BookingSchema): Promise<SaveResult> {
   }
 
   try {
-    // 💡 FIX: ใช้ Destructuring เพื่อให้โค้ดสะอาด แต่รวมทุก field ที่จำเป็นกลับเข้าสู่ Payload
+    // 3.1. Destructuring และเตรียม Payload สำหรับ Upsert
     const {
       pnr_code,
       project_id,
       traveller_name,
       booking_status,
       is_active,
-      // Optional DB Fields:
       eticket_no,
       payment_method,
-      // JSONB Fields:
       traveller_details,
       fare_summary,
       flight_details,
       hotel_details,
-      tour_details, // 💡 FIX: ต้องรวม tour_details เพื่อรองรับ ProjectType: TOUR
-      // Fields อื่นๆ ที่ไม่ได้ใช้ (เช่น id, created_at) จะถูกละเว้น
+      tour_details, // รองรับ ProjectType: TOUR
+      // ฟิลด์อื่น ๆ ที่ไม่ได้ระบุใน Schema จะถูกละเว้น
     } = data;
 
-    // 3.1. เตรียม Payload สำหรับ Upsert (ต้องมี Field ตรงกับ Supabase Table)
     const payload = {
       pnr_code: pnr, // ใช้ pnr ที่ถูก UpperCase/Trim แล้ว
       project_id: projectId,
-      traveller_name: traveller_name.toUpperCase().trim(),
+      traveller_name: traveller_name?.toUpperCase().trim() || 'N/A',
       booking_status: booking_status ?? 'CONFIRMED',
-      is_active: is_active ?? true, // สมมติว่ามี field นี้ใน DB
+      is_active: is_active ?? true,
 
       // Optional DB Fields
       eticket_no: eticket_no || null,
@@ -145,11 +142,10 @@ export async function saveBooking(data: BookingSchema): Promise<SaveResult> {
       fare_summary: fare_summary,
       flight_details: flight_details,
       hotel_details: hotel_details,
-      tour_details: tour_details, // 💡 FIX: ถูกรวมแล้ว
+      tour_details: tour_details,
     };
 
     // 3.2. Upsert ข้อมูล (Insert หรือ Update ถ้า PNR ซ้ำ)
-    //
     const { error: dbError } = await supabaseServer.from('bookings').upsert(payload, {
       onConflict: 'pnr_code',
     });
@@ -174,7 +170,6 @@ export async function saveBooking(data: BookingSchema): Promise<SaveResult> {
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown save error (PDF or DB)';
     console.error('Save booking failed:', message);
-    // 💡 ปรับข้อความ Error ในกรณี PDF Generation ล้มเหลว แต่ DB อาจสำเร็จแล้ว
     return { success: false, error: `สร้างเอกสาร PDF ล้มเหลว: ${message}` };
   }
 }

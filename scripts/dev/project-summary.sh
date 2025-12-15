@@ -15,10 +15,15 @@ ENV_FILE=".env"
 MAX_DEPTH=4
 PREVIEW_LINES=80
 CORE_FOLDERS=("app" "components" "lib")
-EXTRA_FOLDERS=("public" "scripts" "data" "config" "context" "utils")
+# 💡 ADDED: data, hooks, config, types, utils (and kept public, scripts)
+EXTRA_FOLDERS=("public" "scripts" "data" "hooks" "config" "types" "utils") 
 ALL_FOLDERS=("${CORE_FOLDERS[@]}" "${EXTRA_FOLDERS[@]}")
 SCAN_JSON=("data/*.json" "public/data/*.json")
 SCAN_CSV=("data/*.csv" "public/data/*.csv")
+
+# 💡 NEW: List of root configuration files to preview
+ROOT_CONFIGS=("middleware.ts" ".prettierrc.js" ".eslintrc.js" "tailwind.config.js" "tsconfig.json" "next.config.js")
+
 
 # -------- GLOBAL COUNTERS --------
 declare -g CODE_TOTAL=0 CODE_PREVIEW=0 CODE_ROLE=0 CODE_IMPORT=0
@@ -66,18 +71,23 @@ load_env() {
 # -------- FOLDER TREE + METADATA --------
 show_folders() {
   print_divider "📁 Folder Overview (Max Depth: $MAX_DEPTH)"
+  # 💡 Exclusion added for node_modules in find/tree
+  EXCLUDE_DIR="-path ./node_modules -prune -o"
+  
   for folder in "${ALL_FOLDERS[@]}"; do
     if [ -d "$folder" ]; then
       append_to_report ""
       append_to_report "### $folder"
       if command -v tree >/dev/null 2>&1; then
-        tree -L "$MAX_DEPTH" "$folder" >> "$OUTPUT_FILE" || append_to_report "⚠️ \`tree\` command error"
+        # Use find to generate the list for tree to respect the prune
+        find "$folder" $EXCLUDE_DIR -type d -print -maxdepth "$MAX_DEPTH" 2>/dev/null | xargs tree -L "$MAX_DEPTH" >> "$OUTPUT_FILE" || append_to_report "⚠️ \`tree\` command error or folder is empty"
       else
-        find "$folder" -maxdepth "$MAX_DEPTH" -type f | sed 's|[^/]*/|│   |g' >> "$OUTPUT_FILE"
+        find "$folder" $EXCLUDE_DIR -maxdepth "$MAX_DEPTH" -type f | sed 's|[^/]*/|│   |g' >> "$OUTPUT_FILE"
       fi
       append_to_report ""
       append_to_report "#### Metadata (file | size | sha1)"
-      find "$folder" -type f -print0 2>/dev/null | while IFS= read -r -d $'\0' f; do
+      # Added node_modules exclusion to find
+      find "$folder" $EXCLUDE_DIR -type f -print0 2>/dev/null | while IFS= read -r -d $'\0' f; do
         if [ -r "$f" ]; then
           size=$(stat -c "%s" "$f" 2>/dev/null || echo "n/a")
           sha=$(sha1sum "$f" 2>/dev/null | awk '{print $1}' || echo "n/a")
@@ -88,7 +98,7 @@ show_folders() {
   done
 }
 
-# -------- CODE PREVIEW & COVERAGE (JS/JSX) --------
+# -------- CODE PREVIEW & COVERAGE (JS/JSX/TS/TSX) --------
 append_codeblock() {
   local file="$1" lang="$2"
   append_to_report ""
@@ -103,15 +113,18 @@ append_codeblock() {
 }
 
 preview_and_coverage() {
-  print_divider "👀 Code Preview & Coverage (JS/JSX)"
+  print_divider "👀 Code Preview & Coverage (JS/JSX/TS/TSX)"
   local -a code_files=()
-  while IFS= read -r -d $'\0' file; do code_files+=("$file"); done < <(find ./app ./components ./lib -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" \) -print0 2>/dev/null)
+  # 💡 Added -path ./node_modules -prune -o to exclude node_modules
+  while IFS= read -r -d $'\0' file; do code_files+=("$file"); done < <(find ./app ./components ./lib $EXCLUDE_DIR -type f \( -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" \) -print0 2>/dev/null)
 
   CODE_TOTAL=${#code_files[@]}
   for file in "${code_files[@]}"; do
     if [ -r "$file" ]; then
       CODE_PREVIEW=$((CODE_PREVIEW + 1))
-      append_codeblock "$file" "js"
+      local lang="js"
+      if [[ "$file" =~ \.ts(x)?$ ]]; then lang="ts"; fi
+      append_codeblock "$file" "$lang"
       if grep -qE "session.*role|user.*permission|role: 'admin'|role:'admin'" "$file" 2>/dev/null; then
         CODE_ROLE=$((CODE_ROLE + 1))
       fi
@@ -128,8 +141,28 @@ preview_and_coverage() {
   append_to_report "> **Files using Absolute Imports:** $CODE_IMPORT"
 }
 
+# 💡 NEW FUNCTION: Preview Root Configuration Files
+preview_root_configs() {
+  print_divider "⚙️ Root Configuration File Previews"
+  for file in "${ROOT_CONFIGS[@]}"; do
+    if [ -f "$file" ]; then
+      local lang="text"
+      case "$file" in
+        *.js) lang="js" ;;
+        *.ts) lang="ts" ;;
+        *.json) lang="json" ;;
+      esac
+      append_codeblock "$file" "$lang"
+    else
+      append_to_report "- ⚠️ \`$file\` not found."
+    fi
+  done
+}
+
+
 # -------- JSON SCHEMA CHECK (DEEP) --------
 json_schema_check() {
+# ... (function body remains the same as it uses SCAN_JSON which now includes the new data folder)
   print_divider "🗄️ JSON Schema Summary"
   local -a json_files=()
   shopt -s nullglob
@@ -162,6 +195,7 @@ json_schema_check() {
 
 # -------- CSV PREVIEW CHECK --------
 csv_preview_check() {
+# ... (function body remains the same as it uses SCAN_CSV which now includes the new data folder)
   print_divider "📄 CSV Preview Summary"
   local -a csv_files=()
   shopt -s nullglob
@@ -190,8 +224,9 @@ csv_preview_check() {
 # -------- DEEP CODE INSIGHT (imports/routing/forms) --------
 deep_code_insight() {
   print_divider "🔎 Deep Code Insights (counts & signals)"
+  # 💡 Added -path ./node_modules -prune -o to exclude node_modules
   local files
-  files=$(find ./app ./components ./lib -type f \( -name "*.js" -o -name "*.jsx" \) -print 2>/dev/null || echo "")
+  files=$(find ./app ./components ./lib $EXCLUDE_DIR -type f \( -name "*.js" -o -name "*.jsx" \) -print 2>/dev/null || echo "")
   if [ -z "$files" ]; then append_to_report "No JS/JSX files found"; return; fi
   for f in $files; do
     append_to_report ""
@@ -207,6 +242,7 @@ deep_code_insight() {
 
 # -------- PROJECT INTENT DETECTION --------
 project_intent() {
+# ... (function body remains the same)
   print_divider "🎯 Project Intent Detection"
   pages=$(find app -type f -name "page.jsx" 2>/dev/null | wc -l | tr -d ' ')
   apis=$(find app/api -type f 2>/dev/null | wc -l | tr -d ' ')
@@ -222,6 +258,7 @@ project_intent() {
 
 # -------- AI PROMPT TEMPLATE (for LLM ingestion) --------
 ai_prompt_section() {
+# ... (function body remains the same)
   print_divider "🤖 AI Prompt Instructions & Context"
   append_to_report "> 📌 **Context:** Use the project files, JSON/CSV previews, and environment context above. Focus on code quality, security, and production readiness."
   append_to_report "> ✏️ **Suggested prompt template for AI team:**"
@@ -237,6 +274,7 @@ ai_prompt_section() {
 
 # -------- AI-PAYLOAD (safe embed) --------
 ai_payload_block() {
+# ... (function body remains the same)
   print_divider "🧩 AI-PAYLOAD (Embed Report Snapshot)"
   local tmpfile
   tmpfile="$(mktemp /tmp/project-summary-XXXX.md)"
@@ -250,6 +288,7 @@ ai_payload_block() {
 
 # -------- OVERALL COVERAGE METRIC --------
 calculate_overall() {
+# ... (function body remains the same)
   print_divider "📊 Overall AI Coverage Estimate"
   local js_preview_pct role_guard_pct import_pct json_valid_pct
   js_preview_pct=$(safe_div "$CODE_PREVIEW" "$CODE_TOTAL")
@@ -274,6 +313,7 @@ calculate_overall() {
 
 # -------- ROADMAP NOTES --------
 append_roadmap() {
+# ... (function body remains the same)
   print_divider "🗺️ Project Roadmap Notes"
   append_to_report "> ✏️ Add future goals, features, or milestones here to inform AI decisions."
   append_to_report ""
@@ -284,7 +324,8 @@ main() {
   echo "🚀 Generating full Project Summary..."
   init_report
   load_env
-  show_folders
+  show_folders # Now includes: data, hooks, config, types, utils AND excludes node_modules
+  preview_root_configs # 💡 NEW: Scans middleware.ts, tsconfig.json, etc.
   preview_and_coverage
   deep_code_insight
   json_schema_check
