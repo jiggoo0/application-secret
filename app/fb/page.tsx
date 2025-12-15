@@ -18,8 +18,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: 'https://www.jpvisouldocs.online/og-image.png', // Absolute URL
-        width: 1200,  // หรือใช้ 1024 ถ้าต้องการ
-        height: 630,  // หรือ 576 ตามไฟล์จริง
+        width: 1200, // หรือใช้ 1024 ถ้าต้องการ
+        height: 630, // หรือ 576 ตามไฟล์จริง
         alt: 'JP Visoul&Docs Official Logo and Banner',
       },
     ],
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
     images: ['https://www.jpvisouldocs.online/og-image.png'],
   },
   robots: {
-    index: true,   // ให้ bot อ่าน metadata
+    index: true, // ให้ bot อ่าน metadata
     follow: true,
     nocache: true,
   },
@@ -58,9 +58,7 @@ export default async function FBPage() {
   ];
 
   // ตรวจสอบว่าเป็น crawler หรือไม่
-  const isCrawler = socialCrawlers.some((crawler) =>
-    ua.toLowerCase().includes(crawler)
-  );
+  const isCrawler = socialCrawlers.some((crawler) => ua.toLowerCase().includes(crawler));
 
   if (isCrawler) {
     // 🤖 Bot → metadata ทำงาน

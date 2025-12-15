@@ -11,17 +11,15 @@ import type {
   FlightSegment,
   HotelDetails,
   FareSummary,
-  ProjectType, // 💡 FIX: นำเข้า ProjectType จากไฟล์ types/booking-types
+  ProjectType, // นำเข้า ProjectType จากไฟล์ types/booking-types
+  TourDetails, // นำเข้า TourDetails เพื่อใช้ในการ Reset State
 } from '@/types/booking-types';
 
 // ----------------------------------------------------
 // 1. UTILITY TYPES & CONSTANTS
 // ----------------------------------------------------
 
-// 💡 FIX: ลบ Local Type Definition ออก เพราะเราใช้ Type ที่ Import มา
-// type ProjectType = 'FLIGHT' | 'HOTEL' | 'TOUR' | '';
-// type CurrencyType = 'THB' | 'USD' | 'EUR';
-
+// 💡 Initial Data สำหรับ Flight Segment
 const initialFlightSegment: FlightSegment = {
   flight_no: '',
   airline_name: '',
@@ -34,6 +32,7 @@ const initialFlightSegment: FlightSegment = {
   duration: '',
 };
 
+// 💡 Initial Data สำหรับ Hotel Details
 const initialHotelDetails: HotelDetails = {
   hotel_name: '',
   room_type: '',
@@ -46,13 +45,13 @@ const initialHotelDetails: HotelDetails = {
 // 💡 Initial State ของฟอร์มที่สมบูรณ์ตาม BookingSchema
 const initialFormData: BookingSchema = {
   pnr_code: '',
-  // 💡 FIX: ไม่ต้องใช้ Type Assertion แล้ว เพราะ ProjectType หลักมี '' รวมอยู่แล้ว
+  // FIX: project_id เป็น '' สำหรับ Initial State placeholder
   project_id: '',
   traveller_name: '',
   booking_status: 'CONFIRMED',
-  is_active: true, // เพิ่ม field ที่ขาดไป
-  eticket_no: null, // Optional DB Field
-  payment_method: null, // Optional DB Field
+  is_active: true, // DB Field
+  eticket_no: null, // DB Field
+  payment_method: null, // DB Field
 
   traveller_details: {
     name: '',
@@ -66,9 +65,9 @@ const initialFormData: BookingSchema = {
     total_paid: 0.0,
     currency: 'THB',
   },
-  flight_details: [initialFlightSegment], // เริ่มต้นด้วย 1 Segment
+  flight_details: [initialFlightSegment],
   hotel_details: initialHotelDetails,
-  tour_details: null, // JSONB Object ที่อาจถูกละเว้นหรือเป็น null
+  tour_details: null, // DB Field
 };
 
 interface StatusMessage {
@@ -82,11 +81,13 @@ interface StatusMessage {
 
 /**
  * @description แปลง Base64 String ที่ได้จาก Server Action เป็น Blob และ Force Download เป็นไฟล์ PDF
+ * 💡 FIX: ใช้ MouseEvent และ setTimeout(100) เพื่อป้องกันเบราว์เซอร์บล็อกการดาวน์โหลด (แก้ปัญหาหลัก)
  */
 const downloadPdfFromBase64 = (base64String: string, pnr: string, projectId: ProjectType) => {
   try {
     const base64Cleaned = base64String.replace(/^data:application\/pdf;base64,/, '');
-    // ใช้ atob สำหรับ Client-side Base64 decode
+
+    // 1. Base64 Decode และสร้าง Blob
     const binaryString = atob(base64Cleaned);
     const len = binaryString.length;
     const bytes = new Uint8Array(len);
@@ -95,20 +96,39 @@ const downloadPdfFromBase64 = (base64String: string, pnr: string, projectId: Pro
     }
     const blob = new Blob([bytes], { type: 'application/pdf' });
 
+    // 2. สร้าง Download Link Element
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url;
+
     const safePnr = pnr.replace(/[^a-zA-Z0-9-]/g, '_');
-    // 💡 ปรับการตั้งชื่อไฟล์โดยป้องกันค่าว่าง
     const safeProjectId = projectId || 'UNKNOWN';
+
+    a.href = url;
     a.download = `${safeProjectId}-${safePnr}.pdf`;
+
+    // 3. Trigger Download (วิธีที่เชื่อถือได้ที่สุด: Simulate User Click)
+
+    // 3.1. Append to body
     document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+
+    // 3.2. Simulate a user click event (เพื่อหลีกเลี่ยง Pop-up Blocker)
+    const event = new MouseEvent('click', {
+      view: window,
+      bubbles: true,
+      cancelable: true,
+    });
+
+    a.dispatchEvent(event);
+
+    // 4. Cleanup (ใช้ 100ms เพื่อให้เบราว์เซอร์มีเวลาเริ่มดาวน์โหลดก่อนลบ Element)
+    setTimeout(() => {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 100);
+
     return true;
   } catch (e) {
-    console.error('Error during PDF download:', e);
+    console.error('Final Download Failure:', e);
     return false;
   }
 };
@@ -126,11 +146,9 @@ const FlightDetailsInputs = ({
   setFormData: React.Dispatch<React.SetStateAction<BookingSchema>>;
 }) => {
   const handleSegmentChange = (index: number, field: keyof FlightSegment, value: string) => {
-    // 💡 เนื่องจาก flight_details เป็น Array, ต้องมั่นใจว่ามันไม่เป็น null
     if (!formData.flight_details) return;
 
     const newSegments = [...formData.flight_details];
-    // 💡 Type check: segment ใน Array ต้องเป็น FlightSegment
     const currentSegment = newSegments[index] as FlightSegment;
 
     newSegments[index] = { ...currentSegment, [field]: value };
@@ -230,6 +248,7 @@ const HotelDetailsInputs = ({
   formData: BookingSchema;
   setFormData: React.Dispatch<React.SetStateAction<BookingSchema>>;
 }) => {
+  // 💡 ใช้ initialHotelDetails เป็น fallback แทน null
   const hotelDetails = formData.hotel_details || initialHotelDetails;
 
   const handleHotelChange = (field: keyof HotelDetails, value: string | number) => {
@@ -314,32 +333,29 @@ export function AdminBookingForm() {
 
   // 4.1. Helper function สำหรับการอัปเดต Field หลัก
   const handleFieldChange = useCallback(
-    // 💡 ใช้ ProjectType ที่ถูก Import มา
-    (field: keyof BookingSchema, value: string | ProjectType) => {
+    (field: keyof BookingSchema, value: string | ProjectType | boolean | null) => {
       // 💡 Logic พิเศษ: เมื่อเปลี่ยน Project ID ให้ Reset รายละเอียดเฉพาะบริการ
       if (field === 'project_id') {
         let newFormData = { ...formData, [field]: value };
+
+        // Reset JSONB fields to null or initial state based on new Project Type
+        newFormData.flight_details = null;
+        newFormData.hotel_details = null;
+        newFormData.tour_details = null;
+
         if (value === 'FLIGHT') {
-          newFormData.hotel_details = null;
-          newFormData.tour_details = null;
-          if (!newFormData.flight_details || newFormData.flight_details.length === 0) {
-            newFormData.flight_details = [initialFlightSegment];
-          }
+          // ถ้าเลือก FLIGHT ให้ใส่ Initial Flight Segment กลับเข้าไป
+          newFormData.flight_details = [initialFlightSegment];
         } else if (value === 'HOTEL') {
-          newFormData.flight_details = null;
-          newFormData.tour_details = null;
+          // ถ้าเลือก HOTEL ให้ใส่ Initial Hotel Details กลับเข้าไป
           newFormData.hotel_details = initialHotelDetails;
         } else if (value === 'TOUR') {
-          newFormData.flight_details = null;
-          newFormData.hotel_details = null;
-          // 💡 Type Safety: กำหนดให้เป็น null หรือตามโครงสร้าง TourDetails ที่คาดหวัง
-          newFormData.tour_details = {} as any; // ใช้ as any ชั่วคราว หรือกำหนดโครงสร้างให้ TourDetails
-        } else {
-          newFormData.flight_details = null;
-          newFormData.hotel_details = null;
-          newFormData.tour_details = null;
+          // ถ้าเลือก TOUR ให้กำหนดเป็น Object ว่างหรือ null ขึ้นอยู่กับ schema ฐานข้อมูล
+          newFormData.tour_details = {} as TourDetails;
         }
-        setFormData(newFormData);
+
+        // 💡 Type Assertion เพื่อให้แน่ใจว่า newFormData ตรงกับ BookingSchema
+        setFormData(newFormData as BookingSchema);
         return;
       }
 
@@ -424,6 +440,7 @@ export function AdminBookingForm() {
               // 💡 Reset form to initial state after successful save
               setFormData(initialFormData);
             } else {
+              // 💡 ข้อความแจ้งเตือนที่ได้รับการปรับปรุง
               setStatus({
                 message:
                   'บันทึกสำเร็จ แต่การดาวน์โหลดไฟล์ PDF ล้มเหลว (ข้อมูลยังถูกบันทึกในระบบแล้ว)',
@@ -497,6 +514,25 @@ export function AdminBookingForm() {
           required
           disabled={isPending}
         />
+        {/* 💡 Additional Optional Fields */}
+        <div className="flex space-x-4">
+          <input
+            type="text"
+            placeholder="หมายเลข e-Ticket (ถ้ามี)"
+            value={formData.eticket_no || ''}
+            onChange={(e) => handleFieldChange('eticket_no', e.target.value || null)}
+            className="w-1/2 rounded border px-3 py-2"
+            disabled={isPending}
+          />
+          <input
+            type="text"
+            placeholder="ช่องทางการชำระเงิน (Payment Method)"
+            value={formData.payment_method || ''}
+            onChange={(e) => handleFieldChange('payment_method', e.target.value || null)}
+            className="w-1/2 rounded border px-3 py-2"
+            disabled={isPending}
+          />
+        </div>
         <select
           value={formData.booking_status}
           onChange={(e) => handleFieldChange('booking_status', e.target.value)}
