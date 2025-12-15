@@ -1,9 +1,0 @@
---- hooks Usage Report (Generated: Sun Dec 14 21:53:59 +07 2025) ---
-Searching for unused files in: hooks
---------------------------------------------------------
-[✅ USED]: hooks/useFileUpload.js (Found 4 reference(s))
-[✅ USED]: hooks/useCalculator.js (Found 1 reference(s))
-[✅ USED]: hooks/useStepper.js (Found 1 reference(s))
-[✅ USED]: hooks/utils.ts (Found 46 reference(s))
---------------------------------------------------------
-Script finished. Check unused_hooks_report.txt for results.
