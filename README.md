@@ -2,7 +2,6 @@ Application Secret
 
 ระบบจัดการเอกสารพร้อมการยืนยันความถูกต้องผ่าน QR Token พัฒนาด้วย Next.js App Router, Supabase, และ TypeScript รองรับการสร้างเอกสาร ตรวจสอบสถานะเอกสารแบบเรียลไทม์ และดาวน์โหลดไฟล์ PDF ที่ผ่านการยืนยันแล้ว
 
-
 ---
 
 ✨ Features
@@ -19,8 +18,6 @@ Application Secret
 
 🚀 รองรับ Production (Vercel) และ Local Development
 
-
-
 ---
 
 🧱 Tech Stack
@@ -35,29 +32,26 @@ Auth / API: Next.js Route Handlers
 
 Deployment: Vercel (แนะนำ)
 
-
-
 ---
 
 📁 Project Structure
 
 app/
 ├─ api/
-│  └─ documents/
-│     ├─ route.ts                     # POST: สร้าง document ใหม่
-│     ├─ verify/[token]/route.ts       # GET: ตรวจสอบเอกสารด้วย token
-│     └─ [document_id]/route.ts        # PATCH: อัปเดตสถานะ / pdf_url
+│ └─ documents/
+│ ├─ route.ts # POST: สร้าง document ใหม่
+│ ├─ verify/[token]/route.ts # GET: ตรวจสอบเอกสารด้วย token
+│ └─ [document_id]/route.ts # PATCH: อัปเดตสถานะ / pdf_url
 │
 ├─ verify/[token]/
-│  └─ page.tsx                         # หน้าแสดงผลการยืนยันเอกสาร
+│ └─ page.tsx # หน้าแสดงผลการยืนยันเอกสาร
 │
 lib/
 └─ supabase/
-   └─ server.ts                        # Supabase server client
+└─ server.ts # Supabase server client
 
 .env.example
 README.md
-
 
 ---
 
@@ -66,17 +60,17 @@ README.md
 ตารางหลัก: documents
 
 create table public.documents (
-  id uuid not null default gen_random_uuid (),
-  type text not null,
-  ref_id text not null,
-  status text not null default 'pending',
-  qr_token text not null,
-  pdf_url text null,
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  metadata jsonb null,
-  constraint documents_pkey primary key (id),
-  constraint documents_qr_token_key unique (qr_token)
+id uuid not null default gen_random_uuid (),
+type text not null,
+ref_id text not null,
+status text not null default 'pending',
+qr_token text not null,
+pdf_url text null,
+created_at timestamptz not null default now(),
+updated_at timestamptz not null default now(),
+metadata jsonb null,
+constraint documents_pkey primary key (id),
+constraint documents_qr_token_key unique (qr_token)
 );
 
 Status ที่รองรับ:
@@ -89,8 +83,6 @@ verified
 
 revoked
 
-
-
 ---
 
 🔌 API Endpoints
@@ -100,19 +92,18 @@ revoked
 POST /api/documents
 
 {
-  "type": "eticket",
-  "ref_id": "PNR123456",
-  "metadata": {}
+"type": "eticket",
+"ref_id": "PNR123456",
+"metadata": {}
 }
 
 Response:
 
 {
-  "document_id": "uuid",
-  "qr_token": "uuid",
-  "verify_url": "https://your-domain/verify/{token}"
+"document_id": "uuid",
+"qr_token": "uuid",
+"verify_url": "https://your-domain/verify/{token}"
 }
-
 
 ---
 
@@ -123,17 +114,16 @@ GET /api/documents/verify/{token}
 Response:
 
 {
-  "status": "verified",
-  "document": {
-    "document_id": "uuid",
-    "ref_id": "PNR123456",
-    "status": "verified",
-    "pdf_url": "https://...",
-    "created_at": "2025-01-01",
-    "details": {}
-  }
+"status": "verified",
+"document": {
+"document_id": "uuid",
+"ref_id": "PNR123456",
+"status": "verified",
+"pdf_url": "https://...",
+"created_at": "2025-01-01",
+"details": {}
 }
-
+}
 
 ---
 
@@ -142,10 +132,9 @@ Response:
 PATCH /api/documents/{document_id}
 
 {
-  "status": "verified",
-  "pdf_url": "https://storage/file.pdf"
+"status": "verified",
+"pdf_url": "https://storage/file.pdf"
 }
-
 
 ---
 
@@ -165,8 +154,6 @@ Booking Reference (ref_id)
 
 ปุ่มดาวน์โหลด PDF เมื่อสถานะเป็น verified
 
-
-
 ---
 
 ⚙️ Environment Variables
@@ -183,11 +170,10 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 🧪 Scripts
 
-pnpm dev        # Run development server
-pnpm build      # Typecheck + Lint + Build
-pnpm lint       # ESLint
-pnpm typecheck  # TypeScript check
-
+pnpm dev # Run development server
+pnpm build # Typecheck + Lint + Build
+pnpm lint # ESLint
+pnpm typecheck # TypeScript check
 
 ---
 
@@ -211,14 +197,11 @@ Route Handlers ทำงานแบบ Server-only
 
 QR Token เป็น UUID (เดาสุ่มไม่ได้)
 
-
-
 ---
 
 📜 License
 
 MIT License
-
 
 ---
 

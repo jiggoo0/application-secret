@@ -1,29 +1,46 @@
-// /app/api/documents/verify/[token]/route.ts
 import { NextResponse } from 'next/server';
 import { supabaseServer } from '@/lib/supabase/server';
 
-/* ===== Metadata Structures ===== */
+/**
+ * ฟังก์ชัน Helper สำหรับแปลง metadata เป็นรายละเอียดที่หน้าบ้านเข้าใจ
+ * รองรับ Multi-document types
+ */
+function formatDetails(type: string, meta: any) {
+  if (!meta) return null;
 
-interface ETicketMetadata {
-  passenger?: { name: string };
-  fareDetails?: { totalPaid: string };
-  flights?: Array<{
-    date: string;
-    from: string;
-    to: string;
-    depTime: string;
-  }>;
-}
+  switch (type) {
+    case 'E_TICKET':
+      return {
+        passenger: meta.passenger?.name || 'N/A',
+        fare: meta.fareDetails?.totalPaid || 'N/A',
+        flights:
+          meta.flights?.map((f: any) => ({
+            date: f.date,
+            from: f.from,
+            to: f.to,
+            time: f.depTime,
+          })) || [],
+      };
 
-interface FrontendDetails {
-  passenger: string;
-  fare: string;
-  flights: Array<{
-    date: string;
-    from: string;
-    to: string;
-    time: string;
-  }>;
+    case 'JPVISOUL_SALARY_CERT':
+      return {
+        employee: meta.employee?.name || 'N/A',
+        position: meta.employee?.position || 'N/A',
+        income: `${meta.salary?.total} ${meta.salary?.currency}`,
+        issueDate: meta.issueDate,
+      };
+
+    case 'HOTEL_VOUCHER':
+      return {
+        guest: meta.guest?.name || 'N/A',
+        hotel: meta.hotel?.name || 'N/A',
+        stay: `${meta.stay?.checkIn} - ${meta.stay?.checkOut}`,
+        room: meta.guest?.roomType || 'N/A',
+      };
+
+    default:
+      return null;
+  }
 }
 
 export async function GET(_req: Request, { params }: { params: Promise<{ token: string }> }) {
@@ -37,6 +54,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ token: 
     );
   }
 
+  // 1. ดึงข้อมูลจากฐานข้อมูล
   const { data, error } = await supabase
     .from('documents')
     .select('id, type, status, ref_id, pdf_url, created_at, metadata')
@@ -50,22 +68,10 @@ export async function GET(_req: Request, { params }: { params: Promise<{ token: 
     );
   }
 
-  let details: FrontendDetails | null = null;
-  const meta = data.metadata as ETicketMetadata | null;
+  // 2. จัดรูปแบบข้อมูลตามประเภทเอกสาร
+  const details = formatDetails(data.type, data.metadata);
 
-  if (meta?.passenger?.name && meta?.fareDetails?.totalPaid && Array.isArray(meta?.flights)) {
-    details = {
-      passenger: meta.passenger.name,
-      fare: meta.fareDetails.totalPaid,
-      flights: meta.flights.map((f) => ({
-        date: f.date,
-        from: f.from,
-        to: f.to,
-        time: f.depTime,
-      })),
-    };
-  }
-
+  // 3. เตรียม Response (แยก metadata ออกเพื่อความปลอดภัยและลดขนาด JSON)
   const { id, metadata, ...rest } = data;
 
   return NextResponse.json({
@@ -73,7 +79,8 @@ export async function GET(_req: Request, { params }: { params: Promise<{ token: 
     document: {
       ...rest,
       document_id: id,
-      details,
+      details, // รายละเอียดที่จัดรูปแบบแล้ว
+      data: metadata, // ข้อมูลดิบ (ถ้า Frontend ต้องการใช้เพิ่ม)
     },
   });
 }

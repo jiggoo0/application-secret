@@ -1,178 +1,456 @@
 <!doctype html>
-<html lang="th">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PromptPay QR Code (พร้อมใช้งาน)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Diplôme DELF A2 - Nong ple suza</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Courier+Prime:wght@400;700&family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
 
     <style>
+      :root {
+        --official-blue: #003399;
+        --official-orange: #ff9900;
+        --paper-bg: #eef6fc; /* Light blue tint commonly used in French certs */
+        --text-dark: #2c2c2c;
+      }
+
       body {
-        font-family: Arial, Helvetica, sans-serif;
-        background: #f4f6f8;
-        padding: 20px;
+        background-color: #333;
+        margin: 0;
+        padding: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: 'Cormorant Garamond', serif;
       }
-      .container {
-        max-width: 420px;
-        margin: 0 auto;
-        background: #ffffff;
-        padding: 24px;
-        border-radius: 16px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+      /* A4 Landscape Setup */
+      .page {
+        width: 297mm;
+        height: 210mm;
+        background-color: var(--paper-bg);
+        position: relative;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        padding: 15mm;
+        box-sizing: border-box;
+        overflow: hidden;
+        color: var(--text-dark);
+      }
+
+      /* Security Pattern Background (Simulation) */
+      .page::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-image:
+          repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 51, 153, 0.02) 10px,
+            rgba(0, 51, 153, 0.02) 11px
+          ),
+          repeating-linear-gradient(
+            -45deg,
+            transparent,
+            transparent 10px,
+            rgba(0, 51, 153, 0.02) 10px,
+            rgba(0, 51, 153, 0.02) 11px
+          );
+        z-index: 0;
+        pointer-events: none;
+      }
+
+      /* Large Central Watermark */
+      .watermark-main {
+        position: absolute;
+        top: 55%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-family: 'Arial Black', sans-serif;
+        font-size: 140pt;
+        color: #fff;
+        opacity: 0.6;
+        z-index: 0;
+        line-height: 0.85;
         text-align: center;
+        letter-spacing: -5px;
+        filter: blur(1px);
       }
-      h2 {
-        margin-top: 0;
+
+      .content-layer {
+        position: relative;
+        z-index: 2;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid transparent; /* Keeps margins strict */
+      }
+
+      /* --- Header Section --- */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        height: 15%;
         margin-bottom: 10px;
       }
-      .subtitle {
-        color: #666;
-        font-size: 0.95rem;
+
+      /* Left Logo Block */
+      .logo-block-left {
+        width: 15%;
+        display: flex;
+        align-items: flex-start;
+      }
+
+      .french-logo {
+        font-family: 'Roboto', sans-serif;
+        font-size: 7pt;
+        line-height: 1.1;
+        text-align: center;
+        position: relative;
+      }
+
+      .logo-e-circle {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: 2px solid var(--official-orange);
+        color: var(--official-orange);
+        font-weight: bold;
+        font-size: 22pt;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 5px auto;
+        font-family: 'Times New Roman', serif;
+        position: relative;
+      }
+      .logo-e-circle::after {
+        content: '';
+        position: absolute;
+        top: -2px;
+        right: -5px;
+        width: 10px;
+        height: 10px;
+        background: var(--official-orange); /* Rough accent mimic */
+        clip-path: polygon(0 0, 0% 100%, 100% 0);
+      }
+
+      /* Center Header */
+      .header-center {
+        text-align: center;
+        flex-grow: 1;
+        padding-top: 10px;
+      }
+
+      .header-center h3 {
+        margin: 0;
+        font-weight: 400;
+        font-size: 9pt;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-family: 'Roboto', sans-serif;
+      }
+
+      .header-center p {
+        margin: 8px 0 0;
+        font-size: 6.5pt;
+        text-transform: uppercase;
+        color: #555;
+        font-family: 'Roboto', sans-serif;
+        letter-spacing: 0.5px;
+      }
+
+      /* Right Logo Block */
+      .logo-block-right {
+        width: 15%;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .delf-stamp {
+        border: 1.5px solid var(--official-blue);
+        border-radius: 50%;
+        width: 55px;
+        height: 55px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: var(--official-blue);
+        font-family: Arial, sans-serif;
+        font-size: 5pt;
+        font-weight: bold;
+        text-align: center;
+        line-height: 1.1;
+      }
+      .delf-stamp strong {
+        font-size: 10pt;
+        display: block;
+      }
+
+      /* --- Main Title Section --- */
+      .main-titles {
+        text-align: center;
+        margin-top: 10px;
         margin-bottom: 20px;
       }
-      label {
-        display: block;
-        text-align: left;
-        font-weight: bold;
-        margin-bottom: 6px;
+
+      h1 {
+        font-size: 19pt;
+        font-weight: 700;
+        margin: 5px 0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: #000;
       }
-      input {
-        width: 100%;
-        padding: 12px;
-        font-size: 1.1rem;
-        margin-bottom: 16px;
-        border-radius: 10px;
-        border: 1px solid #ccc;
+
+      h2 {
+        font-size: 26pt;
+        font-weight: 700;
+        margin: 10px 0;
+        color: #000;
       }
-      button {
-        width: 100%;
-        padding: 14px;
-        font-size: 1.1rem;
-        border-radius: 999px;
-        border: none;
-        background: #1e3a8a;
-        color: #fff;
-        cursor: pointer;
+
+      .subtitle {
+        font-size: 13pt;
+        font-style: italic;
+        color: #333;
       }
-      button:hover {
-        opacity: 0.9;
+
+      /* --- Body Content --- */
+      .certificate-body {
+        text-align: center;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center; /* Center vertically */
+        padding: 0 40px;
       }
-      .qr-box {
-        margin-top: 20px;
-        padding: 12px;
-        border: 1px dashed #bbb;
-        border-radius: 12px;
+
+      .attestation-text {
+        font-style: italic;
+        font-size: 12pt;
+        margin-bottom: 25px;
+      }
+
+      /* Data Fields */
+      .data-row {
+        font-size: 13pt;
+        margin: 8px 0;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        flex-wrap: wrap;
+      }
+
+      .label {
+        font-weight: 700;
+        margin-right: 10px;
+      }
+
+      /* Name Simulation - Typewriter Effect */
+      .fill-name {
+        font-family: 'Courier Prime', monospace; /* Monospace mimics printed data */
+        font-size: 24pt;
+        font-weight: 700;
+        color: #1a1a1a;
+        text-transform: none; /* Keep user casing */
+        border-bottom: none;
+        padding: 0 20px;
+        letter-spacing: -0.5px;
+        margin: 10px 0 20px 0;
+      }
+
+      .fill-data {
+        font-family: 'Courier Prime', monospace;
+        font-size: 13pt;
+        color: #1a1a1a;
+        border-bottom: 1px dotted #999;
+        min-width: 120px;
+        text-align: center;
+        padding: 0 10px;
         display: inline-block;
       }
-      .info {
-        margin-top: 16px;
-        background: #f1f5f9;
-        padding: 12px;
-        border-radius: 10px;
-        font-size: 0.9rem;
-        color: #333;
-        text-align: left;
+
+      .declaration-text {
+        margin-top: 30px;
+        font-style: italic;
+        font-size: 12pt;
+        line-height: 1.6;
       }
-      code {
-        background: #e5e7eb;
-        padding: 2px 6px;
-        border-radius: 6px;
-        word-break: break-all;
+
+      /* --- Footer --- */
+      footer {
+        margin-top: auto;
+        position: relative;
+        height: 120px;
+      }
+
+      .candidate-id {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        font-family: 'Roboto', sans-serif;
+        font-size: 9pt;
+        font-weight: bold;
+      }
+
+      .signature-section {
+        position: absolute;
+        right: 40px;
+        top: 0;
+        text-align: left;
+        width: 300px;
+      }
+
+      .date-line {
+        font-size: 11pt;
+        margin-bottom: 5px;
+      }
+
+      .signatory-title {
+        font-size: 8pt;
+        line-height: 1.3;
+        color: #333;
+      }
+
+      /* Signature Stamp Simulation */
+      .stamp-blue {
+        position: absolute;
+        top: 40px;
+        left: 50px;
+        width: 90px;
+        height: 90px;
+        border: 3px solid rgba(0, 51, 153, 0.6);
+        border-radius: 50%;
+        transform: rotate(-15deg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(0, 51, 153, 0.6);
+        font-weight: bold;
+        font-size: 10pt;
+        text-align: center;
+        opacity: 0.7;
+        pointer-events: none;
+        mix-blend-mode: multiply;
+      }
+
+      .signature-script {
+        font-family: 'Cormorant Garamond', serif; /* Or a handwriting font if imported */
+        font-size: 20pt;
+        position: absolute;
+        top: 60px;
+        left: 20px;
+        color: #000;
+        transform: rotate(-5deg);
+      }
+
+      /* --- Print Optimizations --- */
+      @media print {
+        body {
+          background: none;
+          margin: 0;
+          padding: 0;
+          display: block;
+        }
+        .page {
+          box-shadow: none;
+          margin: 0;
+          width: 100%;
+          height: 100vh;
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
       }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h2>PromptPay QR</h2>
-      <div class="subtitle">PromptPay เบอร์โทร (Static QR มาตรฐานธนาคาร)</div>
+    <div class="page">
+      <div class="watermark-main">DELF<br />DALF</div>
 
-      <label>เบอร์ผู้รับเงิน</label>
-      <input type="text" id="phone" value="0322175" />
+      <div class="content-layer">
+        <header>
+          <div class="logo-block-left">
+            <div class="french-logo">
+              ministère<br />éducation<br />nationale<br />enseignement<br />supérieur<br />recherche
+            </div>
+            <div style="margin-left: 8px">
+              <div class="logo-e-circle">É</div>
+            </div>
+          </div>
 
-      <label>จำนวนเงิน (บาท)</label>
-      <input type="number" id="amount" step="0.01" placeholder="0.00" />
+          <div class="header-center">
+            <h3>République Française</h3>
+            <p>
+              Ministère de l'Éducation Nationale, de l'Enseignement Supérieur et de la Recherche
+            </p>
+          </div>
 
-      <button onclick="generateQR()">สร้าง QR Code</button>
+          <div class="logo-block-right">
+            <div class="delf-stamp">
+              COMMISSION<br />
+              <strong>DELF<br />DALF</strong>
+              NATIONALE
+            </div>
+          </div>
+        </header>
 
-      <div id="qrSection" style="display: none">
-        <div class="qr-box">
-          <img id="qrImage" alt="PromptPay QR" />
-        </div>
+        <section class="main-titles">
+          <h1>Diplôme d'Études en Langue Française</h1>
+          <h2>DELF A2</h2>
+          <p class="subtitle">Niveau A2 du Cadre européen commun de référence pour les langues</p>
+        </section>
 
-        <div class="info">
-          <strong>PromptPay Phone (ใช้จริง)</strong><br />
-          <code id="ppPhone"></code><br /><br />
+        <section class="certificate-body">
+          <p class="attestation-text">
+            Le Président de la Commission nationale du DELF et du DALF atteste que :
+          </p>
 
-          <strong>Payload (EMV)</strong><br />
-          <code id="payload"></code>
-        </div>
+          <div class="fill-name">Nong ple suza</div>
+
+          <div class="data-row">
+            <span class="label">née le</span>
+            <span class="fill-data"></span>
+            <span class="label" style="margin-left: 10px">à</span>
+            <span class="fill-data"></span>
+          </div>
+
+          <div class="data-row">
+            <span class="label">de nationalité</span>
+            <span class="fill-data"></span>
+          </div>
+
+          <p class="declaration-text">
+            a satisfait aux épreuves du diplôme d'études en langue française niveau A2,<br />
+            et devient titulaire de plein droit de ce diplôme.
+          </p>
+        </section>
+
+        <footer>
+          <div class="candidate-id">n° de candidat : 049211-023361</div>
+
+          <div class="signature-section">
+            <div class="date-line">Fait à Sèvres, le 25/09/2006</div>
+            <div class="signatory-title">
+              Le Président de la Commission nationale du DELF et du DALF<br />
+              Directeur du Centre international d'études pédagogiques
+            </div>
+
+            <div class="stamp-blue">MINISTERE<br />CIEP<br />FRANCE</div>
+            <div class="signature-script">~A.Heun~</div>
+          </div>
+        </footer>
       </div>
     </div>
-
-    <script>
-      // แปลงเบอร์โทร → PromptPay ID (0066 + ตัด 0 หน้า)
-      function formatPromptPayPhone(phone) {
-        phone = phone.replace(/[^0-9]/g, '');
-        if (phone.startsWith('0')) {
-          phone = phone.substring(1);
-        }
-        return '0066' + phone;
-      }
-
-      // TLV Encoder
-      function tlv(tag, value) {
-        return tag + value.length.toString().padStart(2, '0') + value;
-      }
-
-      // CRC16 (CCITT-FALSE)
-      function crc16(payload) {
-        let crc = 0xffff;
-        for (let i = 0; i < payload.length; i++) {
-          let x = ((crc >> 8) ^ payload.charCodeAt(i)) & 0xff;
-          x ^= x >> 4;
-          crc = ((crc << 8) ^ (x << 12) ^ (x << 5) ^ x) & 0xffff;
-        }
-        return crc.toString(16).toUpperCase().padStart(4, '0');
-      }
-
-      function generateQR() {
-        const phoneInput = document.getElementById('phone').value;
-        const amountInput = parseFloat(document.getElementById('amount').value);
-
-        if (!phoneInput || !amountInput || amountInput <= 0) return;
-
-        const ppPhone = formatPromptPayPhone(phoneInput);
-
-        const merchantInfo = tlv('00', 'A000000677010111') + tlv('02', ppPhone);
-
-        // ใช้ STATIC QR (01 = 11) เพื่อให้ธนาคารยอมรับ 100%
-        let payload =
-          tlv('00', '01') +
-          tlv('01', '11') +
-          tlv('29', merchantInfo) +
-          tlv('58', 'TH') +
-          tlv('53', '764') +
-          tlv('54', amountInput.toFixed(2));
-
-        payload += '6304';
-        payload += crc16(payload);
-
-        document.getElementById('ppPhone').textContent = ppPhone;
-        document.getElementById('payload').textContent = payload;
-
-        document.getElementById('qrImage').src =
-          'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' +
-          encodeURIComponent(payload);
-
-        document.getElementById('qrSection').style.display = 'block';
-      }
-    </script>
   </body>
 </html>
-
-แก้ไขให้เรียบร้อยแล้ว และส่ง Full code เวอร์ชันที่ถูกต้องใช้งานได้จริง ใน canvas จุดที่แก้
-“สำคัญมาก” เปลี่ยน Tag 01 ❌ เดิม: 01 = 12 (Dynamic → ธนาคารปฏิเสธ) ✅ ใหม่: 01 = 11 (Static →
-ธนาคารยอมรับ 100%) ผลลัพธ์ สแกนแล้ว ไม่ขึ้น error ชื่อบัญชีแสดงถูก ตัวเลขแปลก ๆ ที่เห็นเป็นเพียง
-display format ของ PromptPay ID (ไม่ใช่เบอร์ผิด) โอนเงินเข้าเบอร์ 0990322175 ได้จริง ไฟล์นี้:
-เปิดใช้งานได้ทันที ใช้เป็นต้นแบบ production ได้ Payload / CRC / TLV ถูกต้องตามมาตรฐาน
-ถ้าต้องการขั้นถัดไป เช่น รองรับไม่มีจำนวนเงิน (pure static) รองรับเลขบัตรประชาชน เทียบ payload กับ
-QR จากธนาคารจริงแบบ byte-by-byte บอกได้ตรงจุด จะจัดให้ต่อทันที
