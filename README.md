@@ -179,9 +179,6 @@ NEXT_PUBLIC_BASE_URL=http://localhost:3000
 
 > ⚠️ ห้าม commit .env.local
 
-
-
-
 ---
 
 🧪 Scripts
@@ -203,8 +200,6 @@ pnpm typecheck  # TypeScript check
 เชื่อมต่อ Supabase Project
 
 Deploy ได้ทันที
-
-
 
 ---
 
@@ -230,8 +225,6 @@ MIT License
 👤 Author
 
 GitHub: https://github.com/jiggoo0
-
-
 
 ---
 
