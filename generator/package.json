@@ -1,0 +1,14 @@
+{
+  "name": "document-generator-cli",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "pdfmake": "^0.2.10",
+    "qrcode": "^1.5.3",
+    "@supabase/supabase-js": "^2.40.0",
+    "dotenv": "^16.4.5"
+  },
+  "scripts": {
+    "generate": "node index.js"
+  }
+}

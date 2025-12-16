@@ -1,23 +1,18 @@
 // pdf_styles.js
-// CommonJS Module for pdfmake font definitions and styling.
+// CommonJS Module for pdfmake font definitions and styling (JP AIRWAYS Standard).
 
 const path = require('path');
 
-// 💡 Helper function เพื่อให้ได้ Path ที่ถูกต้องสำหรับฟอนต์
-// ใช้ path.join กับ __dirname เพื่ออ้างอิง path สัมพัทธ์จากตำแหน่งของไฟล์ปัจจุบัน
-// สมมติว่าไฟล์ pdf_styles.js อยู่ใน root และ fonts/ อยู่ใน root เช่นกัน
 const getFontPath = (fileName) => path.join(__dirname, 'fonts', fileName);
 
 // --- 1. Fonts Configuration ---
 const pdfFonts = {
-  // 💡 Font สำหรับภาษาไทย: TH Sarabun New
   THSarabunNew: {
     normal: getFontPath('THSarabunNew.ttf'),
     bold: getFontPath('THSarabunNew Bold.ttf'),
     italics: getFontPath('THSarabunNew Italic.ttf'),
     bolditalics: getFontPath('THSarabunNew BoldItalic.ttf'),
   },
-  // Font มาตรฐานสำหรับภาษาอังกฤษ/ตัวเลข (Fallback)
   Roboto: {
     normal: getFontPath('Roboto-Regular.ttf'),
     bold: getFontPath('Roboto-Medium.ttf'),
@@ -26,41 +21,54 @@ const pdfFonts = {
   },
 };
 
-// --- 2. Styles Configuration ---
-const pdfStyles = {
+// --- 2. Styles Configuration (JPAIR Standard) ---
+const pdfStyles_JPAIR = {
   // Style พื้นฐาน
   defaultStyle: {
     fontSize: 10,
     lineHeight: 1.2,
   },
+
+  // Header (General Title)
   header: {
-    fontSize: 18,
+    fontSize: 24,
     bold: true,
+    color: '#003366', // JP Airways Blue
     margin: [0, 0, 0, 10],
   },
+
+  // Section Header (Sub-Titles)
   sectionHeader: {
     fontSize: 15,
     bold: true,
-    color: '#c62828', // สีแดงเข้ม
+    color: '#c62828', // Section Separator Red
     margin: [0, 15, 0, 5],
   },
+
+  // Label Style (สำหรับชื่อฟิลด์)
   labelStyle: {
     bold: true,
     color: '#555',
   },
+
+  // Table Header (ใช้สำหรับ Flight Segment)
   tableHeader: {
-    fontSize: 13,
-    bold: true,
-    fillColor: '#eeeeee',
-    alignment: 'center',
-  },
-  tableCell: {
     fontSize: 12,
+    bold: true,
+    fillColor: '#003366', // JP Airways Blue
+    color: '#ffffff', // White Text
+    alignment: 'center',
+    margin: [0, 5, 0, 5],
+  },
+
+  // Cell Content (ใช้ 10px ตาม defaultStyle)
+  tableCell: {
+    fontSize: 10,
   },
 };
 
 // --- 3. Export ด้วย CommonJS ---
 module.exports = {
   pdfFonts,
-  pdfStyles,
+  pdfStyles: pdfStyles_JPAIR, // Export styles under the common name 'pdfStyles'
 };

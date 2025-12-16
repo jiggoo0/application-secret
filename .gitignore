@@ -64,3 +64,4 @@ project-structure.md
 project-summary.md
 
 ._ZzZz_Dev_zZzZ_
+.env*.local
