@@ -20,7 +20,7 @@ export default function Loader({ message = 'กำลังโหลด...', siz
       role="status"
       aria-live="polite"
       aria-label={message}
-      className="flex flex-col items-center justify-center gap-2 py-8 text-center text-muted-foreground"
+      className="text-muted-foreground flex flex-col items-center justify-center gap-2 py-8 text-center"
     >
       <span
         className={`animate-spin rounded-full border-2 border-primary border-t-transparent ${spinnerSize}`}

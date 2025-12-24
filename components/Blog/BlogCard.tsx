@@ -1,8 +1,14 @@
-// components/Blog/BlogCard.tsx
 'use client';
 
+/**
+ * 🏗️ JP-VISOUL: BlogCard Component
+ * Design: Industrial Neobrutalism (0px radius, Slate-900 borders)
+ * Update: Added safety checks for 'date' and 'excerpt' to prevent build errors.
+ */
+
+import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
+import { ArrowUpRight, Calendar } from 'lucide-react';
 import type { Post } from '@/types/blog';
 
 interface BlogCardProps {
@@ -10,53 +16,56 @@ interface BlogCardProps {
 }
 
 export default function BlogCard({ post }: BlogCardProps) {
-  // 🛡 Defensive: ต้องมี slug และ publishedAt
-  if (!post.slug || !post.publishedAt) {
-    return null;
-  }
+  // 🛡️ Safety Check: ป้องกัน Error กรณีข้อมูล date หรือ slug หาย
+  const formattedDate = post?.date ? post.date.replace(/-/g, '_') : 'UNKNOWN_TIMESTAMP';
 
-  // ✅ การจัดรูปแบบวันที่แบบ Client-side (Locale-based)
-  const formattedDate = new Date(post.publishedAt).toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  // ✅ ใช้ Optional Chaining สำหรับการตรวจสอบ featuredImage ที่ถูกต้อง
-  const imageSrc = post.featuredImage?.trim()
-    ? post.featuredImage
-    : '/images/blog/placeholder.webp'; // Placeholder ที่กำหนด
+  const postSlug = post?.slug || '#';
 
   return (
     <Link
-      href={`/blog/${post.slug}`}
-      className="group block overflow-hidden rounded-xl bg-white shadow-lg transition-shadow duration-300 hover:shadow-xl dark:bg-gray-800"
+      href={`/blog/${postSlug}`}
+      className="group relative flex h-full flex-col border-4 border-slate-900 bg-white p-6 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)] transition-all hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] active:translate-x-0 active:translate-y-0 active:shadow-none"
     >
-      {/* Image */}
-      <div className="relative h-48 w-full">
-        <Image
-          src={imageSrc}
-          alt={post.title}
-          fill
-          // 💡 Responsive sizes for better performance
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-      </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="mb-2 line-clamp-2 text-xl font-bold text-gray-900 transition-colors group-hover:text-blue-600 dark:text-gray-100 dark:group-hover:text-blue-400">
-          {post.title}
-        </h3>
-
-        <p className="mb-4 line-clamp-3 text-sm text-gray-600 dark:text-gray-400">{post.excerpt}</p>
-
-        <div className="flex items-center justify-between border-t pt-3 text-xs text-gray-500 dark:border-gray-700 dark:text-gray-400">
-          <span>โดย: {post.author}</span>
-          <span>{formattedDate}</span>
+      {/* 🛠️ Card Header: Status & Icon */}
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-2 w-2 animate-pulse bg-primary" />
+          <span className="font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+            LOG_{formattedDate}
+          </span>
+        </div>
+        <div className="flex h-10 w-10 items-center justify-center border-2 border-slate-900 bg-slate-50 text-slate-900 transition-colors group-hover:bg-primary group-hover:text-slate-900">
+          <ArrowUpRight size={20} strokeWidth={3} />
         </div>
       </div>
+
+      {/* 📄 Content Area */}
+      <div className="flex-grow space-y-4">
+        <h3 className="font-heading text-2xl font-black uppercase italic tracking-tighter text-slate-900 transition-colors group-hover:text-blue-600 md:text-3xl">
+          {post?.title || 'UNTITLED_OPERATIONAL_LOG'}
+        </h3>
+
+        <p className="line-clamp-3 font-sans text-sm font-bold uppercase leading-relaxed text-slate-500">
+          {post?.excerpt || 'No description provided for this operational entry.'}
+        </p>
+      </div>
+
+      {/* 🏷️ Card Footer: Metadata */}
+      <div className="mt-8 flex items-center justify-between border-t-2 border-slate-100 pt-6">
+        <div className="flex items-center gap-2 border-2 border-slate-900 bg-slate-900 px-3 py-1 text-white">
+          <span className="font-mono text-[9px] font-black uppercase tracking-widest">
+            CAT: {post?.category || 'GENERAL'}
+          </span>
+        </div>
+
+        <div className="flex items-center gap-2 font-mono text-[9px] font-black uppercase text-slate-400">
+          <Calendar size={12} />
+          {post?.date || 'N/A'}
+        </div>
+      </div>
+
+      {/* 🏭 Industrial Decor */}
+      <div className="absolute bottom-0 right-0 h-1 w-1/3 bg-primary opacity-0 transition-opacity group-hover:opacity-100" />
     </Link>
   );
 }

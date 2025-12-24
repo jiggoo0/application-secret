@@ -1,127 +1,77 @@
 /** @type {import('tailwindcss').Config} */
 const plugin = require('tailwindcss/plugin');
-const theme = require('./config/theme.js');
 
+// ตรวจสอบสภาพแวดล้อมการทำงาน (Termux) เพื่อแก้ปัญหา Permission Denied ในการ Watch ไฟล์
 const isTermux = !!process.env.TERMUX;
 
 const config = {
+  // รองรับ Next.js 15 App Router ตามโครงสร้างไฟล์ใน project-structure.md
   content: [
     './app/**/*.{js,ts,jsx,tsx}',
     './components/**/*.{js,ts,jsx,tsx}',
     './lib/**/*.{js,ts,jsx,tsx}',
-    './utils/**/*.{js,ts,jsx,tsx}',
-    './hooks/**/*.{js,ts,jsx,tsx}',
-    './public/**/*.html',
   ],
-  darkMode: ['class', 'class'],
+  darkMode: ['class'],
   theme: {
     extend: {
-      ...theme,
-      container: {
-        center: true,
-        padding: {
-          DEFAULT: '1rem',
-          sm: '1.5rem',
-          lg: '2rem',
-          xl: '2.5rem',
-        },
-      },
-      // 🚀 START: OPTIMIZED FONT FAMILY CONFIGURATION
+      // 🏗️ 1. DESIGN TOKENS (Industrial Neobrutalism)
       fontFamily: {
-        sans: ['var(--font-inter)', '"Noto Sans Thai"', 'sans-serif'],
-        inter: ['var(--font-inter)', '"Noto Sans Thai"', 'sans-serif'],
-        heading: ['"Noto Sans Thai"', 'sans-serif'],
+        // Headlines: Font Prompt, Black (900), Italic
+        heading: ['var(--font-prompt)', 'Inter', 'sans-serif'],
+        // Body: Font Inter, Medium (500)
+        sans: ['var(--font-inter)', 'Inter', 'sans-serif'],
+        // Documents: Font TH Sarabun New
+        mono: ['var(--font-sarabun)', 'monospace'],
       },
-      // 🚀 END: OPTIMIZED FONT FAMILY CONFIGURATION
 
+      // No rounded corners (rounded-none) ตาม Spec
       borderRadius: {
-        DEFAULT: '6px',
-        lg: 'var(--radius)',
-        xl: '12px',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        none: '0px',
+        DEFAULT: '0px',
+        sm: '0px',
+        md: '0px',
+        lg: '0px',
+        full: '9999px',
       },
+
+      // Hard shadows ONLY (No blur)
       boxShadow: {
-        subtle: '0 1px 3px rgba(0, 0, 0, 0.05)',
-        medium: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        neo: '4px 4px 0px 0px #0f172a',
+        'neo-lg': '8px 8px 0px 0px #0f172a',
+        'neo-sm': '2px 2px 0px 0px #0f172a',
       },
-      gridTemplateColumns: {
-        layout: 'repeat(auto-fit, minmax(280px, 1fr))',
+
+      borderWidth: {
+        DEFAULT: '2px',
+        4: '4px',
       },
-      maxWidth: {
-        'screen-xl': '1280px',
-        'screen-2xl': '1536px',
-      },
-      minHeight: {
-        screen: '100vh',
-      },
-      transitionProperty: {
-        layout: 'margin, padding, width, height',
-      },
-      lineHeight: {
-        relaxed: '1.75',
-        tight: '1.25',
-      },
-      aspectRatio: {
-        square: '1 / 1',
-        video: '16 / 9',
-      },
+
       colors: {
-        // Existing colors (Mapped to: Surface, Text, Primary/Secondary Brand/Structure)
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
-        card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
-        },
-        popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
-        },
+        border: '#0f172a', // Slate-900
+        input: '#0f172a',
+        ring: '#2563eb', // Electric Blue
+        background: '#ffffff',
+        foreground: '#0f172a',
+
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: '#2563eb',
+          foreground: '#ffffff',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
-        },
-        muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: '#f1f5f9',
+          foreground: '#0f172a',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: '#2563eb',
+          foreground: '#ffffff',
         },
-        destructive: {
-          DEFAULT: 'hsl(var(--destructive))', // Mapped to Transaction FAILED
-          foreground: 'hsl(var(--destructive-foreground))',
-        },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        success: '#16a34a',
+        warning: '#eab308',
+        destructive: '#dc2626',
+      },
 
-        // --- START: Semantic Status Colors for Admin Transaction Management ---
-        success: {
-          // Mapped to Transaction SUCCESS (Emerald/Trust Green)
-          DEFAULT: 'hsl(var(--success))',
-          foreground: 'hsl(var(--success-foreground))',
-        },
-        warning: {
-          // Mapped to Transaction PENDING (Amber/Alert Yellow)
-          DEFAULT: 'hsl(var(--warning))',
-          foreground: 'hsl(var(--warning-foreground))',
-        },
-        // --- END: Semantic Status Colors ---
-
-        chart: {
-          1: 'hsl(var(--chart-1))',
-          2: 'hsl(var(--chart-2))',
-          3: 'hsl(var(--chart-3))',
-          4: 'hsl(var(--chart-4))',
-          5: 'hsl(var(--chart-5))',
-        },
+      aspectRatio: {
+        a4: '1 / 1.414',
       },
     },
   },
@@ -130,29 +80,19 @@ const config = {
     require('@tailwindcss/typography'),
     require('tailwindcss-animate'),
     require('daisyui'),
-    plugin(({ addComponents, theme }) => {
+    // 🛠️ Custom Plugin สำหรับสร้าง Utility Neobrutalism
+    plugin(function ({ addComponents }) {
       addComponents({
-        '.container': {
-          width: '100%',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-          paddingLeft: theme('spacing.4'),
-          paddingRight: theme('spacing.4'),
-          [`@media (min-width: ${theme('screens.sm')})`]: {
-            maxWidth: '640px',
-          },
-          [`@media (min-width: ${theme('screens.md')})`]: {
-            maxWidth: '768px',
-          },
-          [`@media (min-width: ${theme('screens.lg')})`]: {
-            maxWidth: '1024px',
-          },
-          [`@media (min-width: ${theme('screens.xl')})`]: {
-            maxWidth: '1280px',
-          },
-          [`@media (min-width: ${theme('screens.2xl')})`]: {
-            maxWidth: '1536px',
-          },
+        '.neo-button': {
+          '@apply border-2 border-slate-900 bg-white px-4 py-2 font-bold shadow-neo transition-all hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-neo-lg active:translate-x-[0px] active:translate-y-[0px] active:shadow-none':
+            {},
+        },
+        '.neo-card': {
+          '@apply border-2 border-slate-900 bg-white p-6 shadow-neo': {},
+        },
+        '.neo-input': {
+          '@apply border-2 border-slate-900 rounded-none focus:ring-2 focus:ring-blue-600 focus:outline-none p-2':
+            {},
         },
       });
     }),
@@ -160,34 +100,29 @@ const config = {
   daisyui: {
     themes: [
       {
-        adosy: {
-          primary: '#1E3A8A',
-          'primary-focus': '#1E40AF',
-          secondary: '#F1F5F9',
-          'secondary-focus': '#E2E8F0',
-          accent: '#0EA5E9',
-          neutral: '#64748B',
-          'base-100': '#FFFFFF',
-          info: '#2094f3',
-          success: '#16A34A',
-          warning: '#facc15',
-          error: '#DC2626',
+        jpvisoul: {
+          primary: '#2563eb',
+          secondary: '#f1f5f9',
+          accent: '#0f172a',
+          neutral: '#0f172a',
+          'base-100': '#ffffff',
+          '--rounded-box': '0',
+          '--rounded-btn': '0',
+          '--rounded-badge': '0',
         },
       },
     ],
-    darkTheme: 'adosy',
-    base: false,
-    styled: false,
-    utils: true,
-    logs: false,
+    darkTheme: 'jpvisoul',
   },
 };
 
+// 🛠️ การแก้ไขปัญหา Permission Denied (EACCES) ใน Termux
 if (isTermux) {
   config.watchOptions = {
-    poll: 1000,
+    poll: 1000, // ใช้การตรวจสอบแบบช่วงเวลาแทนการใช้ Filesystem Watcher ของระบบ
     aggregateTimeout: 300,
-    ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**', '/data', '/data/data', '/'],
+    // บังคับให้ Watch เฉพาะไฟล์ในโปรเจกต์ ป้องกันการสแกนไปที่ Root (/data)
+    ignored: ['**/node_modules/**', '**/.git/**', '**/.next/**', '/data/**', '/data/data/**', '/'],
   };
 }
 

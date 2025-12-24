@@ -1,123 +1,93 @@
 // app/layout.tsx
-// Server Component (RSC) - Root Layout
+// ----------------------------------------------------
+// 🏗️ JP-VISOUL: The Core Structure (เจ้าป่า Edition)
+// ----------------------------------------------------
 
 import './globals.css';
 import React from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 
 // Providers & Utilities
 import RootProvider from './providers/RootProvider';
 import ChunkErrorBoundary from '@/components/utils/ChunkErrorBoundary';
 import CleanUrl from '@/components/utils/CleanUrl';
 
+// Fonts Config
+import { inter, prompt } from '@/lib/fonts';
+
 // Components
-import { inter } from '@/lib/fonts';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
 import Widget from '@/components/Widget';
 import { Toaster } from '@/components/ui/sonner';
 
-// ----------------------------------------------------
-// 1. Metadata (SEO & Social)
-// ----------------------------------------------------
-export const metadata: Metadata = {
-  metadataBase: new URL('https://www.jpvisouldocs.online'),
-
-  title: {
-    default: 'Dev Jp - Visoul&Docs | บริการเอกสารครบวงจร',
-    template: '%s | Dev Jp',
-  },
-
-  description:
-    'บริการที่ปรึกษายื่นกู้สินเชื่อ เอกสารยื่นวีซ่า เอกสารดิจิทัล และการตลาด สำหรับทุกสายอาชีพ',
-
-  keywords: ['สินเชื่อ', 'วีซ่า', 'เอกสารดิจิทัล', 'การตลาด', 'ออกแบบ', 'Dev Jp', 'Visoul&Docs'],
-
-  icons: {
-    icon: '/favicon.ico',
-  },
-
-  openGraph: {
-    title: 'Dev Jp - Visoul&Docs',
-    description: 'แพลตฟอร์มเอกสารและบริการด้านการเงิน วีซ่า และการตลาด',
-    url: '/',
-    siteName: 'JP Visoul&Docs',
-    locale: 'th_TH',
-    type: 'website',
-    images: [
-      {
-        url: '/og-image.png', // ใช้ relative + metadataBase
-        width: 1200,
-        height: 630,
-        alt: 'JP Visoul&Docs Official Logo and Banner',
-      },
-    ],
-  },
-
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Dev Jp - Visoul&Docs',
-    description: 'แพลตฟอร์มเอกสารและบริการด้านการเงิน วีซ่า และการตลาด',
-    images: ['/og-image.png'],
-  },
-
-  robots: {
-    index: true,
-    follow: true,
-  },
-
-  // ✅ FIX: Facebook App ID (สำคัญ)
-  other: {
-    'fb:app_id': '1051070927146698',
-  },
+/**
+ * 🛰️ 1. Viewport Configuration
+ */
+export const viewport: Viewport = {
+  themeColor: '#0f172a',
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
 };
 
-// ----------------------------------------------------
-// 2. Root Layout Component
-// ----------------------------------------------------
+/**
+ * 🌎 2. Global Metadata
+ */
+export const metadata: Metadata = {
+  metadataBase: new URL('https://www.jpvisouldocs.online'),
+  title: {
+    default: 'JP-VISOUL | จบงานเอกสารแบบตัวจริง โดย เจ้าป่า',
+    template: '%s | JP-VISOUL',
+  },
+  description:
+    'ที่ปรึกษาการจัดการเอกสารและโปรไฟล์เฉพาะทาง งานกริบ ตรวจสอบได้จริง รักษาความลับลูกค้าคือกฎข้อแรกที่ยึดถือ โดยทีมงานเจ้าป่า',
+  keywords: ['เจ้าป่า', 'JP-VISOUL', 'ที่ปรึกษาวีซ่า', 'ปั้นเคสสินเชื่อ'],
+  authors: [{ name: 'JP-VISOUL (JAO-PA)' }],
+  robots: { index: true, follow: true },
+};
+
+/**
+ * 🏗️ 3. Root Layout Component
+ */
 interface RootLayoutProps {
   children: React.ReactNode;
 }
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="th" dir="ltr" suppressHydrationWarning>
-      <body
-        className={`${inter.className} flex min-h-screen flex-col bg-background text-foreground antialiased`}
-      >
+    <html
+      lang="th"
+      dir="ltr"
+      className={`${inter.variable} ${prompt.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="flex min-h-screen flex-col bg-white font-sans text-slate-900 antialiased selection:bg-primary selection:text-white">
         <ChunkErrorBoundary>
           <RootProvider>
-            {/* Utility */}
+            {/* ระบบจัดการ URL */}
             <CleanUrl />
 
-            {/* Header */}
-            <header
-              role="banner"
-              className="sticky top-0 z-40 w-full border-b border-border bg-white/70 backdrop-blur dark:bg-gray-900/70"
-            >
-              <Header />
-            </header>
-
-            {/* Main */}
-            <main
-              id="main-content"
-              role="main"
-              className="mx-auto w-full max-w-7xl flex-1 px-4 py-6 sm:px-6 lg:px-8"
-            >
+            {/* 🚀 Main Workspace: พื้นที่ปฏิบัติงานหลัก (หุ้มด้วย Main/Business Layout อีกชั้น) */}
+            <main id="main-content" role="main" className="mx-auto w-full flex-1">
               {children}
             </main>
 
-            {/* Footer */}
-            <footer
-              role="contentinfo"
-              className="border-t border-border bg-white/60 backdrop-blur dark:bg-gray-950/60"
-            >
-              <Footer />
-            </footer>
+            {/* 🧩 Toaster: แจ้งเตือนสไตล์ Neobrutalist */}
+            <Toaster
+              position="bottom-center"
+              richColors
+              closeButton
+              toastOptions={{
+                className:
+                  'neo-border !rounded-none !shadow-neo !font-sans !border-4 !border-slate-900 !bg-white !text-slate-900',
+                style: {
+                  borderRadius: '0px',
+                  boxShadow: '8px 8px 0px 0px #0f172a',
+                },
+              }}
+            />
 
-            {/* Global UI */}
-            <Toaster position="top-right" richColors />
-            <div className="fixed bottom-6 right-6 z-50">
+            {/* Widget ติดต่อ: สายตรงเจ้าป่า */}
+            <div className="fixed bottom-8 right-8 z-50">
               <Widget />
             </div>
           </RootProvider>

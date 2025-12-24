@@ -1,7 +1,7 @@
-// types/blog.ts
 /**
  * ====================================================
- * Blog Content Types
+ * 🏗️ JP-VISOUL: Blog Content Types (Standard Edition)
+ * Updated: 2025-12-24
  * ====================================================
  */
 
@@ -21,26 +21,41 @@ export interface ContentElement {
 }
 
 export interface Post {
-  slug: string; // unique identifier ของ post
-  title: string; // ชื่อบทความ
-  excerpt: string; // สรุปเนื้อหา
-  author: string; // ชื่อผู้เขียน
-  publishedAt: string; // วันที่เผยแพร่
-  createdAt?: string; // วันสร้าง (optional ถ้าไม่มีก็ใช้ publishedAt แทน)
-  updatedAt?: string; // วันแก้ไขล่าสุด
-  featuredImage?: string; // ใช้แทน imageUrl
-  tags?: string[]; // ตัว tag ของบทความ
-  content: ContentElement[]; // เนื้อหาของบทความ
-  // ✅ เพิ่ม field นี้เพื่อรองรับ Logic การเผยแพร่
-  isPublished?: boolean; // สถานะการเผยแพร่ (true ถ้าเผยแพร่แล้ว)
+  // 🆔 Core Identification
+  slug: string;
+  title: string;
+  excerpt: string;
+  author: string;
+
+  // 📅 Temporal Data
+  publishedAt: string;
+  createdAt?: string;
+  updatedAt?: string;
+  /**
+   * ✅ date: Alias สำหรับใช้ใน UI components (BlogCard, slugs)
+   * เพื่อลดปัญหา Property 'date' does not exist error
+   */
+  date?: string;
+
+  // 🖼️ Media Assets
+  featuredImage?: string; // URL รูปภาพหลัก (Legacy)
+  coverImage?: string; // URL รูปภาพหน้าปก (BlogCard Support)
+
+  // 🏷️ Taxonomy & Status
+  category?: string; // เช่น INTEL, GUIDE, STRATEGY
+  tags?: string[];
+  isPublished?: boolean;
+
+  // 📝 Core Content
+  content: ContentElement[];
 }
 
 export interface ArticleMetadata {
-  title: string; // ชื่อบทความ
-  excerpt: string; // สรุปบทความ
-  publishedAt: string; // วันที่เผยแพร่
-  authorName: string; // ชื่อผู้เขียน
-  authorUrl: string; // URL ของผู้เขียน
-  // ✅ ปรับปรุง: ใช้ featuredImage เพื่อให้สอดคล้องกับ Post Interface
+  title: string;
+  excerpt: string;
+  publishedAt: string;
+  authorName: string;
+  authorUrl: string;
   featuredImage: string | null;
+  category?: string;
 }

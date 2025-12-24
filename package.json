@@ -4,11 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "typecheck": "tsc --noEmit",
+    "type-check": "tsc --noEmit",
     "lint": "eslint . --ext .js,.ts,.jsx,.tsx",
     "lint:fix": "eslint . --ext .js,.ts,.jsx,.tsx --fix",
     "format": "prettier --write .",
-    "build": "pnpm run typecheck && pnpm run lint && next build",
+    "build": "pnpm run type-check && pnpm run lint && next build",
     "start": "next start"
   },
   "dependencies": {

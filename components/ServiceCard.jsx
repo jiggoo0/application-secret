@@ -1,9 +1,13 @@
 'use client';
 
+/**
+ * 🏗️ JP-VISOUL: Industrial Service Card
+ * Design: Industrial Neobrutalism (0px radius, Slate-900 borders, Hard shadows)
+ */
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle2, Terminal, ArrowUpRight } from 'lucide-react';
 
 // Keywords config
 const FUNNEL_KEYWORDS = ['ตั๋วเครื่องบิน', 'โรงแรม'];
@@ -28,74 +32,105 @@ const ServiceCard = ({ service }) => {
 
   const targetUrl = isFunnel ? `/flight-booking?service=${encodeURIComponent(title)}` : ctaUrl;
 
-  // Card Styling
-  const cardClassName = `flex flex-col overflow-hidden rounded-xl border transition-all duration-300 h-full group
+  // 🏗️ Industrial Card Styling (Strict Neobrutalism)
+  const cardClassName = `flex flex-col border-2 border-slate-900 bg-white transition-all duration-200 h-full group relative
     ${
       isFunnel
-        ? 'border-blue-600 ring-2 ring-blue-300 shadow-xl bg-white hover:shadow-blue-300/50'
-        : isVisa
-          ? 'border-blue-400 shadow-lg bg-white hover:shadow-blue-200/50'
-          : 'border-gray-200 shadow-md bg-white hover:shadow-lg'
+        ? 'shadow-neo-lg border-[3px] hover:-translate-x-1 hover:-translate-y-1 hover:shadow-neo-xl'
+        : 'shadow-neo hover:-translate-x-1 hover:-translate-y-1 hover:shadow-neo-lg'
     }`;
 
-  const titleClassName = `text-xl font-bold mb-3 ${isVisa ? 'text-blue-700' : 'text-gray-900'}`;
-
-  const ctaButtonClassName = `w-full py-3 text-base text-white shadow-md font-semibold transition-colors
-    ${isFunnel || isVisa ? 'bg-blue-700 hover:bg-blue-800' : 'bg-gray-700 hover:bg-gray-800'}`;
-
   return (
-    <div className={cardClassName}>
-      {/* Image */}
-      <div className="relative h-48 w-full bg-gray-100">
+    <article className={cardClassName}>
+      {/* 🏷️ Badge: Document Status */}
+      <div
+        className={`absolute right-0 top-0 z-10 border-b-2 border-l-2 border-slate-900 px-3 py-1 text-[10px] font-black uppercase tracking-widest ${isFunnel ? 'bg-primary text-white' : 'bg-slate-900 text-white'}`}
+      >
+        {isFunnel ? 'Priority_System' : 'Standard_Payload'}
+      </div>
+
+      {/* Image: Blueprint Frame */}
+      <div className="relative h-56 w-full overflow-hidden border-b-2 border-slate-900 bg-slate-50">
         <Image
           src={imageSrc}
           alt={title}
           fill
-          className="object-cover transition-transform duration-300 group-hover:scale-105"
+          className="object-cover contrast-125 grayscale transition-all duration-500 group-hover:scale-110 group-hover:grayscale-0"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={isFunnel || isVisa}
         />
+        {/* Decorative Grid Overlay */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-10 transition-opacity group-hover:opacity-0"
+          style={{
+            backgroundImage: 'radial-gradient(#000 1px, transparent 1px)',
+            backgroundSize: '15px 15px',
+          }}
+        ></div>
       </div>
 
-      {/* Body */}
-      <div className="flex-grow p-6">
-        <h3 className={titleClassName}>{title}</h3>
+      {/* Body: Engineering Report */}
+      <div className="flex-grow space-y-4 p-6">
+        <div className="space-y-1">
+          <div className="flex items-center gap-1.5 font-mono text-[9px] font-black uppercase tracking-[0.2em] text-blue-600">
+            <Terminal size={12} strokeWidth={3} />
+            <span>Doc_Type: {isVisa ? 'VISA_ASSET' : 'GEN_ASSET'}</span>
+          </div>
+          <h3 className="font-heading text-xl font-black uppercase italic tracking-tighter text-slate-900 transition-colors group-hover:text-primary">
+            {title}
+          </h3>
+        </div>
 
-        <ul className="mb-4 space-y-2 text-sm text-gray-700">
+        <ul className="space-y-3">
           {features.slice(0, 3).map((feature, i) => (
-            <li key={i} className="flex items-start">
-              <CheckCircle className="mr-2 mt-1 h-4 w-4 flex-shrink-0 text-blue-500" />
-              <span>{feature}</span>
+            <li key={i} className="flex items-start gap-3">
+              <CheckCircle2 className="mt-0.5 h-4 w-4 flex-shrink-0 text-primary" strokeWidth={3} />
+              <span className="font-sans text-sm font-bold leading-tight text-slate-600">
+                {feature}
+              </span>
             </li>
           ))}
-          {features.length > 3 && (
-            <li className="mt-2 border-t border-gray-100 pt-1 text-xs text-gray-500">
-              ...และคุณสมบัติอื่น ๆ อีก {features.length - 3} รายการ
-            </li>
-          )}
         </ul>
       </div>
 
-      {/* Footer */}
-      <div className="mt-auto border-t border-gray-100 p-6 pt-0">
-        <div className="mb-4 flex items-center justify-between">
-          <span className="text-sm font-medium text-gray-600">ราคาเริ่มต้น:</span>
-          <span className="text-2xl font-extrabold text-gray-900">{price}</span>
+      {/* Footer: Price & Deploy Action */}
+      <div className="mt-auto space-y-4 border-t-2 border-slate-100 p-6">
+        <div className="flex items-end justify-between">
+          <span className="font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+            Unit_Price:
+          </span>
+          <div className="text-right">
+            <span className="font-heading text-2xl font-black italic text-slate-900">{price}</span>
+            <span className="block text-[8px] font-bold uppercase tracking-tighter text-slate-400">
+              VAT_NOT_INCLUDED
+            </span>
+          </div>
         </div>
 
         <Link href={targetUrl} target={isFunnel ? '_self' : '_blank'} className="block">
-          <Button className={ctaButtonClassName}>
-            {isFunnel ? 'ดำเนินการกรอกข้อมูล' : ctaText}
+          <Button
+            className={`w-full rounded-none border-2 border-slate-900 py-7 text-xs font-black uppercase tracking-[0.2em] shadow-neo-sm transition-all active:translate-x-0 active:translate-y-0 active:shadow-none ${
+              isFunnel
+                ? 'bg-primary text-white hover:bg-slate-900'
+                : 'bg-white text-slate-900 hover:bg-slate-900 hover:text-white'
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              {isFunnel ? 'Execute_Payload' : ctaText}
+              <ArrowUpRight size={16} strokeWidth={3} />
+            </span>
           </Button>
         </Link>
 
         {isFunnel && (
-          <p className="mt-3 text-center text-xs font-medium text-blue-600">
-            กรอกข้อมูลเพื่อดูตัวอย่างเอกสารที่มีลายน้ำก่อนชำระเงิน
-          </p>
+          <div className="-skew-x-6 transform bg-slate-900 p-2">
+            <p className="text-center text-[9px] font-black uppercase italic tracking-tighter text-yellow-400">
+              * Preview_Watermark_Enabled_Before_Final_Payment
+            </p>
+          </div>
         )}
       </div>
-    </div>
+    </article>
   );
 };
 

@@ -1,17 +1,19 @@
-// components/AnnouncementBar.jsx
-
 'use client';
 
+/**
+ * 🏗️ JP-VISOUL: Industrial Announcement Bar
+ * Design: Industrial Neobrutalism (Slate-900 borders, 0px radius, Ticker Tape Style)
+ * Fix: Removed raw '//' to pass ESLint jsx-no-comment-textnodes
+ */
 import { useEffect, useState } from 'react';
-// ❌ BEFORE: import Loader from './common/Loader';
-// ✅ AFTER: ใช้ Absolute Import Path ชี้ไปที่โฟลเดอร์ UI ที่ถูกยุบรวม
 import Loader from '@/components/ui/Loader';
+import { Terminal, Activity } from 'lucide-react';
 
-// กำหนดสีตาม status
+// กำหนดสีตาม status สไตล์ Industrial
 const STATUS_COLORS = {
-  updating: 'bg-yellow-500 text-black',
-  ready: 'bg-green-600 text-white',
-  active: 'bg-blue-600 text-white',
+  updating: 'bg-yellow-400 text-slate-900 border-slate-900',
+  ready: 'bg-emerald-500 text-white border-slate-900',
+  active: 'bg-blue-600 text-white border-slate-900',
 };
 
 export default function AnnouncementBar() {
@@ -20,85 +22,85 @@ export default function AnnouncementBar() {
   const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    // ... (ไม่เปลี่ยนแปลง)
     const fetchAnnouncements = async () => {
       try {
         const res = await fetch('/data/announcements.json');
-        if (!res.ok) throw new Error('ไม่สามารถโหลดประกาศได้');
-
+        if (!res.ok) throw new Error('Load failed');
         const data = await res.json();
         setAnnouncements(Array.isArray(data) ? data : []);
       } catch {
         setAnnouncements([
-          { text: '⚠️ ไม่สามารถโหลดประกาศได้ในขณะนี้ กรุณาลองใหม่ภายหลัง', status: 'active' },
+          { text: 'SYSTEM_ERROR: UNABLE TO FETCH DATA PAYLOAD', status: 'active' },
         ]);
       } finally {
         setLoading(false);
       }
     };
-
     fetchAnnouncements();
   }, []);
 
   if (loading) {
     return (
-      <div className="flex justify-center py-2" aria-busy="true" aria-label="กำลังโหลดประกาศ">
-        {/* Loader ถูกเรียกใช้ต่อได้ทันที */}
+      <div
+        className="flex justify-center border-b-2 border-slate-900 bg-white py-2"
+        aria-busy="true"
+      >
         <Loader size="sm" />
       </div>
     );
   }
 
-  if (!announcements.length) {
-    return (
-      <div className="py-2 text-center font-medium" role="status" aria-label="ไม่มีประกาศ">
-        ไม่มีประกาศ
-      </div>
-    );
-  }
-
-  // ... (ส่วนที่เหลือของโค้ดไม่เปลี่ยนแปลง)
-  const repeated = [...announcements, ...announcements];
+  const repeated = [...announcements, ...announcements, ...announcements];
 
   return (
-    <section className="relative overflow-hidden py-2" aria-label="แถบประกาศ" aria-live="polite">
-      {/* Gradient overlays */}
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-gray-50 to-transparent" />
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-gray-50 to-transparent" />
+    <section
+      className="relative flex items-center overflow-hidden border-b-2 border-slate-900 bg-white py-1"
+      aria-label="System Ticker"
+    >
+      {/* 🛠️ Side Label */}
+      <div className="z-20 flex items-center gap-2 border-r-2 border-slate-900 bg-slate-900 px-4 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-[4px_0_0_0_rgba(0,0,0,0.1)]">
+        <Activity size={12} className="text-primary" />
+        <span>LIVE_FEED</span>
+      </div>
 
-      {/* Scrolling ticker */}
       <div
-        className="animate-scroll flex gap-6 whitespace-nowrap px-6"
+        className="animate-scroll flex items-center gap-8 whitespace-nowrap"
         style={{ animationPlayState: paused ? 'paused' : 'running' }}
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
         {repeated.map((item, idx) => {
-          const colorClass = STATUS_COLORS[item.status] || 'bg-gray-200 text-gray-900';
+          const colorClass =
+            STATUS_COLORS[item.status] || 'bg-slate-100 text-slate-900 border-slate-900';
           return (
-            <span
-              key={idx}
-              className={`rounded-full px-4 py-1 text-sm font-medium ${colorClass} shadow-md`}
-            >
-              {item.text}
-            </span>
+            <div key={idx} className="group flex items-center gap-4">
+              {/* ✅ FIXED: ครอบด้วย {} เพื่อให้ ESLint รู้ว่าเป็น String ไม่ใช่ Comment Node */}
+              <span className="font-mono text-xs text-slate-300">{'//'}</span>
+
+              <span
+                className={`flex items-center gap-2 border-2 px-3 py-0.5 text-[11px] font-black uppercase tracking-tighter shadow-neo-sm transition-all group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:shadow-none ${colorClass}`}
+              >
+                <Terminal size={10} />
+                {item.text}
+              </span>
+            </div>
           );
         })}
       </div>
 
-      {/* CSS Animation */}
       <style jsx>{`
         @keyframes scroll {
           0% {
-            transform: translateX(0%);
+            transform: translateX(0);
           }
           100% {
-            transform: translateX(-50%);
+            transform: translateX(-33.33%);
           }
         }
         .animate-scroll {
           display: inline-flex;
-          animation: scroll 20s linear infinite;
+          animation: scroll 30s linear infinite;
+          padding-left: 2rem;
         }
       `}</style>
     </section>

@@ -1,56 +1,53 @@
-// components/ui/ReviewCard.tsx
 'use client';
 
-import { useState, useEffect } from 'react';
+/**
+ * 🏗️ JP-VISOUL: Review Card Component
+ * Design: Industrial Neobrutalism (0px radius, Hard shadows)
+ * Standard: Client Verification Logs
+ */
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-// 💡 Assumed utility path (ถูกกำหนด Type ไว้แล้วใน utils.ts)
-import { formatThaiDate } from '@/lib/fakereview/utils';
-// 💡 Assumed utility path (ถูกกำหนด Type ไว้แล้วใน likes.ts)
 import { getLikes, incrementLikes } from '@/lib/fakereview/likes';
+import { ThumbsUp, MessageSquare, Share2, ShieldCheck, Clock } from 'lucide-react';
 
-// ----------------------------------------------------
-// 1. INTERFACE DEFINITION (ใช้สำหรับการ Import Type ใน ReviewCarousel.tsx)
-// ----------------------------------------------------
+// ✅ Fixed: ลบ 'key' ออกจาก Interface เพื่อให้ผ่าน p type-check
 export interface ReviewCardProps {
-  id: string;
+  id: string; // ใช้สำหรับ Logic การ Like
   name?: string;
-  photo?: string; // URL string
+  photo?: string;
   feedback?: string;
-  createdAt?: string; // ISO Date String
+  createdAt?: string;
   likes?: number;
   likerName?: string;
 }
 
 const fallbackSrc = '/images/default-avatar.webp';
 
-// ----------------------------------------------------
-// 2. COMPONENT (with Type)
-// ----------------------------------------------------
 export default function ReviewCard({
   id,
-  name = 'ผู้ใช้ไม่ระบุชื่อ',
+  name = 'Anonymous_User',
   photo,
-  feedback = 'ไม่มีข้อความรีวิว',
+  feedback = 'No_Feedback_Provided',
   createdAt,
   likes = 1,
-  likerName = 'ผู้ใช้ทั่วไป',
 }: ReviewCardProps) {
-  // 💡 การตรวจสอบค่า photo ที่เป็น URL Public ที่ถูกต้อง
   const imgSrc = typeof photo === 'string' && photo.trim() ? photo : fallbackSrc;
-  const displayName = name?.trim() || 'ผู้ใช้ไม่ระบุชื่อ';
-  const displayDate = createdAt ? formatThaiDate(createdAt) : 'ไม่ทราบวันที่';
+  const displayName = name?.trim() || 'Anonymous_User';
+
+  // 📅 Format Date: 24 DEC 2025
+  const displayDate = createdAt
+    ? new Date(createdAt)
+        .toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })
+        .toUpperCase()
+    : 'UNKNOWN_DATE';
 
   const [likeCount, setLikeCount] = useState(likes);
   const [hasLiked, setHasLiked] = useState(false);
-  // 💡 ใช้เพื่อป้องกันการแสดงผล 'กำลังโหลด...' เมื่อ component ถูก mount แล้ว
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    // 💡 getLikes(id) ควร return number ตาม likes.ts
-    const storedLikes: number = getLikes(id);
-
-    // ตรวจสอบว่าผู้ใช้คนนี้เคย Like ใน Local Storage และยอดไลค์สูงกว่าค่าเริ่มต้นที่มาจาก API
+    const storedLikes = getLikes(id);
     if (storedLikes > likes) {
       setLikeCount(storedLikes);
       setHasLiked(true);
@@ -59,87 +56,94 @@ export default function ReviewCard({
 
   const handleLike = () => {
     if (hasLiked) return;
-    const updatedLikes = incrementLikes(id); // updatedLikes คือยอดใหม่
+    const updatedLikes = incrementLikes(id);
     setLikeCount(updatedLikes);
     setHasLiked(true);
   };
 
-  const likeText = mounted
-    ? likeCount > 1
-      ? `${likerName} และอีก ${(likeCount - 1).toLocaleString('th-TH')} คนถูกใจสิ่งนี้`
-      : `${likerName} ถูกใจสิ่งนี้`
-    : 'กำลังโหลด...';
+  const likeStatus = mounted ? `${likeCount.toLocaleString()} VERIFICATIONS` : 'SYNCING...';
 
   return (
     <article
-      aria-label={`รีวิวจาก ${displayName}`}
-      className="mx-auto mb-6 max-w-xl rounded-xl bg-white p-5 shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-lg dark:bg-gray-900"
+      aria-label={`Report from ${displayName}`}
+      className="group relative flex flex-col border-2 border-slate-900 bg-white p-6 transition-all hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]"
     >
-      {/* 🧑‍💼 Header */}
-      <header className="mb-2 flex items-center gap-3">
-        <div className="relative h-10 w-10 overflow-hidden rounded-full border border-gray-300 dark:border-gray-700">
-          {/* 💡 Next/Image component */}
-          <Image
-            src={imgSrc}
-            alt={`รูปโปรไฟล์ของ ${displayName}`}
-            fill
-            sizes="(max-width: 640px) 40px, 50px"
-            className="object-cover"
-          />
+      {/* 🛠️ Header: User Spec */}
+      <header className="mb-4 flex items-center justify-between border-b-2 border-slate-100 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="relative h-12 w-12 overflow-hidden border-2 border-slate-900 bg-slate-100 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)]">
+            <Image
+              src={imgSrc}
+              alt={displayName}
+              fill
+              sizes="48px"
+              className="object-cover grayscale transition-all group-hover:grayscale-0"
+            />
+          </div>
+          <div className="flex flex-col">
+            <span className="font-heading text-sm font-black uppercase italic leading-tight tracking-tighter text-slate-900">
+              {displayName}
+            </span>
+            <div className="flex items-center gap-1.5 text-slate-400">
+              <Clock size={10} strokeWidth={3} />
+              <time className="font-mono text-[9px] font-bold tracking-widest" dateTime={createdAt}>
+                {displayDate}
+              </time>
+            </div>
+          </div>
         </div>
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-            {displayName}
-          </span>
-          <time className="text-xs text-gray-500 dark:text-gray-400" dateTime={createdAt}>
-            {displayDate}
-          </time>
-        </div>
+        <ShieldCheck
+          size={18}
+          className="text-primary opacity-30 transition-opacity group-hover:opacity-100"
+        />
       </header>
 
-      {/* 💬 Feedback */}
-      <p className="mb-3 text-[15px] leading-normal text-gray-800 dark:text-gray-200">{feedback}</p>
+      {/* 💬 Feedback Body */}
+      <div className="relative mb-6">
+        <span className="absolute -left-2 -top-2 select-none font-serif text-4xl font-black leading-none text-slate-100">
+          “
+        </span>
+        <p className="relative z-10 font-sans text-sm font-bold italic leading-relaxed text-slate-700">
+          {feedback}
+        </p>
+      </div>
 
-      {/* 👍 Like Text */}
-      <p className="mb-2 text-xs text-gray-500 dark:text-gray-400">{likeText}</p>
+      {/* 📊 Metrics Bar */}
+      <div className="mb-4 flex items-center gap-2">
+        <div className="h-2 w-2 animate-pulse bg-primary" />
+        <span className="font-mono text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
+          {likeStatus}
+        </span>
+      </div>
 
-      {/* 🧩 Actions */}
-      <div className="mt-2 flex justify-around border-t pt-2 text-sm text-gray-600 dark:border-gray-700 dark:text-gray-300">
+      {/* 🧩 Console Actions */}
+      <div className="mt-auto grid grid-cols-3 gap-2 border-t-2 border-slate-900 pt-4">
         <button
           type="button"
           onClick={handleLike}
           disabled={hasLiked}
-          aria-pressed={hasLiked}
-          className={`flex items-center gap-1 rounded-md px-2 py-1 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
-            hasLiked
-              ? 'cursor-not-allowed text-blue-500'
-              : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+          className={`flex items-center justify-center gap-2 border-2 border-slate-900 py-2 text-[10px] font-black uppercase tracking-widest shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] transition-all active:translate-x-[1px] active:translate-y-[1px] active:shadow-none ${
+            hasLiked ? 'bg-primary text-slate-900' : 'bg-white text-slate-900 hover:bg-slate-50'
           }`}
         >
-          <span
-            className={`transition-transform duration-300 ${
-              hasLiked ? 'scale-125 text-blue-500' : ''
-            }`}
-          >
-            👍
-          </span>
-          <span>ถูกใจ</span>
+          <ThumbsUp size={14} strokeWidth={3} className={hasLiked ? 'fill-slate-900' : ''} />
+          {hasLiked ? 'DONE' : 'VERIFY'}
         </button>
 
         <button
           type="button"
-          aria-label="แสดงความคิดเห็น"
-          className="flex items-center gap-1 rounded-md px-2 py-1 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-gray-800"
+          className="flex items-center justify-center gap-2 border-2 border-slate-900 bg-white py-2 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
         >
-          💬 แสดงความคิดเห็น
+          <MessageSquare size={14} strokeWidth={3} />
+          LOGS
         </button>
 
         <button
           type="button"
-          aria-label="แชร์รีวิว"
-          className="flex items-center gap-1 rounded-md px-2 py-1 transition hover:bg-gray-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:hover:bg-gray-800"
+          className="flex items-center justify-center gap-2 border-2 border-slate-900 bg-white py-2 text-[10px] font-black uppercase tracking-widest text-slate-900 shadow-[2px_2px_0px_0px_rgba(15,23,42,1)] hover:bg-slate-50 active:translate-x-[1px] active:translate-y-[1px] active:shadow-none"
         >
-          ↗ แชร์
+          <Share2 size={14} strokeWidth={3} />
+          PUSH
         </button>
       </div>
     </article>

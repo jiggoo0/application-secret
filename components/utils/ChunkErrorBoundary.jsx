@@ -32,12 +32,12 @@ export default class ChunkErrorBoundary extends Component {
 
       // Fallback UI
       return (
-        <div className="flex min-h-[60vh] items-center justify-center rounded-lg border border-border bg-card p-8 shadow-lg">
+        <div className="bg-card flex min-h-[60vh] items-center justify-center rounded-lg border border-border p-8 shadow-lg">
           <div className="p-4 text-center">
             <h2 className="text-2xl font-extrabold text-destructive dark:text-red-400">
               🚨 ข้อมูลส่วนนี้ไม่พร้อมใช้งาน
             </h2>
-            <p className="mt-2 text-base text-muted-foreground">
+            <p className="text-muted-foreground mt-2 text-base">
               เราไม่สามารถโหลดส่วนประกอบนี้ได้สำเร็จ โปรดลองดำเนินการต่อไปนี้
             </p>
 

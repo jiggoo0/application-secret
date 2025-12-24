@@ -1,11 +1,16 @@
 'use client';
 
-import dynamic, { type LoadableComponent } from 'next/dynamic';
-import React, { Suspense, ReactNode, type ComponentProps, Fragment, useMemo } from 'react';
+/**
+ * 🏗️ JP-VISOUL: HomePageClient (The Operator Station)
+ * การประกอบร่างของหน่วยปฏิบัติการทั้งหมดภายใต้อัตลักษณ์เจ้าป่า
+ * Update: ถอดหน่วย OurWorks ออกตามคำสั่งปฏิบัติการ
+ */
+import dynamic from 'next/dynamic';
+import React, { Suspense, ReactNode } from 'react';
 import type { Post } from '@/types/blog';
 
 // ----------------------------
-// Static Imports (Client Components)
+// Static Imports
 // ----------------------------
 import AnnouncementBar from '@/components/AnnouncementBar';
 import AlertBanner from '@/components/AlertBanner';
@@ -14,100 +19,77 @@ import Section from '@/components/ui/Section';
 import ChunkErrorBoundary from '@/components/utils/ChunkErrorBoundary';
 
 // ----------------------------
-// Dynamic Imports with Type Safety
+// Dynamic Imports (Optimized)
 // ----------------------------
-// 💡 Note: ComponentProps should use the 'typeof' the default export path
-type HeroProps = ComponentProps<typeof import('@/components/Hero/Hero').default>;
-const Hero = dynamic(() => import('@/components/Hero/Hero'), {
-  ssr: false,
-}) as LoadableComponent<HeroProps>;
-
-type ReviewCarouselProps = ComponentProps<typeof import('@/components/ReviewCarousel').default>;
-const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), {
-  ssr: false,
-}) as LoadableComponent<ReviewCarouselProps>;
-
-type BlogProps = ComponentProps<typeof import('@/components/Blog/Blog').default>;
-const Blog = dynamic(() => import('@/components/Blog/Blog'), {
-  ssr: false,
-}) as LoadableComponent<BlogProps>;
-
-type AboutProps = ComponentProps<typeof import('@/components/About').default>;
-const About = dynamic(() => import('@/components/About'), {
-  ssr: false,
-}) as LoadableComponent<AboutProps>;
-
-type OurWorksProps = ComponentProps<typeof import('@/components/OurWorks/OurWorks').default>;
-const OurWorks = dynamic(() => import('@/components/OurWorks/OurWorks'), {
-  ssr: false,
-}) as LoadableComponent<OurWorksProps>;
+const Hero = dynamic(() => import('@/components/Hero/Hero'), { ssr: false });
+const ReviewCarousel = dynamic(() => import('@/components/ReviewCarousel'), { ssr: false });
+const Blog = dynamic(() => import('@/components/Blog/Blog'), { ssr: false });
+const AboutSection = dynamic(() => import('@/components/AboutSection'), { ssr: false });
+// ✅ ถอด OurWorks ออกจาก Dynamic Import เพื่อลด Bundle Size
 
 // ----------------------------
-// Types
+// Type Definitions
 // ----------------------------
-interface SectionItem {
-  id: string;
-  title: string;
-  // Component?: React.ComponentType<any> | LoadableComponent<any>; // ใช้ React.ElementType เพื่อความยืดหยุ่น
-  Component?: React.ElementType;
-  isServerComponent?: boolean;
-  isTitleSrOnly?: boolean;
-  // เพิ่ม Prop สำหรับ Blog โดยเฉพาะ
-  hasPostsProp?: boolean;
-}
-
 interface HomePageClientProps {
   serviceSection: ReactNode;
   latestPosts: Post[];
 }
 
+interface SectionItem {
+  id: string;
+  title: string;
+  Component?: React.ComponentType<any>;
+  isServerComponent?: boolean;
+  isTitleSrOnly?: boolean;
+  hasPostsProp?: boolean;
+}
+
 // ----------------------------
-// Config (ใช้ useMemo เพื่อให้แน่ใจว่าสร้างครั้งเดียว)
+// Configurations: ผังโครงสร้างหน้าแรก (Updated Config)
 // ----------------------------
-const sections: SectionItem[] = [
-  { id: 'hero', title: 'Hero Section', Component: Hero, isTitleSrOnly: true },
-  { id: 'about', title: 'เกี่ยวกับเรา', Component: About },
-  { id: 'works', title: 'ผลงานของเรา', Component: OurWorks },
-  { id: 'services', title: 'บริการ', isServerComponent: true }, // Server Component
-  { id: 'reviews', title: 'รีวิวจากลูกค้า', Component: ReviewCarousel },
-  { id: 'blog', title: 'บทความล่าสุด', Component: Blog, hasPostsProp: true }, // Dynamic Client Component
+const SECTIONS_CONFIG: SectionItem[] = [
+  { id: 'hero', title: 'ศูนย์บัญชาการ_MAIN', Component: Hero, isTitleSrOnly: true },
+  { id: 'about', title: 'ตัวตนและมาตรฐาน_ABOUT_JP', Component: AboutSection },
+  // 🚫 OurWorks ถูกถอดออกจากสารบบนี้แล้ว
+  { id: 'services', title: 'หน่วยบริการเฉพาะทาง_SERVICES', isServerComponent: true },
+  { id: 'reviews', title: 'เสียงตอบรับจากผู้ใช้จริง_CLIENT_REPORTS', Component: ReviewCarousel },
+  { id: 'blog', title: 'คลังข้อมูลและกลยุทธ์_DATA_CENTER', Component: Blog, hasPostsProp: true },
 ];
 
 // ----------------------------
-// Main Component
+// Main Assembler: ผู้รวบรวมระบบ
 // ----------------------------
 export default function HomePageClient({ serviceSection, latestPosts = [] }: HomePageClientProps) {
-  // 💡 Refactored: ใช้ useMemo เพื่อจำค่าผลลัพธ์ของฟังก์ชันนี้
-  const renderSectionContent = useMemo(
-    () =>
-      (id: string, Component?: React.ElementType): ReactNode => {
-        // 1. Service Section (Server Component)
-        if (id === 'services') return serviceSection;
-
-        // 2. Blog Section (ต้องส่ง posts prop)
-        const currentSection = sections.find((s) => s.id === id);
-        if (id === 'blog' && Component) {
-          // ใช้ currentSection.hasPostsProp เพื่อให้ Type Checker รู้
-          return <Component posts={latestPosts} />;
-        }
-
-        // 3. Dynamic/Static Client Components ทั่วไป
-        if (Component) return <Component />;
-
-        return null; // ไม่มี Component หรือ Logic ที่เกี่ยวข้อง
-      },
-    [serviceSection, latestPosts],
-  );
-
+  // 🏗️ Industrial Loading Fallback
   const getSuspenseFallback = (id: string) => (
-    <div className="flex h-40 animate-pulse items-center justify-center rounded-lg border border-gray-200 bg-gray-50 p-8 text-gray-500 dark:border-gray-700 dark:bg-gray-800">
-      {id === 'blog' ? (
-        <span className="text-sm font-medium">📰 กำลังโหลดบทความ...</span>
-      ) : (
-        <span className="text-sm">Loading {id} section...</span>
-      )}
+    <div className="mx-4 my-8 flex h-80 animate-pulse flex-col items-center justify-center border-4 border-slate-900 bg-slate-50 p-12 shadow-[8px_8px_0px_0px_rgba(15,23,42,1)]">
+      <div className="relative mb-6 flex h-16 w-16">
+        <div className="absolute inset-0 border-4 border-slate-200"></div>
+        <div className="absolute inset-0 animate-spin border-4 border-transparent border-t-primary"></div>
+      </div>
+      <span className="font-heading text-sm font-black uppercase italic tracking-[0.4em] text-slate-900">
+        Loading_{id}_Module...
+      </span>
+      <p className="mt-2 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">
+        SYSTEM_INTEGRITY_CHECKING
+      </p>
     </div>
   );
+
+  const renderSectionContent = (
+    id: string,
+    Component?: React.ComponentType<any>,
+    hasPostsProp?: boolean,
+  ): ReactNode => {
+    if (id === 'services') return serviceSection;
+    if (!Component) return null;
+
+    if (id === 'blog' || hasPostsProp) {
+      return <Component posts={latestPosts} />;
+    }
+
+    return <Component />;
+  };
 
   return (
     <>
@@ -118,44 +100,42 @@ export default function HomePageClient({ serviceSection, latestPosts = [] }: Hom
       <main
         id="main-content"
         role="main"
-        aria-label="เนื้อหาหลัก"
-        className="flex flex-col gap-20 bg-background text-foreground sm:gap-28 lg:gap-36"
+        className="flex flex-col bg-white text-slate-900 selection:bg-yellow-400 selection:text-black"
       >
-        {sections.map(({ id, title, Component, isServerComponent, isTitleSrOnly }) => {
-          // 💡 Call the memoized function
-          const content = renderSectionContent(id, Component);
-          const hasContent = content !== undefined && content !== null;
+        {SECTIONS_CONFIG.map(
+          ({ id, title, Component, isServerComponent, isTitleSrOnly, hasPostsProp }) => {
+            const content = renderSectionContent(id, Component, hasPostsProp);
+            if (!content) return null;
 
-          // ไม่ render ถ้าไม่มี content
-          if (!hasContent) return null;
+            return (
+              <ChunkErrorBoundary key={id}>
+                <Section
+                  id={id}
+                  title={title}
+                  isTitleSrOnly={isTitleSrOnly}
+                  className="scroll-mt-28 overflow-hidden border-b-4 border-slate-900 px-4 py-24 last:border-0 sm:px-6 sm:py-32 lg:px-8 lg:py-40"
+                >
+                  {/* Label ข้าง Section สไตล์อุตสาหกรรม */}
+                  {!isTitleSrOnly && (
+                    <div className="pointer-events-none absolute left-8 top-10 hidden lg:block">
+                      <span className="block origin-left rotate-90 font-mono text-[9px] font-black uppercase tracking-[0.5em] text-slate-300">
+                        OP_UNIT_{id.toUpperCase()}
+                      </span>
+                    </div>
+                  )}
 
-          // 1. จัดเตรียม Children สำหรับ <Section>
-          const sectionChildren = isServerComponent ? (
-            <div className="mx-auto max-w-7xl">{content}</div>
-          ) : (
-            // สำหรับ Client Component (Dynamic or Static)
-            <Suspense fallback={getSuspenseFallback(id)}>
-              <div className="mx-auto max-w-7xl">{content}</div>
-            </Suspense>
-          );
-
-          return (
-            <ChunkErrorBoundary key={id}>
-              {/* ✅ FIX: แก้ไข ESLint Error ด้วยการใช้ Nesting ปกติ */}
-              <Section
-                id={id}
-                title={title}
-                isTitleSrOnly={isTitleSrOnly}
-                className="scroll-mt-28 px-4 sm:px-6 lg:px-8"
-              >
-                {/* ส่ง children เข้าไปในรูปแบบ Nesting
-                  Section Component ควรจะถูกออกแบบให้รับ children: ReactNode
-                */}
-                {sectionChildren}
-              </Section>
-            </ChunkErrorBoundary>
-          );
-        })}
+                  <div className="mx-auto w-full max-w-[1440px]">
+                    {isServerComponent ? (
+                      content
+                    ) : (
+                      <Suspense fallback={getSuspenseFallback(id)}>{content}</Suspense>
+                    )}
+                  </div>
+                </Section>
+              </ChunkErrorBoundary>
+            );
+          },
+        )}
       </main>
     </>
   );
