@@ -1,167 +1,159 @@
-// /lib/fakereview/ThaiFeedbackGenerator.ts
+/** @format */
 
-import * as Papa from 'papaparse';
-import { supabaseServer } from '@/lib/supabase/server';
-import { v4 as uuidv4 } from 'uuid';
-import { getRealisticLikes, getRandomDate } from './utils';
+import * as Papa from "papaparse"
+import { supabaseServer } from "@/lib/supabase/server"
+import { v4 as uuidv4 } from "uuid"
+import { getRealisticLikes } from "./likes" // เชื่อมกับ Logic ไลค์ที่เราเพิ่งทำ
+import { getRandomDate } from "./utils" // ฟังก์ชันสุ่มวันที่
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const FALLBACK_PHOTO = `${SUPABASE_URL}/storage/v1/object/public/user-uploads/Fakereview/default-avatar.webp`;
-const BUCKET_NAME = 'user-uploads';
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || ""
+const FALLBACK_PHOTO = `${SUPABASE_URL}/storage/v1/object/public/user-uploads/Fakereview/default-avatar.webp`
+const BUCKET_NAME = "user-uploads"
 
 // ---------------------------
-// 1. INTERFACES & TYPES
+// 1. INTERFACES
 // ---------------------------
 interface FirstNameRow {
-  name: string;
-  gender: 'male' | 'female' | string;
+  name: string
+  gender: string
 }
-
 interface LastNameRow {
-  name: string;
+  name: string
 }
-
 interface CommentRow {
-  comment: string;
+  comment: string
 }
 
 export interface FakeReview {
-  id: string;
-  name: string;
-  gender: 'male' | 'female' | string;
-  photo: string;
-  feedback: string;
-  createdAt: string; // ISO Date String
-  rating: number; // 1-5
-  likes: number;
+  id: string
+  name: string
+  gender: "male" | "female" | string
+  photo: string
+  feedback: string
+  createdAt: string
+  rating: number
+  likes: number
 }
 
 // ---------------------------
-// 2. Utility: Fetch CSV from Supabase
+// 2. UTILITY: UNICODE-SAFE CSV LOADER
 // ---------------------------
 async function fetchCSV<T>(url: string): Promise<T[]> {
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`❌ Failed to fetch CSV from ${url}`);
-    const text = await res.text();
+    const res = await fetch(url, { next: { revalidate: 3600 } }) // Cache 1 hr
+    if (!res.ok) throw new Error("Fetch failed")
 
-    return new Promise<T[]>((resolve, reject) => {
-      Papa.parse(text, {
+    const text = await res.text()
+
+    return new Promise<T[]>((resolve) => {
+      Papa.parse<T>(text, {
         header: true,
         skipEmptyLines: true,
-        complete: ({ data }) => {
-          const filtered = data.filter((row: any) => row && Object.keys(row).length > 0) as T[];
-          resolve(filtered);
+        complete: ({ data }: { data: T[] }) => {
+          const filtered = data.filter(
+            (row) => row && Object.keys(row).length > 0
+          )
+          resolve(filtered)
         },
-        error: reject,
-      });
-    });
-  } catch (err) {
-    console.error('[fetchCSV] ❌', err instanceof Error ? err.message : err);
-    return [];
+      })
+    })
+  } catch (_err) {
+    console.error("[System_Data_Error]: CSV Retrieval failure")
+    return []
   }
 }
 
 // ---------------------------
-// 3. Utility: Pick random item (Generic)
+// 3. UTILITY: PHOTO_ASSET_RESOLVER
 // ---------------------------
-const pickRandom = <T>(arr: T[]): T => {
-  if (arr.length === 0) throw new Error('Cannot pick random from empty array');
-  return arr[Math.floor(Math.random() * arr.length)];
-};
+type PhotoCache = { [key: string]: { name: string }[] }
 
-// ---------------------------
-// 4. Utility: Get random photo by gender
-// ---------------------------
-type PhotoCache = {
-  [key: string]: { name: string }[];
-};
+async function getRandomPhoto(
+  gender: string,
+  cache: PhotoCache
+): Promise<string> {
+  const files = cache[gender]
+  if (!files || files.length === 0) return FALLBACK_PHOTO
 
-async function getRandomPhoto(gender: string, cache: PhotoCache): Promise<string> {
-  const cachedFiles = cache[gender];
-  if (cachedFiles?.length) {
-    const file = pickRandom(cachedFiles);
-    return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/Fakereview/${gender}/${file.name}`;
-  }
-
-  const folder = `Fakereview/${gender}`;
-  const { data, error } = await supabaseServer.storage
-    .from(BUCKET_NAME)
-    .list(folder, { limit: 100 });
-
-  if (error || !data?.length) {
-    console.warn(`[getRandomPhoto] ⚠️ Error or no files found for ${folder}:`, error?.message);
-    return FALLBACK_PHOTO;
-  }
-
-  const file = pickRandom(data);
-  return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${folder}/${file.name}`;
+  const file = files[Math.floor(Math.random() * files.length)]
+  const safePath = `Fakereview/${gender}/${encodeURIComponent(file.name)}`
+  return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/${safePath}`
 }
 
 // ---------------------------
-// 5. Main: Generate Facebook-style reviews
+// 4. MAIN_GENERATOR: ARCHITECTURAL FLOW
 // ---------------------------
 export async function generateFacebookStyleReviews(
   count = 20,
-  dateLimitDays = 60,
+  dateLimitDays = 60
 ): Promise<FakeReview[]> {
-  const urls = {
-    firstNames: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/Fakereview/firstNames.csv`,
-    lastNames: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/Fakereview/lastNames.csv`,
-    comments: `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/Fakereview/thaiComments.csv`,
-  };
+  if (!supabaseServer) throw new Error("Supabase not initialized")
 
+  const baseStoragePath = `${SUPABASE_URL}/storage/v1/object/public/${BUCKET_NAME}/Fakereview`
+
+  const urls = {
+    firstNames: `${baseStoragePath}/firstNames.csv`,
+    lastNames: `${baseStoragePath}/lastNames.csv`,
+    comments: `${baseStoragePath}/thaiComments.csv`,
+  }
+
+  // 🔄 PARALLEL_DATA_FETCHING
   const [firstNames, lastNames, comments] = await Promise.all([
     fetchCSV<FirstNameRow>(urls.firstNames),
     fetchCSV<LastNameRow>(urls.lastNames),
     fetchCSV<CommentRow>(urls.comments),
-  ]);
+  ])
 
-  if (firstNames.length === 0 || lastNames.length === 0 || comments.length === 0) {
-    console.error('[Generator] ❌ Failed to load required CSV data.');
-    return [];
+  if (!firstNames.length || !lastNames.length || !comments.length) {
+    console.warn("[System_Warning]: Mock data sources are empty.")
+    return []
   }
 
-  const photoCache: PhotoCache = {};
-  for (const gender of ['male', 'female']) {
-    const { data, error } = await supabaseServer.storage
-      .from(BUCKET_NAME)
-      .list(`Fakereview/${gender}`, { limit: 100 });
+  // 🖼️ PHOTO_REGISTRY_SYNC
+  const photoCache: PhotoCache = {}
+  const genders = ["male", "female"] as const
 
-    photoCache[gender] = (error ? [] : data) || [];
-  }
+  await Promise.all(
+    genders.map(async (gender) => {
+      if (!supabaseServer)
+        throw new Error("Supabase server client not initialized")
+      const { data, error } = await supabaseServer.storage
+        .from(BUCKET_NAME)
+        .list(`Fakereview/${gender}`, { limit: 100 })
+      photoCache[gender] = error ? [] : data || []
+    })
+  )
 
-  const reviews: FakeReview[] = await Promise.all(
-    Array.from({ length: count }).map(async () => {
-      const first = pickRandom(firstNames);
-      const last = pickRandom(lastNames);
-      const comment = pickRandom(comments);
+  // 🏗️ REVIEW_CONSTRUCTION_LOOP
+  const reviewsPromises = Array.from({ length: count }).map(async () => {
+    const first = firstNames[Math.floor(Math.random() * firstNames.length)]
+    const last = lastNames[Math.floor(Math.random() * lastNames.length)]
+    const comm = comments[Math.floor(Math.random() * comments.length)]
 
-      const firstName = first?.name?.trim() || 'ไม่ระบุชื่อ';
-      const lastName = last?.name?.trim() || '';
-      const fullName = `${firstName} ${lastName}`.trim();
+    const genderInput = (first?.gender || "male").toLowerCase()
+    const gender = genders.includes(genderInput as any) ? genderInput : "male"
 
-      const gender = ['male', 'female'].includes(first?.gender?.toLowerCase() as string)
-        ? (first.gender.toLowerCase() as 'male' | 'female')
-        : 'male';
+    const photo = await getRandomPhoto(gender, photoCache)
+    const createdAt = getRandomDate(dateLimitDays)
+    const rating = Math.floor(Math.random() * 2) + 4 // 4-5 Stars
+    const likes = getRealisticLikes({ rating, createdAt })
 
-      const photo = await getRandomPhoto(gender, photoCache);
-      const createdAt = getRandomDate(dateLimitDays);
-      const rating = Math.floor(Math.random() * 5) + 1;
-      const likes = getRealisticLikes({ rating, createdAt });
+    return {
+      id: uuidv4(),
+      name: `${first?.name?.trim() || "ลูกค้า"} ${last?.name?.trim() || "นิรนาม"}`,
+      gender,
+      photo,
+      feedback: comm?.comment?.trim() || "บริการรวดเร็วและเป็นมืออาชีพมากครับ",
+      createdAt,
+      rating,
+      likes,
+    }
+  })
 
-      return {
-        id: uuidv4(),
-        name: fullName,
-        gender,
-        photo,
-        feedback: comment?.comment?.trim() || '',
-        createdAt,
-        rating,
-        likes,
-      } as FakeReview;
-    }),
-  );
+  const results = await Promise.all(reviewsPromises)
 
-  return reviews.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  // ⏱️ SORT_BY_CHRONOLOGY
+  return results.sort(
+    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  )
 }

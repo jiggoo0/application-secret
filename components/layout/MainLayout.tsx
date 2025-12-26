@@ -2,15 +2,19 @@
 "use client"
 
 import React from "react"
-import type { ReactNode } from "react"
-import Header from "@/components/Header" // ใช้ absolute path
-import Footer from "@/components/Footer" // ใส่ Footer ถ้าต้องการ
+import Header from "@/components/Header"
+import Footer from "@/components/Footer"
 import { inter } from "@/lib/fonts"
 
 interface MainLayoutProps {
-  children: ReactNode
+  children: React.ReactNode
 }
 
+/**
+ * 🌐 MainLayout
+ * ใช้เป็น Layout หลักสำหรับหน้าเว็บ
+ * ครอบคลุม Header / Footer และ responsive container
+ */
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
     <div
