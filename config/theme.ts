@@ -3,6 +3,7 @@
 /**
  * 🚀 JP VISUAL DOCS: SYSTEM THEME CONFIGURATION
  * Centralized source of truth for design tokens.
+ * สัญญาการออกแบบสำหรับโปรโตคอล JP Visual Docs v2.8
  */
 
 export const themeConfig = {
@@ -48,12 +49,12 @@ export const themeConfig = {
     },
 
     fontSize: {
-      micro: "0.625rem", // Tags/Captions
-      xs: "0.75rem", // Label Mono
-      sm: "0.875rem", // Body
-      base: "1rem", // Main content
-      lg: "1.125rem", // Small titles
-      xl: "1.25rem", // Section headings
+      micro: "0.625rem", // 10px - Tags/Captions
+      xs: "0.75rem", // 12px - Label Mono
+      sm: "0.875rem", // 14px - Body
+      base: "1rem", // 16px - Main content
+      lg: "1.125rem", // 18px - Small titles
+      xl: "1.25rem", // 20px - Section headings
       display: "clamp(2.5rem, 8vw, 6.5rem)", // Responsive Headline
     },
   },
@@ -63,13 +64,14 @@ export const themeConfig = {
     headerHeight: "80px",
     headerHeightMobile: "64px",
     gridGap: "1px",
-    radius: "0px", // Industrial sharp corners
+    radius: "0px", // Industrial sharp corners (เหลี่ยมคมชัด)
   },
 
   effects: {
     shadow: {
       sharp: "6px 6px 0px 0px rgba(15, 23, 42, 1)",
       blueprint: "0 0 40px rgba(37, 99, 235, 0.1)",
+      glow: "0 0 15px rgba(37, 99, 235, 0.5)", // สำหรับไฟสถานะ
     },
     transition: {
       fast: "150ms cubic-bezier(0.16, 1, 0.3, 1)",
@@ -79,4 +81,15 @@ export const themeConfig = {
   },
 } as const
 
+/** 🏷️ Helper Type สำหรับดึงค่า Config ไปใช้ใน Component */
 export type ThemeConfig = typeof themeConfig
+
+/** 🛠️ Tailwind Extension Helper (ตัวอย่างการนำไป mapping) */
+export const themeUtils = {
+  getPrimaryShadow: () => themeConfig.effects.shadow.sharp,
+  getGridStyle: () => ({
+    display: "grid",
+    gap: themeConfig.layout.gridGap,
+    backgroundColor: themeConfig.colors.industrial.border,
+  }),
+}

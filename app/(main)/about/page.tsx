@@ -1,6 +1,7 @@
 /** @format */
 import React from "react"
 import Image from "next/image"
+import { Metadata } from "next" // ✅ เพิ่ม Metadata Type
 import {
   ShieldCheck,
   History,
@@ -10,7 +11,8 @@ import {
   CheckCircle2,
 } from "lucide-react"
 
-export const metadata = {
+// ✅ แก้ไข: ระบุ Type ให้ Metadata อย่างถูกต้อง
+export const metadata: Metadata = {
   title: "About | JP VISUAL DOCS - Document Architecture Specialists",
   description:
     "ทำความรู้จักกับ JP VISUAL DOCS ทีมงานผู้เชี่ยวชาญด้านการจัดการเอกสารวีซ่าและนิติกรรม ด้วยประสบการณ์กว่า 8 ปี",
@@ -30,7 +32,7 @@ export default function AboutPage() {
 
   return (
     <div className="flex flex-col bg-white">
-      {/* HERO_HEADER */}
+      {/* 🏗️ HERO_HEADER: ใช้ระบบ Blueprint Overlay */}
       <section className="relative overflow-hidden bg-slate-900 py-24 text-white lg:py-32">
         <div className="absolute inset-0 z-0 opacity-[0.05]">
           <div className="h-full w-full bg-[linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)] bg-[size:50px_50px]" />
@@ -55,12 +57,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* SYSTEM_STATS */}
+      {/* 📊 SYSTEM_STATS: Grid Architecture */}
       <section className="border-y border-slate-100 bg-slate-50">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-2 gap-px bg-slate-200 md:grid-cols-4">
             {stats.map((stat, idx) => (
-              <div key={idx} className="bg-slate-50 p-8 text-center md:p-12">
+              <div
+                key={idx}
+                className="bg-slate-50 p-8 text-center transition-colors hover:bg-white md:p-12"
+              >
                 <div className="mb-4 flex justify-center text-blue-600">
                   {stat.icon}
                 </div>
@@ -76,7 +81,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* CONTENT_STRATEGY */}
+      {/* 🧩 CONTENT_STRATEGY: Visual & Mission */}
       <section className="py-24 lg:py-32">
         <div className="container mx-auto max-w-7xl px-6">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:items-center">
@@ -86,7 +91,8 @@ export default function AboutPage() {
                 src="https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/About/About.png"
                 alt="JP Visual Docs Expertise"
                 fill
-                className="object-cover object-center"
+                sizes="(max-width: 768px) 100vw, 50vw" // ✅ เพิ่ม sizes เพื่อรีด performance ของ Next.js
+                className="object-cover object-center grayscale transition-all duration-700 hover:grayscale-0"
                 priority
               />
               <div className="absolute bottom-6 left-6 z-20 bg-blue-600 p-6 text-white shadow-xl">
@@ -116,16 +122,17 @@ export default function AboutPage() {
                     จนก้าวสู่การเป็นผู้เชี่ยวชาญด้าน{" "}
                     <strong>Document Architecture</strong>{" "}
                     ที่ได้รับความไว้วางใจจากลูกค้ากว่า 1,800 รายทั่วโลก
-                    ไม่ว่าจะเป็นการขอวีซ่าที่ซับซ้อน
-                    หรือการแปลและรับรองเอกสารทางกฎหมาย
                   </p>
                 </div>
               </div>
 
               {/* MISSION_CARDS */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                <div className="border border-slate-100 bg-white p-6 shadow-sm transition-all hover:border-blue-500">
-                  <Target className="mb-4 text-blue-600" size={24} />
+                <div className="group border border-slate-100 bg-white p-6 shadow-sm transition-all hover:border-blue-500">
+                  <Target
+                    className="mb-4 text-blue-600 transition-transform group-hover:scale-110"
+                    size={24}
+                  />
                   <h4 className="mb-2 text-sm font-black uppercase">
                     Core_Mission
                   </h4>
@@ -133,8 +140,11 @@ export default function AboutPage() {
                     สร้างโอกาสความสำเร็จสูงสุดในทุกคำขอของลูกค้า
                   </p>
                 </div>
-                <div className="border border-slate-100 bg-white p-6 shadow-sm transition-all hover:border-blue-500">
-                  <ShieldCheck className="mb-4 text-blue-600" size={24} />
+                <div className="group border border-slate-100 bg-white p-6 shadow-sm transition-all hover:border-blue-500">
+                  <ShieldCheck
+                    className="mb-4 text-blue-600 transition-transform group-hover:scale-110"
+                    size={24}
+                  />
                   <h4 className="mb-2 text-sm font-black uppercase">
                     Data_Integrity
                   </h4>
@@ -148,7 +158,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* TRUST_PROTOCOL */}
+      {/* 🎖️ TRUST_PROTOCOL */}
       <section className="border-t border-slate-200 bg-slate-50 py-24">
         <div className="container mx-auto max-w-4xl px-6 text-center">
           <div className="mb-8 flex justify-center text-blue-600">

@@ -5,19 +5,24 @@
 @tailwind utilities;
 
 /* ----------------------------------------------------
-   🚀 JP VISUAL DOCS: INDUSTRIAL ARCHITECTURE v2.1
-   Update: Architectural Depth & Enhanced Grid System
+   🚀 JP VISUAL DOCS: INDUSTRIAL ARCHITECTURE v2.8
+   Core System: Precise Grids & Modular Interactions
    ---------------------------------------------------- */
 
 @layer base {
   :root {
-    --theme-color: #2563eb; /* Blue-600 */
-    --industrial-black: #0f172a; /* Slate-900 */
-    --industrial-border: #cbd5e1; /* Slate-300 */
-    --grid-opacity: 0.15; /* Blueprint Grid opacity */
+    /* ดึงค่าจาก themeConfig โดยตรงเพื่อความแม่นยำ */
+    --theme-primary: #2563eb;
+    --industrial-black: #0f172a;
+    --industrial-border: #cbd5e1;
+    --grid-opacity: 0.12;
 
     --header-height: 80px;
     --header-height-mobile: 64px;
+
+    /* ระบบสีสำหรับเครื่องหมายสถานะ */
+    --status-success: #16a34a;
+    --status-error: #dc2626;
   }
 
   html {
@@ -25,6 +30,7 @@
     scroll-behavior: smooth;
     scroll-padding-top: var(--header-height);
 
+    /* การแสดงผลฟอนต์ให้คมชัดสไตล์เอกสารพิมพ์เขียว */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
@@ -37,11 +43,13 @@
   }
 
   body {
-    @apply overflow-x-hidden bg-slate-50 text-slate-900;
+    @apply bg-slate-50 text-slate-900 selection:bg-blue-600 selection:text-white;
+    /* ปรับปรุง Line-height ภาษาไทยให้สมดุล */
     line-height: 1.65;
     letter-spacing: -0.01em;
   }
 
+  /* 📟 INDUSTRIAL SCROLLBAR */
   ::-webkit-scrollbar {
     width: 6px;
   }
@@ -49,12 +57,13 @@
     @apply bg-slate-100;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 transition-colors hover:bg-blue-600;
-    border-radius: 100px;
+    @apply bg-slate-300 transition-colors hover:bg-blue-600 active:bg-blue-700;
+    border-radius: 0px; /* ทรงเหลี่ยมเข้ากับธีม */
   }
 }
 
 @layer components {
+  /* 🏗️ ARCHITECTURAL GRID BACKGROUND */
   .bg-blueprint {
     background-image:
       linear-gradient(var(--industrial-border) 1px, transparent 1px),
@@ -62,58 +71,57 @@
     background-size: 40px 40px;
     background-position: center center;
     @apply opacity-[var(--grid-opacity)];
+    mask-image: radial-gradient(circle at center, black, transparent 80%);
   }
 
+  /* 📐 HEADLINE SYSTEM */
   .headline-sharp {
     @apply font-black uppercase tracking-tighter text-slate-900;
     font-size: clamp(2.5rem, 8vw, 6.5rem);
-    line-height: 0.95;
+    line-height: 0.85;
     @screen md {
-      line-height: 0.85;
+      line-height: 0.8;
     }
   }
 
-  .headline-thai-support {
-    @apply font-bold leading-[1.5] text-slate-900;
-  }
-
+  /* ⚡ INDUSTRIAL ACTION BUTTON */
   .btn-industrial {
-    @apply relative inline-flex items-center justify-center gap-4 bg-slate-900 font-black uppercase text-white transition-all duration-300 active:scale-[0.97];
+    @apply duration-400 relative inline-flex items-center justify-center gap-4 bg-slate-900 font-black uppercase text-white transition-all active:scale-[0.96];
     border-radius: 0;
     padding: 1.25rem 2.5rem;
     font-size: 0.75rem;
-    letter-spacing: 0.35em;
-    box-shadow: 6px 6px 0px 0px rgba(37, 99, 235, 0.3);
+    letter-spacing: 0.4em;
+    /* เงาแบบ Sharp Shadow ตาม ThemeConfig */
+    box-shadow: 6px 6px 0px 0px rgba(37, 99, 235, 0.4);
   }
 
   .btn-industrial:hover {
-    @apply translate-x-[-3px] translate-y-[-3px] bg-blue-600;
-    box-shadow: 12px 12px 0px 0px rgba(15, 23, 42, 0.1);
+    @apply -translate-x-1 -translate-y-1 bg-blue-600 text-white shadow-[12px_12px_0px_0px_rgba(15,23,42,0.1)];
   }
 
+  /* 📦 MODULAR ASSET CARD */
   .asset-card {
-    @apply relative overflow-hidden border border-slate-200 bg-white p-8 shadow-sm transition-all duration-500;
+    @apply relative overflow-hidden border border-slate-200 bg-white p-8 transition-all duration-500 hover:z-10;
   }
 
-  .asset-card::before {
+  .asset-card::after {
     content: "";
-    @apply absolute left-0 top-0 h-full w-1.5 origin-bottom scale-y-0 bg-blue-600 transition-transform duration-300;
+    @apply absolute bottom-0 left-0 h-1 w-0 bg-blue-600 transition-all duration-500 ease-out;
   }
 
-  .asset-card:hover::before {
-    @apply scale-y-100;
+  .asset-card:hover::after {
+    @apply w-full;
   }
 
   .asset-card:hover {
-    @apply translate-y-[-6px] border-blue-600/30 shadow-xl shadow-slate-200;
+    @apply border-blue-600/30 shadow-2xl shadow-blue-900/5;
   }
 
+  /* 🏷️ MONO_LABEL PROTOCOL */
   .label-mono {
-    @apply mb-4 flex items-center gap-2 font-black uppercase text-blue-600;
+    @apply mb-4 flex items-center gap-3 font-mono font-black uppercase text-blue-600;
     font-size: 0.65rem;
-    letter-spacing: 0.4em;
-    font-family:
-      ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    letter-spacing: 0.45em;
   }
 }
 
@@ -122,28 +130,25 @@
     text-wrap: balance;
   }
 
-  .font-ready {
-    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  /* เอฟเฟกต์แสง Scan Line จางๆ บนหน้าเว็บ */
+  .scan-line-overlay {
+    @apply pointer-events-none absolute inset-0 z-50 overflow-hidden opacity-[0.03];
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      rgba(37, 99, 235, 0.5) 50%,
+      transparent 100%
+    );
+    background-size: 100% 4px;
+    animation: scanAnimation 8s linear infinite;
   }
 
-  @keyframes fadeIn {
+  @keyframes scanAnimation {
     from {
-      opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(-100%);
     }
     to {
-      opacity: 1;
-      transform: translateY(0);
+      transform: translateY(100%);
     }
-  }
-}
-
-@media (max-width: 640px) {
-  .headline-sharp {
-    line-height: 1.1;
-  }
-
-  .btn-industrial {
-    @apply w-full px-6 text-[11px] tracking-[0.2em];
   }
 }

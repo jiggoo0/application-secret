@@ -1,4 +1,5 @@
 /** @format */
+
 import React from "react"
 import type { Metadata, Viewport } from "next"
 import { Kanit } from "next/font/google"
@@ -13,34 +14,32 @@ const kanit = Kanit({
   display: "swap",
 })
 
+const siteUrl = siteConfig.url
+
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url || `https://${siteConfig.domain}`),
+  metadataBase: new URL(siteUrl),
   title: {
     default: siteConfig.seo.defaultTitle,
     template: siteConfig.seo.titleTemplate,
   },
   description: siteConfig.seo.description,
-  keywords: [
-    "รับทำวีซ่า",
-    "แปลเอกสาร",
-    "JP Visual Docs",
-    "Visa Thailand",
-    "จดทะเบียนบริษัท",
-  ],
+  // ✅ แก้ไข: แปลง Readonly Array เป็น Mutable Array เพื่อให้ผ่าน Type-check
+  keywords: [...siteConfig.seo.keywords],
   authors: [{ name: siteConfig.author.name }],
   openGraph: {
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.description,
-    url: siteConfig.url || `https://${siteConfig.domain}`,
+    url: siteUrl,
     siteName: siteConfig.name,
     locale: "th_TH",
     type: "website",
     images: [
       {
-        url: "/og-image.png",
+        url: siteConfig.ogImage,
         width: 1200,
         height: 630,
-        alt: "JP Visual Docs - Professional Document Architecture",
+        alt: `${siteConfig.name} - Professional Document Architecture`,
+        type: "image/webp",
       },
     ],
   },
@@ -48,11 +47,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.description,
-    images: ["/og-image.png"],
+    images: [siteConfig.ogImage],
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: siteConfig.assets.favicon,
+    apple: siteConfig.assets.appleTouch,
   },
 }
 
@@ -60,14 +59,14 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: "#0f172a",
+  themeColor: "#0f172a", // Slate 900
 }
 
-export default function RootLayout({
-  children,
-}: {
+interface RootLayoutProps {
   children: React.ReactNode
-}) {
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="th"
@@ -75,9 +74,7 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <body className="min-h-screen bg-white font-sans antialiased selection:bg-blue-600/10 selection:text-blue-600">
-        <Providers>
-          {children} {/* Nested Layouts render Header/Footer */}
-        </Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   )

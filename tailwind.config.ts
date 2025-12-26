@@ -1,6 +1,6 @@
 /** @format */
 import type { Config } from "tailwindcss"
-import { themeConfig } from "./config/theme"
+import { themeConfig } from "./config/theme" // ตรวจสอบว่า path ถูกต้องตามที่จัดโครงสร้างไว้
 
 const config: Config = {
   content: [
@@ -18,43 +18,60 @@ const config: Config = {
         lg: "4rem",
       },
       screens: {
-        "2xl": "1400px",
+        "2xl": themeConfig.layout.containerMaxWidth,
       },
     },
     extend: {
       colors: {
+        // Mapping จาก themeConfig โดยตรง
         brand: {
           DEFAULT: themeConfig.colors.primary.DEFAULT,
           dark: themeConfig.colors.primary.dark,
-          light: themeConfig.colors.primary.light || "#3b82f6",
+          light: themeConfig.colors.primary.light,
+          accent: themeConfig.colors.primary.accent,
         },
         industrial: {
-          black: "#0f172a",
-          gray: "#64748b",
-          soft: "#f8fafc",
-          border: "#cbd5e1",
+          black: themeConfig.colors.industrial.black,
+          dark: themeConfig.colors.industrial.dark,
+          gray: themeConfig.colors.industrial.gray,
+          border: themeConfig.colors.industrial.border,
+          surface: themeConfig.colors.industrial.surface,
+          soft: themeConfig.colors.industrial.soft,
         },
-        "brand-dark": themeConfig.colors.primary.dark,
-        "industrial-black": "#0f172a",
-        "industrial-border": "#cbd5e1",
+        status: {
+          success: themeConfig.colors.status.success,
+          warning: themeConfig.colors.status.warning,
+          danger: themeConfig.colors.status.danger,
+        },
       },
+      // Typography Mapping
       lineHeight: {
-        "thai-tight": "1.15",
-        "thai-base": "1.65",
-        "thai-loose": "1.85",
+        "thai-tight": themeConfig.typography.lineHeight.tight,
+        "thai-base": themeConfig.typography.lineHeight.snug,
+        "thai-relaxed": themeConfig.typography.lineHeight.relaxed,
       },
       letterSpacing: {
-        tightest: "-0.05em",
-        widest: "0.3em",
-        ultra: "0.45em",
+        tightest: themeConfig.typography.letterSpacing.tighter,
+        widest: themeConfig.typography.letterSpacing.widest,
+        ultra: themeConfig.typography.letterSpacing.ultra,
+      },
+      fontSize: {
+        display: themeConfig.typography.fontSize.display,
+        micro: themeConfig.typography.fontSize.micro,
+      },
+      // Blueprint & System Effects
+      boxShadow: {
+        sharp: themeConfig.effects.shadow.sharp,
+        blueprint: themeConfig.effects.shadow.blueprint,
+        glow: themeConfig.effects.shadow.glow,
       },
       backgroundImage: {
         "blueprint-grid": `
-          linear-gradient(to right, var(--tw-content-border, #cbd5e1) 1px, transparent 1px),
-          linear-gradient(to bottom, var(--tw-content-border, #cbd5e1) 1px, transparent 1px)
+          linear-gradient(to right, ${themeConfig.colors.industrial.border}1A 1px, transparent 1px),
+          linear-gradient(to bottom, ${themeConfig.colors.industrial.border}1A 1px, transparent 1px)
         `,
-        "radial-light":
-          "radial-gradient(circle at center, transparent 0%, rgba(248, 250, 252, 0.9) 100%)",
+        "terminal-gradient":
+          "linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.8) 100%)",
       },
       backgroundSize: {
         "grid-sm": "20px 20px",
@@ -68,6 +85,7 @@ const config: Config = {
         float: "float 4s ease-in-out infinite",
         "scan-line": "scan 3s linear infinite",
         "fade-in-up": "fadeInUp 0.6s ease-out forwards",
+        "shimmer-run": "shimmer 2s infinite linear",
       },
       keyframes: {
         "border-width": {
@@ -86,12 +104,16 @@ const config: Config = {
           "0%": { opacity: "0", transform: "translateY(15px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
+        shimmer: {
+          "0%": { transform: "translateX(-100%)" },
+          "100%": { transform: "translateX(100%)" },
+        },
       },
       borderRadius: {
-        none: "0",
+        none: themeConfig.layout.radius,
         xs: "1px",
         sm: "2px",
-        DEFAULT: "0",
+        DEFAULT: themeConfig.layout.radius,
       },
     },
   },

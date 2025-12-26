@@ -1,49 +1,57 @@
 /** @format */
-import { ReactNode } from "react"
+import { LucideIcon } from "lucide-react"
 
 /**
- * ServiceType: แบ่งกลุ่มประเภทบริการหลัก
- * - VISA_ASSET: บริการเกี่ยวกับวีซ่าและเอกสารเดินทาง
- * - GEN_ASSET: บริการเกี่ยวกับจดหมาย สินเชื่อ และการตลาด
+ * ServiceType: แบ่งกลุ่มประเภทบริการหลักตาม Protocol ของ JPVD
+ * - VISA_ASSET: เน้นงานเอกสารเดินทางและกฎระเบียบระหว่างประเทศ
+ * - GEN_ASSET: เน้นงานร่างเอกสารเฉพาะทาง การเงิน และการตลาด
  */
 export type ServiceType = "VISA_ASSET" | "GEN_ASSET"
 
 /**
  * ServiceItem: โครงสร้างข้อมูลหลักของแต่ละบริการ
- * ออกแบบมาให้สอดคล้องกับภาพลักษณ์สถาปัตยกรรมเอกสาร (Visual Docs)
+ * ออกแบบมาให้รองรับระบบ "สถาปัตยกรรมเอกสาร" (Document Architecture)
  */
 export interface ServiceItem {
-  /** ไอดีอ้างอิงของบริการ (เช่น visa-asset) */
+  /** ไอดีอ้างอิงระบบ (เช่น visa-asset) */
   id: string
 
-  /** ประเภทบริการสำหรับการทำสีและฟิลเตอร์ */
+  /** ประเภทบริการหลักสำหรับการทำ Conditional Styling ใน UI */
   type: ServiceType
 
-  /** Icon จาก Lucide React ที่จะนำมาแสดงผล */
-  icon: ReactNode
+  /** * LucideIcon: รับเป็น Component Class
+   * เพื่อความยืดหยุ่นในการจัดการขนาดและสีผ่าน Card Component
+   */
+  icon: LucideIcon
 
-  /** Path ของรูปภาพหน้าปกบริการ (จาก /public/images/service/) */
+  /** Path ของรูปภาพ (WebP) จาก /public/images/service/ */
   image: string
 
-  /** ชื่อหัวข้อบริการ */
+  /** ชื่อหัวข้อบริการหลัก */
   title: string
 
-  /** รายละเอียดบริการเบื้องต้น */
+  /** รายละเอียดและ Pain Point ที่เราช่วยแก้ไข */
   description: string
 
-  /** ราคาแสดงผล (เช่น "3,000.-" หรือ "เริ่ม 400.-") */
+  /** ราคาที่ผ่านการคำนวณพื้นฐาน (แสดงผลเป็น String) */
   price: string
 
-  /** ข้อความบนปุ่ม Call to Action */
+  /** ข้อความคำสั่งบนปุ่ม Call to Action (เช่น EXECUTE_PROCESS) */
   cta: string
 
-  /** ข้อความเน้นย้ำสั้นๆ (Highlight) เช่น "สายงานตรง" */
+  /** ข้อความกำกับความเชี่ยวชาญ (เช่น VISA_CORE_SPECIALIST) */
   highlight: string
+
+  /** * Protocol String: ขั้นตอนการทำงานที่แสดงถึงความเป็นระบบ
+   * เช่น "ANALYZE > RESTRUCTURE > DEPLOY"
+   */
+  protocol: string
 }
 
 /**
- * ServiceActionProps: สำหรับส่งต่อ Logic การจัดการ Event
+ * ServiceActionProps: สัญญาระหว่าง Component และ Hook สำหรับการสั่งงาน
  */
 export interface ServiceActionProps {
+  /** ฟังก์ชันการรันคำสั่งงานตามไอดีที่เลือก */
   handleExecute: (id: string, title: string) => void
 }

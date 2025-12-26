@@ -1,12 +1,13 @@
-// config/site.ts
 /** @format */
 
 export const siteConfig = {
   name: "JP Visual Docs",
+  shortName: "JPVD",
   description:
     "Professional Visa & Documentation Services with Systematic Process. ยกระดับธุรกิจและเอกสารของคุณสู่มาตรฐานมืออาชีพ",
   domain: "jpvisualdocs.online",
   url: "https://jpvisualdocs.online",
+  ogImage: "https://jpvisualdocs.online/images/og-image.webp",
 
   locale: "th-TH",
   language: ["th", "en"],
@@ -14,6 +15,15 @@ export const siteConfig = {
   author: {
     name: "เจ้าป่า (JP Visual Docs)",
     email: "contact@jpvisualdocs.online",
+    role: "Professional Document Architect",
+  },
+
+  // 📡 SYSTEM STATUS: สำหรับใช้ทำ UI ไฟกะพริบ
+  system: {
+    status: "SYSTEM_ACTIVE",
+    label: "Protocol Online",
+    version: "v2.8.5",
+    indicatorColor: "bg-green-500",
   },
 
   seo: {
@@ -27,9 +37,13 @@ export const siteConfig = {
       "ร่างจดหมายแนะนำตัว",
       "จองตั๋วเครื่องบินยื่นวีซ่า",
       "ที่ปรึกษาวางแผนกู้เงิน",
-      "จัดการเอกสาร",
+      "แก้ปัญหาเอกสารไม่ผ่าน",
+      "ปั้นเคสวีซ่า",
+      "จัดการเอกสารรายได้",
+      "วีซ่าไม่ผ่านทำยังไง",
+      "ปรึกษาเคสยาก",
       "เจ้าป่า",
-    ],
+    ] as string[], // ✅ กำหนดเป็น string[] เพื่อให้ Metadata ใน layout.tsx ใช้งานได้โดยตรง
   },
 
   social: {
@@ -37,18 +51,14 @@ export const siteConfig = {
     line: "https://lin.ee/ZYTzBaIE",
     lineId: "@462fqtfc",
     email: "contact@jpvisualdocs.online",
-    phone: "0XX-XXX-XXXX",
-  },
-
-  links: {
     messenger: "https://m.me/61575050976562",
+    phone: "091-054-0710", // ✅ เพิ่มฟิลด์ phone เพื่อแก้ Error ในหน้า Contact และ CTA
   },
 
-  actions: {
-    primary: {
-      href: "/contact",
-      label: "ติดต่อเรา",
-    },
+  assets: {
+    ogImage: "/images/og-image.webp",
+    favicon: "/favicon.ico",
+    appleTouch: "/apple-touch-icon.png",
   },
 } as const
 
