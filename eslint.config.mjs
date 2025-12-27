@@ -10,6 +10,7 @@ import globals from "globals" // 👈 เพิ่มการนำเข้า
 export default [
   {
     ignores: [
+      "._Z_Z_STORE_Z_Z/**",
       ".next/**",
       "node_modules/**",
       "out/**",

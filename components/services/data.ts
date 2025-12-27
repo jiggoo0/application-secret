@@ -1,5 +1,4 @@
 /** @format */
-import React from "react"
 import {
   FileSearch,
   PenTool,
@@ -8,112 +7,140 @@ import {
   Layers,
   CreditCard,
   BarChart3,
-  LucideIcon,
 } from "lucide-react"
+import { ServiceItem } from "./types"
 
-export interface ServiceItem {
-  id: string
-  type: "VISA_ASSET" | "GEN_ASSET"
-  icon: LucideIcon
-  image: string
-  title: string
-  description: string
-  price: string
-  cta: string
-  highlight: string
-  protocol: string // เพิ่มเพื่อกิมมิคขั้นตอนการทำงาน
-}
-
-export const servicesData: ServiceItem[] = [
+/**
+ * 🛰️ SERVICES_REGISTRY_DATA
+ * ----------------------------------------------------------------
+ * ฐานข้อมูลบริการหลักตามโครงสร้าง ServiceItem Interface
+ * ข้อมูลนี้จะถูกนำไป Render ใน ServiceCard และ ServicesSection
+ */
+export const services: ServiceItem[] = [
   {
-    id: "visa-asset",
+    id: "visa-strategy-001",
+    code: "SRV-VSA-01",
+    category: "IMMIGRATION",
     type: "VISA_ASSET",
     icon: FileSearch,
     image: "/images/service/วีซ่า.webp",
-    title: "รับจบเรื่องวีซ่า (สายตรง)",
+    title: "Visa Solutions & Strategy",
     description:
-      "จัดชุดเอกสารใหม่ให้เนียนกริ๊บ ตรงเงื่อนไขสถานทูตกำหนด เอกสารไม่ครบเราเติมให้จนเต็ม",
-    price: "3,000.-",
-    cta: "ACCESS_PROTOCOL",
-    highlight: "VISA_CORE_SPECIALIST",
-    protocol: "ANALYZE > RESTRUCTURE > DEPLOY",
+      "วิเคราะห์และวางโครงสร้างเอกสารสำหรับเคสยาก หรือเคยถูกปฏิเสธ โดยใช้มาตรฐาน Embassy-Grade",
+    price: { base: "4,x00" },
+    cta: { label: "EXECUTE_PROTOCOL", action: "/contact?ref=visa" },
+    technical: {
+      highlight: "EMBASSY_GRADE_CASE",
+      protocol: ["ASSESS", "RESTRUCTURE", "SUBMIT_READY"],
+      status: "OPERATIONAL",
+    },
   },
   {
-    id: "gen-letter",
-    type: "GEN_ASSET",
-    icon: PenTool,
-    image: "/images/service/บริการจดหมาย.webp",
-    title: "รับร่างจดหมายสำคัญ",
-    description:
-      "Cover Letter แบบที่คนอ่านต้องเชื่อ หรือจดหมายสปอนเซอร์เพิ่มความน่าเชื่อถือระดับมือโปร",
-    price: "1,000.-",
-    cta: "EXECUTE_DRAFT",
-    highlight: "PROFILE_ENHANCEMENT",
-    protocol: "DRAFT > REFINE > FINALIZE",
-  },
-  {
-    id: "visa-booking",
-    type: "VISA_ASSET",
-    icon: Plane,
-    image: "/images/service/ตั๋วเครื่องบิน.webp",
-    title: "ใบจองตั๋วเครื่องบิน · โรงแรม",
-    description:
-      "ระบบแท้ 100% เช็กชื่อได้ใน Google / Ebooking งานด่วน 1 วันเสร็จ รองรับทุกประเทศ",
-    price: "1,000.-",
-    cta: "PRIORITY_RESERVE",
-    highlight: "VERIFIED_SYSTEM_ONLY",
-    protocol: "RESERVE > VERIFY > CONFIRM",
-  },
-  {
-    id: "gen-loan",
+    id: "financial-tuning-001",
+    code: "SRV-FIN-01",
+    category: "FINANCIAL",
     type: "GEN_ASSET",
     icon: TrendingUp,
     image: "/images/service/สินเชื่อ.webp",
-    title: "ที่ปรึกษาปั้นเคสกู้เงิน",
+    title: "Loan Profile Engineering",
     description:
-      "วิเคราะห์โปรไฟล์ ปรับแต่งจุดอ่อนให้แบงก์ยอมปล่อยกู้ ปั้นเคสยากให้เป็นเคสง่าย",
-    price: "3,000.-",
-    cta: "LOAN_CONSULTANCY",
-    highlight: "FINANCIAL_ARCHITECT",
-    protocol: "SCAN > ADJUST > APPROVAL",
+      "ปรับจูนโปรไฟล์การเงินและจัดโครงสร้างหลักฐานรายได้ เพื่อเพิ่มโอกาสการอนุมัติสินเชื่อสูงสุด",
+    price: { base: "3,xxx", suffix: "+ Success Fee" },
+    cta: { label: "STRATEGIZE", action: "/contact?ref=loan" },
+    technical: {
+      highlight: "CREDIT_PROFILE_ENGINEER",
+      protocol: ["ANALYZE", "FIX", "MATCH_SOURCE"],
+      status: "OPERATIONAL",
+    },
   },
   {
-    id: "gen-modify",
+    id: "doc-verify-001",
+    code: "SRV-DOC-01",
+    category: "DOCUMENTATION",
     type: "GEN_ASSET",
     icon: Layers,
     image: "/images/service/แก้ไขเอกสาร.webp",
-    title: "แก้-สร้าง-จัดหาเอกสาร",
+    title: "Smart Verification System",
     description:
-      "อยากแก้จุดไหน สร้างใหม่ยังไง สั่งมา... งานเนียนระดับเซียน ตรงตามโจทย์ที่คุณต้องการ",
-    price: "เริ่ม 400.-",
-    cta: "REQUEST_MODIFICATION",
-    highlight: "MASTER_CRAFTSMANSHIP",
-    protocol: "SCAN > MODIFY > VALIDATE",
+      "ระบบสร้างเอกสารดิจิทัลพร้อม QR Verification และ Landing Page ส่วนตัวเพื่อตรวจสอบความถูกต้อง",
+    price: { base: "1,xxx" },
+    cta: { label: "DEPLOY_SYSTEM", action: "/contact?ref=verify" },
+    technical: {
+      highlight: "ONLINE_VERIFICATION_READY",
+      protocol: ["CREATE", "VERIFY", "PUBLISH"],
+      status: "HIGH_DEMAND",
+    },
   },
   {
-    id: "gen-card",
+    id: "secure-print-001",
+    code: "SRV-PRT-01",
+    category: "INFRASTRUCTURE",
     type: "GEN_ASSET",
     icon: CreditCard,
     image: "/images/service/บัตร.webp",
-    title: "ผลิตชิ้นงานบัตรแข็ง / อ่อน",
+    title: "Confidential Production",
     description:
-      "เน้นความปลอดภัยสูงสุด ชนมือทำก่อน จ่ายทีหลัง ส่งงานผ่าน Grab / รถทัวร์ เท่านั้น",
-    price: "4,000.-",
-    cta: "ORDER_PRODUCTION",
-    highlight: "SECURE_HANDOVER_ONLY",
-    protocol: "BUILD > VERIFY > DELIVERY",
+      "งานพิมพ์บัตรและเอกสารความปลอดภัยสูง พร้อมกระบวนการส่งมอบแบบเข้ารหัส (Confidential Handover)",
+    price: { base: "4,500" },
+    cta: { label: "START_PRODUCTION", action: "/contact?ref=print" },
+    technical: {
+      highlight: "ENCRYPTED_DELIVERY",
+      protocol: ["DESIGN", "PRODUCE", "HANDOVER"],
+      status: "OPERATIONAL",
+    },
   },
   {
-    id: "gen-marketing",
+    id: "verified-booking-001",
+    code: "SRV-VSA-02",
+    category: "IMMIGRATION",
+    type: "VISA_ASSET",
+    icon: Plane,
+    image: "/images/service/ตั๋วเครื่องบิน.webp",
+    title: "Verified Booking Node",
+    description:
+      "สำรองตั๋วเครื่องบินและโรงแรมผ่านระบบ Global Distribution System (GDS) ที่ตรวจสอบได้จริง",
+    price: { base: "4xx", suffix: "/ 1,xxx Express" },
+    cta: { label: "ISSUE_TICKET", action: "/contact?ref=booking" },
+    technical: {
+      highlight: "REAL_SYSTEM_CHECKABLE",
+      protocol: ["RESERVE", "VALIDATE", "ISSUE"],
+      status: "OPERATIONAL",
+    },
+  },
+  {
+    id: "legal-writing-001",
+    code: "SRV-DOC-02",
+    category: "DOCUMENTATION",
+    type: "GEN_ASSET",
+    icon: PenTool,
+    image: "/images/service/บริการจดหมาย.webp",
+    title: "Professional Representation",
+    description:
+      "ร่างจดหมายชี้แจงและนิติกรรมด้วยภาษาทางการ (Embassy Tone) เพื่อการสื่อสารระดับสากล",
+    price: { base: "1,000", suffix: "- 3,000" },
+    cta: { label: "DRAFT_NOW", action: "/contact?ref=writing" },
+    technical: {
+      highlight: "OFFICIAL_REPRESENTATION",
+      protocol: ["DRAFT", "REVIEW", "FINAL"],
+      status: "OPERATIONAL",
+    },
+  },
+  {
+    id: "auto-marketing-001",
+    code: "SRV-SYS-01",
+    category: "INFRASTRUCTURE",
     type: "GEN_ASSET",
     icon: BarChart3,
-    image: "/images/service/ภาพลักษณ์.webp",
-    title: "ดูแลการตลาดครบวงจร",
+    image: "/images/service/บัตร.webp",
+    title: "Marketing Automation Stack",
     description:
-      "คุมภาพลักษณ์ธุรกิจให้ขลัง (สายขาว-เทา-ดำ) วิเคราะห์ฐานลูกค้า ปั้นคอนเทนต์ล่วงหน้า 3 เดือน",
-    price: "3,000.-",
-    cta: "MARKETING_STRATEGY",
-    highlight: "IDENTITY_CONSULTANT",
-    protocol: "PLAN > CREATE > OPTIMIZE",
+      "วางระบบ AI และการตลาดอัตโนมัติ เพื่อขับเคลื่อนธุรกิจให้ทำงานได้ตลอด 24 ชั่วโมง",
+    price: { base: "4,xxx" },
+    cta: { label: "ACTIVATE_AUTO", action: "/contact?ref=auto" },
+    technical: {
+      highlight: "24H_AUTOMATION_STACK",
+      protocol: ["PLAN", "AUTOMATE", "SCALE"],
+      status: "DEVELOPMENT",
+    },
   },
 ]

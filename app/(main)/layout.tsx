@@ -1,31 +1,6 @@
 /** @format */
-"use client"
+import MainLayout from "@/components/layout/MainLayout"
 
-import React from "react"
-import type { ReactNode } from "react"
-import Header from "@/components/Header" // ใช้ absolute path
-import Footer from "@/components/Footer" // ใส่ Footer ถ้าต้องการ
-import { inter } from "@/lib/fonts"
-
-interface MainLayoutProps {
-  children: ReactNode
-}
-
-export default function MainLayout({ children }: MainLayoutProps) {
-  return (
-    <div
-      className={`${inter.variable} flex min-h-screen flex-col bg-white font-sans text-slate-900`}
-    >
-      {/* HEADER */}
-      <Header />
-
-      {/* MAIN CONTENT */}
-      <main className="mx-auto w-full max-w-[1440px] flex-1 px-4 py-8 sm:px-6 lg:px-8">
-        {children}
-      </main>
-
-      {/* FOOTER */}
-      <Footer />
-    </div>
-  )
+export default function Layout({ children }: { children: React.ReactNode }) {
+  return <MainLayout>{children}</MainLayout>
 }

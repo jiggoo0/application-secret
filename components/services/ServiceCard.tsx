@@ -1,110 +1,75 @@
 /** @format */
 "use client"
 
+import React from "react"
 import Image from "next/image"
-import { ArrowRight, Box, Cpu } from "lucide-react"
-import { ServiceItem } from "./types"
-import { useServiceAction } from "@/hooks/useServiceAction"
+import { Plus, ShieldCheck } from "lucide-react"
+import { ServiceCardProps } from "./types"
+import { cn } from "@/lib/utils"
 
-interface ServiceCardProps {
-  item: ServiceItem
-}
-
-export const ServiceCard: React.FC<ServiceCardProps> = ({ item }) => {
-  const { handleExecute } = useServiceAction()
+export default function ServiceCard({ item, onExecute }: ServiceCardProps) {
+  const { title, description, price, icon: Icon, image, technical, type } = item
 
   return (
-    <div className="group relative flex flex-col border-b border-r border-slate-200 bg-white transition-all hover:bg-slate-50/50">
-      {/* ─── HEADER: SYSTEM ID ─── */}
-      <div className="flex items-center justify-between border-b border-slate-100 px-6 py-3">
-        <div className="flex items-center gap-2">
-          <Cpu size={12} className="text-blue-600" />
-          <span className="font-mono text-[9px] font-bold text-slate-400">
-            ID_{item.id.toUpperCase()}
-          </span>
-        </div>
-        <span className="font-mono text-[9px] font-black text-slate-300">
-          SYS_NODE_v2.8
-        </span>
-      </div>
-
-      {/* ─── IMAGE UNIT ─── */}
-      <div className="relative h-64 w-full overflow-hidden bg-slate-100">
+    <div className="group relative border border-industrial-border bg-industrial-dark p-4 shadow-sharp transition-all duration-300 hover:border-brand/50 hover:bg-industrial-surface">
+      {/* MEDIA_UNIT */}
+      <div className="relative mb-5 aspect-[16/10] overflow-hidden border border-industrial-border bg-industrial-black">
         <Image
-          src={item.image}
-          alt={item.title}
+          src={image}
+          alt={title}
           fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover grayscale transition-all duration-700 group-hover:scale-110 group-hover:grayscale-0"
+          className="object-cover opacity-80 grayscale transition-all duration-700 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0"
         />
-        {/* Overlay Grid */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:20px_20px] opacity-0 transition-opacity group-hover:opacity-100" />
-
-        <div className="absolute bottom-4 left-6 flex flex-col gap-1">
-          <span className="w-fit bg-slate-900 px-3 py-1 text-[9px] font-black uppercase tracking-widest text-white">
-            {item.type}
-          </span>
-          <span className="w-fit bg-blue-600 px-2 py-0.5 text-[8px] font-bold italic text-white">
-            {item.highlight}
-          </span>
+        <div
+          className={cn(
+            "absolute right-2 top-2 z-10 px-2 py-0.5 font-mono text-[8px] font-black uppercase tracking-widest text-white",
+            type === "VISA_ASSET" ? "bg-brand" : "bg-industrial-gray"
+          )}
+        >
+          {type.replace("_", " ")}
         </div>
       </div>
 
-      {/* ─── CONTENT UNIT ─── */}
-      <div className="flex flex-1 flex-col p-8 lg:p-10">
-        <div className="mb-6">
-          <h3 className="text-2xl font-black uppercase leading-[0.9] tracking-tighter text-slate-900">
-            {item.title.split(" ").map((word, i) => (
-              <span key={i} className="block">
-                {word}
-              </span>
-            ))}
-          </h3>
-
-          {/* Protocol Trace: กิมมิคขั้นตอนการทำงาน */}
-          <div className="mt-4 flex items-center gap-2">
-            <div className="h-px flex-1 bg-slate-100" />
-            <span className="font-mono text-[8px] font-bold uppercase tracking-widest text-blue-500/60">
-              [{item.protocol}]
-            </span>
+      {/* CONTENT_UNIT */}
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 items-center justify-center border border-brand/20 bg-brand/5 text-brand transition-colors group-hover:bg-brand group-hover:text-black">
+            <Icon size={20} />
           </div>
+          <h3 className="text-sm font-black uppercase tracking-tight text-white transition-colors group-hover:text-brand">
+            {title}
+          </h3>
         </div>
-
-        <p className="mb-10 text-[13px] font-bold leading-relaxed text-slate-500">
-          {item.description}
+        <p className="line-clamp-2 text-[11px] leading-relaxed text-industrial-gray">
+          {description}
         </p>
 
-        {/* ─── FOOTER UNIT ─── */}
-        <div className="mt-auto border-t border-dashed border-slate-200 pt-8">
-          <div className="mb-6 flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">
-                Fixed_Price
-              </span>
-              <span className="text-3xl font-black tracking-tighter text-slate-900">
-                {item.price}
-              </span>
-            </div>
-            <Box
-              size={24}
-              className="text-slate-100 transition-colors group-hover:text-blue-100"
-            />
-          </div>
-
-          <button
-            onClick={() => handleExecute(item.id, item.title)}
-            className="group/btn relative flex w-full items-center justify-center gap-4 overflow-hidden bg-slate-900 py-5 text-[10px] font-black uppercase tracking-[0.4em] text-white shadow-xl transition-all hover:bg-blue-600 active:scale-95"
-          >
-            <span className="relative z-10">{item.cta}</span>
-            <ArrowRight
-              size={14}
-              className="relative z-10 text-blue-400 transition-transform group-hover/btn:translate-x-2"
-            />
-
-            {/* กิมมิคแสงวิ่งบนปุ่มเมื่อ Hover */}
-            <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-transform duration-500 group-hover/btn:translate-x-full" />
-          </button>
+        {/* PROTOCOLS */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          {technical.protocol.map((step, idx) => (
+            <span
+              key={idx}
+              className="flex items-center gap-1 font-mono text-[7px] font-bold uppercase text-brand/60"
+            >
+              <ShieldCheck size={8} /> {step}
+            </span>
+          ))}
         </div>
+      </div>
+
+      {/* ACTION_UNIT */}
+      <div className="mt-6 flex items-center justify-between border-t border-industrial-border/50 pt-4">
+        <div className="flex flex-col">
+          <span className="font-mono text-[10px] font-black text-white">
+            ฿{price.base}
+          </span>
+        </div>
+        <button
+          onClick={() => onExecute?.(item.code)}
+          className="flex h-9 w-9 items-center justify-center bg-brand text-black shadow-sharp transition-all hover:bg-brand-dark active:scale-90"
+        >
+          <Plus size={18} />
+        </button>
       </div>
     </div>
   )

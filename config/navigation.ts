@@ -1,33 +1,45 @@
+/** @format */
 import {
   Home,
   FileText,
-  History,
   MessageSquare,
   LayoutGrid,
-  HelpCircle,
+  ShieldAlert,
+  Gavel,
+  UserCheck,
+  Zap,
 } from "lucide-react"
 
+/**
+ * 🛰️ NAVIGATION_CONFIG_PROTOCOL
+ * แผนผังโครงสร้างการนำทางทั้งหมดของระบบ (Single Page Strategy)
+ * สไตล์: Industrial Sharp (Technical Manifest)
+ */
 export const navigationConfig = {
-  // 🧭 MAIN_NAVIGATION: ปรับปรุง href เพื่อให้ Scroll ในหน้า Home ได้จริง
   mainNav: [
-    { name: "หน้าหลัก", href: "/", label: "HOME_BASE", icon: Home },
+    {
+      name: "หน้าหลัก",
+      href: "/",
+      label: "HOME_BASE",
+      icon: Home,
+    },
+    {
+      name: "เกี่ยวกับเรา",
+      href: "/#about-section",
+      label: "IDENTITY_LOG",
+      icon: UserCheck,
+    },
     {
       name: "บริการทั้งหมด",
-      href: "/#services-index", // เชื่อมกับ id ใน ServicesSection.tsx
+      href: "/#services-index", // 🔗 ลิงก์ตรงเข้าสู่ Section ในหน้าหลัก
       label: "SOLUTIONS",
       icon: LayoutGrid,
     },
     {
       name: "รีวิว/บันทึก",
-      href: "/#success-logs", // เชื่อมกับ id ใน ReviewsSection.tsx
+      href: "/#success-logs",
       label: "SUCCESS_LOG",
-      icon: History,
-    },
-    {
-      name: "คำถามที่พบบ่อย",
-      href: "/#faq-registry", // เชื่อมกับ id ใน FAQSection.tsx
-      label: "FAQ_DATABASE",
-      icon: HelpCircle,
+      icon: Zap,
     },
     {
       name: "ติดต่อสอบถาม",
@@ -37,26 +49,33 @@ export const navigationConfig = {
     },
   ],
 
-  // 📂 FOOTER_SITEMAP: จัดกลุ่มลิงก์ตามลำดับความสำคัญของโครงสร้างภาษี/เอกสาร
   footerNav: {
+    // ✅ ปรับให้เชื่อมโยงกับ Anchor Link ภายในหน้าหลัก เพื่อลดจำนวน Page ที่ไม่จำเป็น
     solutions: [
-      { name: "Visa Application", href: "/#services-index" },
-      { name: "Letter Drafting", href: "/#services-index" },
-      { name: "Loan Consulting", href: "/#services-index" },
-      { name: "Document Modification", href: "/#services-index" },
+      { name: "All Solutions Index", href: "/#services-index" },
+      { name: "Service Workflow", href: "/#services-index" },
     ],
     company: [
-      { name: "About Company", href: "/#about-section" },
+      { name: "About Identity", href: "/#about-section" },
       { name: "Review Logs", href: "/#success-logs" },
       { name: "Contact Protocol", href: "/contact" },
     ],
     legal: [
-      { name: "Privacy Protocol", href: "/privacy" },
-      { name: "SLA Policy", href: "/terms" },
+      {
+        name: "Privacy Protocol",
+        href: "/privacy",
+        label: "PRIVACY_CONTROL",
+        icon: ShieldAlert,
+      },
+      {
+        name: "SLA Policy",
+        href: "/terms",
+        label: "TERMS_OF_SERVICE",
+        icon: Gavel,
+      },
     ],
   },
 
-  // 🛠️ UTILITY_LINKS: ปุ่มคำสั่งหลัก (Call to Action)
   actions: {
     primary: {
       name: "Order_Service",
@@ -67,4 +86,6 @@ export const navigationConfig = {
   },
 } as const
 
+// 🏷️ TYPE_EXPORT_PROTOCOL
 export type NavigationConfig = typeof navigationConfig
+export type NavItem = (typeof navigationConfig.mainNav)[number]

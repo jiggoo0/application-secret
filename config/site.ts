@@ -1,5 +1,11 @@
 /** @format */
 
+/**
+ * 🛰️ SITE_CONFIGURATION_REGISTRY
+ * ----------------------------------------------------------------
+ * ศูนย์รวมค่าคงที่ (Global Constants) สำหรับ JP Visual Docs
+ * ใช้สำหรับจัดการ SEO, ข้อมูลติดต่อ และสถานะระบบในจุดเดียว
+ */
 export const siteConfig = {
   name: "JP Visual Docs",
   shortName: "JPVD",
@@ -16,16 +22,29 @@ export const siteConfig = {
     name: "เจ้าป่า (JP Visual Docs)",
     email: "contact@jpvisualdocs.online",
     role: "Professional Document Architect",
+    // 🛡️ PROTOCOL_NAV: รองรับการเรียกใช้ใน Contact/CTA Components
+    contacts: {
+      phone: "091-054-0710",
+      email: "contact@jpvisualdocs.online",
+    },
   },
 
-  // 📡 SYSTEM STATUS: สำหรับใช้ทำ UI ไฟกะพริบ
+  // 📡 SYSTEM_STATUS: สำหรับแสดงผลใน UI สไตล์ Industrial Sharp (Terminal)
   system: {
     status: "SYSTEM_ACTIVE",
     label: "Protocol Online",
-    version: "v2.8.5",
+    version: "2.8.5",
     indicatorColor: "bg-green-500",
   },
 
+  // 🛠️ CONTACT_REGISTRY: ศูนย์รวมข้อมูลติดต่อหลัก
+  contact: {
+    phone: "091-054-0710",
+    lineId: "@462fqtfc",
+    email: "contact@jpvisualdocs.online",
+  },
+
+  // 🔍 SEO_PROTOCOL: จัดการเรื่อง Search Engine Optimization
   seo: {
     titleTemplate: "%s | JP Visual Docs",
     defaultTitle:
@@ -43,18 +62,18 @@ export const siteConfig = {
       "วีซ่าไม่ผ่านทำยังไง",
       "ปรึกษาเคสยาก",
       "เจ้าป่า",
-    ] as string[], // ✅ กำหนดเป็น string[] เพื่อให้ Metadata ใน layout.tsx ใช้งานได้โดยตรง
+    ] as string[],
   },
 
+  // 🔗 SOCIAL_CONNECTIVITY: ลิงก์สำหรับช่องทาง Social Media
   social: {
     facebook: "https://www.facebook.com/profile.php?id=61575050976562",
     line: "https://lin.ee/ZYTzBaIE",
-    lineId: "@462fqtfc",
-    email: "contact@jpvisualdocs.online",
     messenger: "https://m.me/61575050976562",
-    phone: "091-054-0710", // ✅ เพิ่มฟิลด์ phone เพื่อแก้ Error ในหน้า Contact และ CTA
+    phone: "091-054-0710",
   },
 
+  // 🖼️ ASSET_MANIFEST: เส้นทางไฟล์ทรัพยากรหลัก
   assets: {
     ogImage: "/images/og-image.webp",
     favicon: "/favicon.ico",
@@ -62,4 +81,5 @@ export const siteConfig = {
   },
 } as const
 
+// ✅ EXPORT_TYPE: สำหรับใช้งานร่วมกับ TypeScript ทั่วทั้งโปรเจกต์
 export type SiteConfig = typeof siteConfig

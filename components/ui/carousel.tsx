@@ -1,3 +1,4 @@
+/** @format */
 "use client"
 
 import * as React from "react"
@@ -34,8 +35,9 @@ const CarouselContext = React.createContext<CarouselContextProps | null>(null)
 
 function useCarousel() {
   const context = React.useContext(CarouselContext)
-  if (!context)
+  if (!context) {
     throw new Error("useCarousel must be used within a <Carousel />")
+  }
   return context
 }
 
@@ -63,8 +65,9 @@ const Carousel = React.forwardRef<
     const [canScrollNext, setCanScrollNext] = React.useState(false)
 
     const onSelect = React.useCallback((carouselApi?: CarouselApi) => {
-      setCanScrollPrev(carouselApi?.canScrollPrev() ?? false)
-      setCanScrollNext(carouselApi?.canScrollNext() ?? false)
+      if (!carouselApi) return
+      setCanScrollPrev(carouselApi.canScrollPrev())
+      setCanScrollNext(carouselApi.canScrollNext())
     }, [])
 
     const scrollPrev = React.useCallback(() => api?.scrollPrev(), [api])
@@ -84,7 +87,9 @@ const Carousel = React.forwardRef<
     )
 
     React.useEffect(() => {
-      if (api && setApi) setApi(api)
+      if (api && setApi) {
+        setApi(api)
+      }
     }, [api, setApi])
 
     React.useEffect(() => {
