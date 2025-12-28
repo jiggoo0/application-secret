@@ -10,7 +10,7 @@
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
-    "moduleResolution": "node",
+    "moduleResolution": "node", // หรือใช้ "bundler" สำหรับ Next.js 15
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
@@ -34,7 +34,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "config/**/*.ts",
-    "content/**/*.ts"
+    "content/**/*.ts",
+    "app/**/*.ts", // เพิ่มเพื่อให้มั่นใจว่าไฟล์ใน app router ถูก track ทั้งหมด
+    "components/**/*.tsx"
   ],
   "exclude": ["node_modules"]
 }

@@ -1,53 +1,61 @@
 /** @format */
 import React from "react"
-import { ShieldCheck, Lock, EyeOff } from "lucide-react"
+
+export const metadata = {
+  title: "Privacy_Policy | Boutique Ops",
+  description: "นโยบายความเป็นส่วนตัวและการรักษาความปลอดภัยของข้อมูล",
+}
 
 export default function PrivacyPage() {
   return (
-    <main className="min-h-screen bg-white pb-24 pt-32">
-      <div className="mx-auto max-w-4xl px-6">
-        <div className="mb-16 border-l-4 border-blue-600 pl-8">
-          <div className="mb-4 flex items-center gap-3 text-blue-600">
-            <ShieldCheck size={20} />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em]">
-              Data_Protection_Registry
-            </span>
-          </div>
-          <h1 className="text-5xl font-black uppercase tracking-tighter text-slate-900 md:text-7xl">
-            PRIVACY <br />
-            <span className="text-blue-600">PROTOCOL.</span>
-          </h1>
-        </div>
-
-        <div className="space-y-12">
-          <section className="border-l-2 border-slate-900 bg-slate-50 p-10">
-            <div className="mb-6 flex items-center gap-4">
-              <Lock className="text-slate-900" size={24} />
-              <h2 className="text-lg font-black uppercase tracking-tight text-slate-900">
-                Encryption_Standard
-              </h2>
-            </div>
-            <p className="text-sm font-bold uppercase leading-relaxed text-slate-500">
-              ข้อมูลเอกสารทั้งหมดจะถูกเก็บรักษาภายใต้มาตรฐานการเข้ารหัสขั้นสูงสุด
-              และจะถูกทำลายทิ้งทันที (Data Shredding)
-              เมื่อภารกิจเสร็จสิ้นตามที่ลูกค้าร้องขอ
-            </p>
-          </section>
-
-          <section className="border-l-2 border-blue-600 p-10">
-            <div className="mb-6 flex items-center gap-4">
-              <EyeOff className="text-blue-600" size={24} />
-              <h2 className="text-lg font-black uppercase tracking-tight text-slate-900">
-                No_Third_Party_Access
-              </h2>
-            </div>
-            <p className="text-sm font-bold uppercase leading-relaxed text-slate-500">
-              ไม่มีนโยบายการเปิดเผยข้อมูลหรือส่งต่อข้อมูลโครงสร้างเอกสารของลูกค้าให้แก่บุคคลที่สาม
-              ยกเว้นหน่วยงานที่เกี่ยวข้องโดยตรงในกระบวนการยื่นเอกสารเท่านั้น
-            </p>
-          </section>
-        </div>
+    <article className="prose prose-slate max-w-none">
+      <div className="mb-12 border-b border-slate-100 pb-8">
+        <span className="mb-4 inline-block bg-slate-950 px-2 py-1 font-mono text-xs font-black uppercase text-brand">
+          Data_Protection_Act
+        </span>
+        <h1 className="text-4xl font-black uppercase italic tracking-tighter text-slate-950 md:text-5xl">
+          Privacy <span className="not-italic text-brand">Policy.</span>
+        </h1>
+        <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-slate-400">
+          Last_Updated: 28_DEC_2025 // Status: ACTIVE
+        </p>
       </div>
-    </main>
+
+      <div className="space-y-8 font-thai leading-relaxed text-slate-600">
+        <section>
+          <h2 className="mb-4 text-xl font-black uppercase italic text-slate-950">
+            1. การเก็บรวบรวมข้อมูล (Data_Collection)
+          </h2>
+          <p>
+            เราเก็บรวบรวมข้อมูลส่วนบุคคลที่จำเป็นสำหรับการดำเนินงานด้านวีซ่าและเอกสารเท่านั้น
+            ซึ่งรวมถึงชื่อ เบอร์โทรศัพท์ อีเมล
+            และข้อมูลประวัติการเดินทางที่ท่านระบุในแบบฟอร์มประเมิน (Assessment
+            Form)
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-4 text-xl font-black uppercase italic text-slate-950">
+            2. มาตรฐานความปลอดภัย (Security_Protocol)
+          </h2>
+          <p>
+            ข้อมูลทั้งหมดจะถูกเข้ารหัสผ่านระบบ Secure Node
+            และถูกเก็บรักษาไว้ในฐานข้อมูลที่มีการป้องกันขั้นสูงสุด
+            เราไม่มีนโยบายการขายหรือเผยแพร่ข้อมูลของท่านให้แก่บุคคลที่สามโดยไม่ได้รับอนุญาต
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-4 text-xl font-black uppercase italic text-slate-950">
+            3. สิทธิ์ของเจ้าของข้อมูล (Subject_Rights)
+          </h2>
+          <p>
+            ท่านมีสิทธิ์ในการเข้าถึง แก้ไข
+            หรือร้องขอให้ลบข้อมูลส่วนบุคคลของท่านออกจากระบบของเราได้ตลอดเวลา
+            ผ่านการแจ้งความประสงค์มาที่ช่องทางติดต่ออย่างเป็นทางการ
+          </p>
+        </section>
+      </div>
+    </article>
   )
 }

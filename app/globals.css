@@ -5,103 +5,96 @@
 
 @layer base {
   :root {
-    --theme-primary: #2563eb;
-    --industrial-black: #0f172a;
-    --industrial-border: #cbd5e1;
-    --grid-opacity: 0.12;
-    --header-height: 80px;
+    --background: #ffffff;
+    --foreground: #020617; /* Slate-950 */
+    --brand: #fcde09; /* Pure Brand Yellow */
   }
+
+  /* 🛠️ CORE_SYSTEM: พื้นฐานสำหรับทุกอุปกรณ์ */
   html {
-    scrollbar-gutter: stable;
     scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
+    -webkit-tap-highlight-color: transparent;
   }
+
   body {
-    @apply bg-slate-50 font-sans text-slate-900 selection:bg-blue-600 selection:text-white;
-    line-height: 1.65;
+    @apply bg-white text-slate-950 antialiased selection:bg-brand selection:text-slate-950;
+    min-height: 100dvh;
+    text-rendering: optimizeLegibility;
   }
-  /* Scrollbar Customization */
+
+  /* 📜 SHARP_SCROLLBAR: ระบบแถบเลื่อนแบบเครื่องจักร */
   ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-slate-100;
+    @apply bg-slate-50;
   }
   ::-webkit-scrollbar-thumb {
-    @apply bg-slate-300 transition-colors hover:bg-blue-600;
-    border-radius: 0px;
+    @apply border-2 border-slate-50 bg-slate-950 transition-all;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-brand;
   }
 }
 
 @layer components {
-  /* Blueprint Grid */
-  .bg-blueprint {
-    background-image:
-      linear-gradient(var(--industrial-border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--industrial-border) 1px, transparent 1px);
-    background-size: 40px 40px;
-    @apply opacity-[var(--grid-opacity)];
-    mask-image: radial-gradient(circle at center, black, transparent 80%);
+  /* 📋 ASSESSMENT_FORM_SYSTEM: ระบบอินพุตสำหรับการประเมิน */
+  .audit-label {
+    @apply mb-2 block font-mono text-[10px] font-black uppercase tracking-widest text-slate-500;
   }
 
-  /* Sharp Typography */
-  .headline-sharp {
-    @apply font-black uppercase leading-[0.85] tracking-tighter text-slate-900 md:leading-[0.8];
-    font-size: clamp(2.5rem, 8vw, 6.5rem);
+  .audit-input {
+    @apply w-full border-b-2 border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-950 transition-all duration-300 placeholder:text-slate-300 focus:border-brand focus:bg-white focus:outline-none;
   }
 
-  /* Industrial Action Button */
+  /* 🔘 PREMIUM_INDUSTRIAL_BUTTON: ปุ่มหลักที่มีน้ำหนักและเงาคม */
   .btn-industrial {
-    @apply relative inline-flex items-center justify-center gap-4 bg-slate-900 font-black uppercase text-white transition-all duration-300 active:scale-[0.96];
-    padding: 1.25rem 2.5rem;
-    font-size: 0.75rem;
-    letter-spacing: 0.4em;
-    box-shadow: 6px 6px 0px 0px rgba(37, 99, 235, 0.4);
-  }
-  .btn-industrial:hover {
-    @apply -translate-x-1 -translate-y-1 bg-blue-600 text-white shadow-[12px_12px_0px_0px_rgba(15,23,42,0.1)];
+    @apply relative flex items-center justify-center gap-3 bg-slate-950 px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-brand shadow-sharp transition-all hover:bg-brand hover:text-slate-950 hover:shadow-sharp-brand active:translate-x-1 active:translate-y-1 disabled:pointer-events-none disabled:opacity-50;
   }
 
-  /* Modular Cards */
-  .asset-card {
-    @apply relative overflow-hidden border border-slate-200 bg-white p-8 transition-all duration-500;
-  }
-  .asset-card::after {
-    content: "";
-    @apply absolute bottom-0 left-0 h-1 w-0 bg-blue-600 transition-all duration-500 ease-out;
-  }
-  .asset-card:hover::after {
-    @apply w-full;
-  }
-  .asset-card:hover {
-    @apply border-blue-600/30 shadow-2xl shadow-blue-900/5;
+  /* 🔘 SECONDARY_OUTLINE_BUTTON: ปุ่มรองแบบเส้นขอบ */
+  .btn-outline {
+    @apply relative flex items-center justify-center gap-3 border-2 border-slate-950 bg-transparent px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-slate-950 transition-all hover:bg-slate-950 hover:text-brand active:scale-[0.98];
   }
 
-  .label-mono {
-    @apply mb-4 flex items-center gap-3 font-mono font-black uppercase text-blue-600;
-    font-size: 0.65rem;
-    letter-spacing: 0.45em;
+  /* 📐 BLUEPRINT_GRIDS: ระบบตารางเบื้องหลัง */
+  .bg-grid-sm {
+    background-size: 20px 20px;
+    background-image: url("/grid-pattern.svg");
+    @apply opacity-[0.03];
+  }
+
+  .bg-grid-md {
+    background-size: 40px 40px;
+    background-image: url("/grid-pattern.svg");
+    @apply opacity-[0.05];
+  }
+
+  /* 🗚 TYPOGRAPHY_UTILITIES: ระบบหัวข้อและข้อมูลเสริม */
+  .text-h1 {
+    @apply text-5xl font-black uppercase italic leading-[0.85] tracking-tighter md:text-7xl lg:text-8xl;
+  }
+
+  .text-metadata {
+    @apply font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400;
+  }
+
+  /* 🚄 CONTAINER_SYSTEM: จัดระเบียบเนื้อหาให้สมมาตร */
+  .container-tight {
+    @apply container mx-auto max-w-7xl px-6;
   }
 }
 
-@layer utilities {
-  .scan-line-overlay {
-    @apply pointer-events-none absolute inset-0 z-50 overflow-hidden opacity-[0.03];
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(37, 99, 235, 0.5) 50%,
-      transparent 100%
-    );
-    background-size: 100% 4px;
-    animation: scanAnimation 8s linear infinite;
-  }
-  @keyframes scanAnimation {
-    from {
-      transform: translateY(-100%);
-    }
-    to {
-      transform: translateY(100%);
-    }
-  }
+/* ✒️ ADVANCED_TEXT_OUTLINE: ระบบตัวอักษรโปร่งแสง */
+.text-outline-dark {
+  -webkit-text-stroke: 1.5px #020617;
+  color: transparent;
+  paint-order: stroke fill;
+}
+
+.text-outline-white {
+  -webkit-text-stroke: 1px #ffffff;
+  color: transparent;
+  paint-order: stroke fill;
 }

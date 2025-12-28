@@ -1,84 +1,59 @@
 /** @format */
 import React from "react"
-import { siteConfig } from "@/config/site"
-import { Gavel, ShieldAlert, FileText, Lock } from "lucide-react"
+
+export const metadata = {
+  title: "Terms_of_Service | Boutique Ops",
+  description: "ข้อกำหนดและเงื่อนไขการใช้บริการระบบปฏิบัติการเอกสาร",
+}
 
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-white pb-24 pt-32">
-      <div className="mx-auto max-w-4xl px-6">
-        {/* 📑 HEADER_PROTOCOL */}
-        <div className="mb-16 border-l-4 border-blue-600 pl-8">
-          <div className="mb-4 flex items-center gap-3 text-blue-600">
-            <Gavel size={20} />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em]">
-              Policy_Registry
-            </span>
-          </div>
-          <h1 className="mb-4 text-5xl font-black uppercase tracking-tighter text-slate-900 md:text-7xl">
-            TERMS OF <br />
-            <span className="text-blue-600">SERVICE.</span>
-          </h1>
-          <p className="text-sm font-bold uppercase tracking-widest text-slate-400">
-            System_Update: {siteConfig.system.version}
-            {/* ✅ แก้ไข: ย้ายคอมเมนต์ออกจาก Text Node มาอยู่ใน JSX Expression */}
-            <span className="ml-2 opacity-50">{/* Last_Modified: 2024 */}</span>
-          </p>
-        </div>
-
-        {/* ⚙️ CONTENT_GRID */}
-        <div className="grid gap-12 text-slate-600">
-          <section className="group border-b border-slate-100 pb-10">
-            <h2 className="mb-6 flex items-center gap-4 text-lg font-black uppercase tracking-tight text-slate-900">
-              <span className="text-blue-600">01.</span> Scope_Of_Work
-            </h2>
-            <p className="font-medium leading-relaxed">
-              {siteConfig.name}{" "}
-              ให้บริการออกแบบและจัดเตรียมโครงสร้างเอกสารตามมาตรฐานสากล
-              โดยผลลัพธ์ที่ได้จะเป็นไปตามข้อมูลที่ท่านได้รับมอบหมายและเงื่อนไขทางกฎหมายในขณะนั้น
-            </p>
-          </section>
-
-          <section className="group border-b border-slate-100 pb-10">
-            <h2 className="mb-6 flex items-center gap-4 text-lg font-black uppercase tracking-tight text-slate-900">
-              <span className="text-blue-600">02.</span>{" "}
-              Confidentiality_Protocol
-            </h2>
-            <div className="flex gap-6 bg-slate-900 p-8 text-white shadow-xl shadow-slate-200">
-              <Lock className="shrink-0 text-blue-500" size={32} />
-              <p className="text-sm font-bold italic leading-relaxed">
-                &quot;ข้อมูลส่วนบุคคลและรายละเอียดเคสของท่านจะถูกเก็บรักษาเป็นความลับสูงสุด
-                และจะไม่มีการส่งต่อให้บุคคลที่สามโดยไม่ได้รับอนุญาตตามมาตรฐานความปลอดภัยข้อมูล&quot;
-              </p>
-            </div>
-          </section>
-
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
-            <div className="border-t-2 border-slate-900 bg-slate-50 p-8">
-              <ShieldAlert size={24} className="mb-4 text-slate-900" />
-              <h3 className="mb-3 text-[10px] font-black uppercase tracking-widest text-slate-900">
-                Liability_Disclaimer
-              </h3>
-              <p className="text-xs font-bold leading-relaxed text-slate-500">
-                เราคือที่ปรึกษาด้านโครงสร้างข้อมูล
-                ผลลัพธ์สุดท้ายขึ้นอยู่กับการพิจารณาของหน่วยงานปลายทาง
-                ทางบริษัทไม่สามารถการันตีผลลัพธ์ที่อยู่นอกเหนือขอบเขตการจัดการข้อมูลได้
-              </p>
-            </div>
-            <div className="border-t-2 border-blue-600 bg-blue-50 p-8">
-              <FileText size={24} className="mb-4 text-blue-600" />
-              <h3 className="mb-3 text-[10px] font-black uppercase tracking-widest text-blue-600">
-                SLA_Policy
-              </h3>
-              <p className="text-xs font-bold leading-relaxed text-slate-500">
-                การเริ่มดำเนินการ (Deployment) จะเกิดขึ้นทันทีหลังจากมีการยืนยัน
-                Payload (ชำระค่าบริการ)
-                และจะใช้เวลาดำเนินการตามกรอบเวลาที่ตกลงกันในแต่ละโปรเจกต์
-              </p>
-            </div>
-          </div>
-        </div>
+    <article className="prose prose-slate max-w-none">
+      <div className="mb-12 border-b border-slate-100 pb-8">
+        <span className="mb-4 inline-block bg-slate-950 px-2 py-1 font-mono text-xs font-black uppercase text-brand">
+          Service_Agreement
+        </span>
+        <h1 className="text-4xl font-black uppercase italic tracking-tighter text-slate-950 md:text-5xl">
+          Terms <span className="not-italic text-brand">Of_Service.</span>
+        </h1>
+        <p className="mt-4 font-mono text-[10px] uppercase tracking-widest text-slate-400">
+          Ref: TERMS_V2_2025 // Effective_Immediately
+        </p>
       </div>
-    </main>
+
+      <div className="space-y-8 font-thai leading-relaxed text-slate-600">
+        <section>
+          <h2 className="mb-4 text-xl font-black uppercase italic text-slate-950">
+            1. ขอบเขตการบริการ (Operational_Scope)
+          </h2>
+          <p>
+            Boutique Ops ให้บริการคำปรึกษา จัดเตรียม
+            และวางกลยุทธ์ด้านเอกสารวีซ่า อย่างไรก็ตาม
+            การอนุมัติวีซ่าเป็นสิทธิ์ขาดของสถานทูตหรือหน่วยงานที่เกี่ยวข้องเท่านั้น
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-4 text-xl font-black uppercase italic text-slate-950">
+            2. ความถูกต้องของข้อมูล (Data_Accuracy)
+          </h2>
+          <p>
+            ผู้ใช้บริการตกลงที่จะให้ข้อมูลที่เป็นความจริงและถูกต้องครบถ้วน
+            การให้ข้อมูลเท็จอาจส่งผลต่อการพิจารณา
+            และทางบริษัทจะไม่รับผิดชอบต่อความเสียหายที่เกิดขึ้นในกรณีดังกล่าว
+          </p>
+        </section>
+
+        <section>
+          <h2 className="mb-4 text-xl font-black uppercase italic text-slate-950">
+            3. การคืนเงิน (Refund_Policy)
+          </h2>
+          <p>
+            เนื่องจากบริการของเราเป็นการให้คำปรึกษาและวิเคราะห์ข้อมูลเชิงลึก
+            ค่าธรรมเนียมการดำเนินงานจะถูกพิจารณาเป็นรายกรณีตามขอบเขตงานที่ระบุไว้ในใบเสนอราคา
+          </p>
+        </section>
+      </div>
+    </article>
   )
 }

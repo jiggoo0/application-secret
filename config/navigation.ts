@@ -1,48 +1,47 @@
 /** @format */
 import {
   Home,
-  FileText,
   MessageSquare,
   LayoutGrid,
   ShieldAlert,
   Gavel,
-  UserCheck,
   Zap,
+  ClipboardCheck,
+  Briefcase,
 } from "lucide-react"
 
 /**
  * 🛰️ NAVIGATION_CONFIG_PROTOCOL
- * แผนผังโครงสร้างการนำทางทั้งหมดของระบบ (Single Page Strategy)
- * สไตล์: Industrial Sharp (Technical Manifest)
+ * แผนผังโครงสร้างการนำทางทั้งหมดของระบบ (System Intelligence Strategy)
  */
 export const navigationConfig = {
   mainNav: [
     {
-      name: "หน้าหลัก",
+      title: "หน้าหลัก",
       href: "/",
       label: "HOME_BASE",
       icon: Home,
     },
     {
-      name: "เกี่ยวกับเรา",
-      href: "/#about-section",
-      label: "IDENTITY_LOG",
-      icon: UserCheck,
+      title: "ผลงาน",
+      href: "/showcase",
+      label: "CASE_VAULT",
+      icon: Briefcase,
     },
     {
-      name: "บริการทั้งหมด",
-      href: "/#services-index", // 🔗 ลิงก์ตรงเข้าสู่ Section ในหน้าหลัก
+      title: "บริการ",
+      href: "/#services",
       label: "SOLUTIONS",
       icon: LayoutGrid,
     },
     {
-      name: "รีวิว/บันทึก",
-      href: "/#success-logs",
-      label: "SUCCESS_LOG",
-      icon: Zap,
+      title: "ประเมินเอกสาร",
+      href: "/assessment",
+      label: "RISK_AUDIT",
+      icon: ClipboardCheck,
     },
     {
-      name: "ติดต่อสอบถาม",
+      title: "ติดต่อ",
       href: "/contact",
       label: "INQUIRY",
       icon: MessageSquare,
@@ -50,15 +49,15 @@ export const navigationConfig = {
   ],
 
   footerNav: {
-    // ✅ ปรับให้เชื่อมโยงกับ Anchor Link ภายในหน้าหลัก เพื่อลดจำนวน Page ที่ไม่จำเป็น
     solutions: [
-      { name: "All Solutions Index", href: "/#services-index" },
-      { name: "Service Workflow", href: "/#services-index" },
+      { name: "Technical Showcase", href: "/showcase" },
+      { name: "Risk Assessment", href: "/assessment" },
+      { name: "Service Index", href: "/#services" },
     ],
     company: [
-      { name: "About Identity", href: "/#about-section" },
-      { name: "Review Logs", href: "/#success-logs" },
-      { name: "Contact Protocol", href: "/contact" },
+      { name: "Identity Core", href: "/#about" },
+      { name: "Operational Process", href: "/#process" },
+      { name: "Contact Hub", href: "/contact" },
     ],
     legal: [
       {
@@ -78,10 +77,10 @@ export const navigationConfig = {
 
   actions: {
     primary: {
-      name: "Order_Service",
-      href: "/contact",
-      label: "EXECUTE_PAYLOAD",
-      icon: FileText,
+      name: "ประเมินความเสี่ยงฟรี",
+      href: "/assessment",
+      label: "START_AUDIT",
+      icon: Zap,
     },
   },
 } as const
@@ -89,3 +88,5 @@ export const navigationConfig = {
 // 🏷️ TYPE_EXPORT_PROTOCOL
 export type NavigationConfig = typeof navigationConfig
 export type NavItem = (typeof navigationConfig.mainNav)[number]
+export type FooterNavItem =
+  (typeof navigationConfig.footerNav.solutions)[number]

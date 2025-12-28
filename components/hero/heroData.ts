@@ -1,33 +1,68 @@
 /** @format */
-import { Globe, Database, ShieldCheck, FileSearch } from "lucide-react"
+import { Globe2, FileText, Landmark, ShieldCheck } from "lucide-react"
 
-export const stats = [
+// ประเภทข้อมูลสำหรับความปลอดภัยของ Type (Type Safety)
+export interface ServiceItem {
+  icon: any
+  label: string
+  title: string
+  description?: string
+}
+
+export interface TrustStat {
+  label: string
+  value: string
+  unit: string
+}
+
+/**
+ * รายการบริการหลัก (Core Services)
+ * ใช้ Label สไตล์ System Code เพื่อคงกลิ่นอาย Industrial
+ */
+export const serviceList: ServiceItem[] = [
   {
-    id: "s1",
-    label: "TOTAL_CASES",
-    value: "2,800",
-    unit: "+",
-    color: "text-blue-600",
+    icon: Globe2,
+    label: "VISA_PROTOCOL",
+    title: "วีซ่าท่องเที่ยวและทำงาน",
+    description: "จัดการคำร้องและนัดหมายครบวงจร",
   },
   {
-    id: "s2",
-    label: "SUCCESS_RATE",
-    value: "98.5",
-    unit: "%",
-    color: "text-slate-900",
+    icon: FileText,
+    label: "DOC_STRUCTURE",
+    title: "จัดเตรียมเอกสารครบวงจร",
+    description: "ตรวจสอบความถูกต้องตามมาตรฐานสากล",
   },
   {
-    id: "s3",
-    label: "OPERATION",
-    value: "8",
-    unit: "YRS",
-    color: "text-blue-600",
+    icon: Landmark,
+    label: "CORP_REGISTRY",
+    title: "จดทะเบียนและเอกสารบริษัท",
+    description: "รองรับการจัดตั้งและขยายธุรกิจ",
+  },
+  {
+    icon: ShieldCheck,
+    label: "LEGAL_SYNC",
+    title: "รับรองเอกสารทางกฎหมาย",
+    description: "บริการ Notary Public และการรับรองกงสุล",
   },
 ]
 
-export const capabilities = [
-  { text: "VISA_STRATEGY_PROTOCOL", icon: Globe, delay: 0.1 },
-  { text: "DATA_ENCRYPTION_LAYER", icon: Database, delay: 0.2 },
-  { text: "LEGAL_DRAFTING_UNIT", icon: ShieldCheck, delay: 0.3 },
-  { text: "RISK_GAP_ANALYSIS", icon: FileSearch, delay: 0.4 },
+/**
+ * สถิติความสำเร็จ (Performance Metrics)
+ */
+export const trustStats: TrustStat[] = [
+  {
+    label: "SUCCESS_RATE",
+    value: "99",
+    unit: "%",
+  },
+  {
+    label: "SERVICE_YEARS",
+    value: "08",
+    unit: "YRS",
+  },
+  {
+    label: "CLIENT_NODES",
+    value: "2.5K",
+    unit: "+",
+  },
 ]

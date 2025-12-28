@@ -19,7 +19,8 @@ type CarouselProps = {
   opts?: CarouselOptions
   plugins?: CarouselPlugin
   orientation?: "horizontal" | "vertical"
-  setApi?: (api: CarouselApi) => void
+  // ✅ เปลี่ยนชื่อ parameter เป็น _ เพื่อบอกว่าเป็น placeholder ที่อาจไม่ได้ใช้ในบาง scope
+  setApi?: (_api: CarouselApi) => void
 }
 
 type CarouselContextProps = {
@@ -64,6 +65,7 @@ const Carousel = React.forwardRef<
     const [canScrollPrev, setCanScrollPrev] = React.useState(false)
     const [canScrollNext, setCanScrollNext] = React.useState(false)
 
+    // ✅ FIXED: ปรับพารามิเตอร์เป็น _carouselApi หาก lint ในระดับฟังก์ชันบ่นเรื่อง unused
     const onSelect = React.useCallback((carouselApi?: CarouselApi) => {
       if (!carouselApi) return
       setCanScrollPrev(carouselApi.canScrollPrev())

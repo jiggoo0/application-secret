@@ -1,189 +1,203 @@
 /** @format */
-"use client"
-
 import React from "react"
-import {
-  ShieldCheck,
-  Zap,
-  ShieldAlert,
-  Facebook,
-  MessageCircle,
-  Mail,
-  ArrowUpRight,
-} from "lucide-react"
 import Link from "next/link"
+import {
+  Mail,
+  Phone,
+  MapPin,
+  MessageSquare,
+  Facebook,
+  Globe,
+  ShieldCheck,
+} from "lucide-react"
 import { siteConfig } from "@/config/site"
 import { navigationConfig } from "@/config/navigation"
+import { cn } from "@/lib/utils"
 
 /**
- * 🌐 Footer Component (Protocol_Footer)
- * Resolved Error: react/jsx-no-comment-textnodes
- * Resolved Warning: Unused Variables & Path Alignment
+ * 🛰️ COMPONENT: Footer
+ * ส่วนท้ายของระบบ ออกแบบตามมาตรฐาน Industrial Sharp
+ * แก้ไข: Syntax Error (jsx-no-comment-textnodes) และจัดระเบียบโค้ด
  */
-export default function Footer() {
-  const currentYear = new Date().getFullYear()
-  const { footerNav } = navigationConfig
-
+export function Footer() {
   return (
-    <footer className="relative overflow-hidden border-t border-slate-200 bg-white pb-12 pt-24">
-      {/* 🧩 BACKGROUND_DECORATIVE_PATTERN */}
-      <div className="absolute right-0 top-0 -z-10 h-64 w-64 -translate-y-1/2 translate-x-1/2 rounded-full bg-slate-50 opacity-50 blur-3xl" />
+    <footer className="relative overflow-hidden border-t border-slate-900 bg-slate-950">
+      {/* 🧩 Blueprint Grid Decor */}
+      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
 
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
-          {/* 1. BRAND_IDENTITY_SECTION */}
-          <div className="lg:col-span-5">
-            <div className="mb-8 flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center bg-slate-900 text-white shadow-[4px_4px_0px_0px_rgba(37,99,235,1)]">
-                <ShieldCheck size={24} />
+      <div className="container relative z-10 mx-auto px-6">
+        {/* --- MAIN_FOOTER_CONTENT --- */}
+        <div className="grid grid-cols-1 gap-12 py-20 lg:grid-cols-12">
+          {/* 🏛️ COLUMN_1: IDENTITY_BASE */}
+          <div className="space-y-8 lg:col-span-4">
+            <div className="flex items-center gap-4">
+              <div className="flex h-12 w-12 items-center justify-center bg-brand transition-transform hover:-rotate-12">
+                <Globe size={26} className="text-slate-950" />
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-black uppercase tracking-tighter text-slate-900">
-                  JP VISUAL<span className="text-blue-600">.</span>DOCS
+                <span className="text-2xl font-black uppercase italic leading-none tracking-tighter text-white">
+                  JP Visual<span className="text-brand">.Docs</span>
                 </span>
-                <div className="flex items-center gap-2">
-                  <span className="text-[8px] font-black uppercase tracking-[0.4em] text-slate-400">
-                    Document_Architecture_Bureau
-                  </span>
-                  <Zap size={10} className="fill-blue-500 text-blue-500" />
-                </div>
+                <span className="mt-1 font-mono text-[7px] font-black uppercase tracking-[0.4em] text-slate-500">
+                  GLOBAL_DOCUMENT_ARCHITECT
+                </span>
               </div>
             </div>
-            <p className="max-w-sm text-sm font-bold italic leading-relaxed text-slate-500">
-              &quot;เปลี่ยนความซับซ้อนของเอกสารให้เป็นระบบที่ทรงพลัง&quot;{" "}
-              <br />
-              เราออกแบบโครงสร้างข้อมูลเพื่อสร้างความน่าเชื่อถือขั้นสูงสุด
-              จัดการเงื่อนไขที่ยากด้วยพิมพ์เขียวเชิงกลยุทธ์โดย
-              &quot;เจ้าป่า&quot;
+            <p className="max-w-xs font-thai text-sm leading-relaxed text-slate-500">
+              ยกระดับการจัดการเอกสารและวีซ่าสู่มาตรฐานสูงสุด
+              ด้วยระบบการวิเคราะห์เชิงเทคนิค (Technical Analysis)
+              เพื่อความสำเร็จที่ตรวจสอบได้
             </p>
-
-            {/* 🔗 SOCIAL_CHANNELS_PROTOCOL */}
-            <div className="mt-10 flex items-center gap-4">
-              <a
-                href={siteConfig.social?.facebook || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-11 w-11 items-center justify-center border-2 border-slate-900 text-slate-900 transition-all hover:bg-slate-900 hover:text-white"
-                title="Facebook_Registry"
-              >
-                <Facebook size={18} />
-              </a>
-              <a
-                href={siteConfig.social?.line || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex h-11 w-11 items-center justify-center border-2 border-slate-900 text-slate-900 transition-all hover:border-[#00B900] hover:bg-[#00B900] hover:text-white"
-                title="Line_Direct_Protocol"
-              >
-                <MessageCircle size={18} />
-              </a>
-              <a
-                href={`mailto:${siteConfig.author.email}`}
-                className="flex h-11 w-11 items-center justify-center border-2 border-slate-900 text-slate-900 transition-all hover:border-blue-600 hover:bg-blue-600 hover:text-white"
-                title="Email_Transmission"
-              >
-                <Mail size={18} />
-              </a>
+            <div className="flex gap-2">
+              <SocialIcon
+                href={siteConfig.social.facebook}
+                icon={<Facebook size={18} />}
+              />
+              <SocialIcon
+                href={siteConfig.social.line}
+                icon={<MessageSquare size={18} />}
+              />
             </div>
           </div>
 
-          {/* 2. SITEMAP_GRID_REGISTRY */}
-          <div className="grid grid-cols-2 gap-8 lg:col-span-4 lg:pt-2">
-            <div>
-              <h4 className="mb-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-slate-900">
-                <div className="h-2 w-2 bg-blue-600" /> Solutions_Index
-              </h4>
-              <ul className="space-y-4">
-                {footerNav.solutions.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="group flex items-center gap-2 text-[11px] font-black uppercase text-slate-400 transition-colors hover:text-blue-600"
-                    >
-                      <span className="text-blue-600 opacity-0 transition-opacity group-hover:opacity-100">
-                        »
-                      </span>
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h4 className="mb-8 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.4em] text-slate-900">
-                <div className="h-2 w-2 bg-slate-400" /> Corporate_Log
-              </h4>
-              <ul className="space-y-4">
-                {footerNav.company.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="group flex items-center gap-2 text-[11px] font-black uppercase text-slate-400 transition-colors hover:text-slate-900"
-                    >
-                      <span className="text-slate-900 opacity-0 transition-opacity group-hover:opacity-100">
-                        »
-                      </span>
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+          {/* 🗂️ COLUMN_2: REGISTRY_INDEX */}
+          <div className="space-y-6 lg:col-span-2">
+            <span className="block border-l-2 border-brand pl-3 font-mono text-[10px] font-black uppercase tracking-[0.3em] text-brand">
+              REGISTRY_INDEX
+            </span>
+            <ul className="space-y-4 font-mono text-[10px] uppercase tracking-widest text-slate-400">
+              {navigationConfig.mainNav.map((item) => (
+                <li key={item.href}>
+                  <Link
+                    href={item.href}
+                    className="group flex items-center gap-2 transition-colors hover:text-white"
+                  >
+                    <span className="text-slate-800 transition-colors group-hover:text-brand">
+                      {"//"}
+                    </span>
+                    {item.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
           </div>
 
-          {/* 3. CONTACT_EXPERT_CTA (The Black Box) */}
-          <div className="lg:col-span-3">
-            <div className="group relative overflow-hidden bg-slate-900 p-8 text-white shadow-[8px_8px_0px_0px_rgba(37,99,235,1)]">
-              <div className="absolute right-0 top-0 p-2 opacity-10 transition-opacity group-hover:opacity-20">
-                <ShieldAlert size={80} />
+          {/* 🛠️ COLUMN_3: CONTACT_NODES_INTERFACE */}
+          <div className="grid grid-cols-1 gap-px border border-slate-900 bg-slate-900 shadow-sharp md:grid-cols-2 lg:col-span-6">
+            {/* Communication Node */}
+            <div className="group bg-slate-950 p-8 transition-all hover:bg-slate-900/40">
+              <div className="mb-6 flex items-center gap-3">
+                <MessageSquare size={14} className="text-brand" />
+                <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-600">
+                  COMMUNICATION_LINK
+                </span>
               </div>
-              <span className="mb-4 flex items-center gap-2 text-[9px] font-black uppercase tracking-[0.3em] text-blue-400">
-                <Zap size={10} fill="currentColor" /> Ready_To_Execute?
-              </span>
-              <p className="relative z-10 mb-8 text-[11px] font-bold uppercase leading-relaxed text-slate-400">
-                ส่งเคสของคุณให้ทีม &quot;เจ้าป่า&quot;
-                ประเมินโครงสร้างเอกสารเบื้องต้นได้ทันที
+              <p className="mb-8 text-2xl font-black italic tracking-tight text-white">
+                {siteConfig.contact.lineId}
               </p>
-              <Link
-                href="/contact"
-                className="group flex items-center justify-between border-b-2 border-blue-600 pb-2 text-xs font-black uppercase tracking-[0.2em] transition-all hover:border-white"
+              <a
+                href={siteConfig.social.line}
+                className="inline-flex border border-brand bg-brand px-6 py-3 text-[9px] font-black uppercase tracking-widest text-slate-950 transition-all hover:bg-transparent hover:text-brand active:scale-95"
               >
-                Start_Inquiry_Protocol
-                <ArrowUpRight
-                  size={16}
-                  className="text-blue-400 transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
-                />
-              </Link>
+                ESTABLISH_CONNECTION
+              </a>
+            </div>
+
+            {/* Inbox Node */}
+            <div className="group bg-slate-950 p-8 transition-all hover:bg-slate-900/40">
+              <div className="mb-6 flex items-center gap-3">
+                <Mail size={14} className="text-slate-600" />
+                <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-600">
+                  SECURE_INBOX
+                </span>
+              </div>
+              <p className="mb-2 truncate text-xl font-black italic text-white">
+                {siteConfig.contact.email.toUpperCase()}
+              </p>
+              <div className="h-1 w-12 bg-brand transition-all duration-500 group-hover:w-full" />
+            </div>
+
+            {/* Address & Phone Bar */}
+            <div className="flex flex-col items-start justify-between gap-6 border-t border-slate-900 bg-slate-950 p-6 md:col-span-2 md:flex-row md:items-center">
+              <div className="flex items-center gap-4 text-slate-500">
+                <div className="flex h-10 w-10 items-center justify-center border border-slate-800">
+                  <MapPin size={16} className="text-brand" />
+                </div>
+                <span className="font-thai text-xs leading-snug">
+                  {siteConfig.contact.address}
+                </span>
+              </div>
+              <div className="group flex items-center gap-4 text-white">
+                <div className="flex h-10 w-10 items-center justify-center bg-slate-900 transition-colors group-hover:bg-brand">
+                  <Phone
+                    size={16}
+                    className="text-brand group-hover:text-slate-950"
+                  />
+                </div>
+                <span className="font-mono text-lg font-black tracking-tighter">
+                  {siteConfig.contact.phone}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 4. LEGAL_BAR_PROTOCOL */}
-        <div className="mt-24 flex flex-col items-center justify-between gap-6 border-t border-slate-100 pt-10 md:flex-row">
+        {/* --- SYSTEM_FOOTNOTE_TERMINAL --- */}
+        <div className="flex flex-col items-center justify-between gap-8 border-t border-slate-900 py-12 md:flex-row">
           <div className="flex flex-col gap-1">
-            <p className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900">
-              {`© ${currentYear} ${siteConfig.name}`}
-              <span className="mx-2 text-blue-600">|</span>
-              {`v${siteConfig.system.version}`}
-            </p>
-            <p className="text-[8px] font-bold uppercase tracking-widest text-slate-400">
-              {`AUTHORIZED BY ${siteConfig.author.name.toUpperCase()} // DOCUMENT_ARCHITECT`}
-            </p>
+            <span className="font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-slate-600">
+              {/* ✅ FIXED: Corrected text node syntax to pass ESLint */}
+              {"© 2025 JP_VISUAL_DOCS // ALL_RIGHTS_RESERVED"}
+            </span>
+            <div className="flex items-center gap-2 font-mono text-[8px] uppercase tracking-widest text-slate-800">
+              <span>{siteConfig.system.status}</span>
+              <span className="h-2 w-[1px] bg-slate-800" />
+              <span>VER_{siteConfig.system.version}</span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-8">
-            {footerNav.legal.map((link) => (
-              <Link
-                key={link.name}
-                href={link.href}
-                className="text-[9px] font-black uppercase tracking-widest text-slate-300 transition-colors hover:text-blue-600"
-              >
-                {link.name.replace(/ /g, "_")}
-              </Link>
-            ))}
+          <div className="flex items-center gap-10 font-mono text-[9px] font-bold uppercase text-slate-500">
+            <Link
+              href="/privacy"
+              className="transition-colors hover:text-brand"
+            >
+              PRIVACY_PROTOCOL
+            </Link>
+            <Link href="/terms" className="transition-colors hover:text-brand">
+              SERVICE_AGREEMENT
+            </Link>
+
+            <div className="hidden items-center gap-4 border border-slate-800 bg-slate-900/50 px-5 py-2 sm:flex">
+              <div
+                className={cn(
+                  "h-2 w-2",
+                  siteConfig.system.indicatorColor === "bg-green-500"
+                    ? "bg-brand"
+                    : "bg-red-500",
+                  "animate-pulse"
+                )}
+              />
+              <span className="italic tracking-tighter text-slate-400">
+                {siteConfig.system.label}
+              </span>
+              <ShieldCheck size={14} className="text-brand" />
+            </div>
           </div>
         </div>
       </div>
     </footer>
+  )
+}
+
+function SocialIcon({ href, icon }: { href: string; icon: React.ReactNode }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex h-11 w-11 items-center justify-center border border-slate-800 bg-slate-900/50 text-slate-500 transition-all hover:border-brand hover:bg-brand/5 hover:text-brand"
+    >
+      {icon}
+    </a>
   )
 }

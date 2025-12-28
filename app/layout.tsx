@@ -1,41 +1,30 @@
 /** @format */
 
 import type { Metadata, Viewport } from "next"
-import { Kanit } from "next/font/google"
 import { siteConfig } from "@/config/site"
 import { Providers } from "./providers"
+// 🛠️ FIX: นำเข้าแบบ Named Import เพื่อป้องกัน Runtime Error 500
 import { JsonLd } from "@/components/seo/JsonLd"
 import { cn } from "@/lib/utils"
+// 🏗️ SOURCE_OF_TRUTH: ใช้ฟอนต์จาก lib/fonts.ts เท่านั้น
+import { inter, ibmPlexSansThai, jetbrainsMono } from "@/lib/fonts"
 import "./globals.css"
-
-const kanit = Kanit({
-  subsets: ["latin", "thai"],
-  weight: ["300", "400", "500", "600", "700", "900"],
-  variable: "--font-kanit",
-  display: "swap",
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
-
   title: {
     default: siteConfig.seo.defaultTitle,
     template: siteConfig.seo.titleTemplate,
   },
-
   description: siteConfig.seo.description,
-
-  // 🔧 FIX: แปลง readonly tuple → string[]
   keywords: [...siteConfig.seo.keywords],
-
   authors: [{ name: siteConfig.author.name }],
   creator: siteConfig.author.name,
-
   openGraph: {
     type: "website",
     url: siteConfig.url,
     siteName: siteConfig.name,
-    locale: siteConfig.locale.replace("-", "_"),
+    locale: "th_TH",
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.description,
     images: [
@@ -47,14 +36,13 @@ export const metadata: Metadata = {
       },
     ],
   },
-
   twitter: {
     card: "summary_large_image",
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.description,
     images: [siteConfig.assets.ogImage],
+    creator: "@JPVisualDocs",
   },
-
   icons: {
     icon: siteConfig.assets.favicon,
     apple: siteConfig.assets.appleTouch,
@@ -64,7 +52,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f172a",
+  maximumScale: 5,
+  themeColor: "#FCDE09", // Brand Yellow
 }
 
 export default function RootLayout({
@@ -75,20 +64,35 @@ export default function RootLayout({
   return (
     <html
       lang={siteConfig.language[0]}
-      className="scroll-smooth"
+      className={cn(
+        "scroll-smooth",
+        // 🖋️ ฉีด Font Variables เข้าสู่ระบบ
+        inter.variable,
+        ibmPlexSansThai.variable,
+        jetbrainsMono.variable
+      )}
       suppressHydrationWarning
     >
       <head>
+        {/* 🚀 SCHEMA_ENGINE: สำหรับ Rich Snippets (SEO) */}
         <JsonLd />
       </head>
 
       <body
         className={cn(
-          "font-kanit min-h-screen bg-industrial-surface antialiased selection:bg-blue-500/30",
-          kanit.variable
+          "min-h-screen bg-white font-thai text-slate-950 antialiased",
+          "selection:bg-brand selection:text-slate-950"
         )}
       >
-        <Providers>{children}</Providers>
+        <Providers>
+          {/* Senior Consultant Note: 
+            โครงสร้างหลักจะถูกจัดการต่อใน MainLayout 
+            เพื่อให้การควบคุม Header/Footer เป็นไปตามมาตรฐานวิศวกรรม
+          */}
+          <main className="relative flex min-h-screen flex-col">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   )

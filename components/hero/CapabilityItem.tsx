@@ -1,51 +1,47 @@
 /** @format */
-"use client"
-
 import React from "react"
 import { LucideIcon } from "lucide-react"
-import { motion } from "framer-motion"
+import { cn } from "@/lib/utils"
 
-/**
- * 🛠️ CAPABILITY_ITEM_PROTOCOL
- * ----------------------------------------------------------------
- * ส่วนแสดงผลขีดความสามารถ (Capabilities) ในรูปแบบ Modular Box
- * รองรับ Staggered Animation และ Hover Effect สไตล์ระบบ Terminal
- */
 interface CapabilityItemProps {
   icon: LucideIcon
-  text: string
-  delay?: number
+  title: string
+  label: string
+  className?: string
 }
 
 export const CapabilityItem = ({
   icon: Icon,
-  text,
-  delay = 0,
+  title,
+  label,
+  className,
 }: CapabilityItemProps) => {
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -15 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{
-        delay,
-        duration: 0.5,
-        ease: [0.33, 1, 0.68, 1], // Custom ease-out ให้ความรู้สึกพรีเมียม
-      }}
-      className="group flex cursor-default items-center gap-4 border border-slate-200 bg-white/40 p-3 backdrop-blur-sm transition-all duration-300 hover:border-blue-600 hover:bg-white hover:shadow-lg"
+    <div
+      className={cn(
+        "group flex items-center gap-5 border border-slate-100 bg-white p-5 transition-all duration-300",
+        "hover:-translate-y-1 hover:border-brand hover:shadow-[15px_15px_0px_-5px_rgba(252,222,9,0.1)]",
+        className
+      )}
     >
-      {/* 🧩 ICON_HOLDER: ปรับการหมุนให้ดูมีความแม่นยำทางวิศวกรรม */}
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center bg-slate-900 text-white transition-all duration-500 group-hover:rotate-[90deg] group-hover:bg-blue-600 group-hover:shadow-[0_0_15px_rgba(37,99,235,0.3)]">
-        <Icon size={18} strokeWidth={2.5} />
+      {/* 📦 Icon Container with Sharp Accent */}
+      <div className="relative shrink-0">
+        <div className="relative z-10 bg-slate-950 p-3 text-brand transition-colors group-hover:bg-brand group-hover:text-slate-950">
+          <Icon size={22} strokeWidth={1.5} />
+        </div>
+        {/* Decorative background element behind icon */}
+        <div className="absolute -bottom-1 -right-1 -z-10 h-full w-full border border-slate-200 transition-colors group-hover:border-brand/30" />
       </div>
 
-      {/* 🏷️ LABEL_TEXT: ใช้ฟอนต์ Mono เพื่อความขลังสไตล์ Log */}
-      <span className="font-mono text-[10px] font-black uppercase leading-none tracking-[0.2em] text-slate-500 transition-colors duration-300 group-hover:text-slate-900">
-        {text}
-      </span>
-
-      {/* 🛰️ ACTIVE_INDICATOR: ขีดขนาดเล็กที่จะปรากฏเมื่อ Hover */}
-      <div className="ml-auto h-4 w-1 bg-slate-100 opacity-0 transition-all group-hover:bg-blue-600 group-hover:opacity-100" />
-    </motion.div>
+      {/* 📝 Text Content */}
+      <div className="flex flex-col gap-0.5">
+        <span className="font-mono text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 transition-colors group-hover:text-slate-600">
+          {label}
+        </span>
+        <span className="font-thai text-[13px] font-bold leading-tight tracking-wide text-slate-900 group-hover:text-slate-950">
+          {title}
+        </span>
+      </div>
+    </div>
   )
 }

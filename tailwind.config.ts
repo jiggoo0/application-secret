@@ -1,123 +1,100 @@
 /** @format */
 import type { Config } from "tailwindcss"
-import { themeConfig } from "./config/theme" // ตรวจสอบว่า path ถูกต้องตามที่จัดโครงสร้างไว้
 
 const config: Config = {
+  // 🎯 ปรับปรุง Content Path ให้ครอบคลุมทุกจุดที่ใช้ Class
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./lib/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    // 📏 กำหนด Container ให้แม่นยำเพื่อความสมมาตรแบบวิศวกรรม
     container: {
       center: true,
       padding: {
-        DEFAULT: "1rem",
+        DEFAULT: "1.5rem",
         sm: "2rem",
         lg: "4rem",
       },
       screens: {
-        "2xl": themeConfig.layout.containerMaxWidth,
+        "2xl": "1400px",
       },
     },
     extend: {
       colors: {
-        // Mapping จาก themeConfig โดยตรง
+        // --- 🎨 THE EXECUTIVE INDUSTRIAL PALETTE ---
         brand: {
-          DEFAULT: themeConfig.colors.primary.DEFAULT,
-          dark: themeConfig.colors.primary.dark,
-          light: themeConfig.colors.primary.light,
-          accent: themeConfig.colors.primary.accent,
+          DEFAULT: "#FCDE09", // Pure Brand Yellow
+          dark: "#D4BC08",
+          light: "#FEF9C3",
         },
-        industrial: {
-          black: themeConfig.colors.industrial.black,
-          dark: themeConfig.colors.industrial.dark,
-          gray: themeConfig.colors.industrial.gray,
-          border: themeConfig.colors.industrial.border,
-          surface: themeConfig.colors.industrial.surface,
-          soft: themeConfig.colors.industrial.soft,
+        slate: {
+          50: "#F8FAFC",
+          100: "#F1F5F9",
+          400: "#94A3B8",
+          500: "#64748B",
+          900: "#0F172A",
+          950: "#020617", // Authority Black
         },
-        status: {
-          success: themeConfig.colors.status.success,
-          warning: themeConfig.colors.status.warning,
-          danger: themeConfig.colors.status.danger,
-        },
+        success: "#10B981",
+        warning: "#F59E0B",
+        error: "#EF4444",
       },
-      // Typography Mapping
-      lineHeight: {
-        "thai-tight": themeConfig.typography.lineHeight.tight,
-        "thai-base": themeConfig.typography.lineHeight.snug,
-        "thai-relaxed": themeConfig.typography.lineHeight.relaxed,
+
+      // --- 🔡 TYPOGRAPHY PROTOCOL (ต้องตรงกับ fonts.ts เป๊ะๆ) ---
+      fontFamily: {
+        // ผสาน Inter และ IBM Plex Sans Thai เป็น Font Sans หลัก
+        sans: ["var(--font-inter)", "var(--font-thai)", "sans-serif"],
+        thai: ["var(--font-thai)", "sans-serif"],
+        // ใช้ JetBrains Mono ที่คุณตั้งค่าไว้ใน fonts.ts
+        mono: ["var(--font-mono)", "monospace"],
       },
-      letterSpacing: {
-        tightest: themeConfig.typography.letterSpacing.tighter,
-        widest: themeConfig.typography.letterSpacing.widest,
-        ultra: themeConfig.typography.letterSpacing.ultra,
-      },
-      fontSize: {
-        display: themeConfig.typography.fontSize.display,
-        micro: themeConfig.typography.fontSize.micro,
-      },
-      // Blueprint & System Effects
+
+      // --- 📐 SHARP INDUSTRIAL ELEMENTS ---
       boxShadow: {
-        sharp: themeConfig.effects.shadow.sharp,
-        blueprint: themeConfig.effects.shadow.blueprint,
-        glow: themeConfig.effects.shadow.glow,
+        sharp: "8px 8px 0px 0px #020617",
+        "sharp-brand": "8px 8px 0px 0px #FCDE09",
+        "sharp-sm": "4px 4px 0px 0px #020617",
+        "sharp-white": "8px 8px 0px 0px #FFFFFF",
+        "sharp-hover": "12px 12px 0px 0px #020617",
       },
+
+      // --- 🧩 BACKGROUND ARCHITECTURE ---
       backgroundImage: {
-        "blueprint-grid": `
-          linear-gradient(to right, ${themeConfig.colors.industrial.border}1A 1px, transparent 1px),
-          linear-gradient(to bottom, ${themeConfig.colors.industrial.border}1A 1px, transparent 1px)
-        `,
-        "terminal-gradient":
-          "linear-gradient(180deg, rgba(15, 23, 42, 0) 0%, rgba(15, 23, 42, 0.8) 100%)",
+        "blueprint-grid": "url('/grid-pattern.svg')", // อย่าลืมใส่ไฟล์นี้ในโฟลเดอร์ public
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic":
+          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
-      backgroundSize: {
-        "grid-sm": "20px 20px",
-        "grid-md": "40px 40px",
-        "grid-lg": "80px 80px",
+
+      // --- 🚄 MOTION_SYSTEM (Fixing Ambiguity) ---
+      transitionTimingFunction: {
+        "p-machine": "cubic-bezier(0.85, 0, 0.15, 1)",
       },
       animation: {
-        "border-draw":
-          "border-width 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards",
-        "pulse-slow": "pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        float: "float 4s ease-in-out infinite",
-        "scan-line": "scan 3s linear infinite",
-        "fade-in-up": "fadeInUp 0.6s ease-out forwards",
-        "shimmer-run": "shimmer 2s infinite linear",
+        "pulse-slow": "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        scanline: "scanline 8s linear infinite",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
       },
       keyframes: {
-        "border-width": {
-          "0%": { width: "0", opacity: "0" },
-          "100%": { width: "100%", opacity: "1" },
-        },
-        float: {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-8px)" },
-        },
-        scan: {
+        scanline: {
           "0%": { transform: "translateY(-100%)" },
           "100%": { transform: "translateY(100%)" },
         },
-        fadeInUp: {
-          "0%": { opacity: "0", transform: "translateY(15px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
-        shimmer: {
-          "0%": { transform: "translateX(-100%)" },
-          "100%": { transform: "translateX(100%)" },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
-      },
-      borderRadius: {
-        none: themeConfig.layout.radius,
-        xs: "1px",
-        sm: "2px",
-        DEFAULT: themeConfig.layout.radius,
       },
     },
   },
-  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
+  plugins: [require("tailwindcss-animate")],
 }
 
 export default config

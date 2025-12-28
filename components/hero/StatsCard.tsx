@@ -1,63 +1,41 @@
 /** @format */
-"use client"
-
 import React from "react"
-import { motion } from "framer-motion"
-import { themeConfig } from "@/config/theme"
+import { cn } from "@/lib/utils"
 
 interface StatsCardProps {
   label: string
   value: string
   unit: string
-  color?: string
+  className?: string
 }
 
-/**
- * 📊 STATS_CARD_PROTOCOL
- * ----------------------------------------------------------------
- * ส่วนแสดงผลสถิติแบบ Industrial Sharp Design
- * ✅ FIXED: JSX Comment Error
- * ✅ FIXED: Theme Token Integration
- */
 export const StatsCard = ({
   label,
   value,
   unit,
-  color = "text-slate-900",
-}: StatsCardProps) => {
-  return (
-    <div
-      className="asset-card group/stat border-2 border-slate-900 bg-white p-6 transition-all duration-300"
-      style={{ boxShadow: themeConfig.effects.shadow.sharp }}
-    >
-      {/* 🏷️ MONO_LABEL: แสดงผลแบบ System Log String */}
-      <p className="label-mono opacity-60 transition-opacity group-hover/stat:opacity-100">
-        {`// ${label}`}
-      </p>
+  className,
+}: StatsCardProps) => (
+  <div
+    className={cn(
+      "group flex flex-col border-l-2 border-slate-100 py-1 pl-6 pr-4 transition-all duration-300 hover:border-brand",
+      className
+    )}
+  >
+    <div className="flex items-baseline gap-1.5">
+      {/* 🔢 Main Value - ใช้ font-sans (Inter) เพื่อความโมเดิร์นและหนักแน่น */}
+      <span className="text-4xl font-black tracking-tighter text-slate-950 transition-colors group-hover:text-brand">
+        {value}
+      </span>
 
-      <div className="mt-2 flex items-baseline gap-2">
-        <motion.span
-          initial={{ opacity: 0, y: 10 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className={`text-5xl font-black tracking-tighter ${color} font-sans`}
-        >
-          {value}
-        </motion.span>
-
-        <motion.span
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ delay: 0.3 }}
-          className="text-sm font-black uppercase tracking-widest text-slate-400"
-        >
-          {unit}
-        </motion.span>
-      </div>
-
-      {/* 🏗️ DECORATIVE_CORNER: เพิ่มจุดนำสายตาสไตล์ Industrial */}
-      <div className="absolute right-2 top-2 h-1.5 w-1.5 bg-slate-100 transition-colors group-hover/stat:bg-blue-600" />
+      {/* 🏷️ Unit - ตัวพิมพ์ใหญ่แบบหนาเพื่อแยกความต่าง */}
+      <span className="text-[11px] font-black uppercase tracking-tight text-slate-400">
+        {unit}
+      </span>
     </div>
-  )
-}
+
+    {/* 📋 Technical Label - ใช้ font-mono เพื่อสื่อถึงรหัสหรือระบบข้อมูล */}
+    <span className="mt-1 font-mono text-[9px] font-black uppercase tracking-[0.25em] text-slate-400 transition-colors group-hover:text-slate-600">
+      {label}
+    </span>
+  </div>
+)

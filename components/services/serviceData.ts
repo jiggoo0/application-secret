@@ -7,15 +7,44 @@ import {
   Layers,
   CreditCard,
   BarChart3,
+  LucideIcon,
 } from "lucide-react"
-import { ServiceItem } from "./types"
 
-/**
- * 🛰️ SERVICES_REGISTRY_DATA
- * ----------------------------------------------------------------
- * ฐานข้อมูลบริการหลักตามโครงสร้าง ServiceItem Interface
- * ข้อมูลนี้จะถูกนำไป Render ใน ServiceCard และ ServicesSection
- */
+// --- 1. DATA_INTERFACES ---
+export interface ServicePrice {
+  base: string
+  suffix?: string
+}
+
+export interface ServiceTechnical {
+  highlight: string
+  protocol: string[]
+  status: "OPERATIONAL" | "HIGH_DEMAND" | "DEVELOPMENT" | "SYSTEM_CHECK"
+}
+
+export interface ServiceItem {
+  id: string
+  code: string
+  category:
+    | "IMMIGRATION"
+    | "FINANCIAL"
+    | "DOCUMENTATION"
+    | "INFRASTRUCTURE"
+    | "SYSTEMS"
+  type: string
+  icon: LucideIcon
+  image: string
+  title: string
+  description: string
+  price: ServicePrice
+  cta: {
+    label: string
+    action: string
+  }
+  technical: ServiceTechnical
+}
+
+// --- 2. CORE_SERVICE_REGISTRY ---
 export const services: ServiceItem[] = [
   {
     id: "visa-strategy-001",
@@ -23,7 +52,8 @@ export const services: ServiceItem[] = [
     category: "IMMIGRATION",
     type: "VISA_ASSET",
     icon: FileSearch,
-    image: "/images/service/วีซ่า.webp",
+    image:
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/Service1.webp",
     title: "Visa Solutions & Strategy",
     description:
       "วิเคราะห์และวางโครงสร้างเอกสารสำหรับเคสยาก หรือเคยถูกปฏิเสธ โดยใช้มาตรฐาน Embassy-Grade",
@@ -41,7 +71,8 @@ export const services: ServiceItem[] = [
     category: "FINANCIAL",
     type: "GEN_ASSET",
     icon: TrendingUp,
-    image: "/images/service/สินเชื่อ.webp",
+    image:
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/credit.webp",
     title: "Loan Profile Engineering",
     description:
       "ปรับจูนโปรไฟล์การเงินและจัดโครงสร้างหลักฐานรายได้ เพื่อเพิ่มโอกาสการอนุมัติสินเชื่อสูงสุด",
@@ -59,7 +90,8 @@ export const services: ServiceItem[] = [
     category: "DOCUMENTATION",
     type: "GEN_ASSET",
     icon: Layers,
-    image: "/images/service/แก้ไขเอกสาร.webp",
+    image:
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/document-fix.webp",
     title: "Smart Verification System",
     description:
       "ระบบสร้างเอกสารดิจิทัลพร้อม QR Verification และ Landing Page ส่วนตัวเพื่อตรวจสอบความถูกต้อง",
@@ -77,10 +109,11 @@ export const services: ServiceItem[] = [
     category: "INFRASTRUCTURE",
     type: "GEN_ASSET",
     icon: CreditCard,
-    image: "/images/service/บัตร.webp",
+    image:
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/card.webp",
     title: "Confidential Production",
     description:
-      "งานพิมพ์บัตรและเอกสารความปลอดภัยสูง พร้อมกระบวนการส่งมอบแบบเข้ารหัส (Confidential Handover)",
+      "งานพิมพ์บัตรและเอกสารความปลอดภัยสูง พร้อมกระบวนการส่งมอบแบบเข้ารหัส",
     price: { base: "4,500" },
     cta: { label: "START_PRODUCTION", action: "/contact?ref=print" },
     technical: {
@@ -95,10 +128,10 @@ export const services: ServiceItem[] = [
     category: "IMMIGRATION",
     type: "VISA_ASSET",
     icon: Plane,
-    image: "/images/service/ตั๋วเครื่องบิน.webp",
+    image:
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/ticket.webp",
     title: "Verified Booking Node",
-    description:
-      "สำรองตั๋วเครื่องบินและโรงแรมผ่านระบบ Global Distribution System (GDS) ที่ตรวจสอบได้จริง",
+    description: "สำรองตั๋วเครื่องบินและโรงแรมผ่านระบบ GDS ที่ตรวจสอบได้จริง",
     price: { base: "4xx", suffix: "/ 1,xxx Express" },
     cta: { label: "ISSUE_TICKET", action: "/contact?ref=booking" },
     technical: {
@@ -113,10 +146,10 @@ export const services: ServiceItem[] = [
     category: "DOCUMENTATION",
     type: "GEN_ASSET",
     icon: PenTool,
-    image: "/images/service/บริการจดหมาย.webp",
+    image:
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp",
     title: "Professional Representation",
-    description:
-      "ร่างจดหมายชี้แจงและนิติกรรมด้วยภาษาทางการ (Embassy Tone) เพื่อการสื่อสารระดับสากล",
+    description: "ร่างจดหมายชี้แจงและนิติกรรมด้วยภาษาทางการระดับสากล",
     price: { base: "1,000", suffix: "- 3,000" },
     cta: { label: "DRAFT_NOW", action: "/contact?ref=writing" },
     technical: {
@@ -131,10 +164,11 @@ export const services: ServiceItem[] = [
     category: "INFRASTRUCTURE",
     type: "GEN_ASSET",
     icon: BarChart3,
-    image: "/images/service/บัตร.webp",
+    image:
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/branding.webp",
     title: "Marketing Automation Stack",
     description:
-      "วางระบบ AI และการตลาดอัตโนมัติ เพื่อขับเคลื่อนธุรกิจให้ทำงานได้ตลอด 24 ชั่วโมง",
+      "วางระบบ AI และการตลาดอัตโนมัติ เพื่อขับเคลื่อนธุรกิจตลอด 24 ชั่วโมง",
     price: { base: "4,xxx" },
     cta: { label: "ACTIVATE_AUTO", action: "/contact?ref=auto" },
     technical: {
