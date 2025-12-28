@@ -1,9 +1,13 @@
 /** @format */
+
 "use client"
 
 import React from "react"
 import { Shield, Globe, Award, Users } from "lucide-react"
 
+/**
+ * 📊 DATA: Performance Metrics
+ */
 const stats = [
   {
     label: "Success_Rate",
@@ -15,22 +19,25 @@ const stats = [
     label: "Cases_Processed",
     value: "4,500+",
     icon: Globe,
-    detail: "Across 24 Countries",
+    detail: "Global Distribution",
   },
   {
     label: "Expert_Engineers",
     value: "12",
     icon: Award,
-    detail: "In-house Specialists",
+    detail: "Verified Specialists",
   },
   {
     label: "Corporate_Clients",
     value: "120+",
     icon: Users,
-    detail: "B2B Infrastructure",
+    detail: "Infrastructure Partners",
   },
 ]
 
+/**
+ * 🤝 DATA: Partner Registry
+ */
 const partners = [
   { name: "Partner_01", logo: "VFS_GLOBAL" },
   { name: "Partner_02", logo: "TLS_CONTACT" },
@@ -39,64 +46,70 @@ const partners = [
   { name: "Partner_05", logo: "AMCHAM_TH" },
 ]
 
-export default function TrustPartner() {
+/**
+ * 🛰️ COMPONENT: TrustPartner
+ * ระบบตรวจสอบความน่าเชื่อถือและเครือข่ายพันธมิตร (Industrial_Sharp_V1)
+ */
+export const TrustPartner = () => {
   return (
-    <section className="relative overflow-hidden border-y border-slate-100 bg-white py-24">
-      {/* 🧩 Technical Background */}
-      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.02]" />
+    <section className="relative overflow-hidden border-y border-slate-100 bg-white py-28 selection:bg-brand selection:text-slate-950">
+      {/* 🧩 Technical Background Grid */}
+      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
 
-      <div className="container relative z-10 mx-auto px-6">
+      <div className="relative z-10 mx-auto max-w-7xl px-6">
         {/* --- PART 01: PERFORMANCE COUNTERS --- */}
-        <div className="mb-24 grid grid-cols-2 gap-8 lg:grid-cols-4">
+        <div className="mb-28 grid grid-cols-2 gap-y-12 lg:grid-cols-4 lg:gap-8">
           {stats.map((stat, idx) => (
-            <div key={idx} className="group relative">
-              <div className="mb-4 flex items-center gap-3">
-                <stat.icon
-                  size={16}
-                  className="text-brand transition-transform group-hover:scale-110"
-                />
-                <span className="font-mono text-[9px] font-black uppercase tracking-widest text-slate-400">
+            <div
+              key={`stat-${idx}`}
+              className="group relative flex flex-col items-center text-center lg:items-start lg:text-left"
+            >
+              <div className="mb-5 flex items-center gap-3">
+                {/* Enforced rounded-none for industrial look */}
+                <div className="flex h-8 w-8 items-center justify-center rounded-none bg-slate-50 transition-colors group-hover:bg-brand">
+                  <stat.icon
+                    size={14}
+                    className="text-slate-400 transition-colors group-hover:text-slate-950"
+                  />
+                </div>
+                <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
                   {stat.label}
                 </span>
               </div>
               <div className="space-y-1">
-                <h3 className="text-4xl font-black tracking-tighter text-slate-950 md:text-5xl">
+                <h3 className="text-5xl font-black tracking-tighter text-slate-950 transition-transform group-hover:translate-x-1 md:text-6xl">
                   {stat.value}
                 </h3>
-                <p className="font-mono text-[8px] font-bold uppercase tracking-widest text-slate-300">
-                  [{stat.detail}]
+                <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-300">
+                  {/* Corrected Comment Syntax */}
+                  {`// ${stat.detail}`}
                 </p>
               </div>
-              {/* Decorative accent */}
-              <div className="absolute -bottom-4 left-0 h-1 w-8 bg-slate-100 transition-all duration-500 group-hover:w-full group-hover:bg-brand" />
+              <div className="mt-6 h-[1px] w-12 bg-slate-100 transition-all duration-700 group-hover:w-full group-hover:bg-brand" />
             </div>
           ))}
         </div>
 
-        {/* --- PART 02: PARTNER REGISTRY (Logo Cloud) --- */}
-        <div className="border-t border-slate-100 pt-20">
-          <div className="flex flex-col items-center gap-12 lg:flex-row lg:gap-24">
-            {/* Heading for Partners */}
-            <div className="shrink-0 text-center lg:w-48 lg:text-left">
-              <span className="mb-2 block font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-900">
-                Trusted_By
+        {/* --- PART 02: PARTNER REGISTRY --- */}
+        <div className="border-t border-slate-100 pt-24">
+          <div className="flex flex-col items-center gap-16 lg:flex-row lg:justify-between">
+            <div className="shrink-0 text-center lg:text-left">
+              <span className="mb-3 block font-mono text-[11px] font-black uppercase tracking-[0.5em] text-slate-900">
+                Strategic_Network
               </span>
-              <p className="font-thai text-[11px] font-bold leading-relaxed text-slate-400">
-                เครือข่ายความร่วมมือ <br /> ระดับสากลและองค์กรชั้นนำ
+              <p className="font-thai text-[13px] font-bold leading-relaxed text-slate-400">
+                เครือข่ายความร่วมมือเชิงกลยุทธ์ <br />
+                กับหน่วยงานรับคำร้องระดับสากล
               </p>
             </div>
 
-            {/* Logo Grid - Monochrome & Industrial Style */}
-            <div className="flex flex-wrap items-center justify-center gap-10 opacity-40 grayscale transition-opacity duration-700 hover:opacity-100 md:gap-16">
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-10 opacity-25 grayscale transition-all duration-1000 hover:opacity-100 lg:gap-x-20">
               {partners.map((p) => (
-                <div key={p.name} className="group relative cursor-crosshair">
-                  <span className="font-mono text-xl font-black uppercase italic tracking-tighter text-slate-300 transition-colors group-hover:text-slate-950 md:text-2xl">
+                <div key={p.name} className="group relative">
+                  <span className="font-mono text-xl font-black uppercase italic tracking-tighter text-slate-400 transition-all group-hover:tracking-normal group-hover:text-slate-950 md:text-3xl">
                     {p.logo}
                   </span>
-                  {/* Tooltip-like label */}
-                  <span className="absolute -top-6 left-1/2 -translate-x-1/2 bg-slate-900 px-2 py-0.5 font-mono text-[7px] text-white opacity-0 transition-opacity group-hover:opacity-100">
-                    VERIFIED_NODE
-                  </span>
+                  <div className="absolute -bottom-4 left-0 h-0.5 w-0 bg-brand transition-all duration-300 group-hover:w-full" />
                 </div>
               ))}
             </div>
@@ -104,9 +117,9 @@ export default function TrustPartner() {
         </div>
       </div>
 
-      {/* 📐 Decorative vertical bars on the side */}
-      <div className="absolute right-0 top-1/4 h-32 w-1 bg-slate-50" />
-      <div className="absolute right-0 top-1/4 mt-4 h-8 w-1 bg-brand" />
+      {/* 📐 Industrial Edge Decorations */}
+      <div className="absolute left-0 top-0 h-2 w-[1px] bg-brand" />
+      <div className="absolute bottom-0 right-0 h-2 w-[1px] bg-brand shadow-sharp" />
     </section>
   )
 }

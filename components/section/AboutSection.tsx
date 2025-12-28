@@ -1,48 +1,46 @@
 /** @format */
+
 "use client"
 
 import React from "react"
-import {
-  ArrowUpRight,
-  CheckCircle2,
-  Fingerprint,
-  ShieldCheck,
-  Target,
-} from "lucide-react"
+import { ArrowUpRight, CheckCircle2, ShieldCheck, Target } from "lucide-react"
 
+/**
+ * 📝 CORE_VALUES: Trusted Consultant Tone
+ */
 const coreValues = [
   {
     icon: ShieldCheck,
-    title: "Legal Compliance",
-    description: "ทุกขั้นตอนถูกต้องตามกฎหมายและระเบียบกงสุล 100%",
+    title: "Legal Care",
+    description: "ดูแลทุกขั้นตอนให้ถูกต้องตามระเบียบกงสุลและกฎหมายอย่างถี่ถ้วน",
   },
   {
-    icon: Fingerprint,
-    title: "Data Privacy",
-    description: "ระบบรักษาความลับข้อมูลส่วนบุคคลมาตรฐานสูงสุด",
+    icon: ShieldCheck, // Changed to consistent industrial icon
+    title: "Personal Privacy",
+    description: "รักษาความลับและข้อมูลส่วนบุคคลของคุณด้วยมาตรการที่เข้มงวด",
   },
   {
     icon: Target,
-    title: "Result Oriented",
-    description: "มุ่งเน้นผลสัมฤทธิ์ของวีซ่าและเอกสารเป็นสำคัญ",
+    title: "Client Success",
+    description:
+      "มุ่งเน้นความสำเร็จของทุกคำร้อง เพื่อให้คุณได้รับผลลัพธ์ตามเป้าหมาย",
   },
 ]
 
 /**
  * 🛰️ COMPONENT: AboutSection
- * นำเสนออัตลักษณ์และวิสัยทัศน์ขององค์กรในรูปแบบ Structural Excellence
- * แก้ไข: ลบ Unused Import 'cn' เพื่อให้ผ่านการตรวจสอบ Lint 100%
+ * นำเสนออัตลักษณ์ผ่านภาษาที่สร้างความสบายใจ (Industrial_Sharp_V1)
+ * 🛡️ ENFORCEMENT: Named Export & Rounded-None
  */
-export default function AboutSection() {
+export const AboutSection = () => {
   return (
-    <section className="relative overflow-hidden bg-white py-24">
+    <section className="relative overflow-hidden bg-white py-24 selection:bg-brand selection:text-slate-950">
       {/* 🧩 Background Elements */}
       <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-      <div className="absolute left-[8%] top-0 h-full w-px bg-slate-50" />
+      <div className="absolute left-[8%] top-0 h-full w-[1px] bg-slate-100" />
 
       <div className="container relative z-10 mx-auto px-6">
         <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-12">
-          
           {/* 🏛️ LEFT: IDENTITY & VISION */}
           <div className="sticky top-24 lg:col-span-5">
             <div className="mb-6 inline-flex items-center gap-2">
@@ -61,35 +59,34 @@ export default function AboutSection() {
 
             <div className="space-y-6 font-thai text-lg leading-relaxed text-slate-500">
               <p>
-                เราคือเอเจนซี่ที่ปรึกษาด้านวีซ่าและงานเอกสารที่ก่อตั้งขึ้นจากความเชื่อที่ว่า
+                เราคือที่ปรึกษาด้านวีซ่าและงานเอกสารที่ก่อตั้งขึ้นจากความตั้งใจที่ว่า
                 <span className="font-bold text-slate-950">
                   {" "}
-                  "ความแม่นยำคือหัวใจของความสำเร็จ"
+                  "ความถูกต้องแม่นยำ คือจุดเริ่มต้นของทุกความสำเร็จ"
                 </span>
               </p>
               <p>
-                ด้วยประสบการณ์กว่า 8 ปี เราไม่ได้เพียงแค่ยื่นเอกสาร
-                แต่เราวางโครงสร้างกลยุทธ์เพื่อให้ทุกคำร้องของคุณได้รับการอนุมัติอย่างราบรื่นที่สุด
-                ลดความเสี่ยง และประหยัดเวลาอันมีค่าของธุรกิจคุณ
+                ด้วยประสบการณ์กว่า 8 ปี เราไม่ได้เพียงแค่จัดเตรียมเอกสาร
+                แต่เราช่วยวางแผนและดูแลในทุกรายละเอียด
+                เพื่อให้ทุกความตั้งใจของคุณ ดำเนินไปได้อย่างราบรื่นที่สุด
+                ช่วยลดความกังวลและรักษาเวลาที่มีค่าของคุณ
               </p>
             </div>
 
-            {/* Signature Action */}
             <button className="group mt-10 flex items-center gap-4 text-xs font-black uppercase tracking-widest text-slate-950 transition-all">
               <span className="border-b-2 border-slate-950 pb-1 group-hover:border-brand">
-                Discover Our Legacy
+                ทำความรู้จักเราให้มากขึ้น
               </span>
               <ArrowUpRight
                 size={18}
-                className="transition-colors group-hover:text-brand"
+                className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
               />
             </button>
           </div>
 
           {/* 🛠️ RIGHT: STRUCTURAL EXCELLENCE */}
           <div className="lg:col-span-7">
-            <div className="grid grid-cols-1 gap-px border border-slate-100 bg-slate-100 shadow-2xl md:grid-cols-2">
-              
+            <div className="grid grid-cols-1 gap-px border-2 border-slate-950 bg-slate-950 shadow-sharp md:grid-cols-2">
               {/* Feature Box: Heritage */}
               <div className="flex min-h-[300px] flex-col justify-between bg-white p-10">
                 <div className="font-mono text-4xl font-black italic text-brand">
@@ -97,33 +94,34 @@ export default function AboutSection() {
                 </div>
                 <div>
                   <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-slate-950">
-                    Years of Expertise
+                    Years of Trust
                   </h3>
                   <p className="font-thai text-sm leading-relaxed text-slate-500">
-                    สะสมประสบการณ์ผ่านเคสที่ซับซ้อนกว่า 2,500 รายการทั่วโลก
+                    สะสมประสบการณ์ผ่านการดูแลเคสที่หลากหลายกว่า 2,500 ราย
+                    ทั่วโลก
                   </p>
                 </div>
               </div>
 
-              {/* Feature Box: Global Network */}
+              {/* Feature Box: Worldwide Reach */}
               <div className="flex min-h-[300px] flex-col justify-between bg-slate-950 p-10 text-white">
                 <div className="flex -space-x-2">
                   {[1, 2, 3, 4].map((i) => (
                     <div
                       key={i}
-                      className="h-10 w-10 overflow-hidden rounded-full border-2 border-slate-950 bg-slate-800"
+                      className="h-10 w-10 overflow-hidden rounded-none border-2 border-slate-950 bg-slate-800"
                     />
                   ))}
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full border-2 border-slate-950 bg-brand text-[10px] font-black italic text-slate-950">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-none border-2 border-slate-950 bg-brand text-[10px] font-black italic text-slate-950">
                     +
                   </div>
                 </div>
                 <div>
                   <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-brand">
-                    Global Network
+                    Worldwide Reach
                   </h3>
                   <p className="font-thai text-sm leading-relaxed text-slate-300">
-                    เครือข่ายพันธมิตรและสถานทูตที่ครอบคลุมกว่า 50 ประเทศ
+                    เครือข่ายความร่วมมือและพันธมิตรที่ครอบคลุมกว่า 50 ประเทศ
                   </p>
                 </div>
               </div>
@@ -135,8 +133,8 @@ export default function AboutSection() {
                 </h4>
                 <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
                   {coreValues.map((value, i) => (
-                    <div key={i} className="space-y-4">
-                      <div className="flex h-10 w-10 items-center justify-center border border-slate-100 bg-white text-slate-950 shadow-sm">
+                    <div key={`value-${i}`} className="space-y-4">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-none border-2 border-slate-950 bg-white text-slate-950 shadow-[4px_4px_0px_0px_rgba(2,6,23,1)]">
                         <value.icon size={20} />
                       </div>
                       <h5 className="text-sm font-black uppercase tracking-tight text-slate-950">
@@ -154,17 +152,17 @@ export default function AboutSection() {
             {/* Bottom Certification Badge */}
             <div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-6">
               <div className="flex items-center gap-4 opacity-50 grayscale">
-                <span className="font-mono text-[9px] font-bold text-slate-400">
-                  ISO_9001_CERTIFIED
+                <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">
+                  Standard_Quality
                 </span>
-                <span className="font-mono text-[9px] font-bold text-slate-400">
-                  GDPR_COMPLIANT
+                <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">
+                  Privacy_Secured
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-green-600">
+              <div className="flex items-center gap-2 text-emerald-600">
                 <CheckCircle2 size={14} />
                 <span className="font-mono text-[9px] font-black uppercase italic tracking-widest">
-                  System_Active
+                  Ready_to_Serve
                 </span>
               </div>
             </div>

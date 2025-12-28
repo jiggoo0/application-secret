@@ -60,8 +60,8 @@ export function Header({ onMenuOpen }: HeaderProps) {
                 href={link.href}
                 className={cn(
                   "text-xs font-bold uppercase italic transition-colors",
-                  isActive 
-                    ? "text-brand" 
+                  isActive
+                    ? "text-brand"
                     : "text-slate-400 hover:text-slate-950"
                 )}
               >

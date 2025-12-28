@@ -1,10 +1,11 @@
 /** @format */
+"use client"
 
 import React from "react"
 import Image from "next/image"
 import { ArrowRight, type LucideIcon } from "lucide-react"
 
-interface ServiceCardProps {
+export interface ServiceCardProps {
   id: string
   code: string
   title: string
@@ -19,111 +20,112 @@ interface ServiceCardProps {
 
 /**
  * 🛰️ COMPONENT: ServiceCard
- * แสดงผลบัตรบริการในรูปแบบ Industrial High-Contrast
- * แก้ไข: ลบ Unused Import 'cn' เพื่อให้ผ่าน Lint Check
+ * ✅ FIXED: Removed unused 'cn' import to satisfy linting
+ * ✅ ENFORCED: Industrial Sharp Protocol
  */
-export const ServiceCard = ({ icon: Icon, ...item }: ServiceCardProps) => (
-  <div className="group relative flex h-full flex-col border-b border-r border-slate-100 bg-white transition-all duration-500 last:border-r-0 hover:z-20 hover:shadow-[25px_25px_50px_-12px_rgba(0,0,0,0.08)]">
-    {/* 🖼️ VISUAL_NODE: ภาพประกอบพร้อมสถานะทางเทคนิค */}
-    <div className="relative aspect-[16/10] overflow-hidden bg-slate-200">
-      <Image
-        src={item.image}
-        alt={item.title}
-        fill
-        className="object-cover opacity-90 grayscale-[0.3] transition-transform duration-1000 group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0"
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-      />
+export const ServiceCard = ({ icon: Icon, ...item }: ServiceCardProps) => {
+  return (
+    <div className="group relative flex h-full flex-col border-b border-r border-slate-100 bg-white transition-all duration-500 last:border-r-0 hover:z-20 hover:shadow-sharp-hover">
+      <div className="relative aspect-[16/11] overflow-hidden bg-slate-900">
+        <Image
+          src={item.image}
+          alt={item.title}
+          fill
+          className="duration-industrial ease-sharp-out object-cover opacity-80 grayscale-[0.5] transition-transform group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+        />
 
-      {/* Overlay Layer */}
-      <div className="absolute inset-0 bg-slate-950/20 transition-colors duration-500 group-hover:bg-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
 
-      {/* 🏷️ System Status Badge */}
-      <div className="absolute right-5 top-5 border border-slate-200 bg-white/95 px-3 py-1 shadow-sm backdrop-blur-md">
-        <div className="flex items-center gap-1.5">
-          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-brand" />
-          <span className="font-mono text-[8px] font-black uppercase italic tracking-widest text-slate-950">
-            {item.technical.status}
-          </span>
-        </div>
-      </div>
-
-      {/* 🏷️ Category Label */}
-      <div className="absolute bottom-5 left-5">
-        <span className="bg-brand px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.2em] text-slate-950 shadow-[6px_6px_0px_0px_#020617]">
-          {item.category}
-        </span>
-      </div>
-    </div>
-
-    {/* 📝 DATA_CONTENT: ข้อมูลบริการ */}
-    <div className="flex flex-grow flex-col p-8">
-      <div className="mb-6 flex items-start justify-between">
-        <div className="flex flex-col">
-          <span className="mb-1 font-mono text-[10px] font-bold tracking-[0.2em] text-slate-300">
-            REGISTRY_UID
-          </span>
-          <span className="font-mono text-[11px] font-black text-slate-400 transition-colors group-hover:text-slate-950">
-            {item.code}
-          </span>
-        </div>
-        <div className="bg-slate-50 p-3 text-slate-300 transition-all duration-300 group-hover:bg-brand group-hover:text-slate-950">
-          <Icon size={20} strokeWidth={1.5} />
-        </div>
-      </div>
-
-      <h3 className="mb-4 text-2xl font-black uppercase leading-[0.9] tracking-tighter text-slate-950 transition-colors duration-300 group-hover:text-brand">
-        {item.title}
-      </h3>
-
-      <p className="mb-8 line-clamp-3 font-thai text-[15px] font-medium leading-relaxed text-slate-500">
-        {item.description}
-      </p>
-
-      {/* ⚙️ PROTOCOL_STACK: ขั้นตอนการดำเนินงาน */}
-      <div className="mt-auto">
-        <div className="mb-8">
-          <span className="mb-3 block font-mono text-[9px] font-black uppercase tracking-[0.3em] text-slate-300">
-            Operating_Protocol
-          </span>
-          <div className="flex flex-wrap gap-2">
-            {item.technical.protocol.map((step) => (
-              <span
-                key={step}
-                className="border border-slate-100 bg-slate-50/50 px-2.5 py-1 font-mono text-[8px] font-black uppercase tracking-wider text-slate-400"
-              >
-                {step}
-              </span>
-            ))}
+        <div className="absolute right-5 top-5 border border-slate-200/50 bg-white/90 px-3 py-1.5 shadow-sharp-sm backdrop-blur-md">
+          <div className="flex items-center gap-2">
+            <div className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-none bg-[#FCDE09] opacity-75"></span>
+              <span className="relative inline-flex h-2 w-2 rounded-none bg-[#FCDE09]"></span>
+            </div>
+            <span className="font-mono text-[9px] font-black uppercase italic tracking-widest text-slate-950">
+              {item.technical.status}
+            </span>
           </div>
         </div>
 
-        {/* 💳 TRANSACTION_FOOTER: ราคาและปุ่มดำเนินการ */}
-        <div className="flex items-center justify-between border-t border-slate-100 pt-8">
+        <div className="absolute bottom-5 left-5">
+          <span className="inline-block bg-[#FCDE09] px-5 py-2 text-[11px] font-black uppercase tracking-[0.25em] text-slate-950 shadow-sharp transition-transform group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none">
+            {item.category}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex flex-grow flex-col p-8 lg:p-10">
+        <div className="mb-8 flex items-start justify-between">
           <div className="flex flex-col">
-            <span className="mb-1 font-mono text-[9px] font-black uppercase tracking-widest text-slate-300">
-              FEE_STRUCTURE
+            <span className="mb-1 font-mono text-[10px] font-bold tracking-[0.3em] text-slate-300">
+              REGISTRY_UID
             </span>
-            <div className="flex items-baseline gap-1">
-              <span className="text-2xl font-black italic tracking-tighter text-slate-950 transition-colors group-hover:text-brand">
-                ฿{item.price.base}
-              </span>
-              {item.price.suffix && (
-                <span className="text-[10px] font-bold italic text-slate-400">
-                  {item.price.suffix}
+            <span className="font-mono text-[12px] font-black text-slate-400 transition-colors duration-300 group-hover:text-slate-950">
+              {item.code}
+            </span>
+          </div>
+          <div className="border border-slate-100 bg-slate-50 p-3.5 text-slate-400 transition-all duration-500 group-hover:rotate-[360deg] group-hover:border-[#FCDE09] group-hover:bg-[#FCDE09] group-hover:text-slate-950">
+            <Icon size={22} strokeWidth={1.5} />
+          </div>
+        </div>
+
+        <h3 className="mb-5 text-3xl font-black uppercase leading-tight tracking-tighter text-slate-950 transition-colors duration-300 group-hover:text-[#FCDE09]">
+          {item.title}
+        </h3>
+
+        <p className="mb-10 line-clamp-3 font-thai text-[16px] font-medium leading-relaxed text-slate-500 group-hover:text-slate-600">
+          {item.description}
+        </p>
+
+        <div className="mt-auto space-y-10">
+          <div>
+            <span className="mb-4 block font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-300">
+              Operating_Protocol
+            </span>
+            <div className="flex flex-wrap gap-2.5">
+              {item.technical.protocol.map((step) => (
+                <span
+                  key={step}
+                  className="rounded-none border border-slate-100 bg-slate-50/50 px-3 py-1.5 font-mono text-[9px] font-black uppercase tracking-wider text-slate-400 transition-colors group-hover:border-slate-200 group-hover:text-slate-600"
+                >
+                  {step}
                 </span>
-              )}
+              ))}
             </div>
           </div>
 
-          <a
-            href={item.cta.action}
-            className="flex h-14 w-14 items-center justify-center bg-slate-950 text-brand transition-all duration-300 active:scale-95 group-hover:bg-brand group-hover:text-slate-950 group-hover:shadow-[10px_10px_0px_0px_rgba(252,222,9,0.2)]"
-            aria-label={item.cta.label}
-          >
-            <ArrowRight size={24} />
-          </a>
+          <div className="flex items-center justify-between border-t border-slate-100 pt-10">
+            <div className="flex flex-col">
+              <span className="mb-1 font-mono text-[10px] font-black uppercase tracking-widest text-slate-300">
+                FEE_ESTIMATE
+              </span>
+              <div className="flex items-baseline gap-1.5">
+                <span className="text-3xl font-black italic tracking-tighter text-slate-950 transition-colors group-hover:text-[#FCDE09]">
+                  ฿{item.price.base}
+                </span>
+                {item.price.suffix && (
+                  <span className="text-[11px] font-bold italic text-slate-400">
+                    {item.price.suffix}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <a
+              href={item.cta.action}
+              className="group/btn relative flex h-16 w-16 items-center justify-center overflow-hidden bg-slate-950 transition-all duration-300 hover:shadow-none active:scale-95 group-hover:bg-[#FCDE09] group-hover:shadow-sharp-brand"
+              aria-label={item.cta.label}
+            >
+              <ArrowRight
+                size={26}
+                className="z-10 text-[#FCDE09] transition-colors group-hover:text-slate-950"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-)
+  )
+}

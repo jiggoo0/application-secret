@@ -12,7 +12,7 @@ const categories = [
 
 interface ServiceFilterProps {
   active: string
-  // ✅ ใช้ _category เพื่อบอก ESLint ว่า parameter นี้ใน type definition 
+  // ✅ ใช้ _category เพื่อบอก ESLint ว่า parameter นี้ใน type definition
   // อาจไม่ได้ถูกเรียกใช้โดยตรงในไฟล์นี้ (ป้องกัน warning 'category' defined but never used)
   onChange: (_category: string) => void
 }

@@ -1,70 +1,64 @@
 /** @format */
 
 import { Metadata } from "next"
-import HeroSection from "@/components/section/HeroSection"
-import AboutSection from "@/components/section/AboutSection"
-import ServiceGrid from "@/components/section/ServiceGrid"
-import ProcessStep from "@/components/section/ProcessStep"
-import TrustPartner from "@/components/section/TrustPartner"
+// 🛰️ FIX: Changed to Named Imports to resolve TS2613 errors
+import { HeroSection } from "@/components/section/HeroSection"
+import { AboutSection } from "@/components/section/AboutSection"
+import { ServiceGrid } from "@/components/section/ServiceGrid"
+import { ProcessStep } from "@/components/section/ProcessStep"
+import { TrustPartner } from "@/components/section/TrustPartner"
 import { FAQSection } from "@/components/section/FAQSection"
-import { CaseStudySlider } from "@/components/section/CaseStudySlider"
+import { CaseSectionPreview } from "@/components/showcase/CaseSectionPreview"
 
 /**
  * 🔍 SEO_METADATA_PROTOCOL
- * ปรับแต่งเพื่อการค้นหาระดับสากลและสร้างความน่าเชื่อถือให้กับแบรนด์
+ * Industrial Standard for Professional Documentation Services
  */
 export const metadata: Metadata = {
-  title: "Boutique Ops | Integrated Visa & Document Infrastructure",
+  title:
+    "JP Visual.Docs | ที่ปรึกษาด้านเอกสารและวีซ่ามืออาชีพ ครบถ้วนและรวดเร็ว",
   description:
-    "ระบบจัดการวีซ่าและงานเอกสารมาตรฐานสากล ขับเคลื่อนด้วยกระบวนการที่มีประสิทธิภาพสูงสุด",
+    "บริการช่วยเตรียมเอกสารวีซ่าและงานเอกสารสำคัญ โดยที่ปรึกษาผู้เชี่ยวชาญ ช่วยลดความเสี่ยง เพิ่มความสำเร็จ และให้คุณมั่นใจในทุกขั้นตอน",
 }
 
+/**
+ * 🛰️ PAGE: HomePage
+ * MODE: Industrial_Sharp_Stable
+ */
 export default function HomePage() {
   return (
-    <main className="relative min-h-screen bg-white">
-      {/* 🚀 01: FIRST_IMPRESSION [ID: home]
-          ส่วนเปิดตัวแบรนด์และการสร้าง Impact แรกพบ
-      */}
+    <main className="relative min-h-screen bg-white selection:bg-brand selection:text-slate-950">
+      {/* 🚀 01: HERO - สื่อสารความมั่นใจตั้งแต่แรกเห็น */}
       <section id="home">
         <HeroSection />
       </section>
 
-      {/* 🏛️ 02: IDENTITY_CORE [ID: about]
-          เล่าประวัติ ความเชี่ยวชาญ และความแตกต่างของเอเจนซี่
-      */}
+      {/* 🏛️ 02: ABOUT - สร้างตัวตนในฐานะคู่คิดที่เป็นมืออาชีพ */}
       <section id="about">
         <AboutSection />
       </section>
 
-      {/* 🛠️ 03: CAPABILITY_MATRIX [ID: services]
-          เจาะลึกบริการต่างๆ พร้อมระบบ Filter ข้อมูล
-      */}
+      {/* 📊 03: TRUST & STATS - ตอกย้ำความน่าเชื่อถือด้วยข้อมูลจริง */}
+      <TrustPartner />
+
+      {/* 🛠️ 04: SERVICES - นำเสนอบริการที่ตอบโจทย์ปัญหาลูกค้า */}
       <section id="services">
         <ServiceGrid />
       </section>
 
-      {/* 📐 04: OPERATIONAL_PROTOCOL [ID: process]
-          แสดงขั้นตอนการทำงาน 1-2-3-4 ให้ลูกค้าเห็นภาพชัดเจน
-      */}
+      {/* 📐 05: PROCESS - แสดงความโปร่งใสของขั้นตอนการทำงาน */}
       <section id="process">
         <ProcessStep />
       </section>
 
-      {/* 🏆 05: PROOF_OF_EXCELLENCE [ID: cases]
-          แสดงเคสตัวอย่างที่ประสบความสำเร็จเพื่อสร้างความเชื่อมั่น (Social Proof)
+      {/* 📂 06: SUCCESS_ARCHIVE
+          เน้นผลลัพธ์ที่จับต้องได้ เพื่อลดความลังเลใจของลูกค้า
       */}
       <section id="cases">
-        <CaseStudySlider />
+        <CaseSectionPreview />
       </section>
 
-      {/* 📊 06: TRUST_NETWORK & STATS
-          ส่วนแสดงโลโก้พันธมิตรและสถิติความสำเร็จขององค์กร
-      */}
-      <TrustPartner />
-
-      {/* ❓ 07: KNOWLEDGE_BASE [ID: faq]
-          ตอบข้อสงสัยเบื้องต้นเพื่อลดภาระแอดมินและช่วยเรื่อง SEO
-      */}
+      {/* ❓ 07: FAQ - ตอบข้อสงสัยและลดความกังวลใจสุดท้ายก่อนตัดสินใจ */}
       <section id="faq">
         <FAQSection />
       </section>

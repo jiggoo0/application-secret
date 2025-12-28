@@ -9,29 +9,25 @@ import { ThemeProvider } from "next-themes"
  * 🛰️ SYSTEM_PROVIDERS_PROTOCOL
  * ----------------------------------------------------------------
  * จัดการ Context และสภาวะแวดล้อมของแอปพลิเคชัน
- * ✅ FIXED: React 19 Cascading Render (set-state-in-effect)
- * ✅ FIXED: Hydration Mismatch Guard
+ * ✅ ENFORCED: Named Export Strategy
+ * ✅ ENFORCED: Industrial Sharp Selection Color
  */
-export function Providers({ children }: { children: React.ReactNode }) {
+export const Providers = ({ children }: { children: React.ReactNode }) => {
   const [mounted, setMounted] = React.useState(false)
 
-  // ใช้ useEffect เพื่อยืนยันว่า Component ถูกติดตั้งบน Client แล้ว
+  // 🛡️ HYDRATION_PROTOCOL: ยืนยันสถานะ Client-side
   React.useEffect(() => {
     setMounted(true)
   }, [])
 
   /**
-   * 🛡️ HYDRATION_GUARD
-   * เพื่อป้องกัน Flash of Unstyled Content (FOUC)
-   * เราจะไม่เรนเดอร์ Theme-dependent UI จนกว่าจะ Mounted
+   * 🏗️ PRE-RENDER_SCAFFOLD
+   * ป้องกัน Flash of Unstyled Content (FOUC) โดยรักษาโครงสร้างสีขาวสะอาดตา
    */
   if (!mounted) {
     return (
       <div className="min-h-screen bg-white" aria-hidden="true">
-        {/* แสดงผลเฉพาะโครงสร้างว่างเปล่าเพื่อรักษา Layout */}
-        <div className="opacity-0 transition-opacity duration-300">
-          {children}
-        </div>
+        <div className="opacity-0">{children}</div>
       </div>
     )
   }
@@ -43,8 +39,8 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem={false}
       disableTransitionOnChange
     >
-      {/* 🚀 ระบบจะเริ่มทำงานเมื่อ Mounted สร็จสมบูรณ์ */}
-      <div className="relative flex min-h-screen flex-col selection:bg-blue-600 selection:text-white">
+      {/* 🚀 GLOBAL_LAYOUT_WRAPPER: บังคับใช้สีแบรนด์และพื้นหลังที่เสถียร */}
+      <div className="relative flex min-h-screen flex-col selection:bg-[#FCDE09] selection:text-slate-950">
         {children}
       </div>
     </ThemeProvider>

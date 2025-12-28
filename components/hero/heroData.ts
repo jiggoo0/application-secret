@@ -17,37 +17,39 @@ export interface TrustStat {
 
 /**
  * รายการบริการหลัก (Core Services)
- * ใช้ Label สไตล์ System Code เพื่อคงกลิ่นอาย Industrial
+ * ปรับคำอธิบายให้เข้าถึงง่าย ลดความกังวล และเน้นการช่วยเหลือ
  */
 export const serviceList: ServiceItem[] = [
   {
     icon: Globe2,
     label: "VISA_PROTOCOL",
     title: "วีซ่าท่องเที่ยวและทำงาน",
-    description: "จัดการคำร้องและนัดหมายครบวงจร",
+    description: "ช่วยดูแลคำร้องและนัดหมายให้คุณอย่างครบถ้วน สบายใจทุกขั้นตอน",
   },
   {
     icon: FileText,
     label: "DOC_STRUCTURE",
     title: "จัดเตรียมเอกสารครบวงจร",
-    description: "ตรวจสอบความถูกต้องตามมาตรฐานสากล",
+    description: "ช่วยตรวจทานและเตรียมเอกสารสำคัญให้ถูกต้องแม่นยำตามมาตรฐาน",
   },
   {
     icon: Landmark,
     label: "CORP_REGISTRY",
     title: "จดทะเบียนและเอกสารบริษัท",
-    description: "รองรับการจัดตั้งและขยายธุรกิจ",
+    description:
+      "เป็นที่ปรึกษาด้านงานเอกสาร เพื่อการเริ่มต้นและเติบโตของธุรกิจคุณ",
   },
   {
     icon: ShieldCheck,
     label: "LEGAL_SYNC",
     title: "รับรองเอกสารทางกฎหมาย",
-    description: "บริการ Notary Public และการรับรองกงสุล",
+    description: "ดูแลการรับรองเอกสารสำคัญและประสานงานกงสุลให้คุณอย่างมืออาชีพ",
   },
 ]
 
 /**
  * สถิติความสำเร็จ (Performance Metrics)
+ * ปรับ Unit ให้เป็นภาษาที่เข้าใจง่ายสำหรับหน้าเว็บภาษาไทย
  */
 export const trustStats: TrustStat[] = [
   {
@@ -58,11 +60,11 @@ export const trustStats: TrustStat[] = [
   {
     label: "SERVICE_YEARS",
     value: "08",
-    unit: "YRS",
+    unit: "ปี",
   },
   {
     label: "CLIENT_NODES",
     value: "2.5K",
-    unit: "+",
+    unit: "ราย",
   },
 ]

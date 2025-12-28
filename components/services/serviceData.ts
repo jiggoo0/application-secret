@@ -10,7 +10,7 @@ import {
   LucideIcon,
 } from "lucide-react"
 
-// --- 1. DATA_INTERFACES ---
+// --- 1. DATA_INTERFACES (คงเดิมเพื่อความปลอดภัยของระบบ) ---
 export interface ServicePrice {
   base: string
   suffix?: string
@@ -45,6 +45,7 @@ export interface ServiceItem {
 }
 
 // --- 2. CORE_SERVICE_REGISTRY ---
+// ปรับปรุงเนื้อหาให้ดูอบอุ่น มั่นใจ และลดความกังวล
 export const services: ServiceItem[] = [
   {
     id: "visa-strategy-001",
@@ -54,14 +55,14 @@ export const services: ServiceItem[] = [
     icon: FileSearch,
     image:
       "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/Service1.webp",
-    title: "Visa Solutions & Strategy",
+    title: "ที่ปรึกษาวีซ่าและวางแผนเอกสาร",
     description:
-      "วิเคราะห์และวางโครงสร้างเอกสารสำหรับเคสยาก หรือเคยถูกปฏิเสธ โดยใช้มาตรฐาน Embassy-Grade",
+      "วิเคราะห์และช่วยจัดเตรียมเอกสารสำหรับเคสที่กังวล หรือเคยมีประวัติไม่ผ่าน เพื่อสร้างความมั่นใจสูงสุด",
     price: { base: "4,x00" },
-    cta: { label: "EXECUTE_PROTOCOL", action: "/contact?ref=visa" },
+    cta: { label: "ปรึกษาผู้เชี่ยวชาญ", action: "/contact?ref=visa" },
     technical: {
-      highlight: "EMBASSY_GRADE_CASE",
-      protocol: ["ASSESS", "RESTRUCTURE", "SUBMIT_READY"],
+      highlight: "CARE_BY_EXPERT",
+      protocol: ["วิเคราะห์", "ปรับแก้", "เตรียมความพร้อม"],
       status: "OPERATIONAL",
     },
   },
@@ -73,14 +74,14 @@ export const services: ServiceItem[] = [
     icon: TrendingUp,
     image:
       "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/credit.webp",
-    title: "Loan Profile Engineering",
+    title: "ดูแลโปรไฟล์และการเงิน",
     description:
-      "ปรับจูนโปรไฟล์การเงินและจัดโครงสร้างหลักฐานรายได้ เพื่อเพิ่มโอกาสการอนุมัติสินเชื่อสูงสุด",
+      "ช่วยแนะนำการจัดโครงสร้างรายได้และหลักฐานการเงินให้ถูกต้อง เพื่อเพิ่มโอกาสการอนุมัติสินเชื่อ",
     price: { base: "3,xxx", suffix: "+ Success Fee" },
-    cta: { label: "STRATEGIZE", action: "/contact?ref=loan" },
+    cta: { label: "วางแผนการเงิน", action: "/contact?ref=loan" },
     technical: {
-      highlight: "CREDIT_PROFILE_ENGINEER",
-      protocol: ["ANALYZE", "FIX", "MATCH_SOURCE"],
+      highlight: "FINANCIAL_CARE",
+      protocol: ["ตรวจสอบ", "ปรับปรุง", "คัดสรรแหล่งเงิน"],
       status: "OPERATIONAL",
     },
   },
@@ -92,14 +93,14 @@ export const services: ServiceItem[] = [
     icon: Layers,
     image:
       "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/document-fix.webp",
-    title: "Smart Verification System",
+    title: "ระบบตรวจสอบเอกสารออนไลน์",
     description:
-      "ระบบสร้างเอกสารดิจิทัลพร้อม QR Verification และ Landing Page ส่วนตัวเพื่อตรวจสอบความถูกต้อง",
+      "สร้างความมั่นใจด้วยระบบตรวจสอบความถูกต้องผ่าน QR Code พร้อมหน้าข้อมูลส่วนตัวที่ปลอดภัย",
     price: { base: "1,xxx" },
-    cta: { label: "DEPLOY_SYSTEM", action: "/contact?ref=verify" },
+    cta: { label: "เริ่มใช้งานระบบ", action: "/contact?ref=verify" },
     technical: {
-      highlight: "ONLINE_VERIFICATION_READY",
-      protocol: ["CREATE", "VERIFY", "PUBLISH"],
+      highlight: "VERIFICATION_SECURE",
+      protocol: ["สร้างข้อมูล", "ตรวจทาน", "เปิดใช้งาน"],
       status: "HIGH_DEMAND",
     },
   },
@@ -111,14 +112,14 @@ export const services: ServiceItem[] = [
     icon: CreditCard,
     image:
       "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/card.webp",
-    title: "Confidential Production",
+    title: "จัดทำบัตรและเอกสารสำคัญ",
     description:
-      "งานพิมพ์บัตรและเอกสารความปลอดภัยสูง พร้อมกระบวนการส่งมอบแบบเข้ารหัส",
+      "ดูแลงานพิมพ์ระดับมาตรฐานความปลอดภัยสูง พร้อมขั้นตอนการส่งมอบที่รัดกุมและเป็นส่วนตัว",
     price: { base: "4,500" },
-    cta: { label: "START_PRODUCTION", action: "/contact?ref=print" },
+    cta: { label: "แจ้งความต้องการ", action: "/contact?ref=print" },
     technical: {
-      highlight: "ENCRYPTED_DELIVERY",
-      protocol: ["DESIGN", "PRODUCE", "HANDOVER"],
+      highlight: "HIGH_SECURITY_PRINT",
+      protocol: ["ออกแบบ", "ผลิต", "ส่งมอบปลอดภัย"],
       status: "OPERATIONAL",
     },
   },
@@ -130,13 +131,14 @@ export const services: ServiceItem[] = [
     icon: Plane,
     image:
       "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/ticket.webp",
-    title: "Verified Booking Node",
-    description: "สำรองตั๋วเครื่องบินและโรงแรมผ่านระบบ GDS ที่ตรวจสอบได้จริง",
+    title: "จองตั๋วและที่พักเพื่อยื่นวีซ่า",
+    description:
+      "บริการช่วยสำรองตั๋วเครื่องบินและโรงแรมที่ตรวจสอบสถานะได้จริง เพื่อความราบรื่นในการยื่นเรื่อง",
     price: { base: "4xx", suffix: "/ 1,xxx Express" },
-    cta: { label: "ISSUE_TICKET", action: "/contact?ref=booking" },
+    cta: { label: "จองทันที", action: "/contact?ref=booking" },
     technical: {
-      highlight: "REAL_SYSTEM_CHECKABLE",
-      protocol: ["RESERVE", "VALIDATE", "ISSUE"],
+      highlight: "VERIFIED_STATUS",
+      protocol: ["สำรองที่นั่ง", "ตรวจสอบ", "ยืนยันผล"],
       status: "OPERATIONAL",
     },
   },
@@ -148,13 +150,14 @@ export const services: ServiceItem[] = [
     icon: PenTool,
     image:
       "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp",
-    title: "Professional Representation",
-    description: "ร่างจดหมายชี้แจงและนิติกรรมด้วยภาษาทางการระดับสากล",
+    title: "ร่างจดหมายและเอกสารทางการ",
+    description:
+      "ช่วยเขียนจดหมายชี้แจงและเอกสารสำคัญด้วยภาษาที่เป็นงานเป็นการและถูกต้องตามมาตรฐาน",
     price: { base: "1,000", suffix: "- 3,000" },
-    cta: { label: "DRAFT_NOW", action: "/contact?ref=writing" },
+    cta: { label: "เริ่มร่างเอกสาร", action: "/contact?ref=writing" },
     technical: {
-      highlight: "OFFICIAL_REPRESENTATION",
-      protocol: ["DRAFT", "REVIEW", "FINAL"],
+      highlight: "PROFESSIONAL_DRAFT",
+      protocol: ["ร่างเนื้อหา", "ตรวจทาน", "จัดทำเล่มจริง"],
       status: "OPERATIONAL",
     },
   },
@@ -166,14 +169,14 @@ export const services: ServiceItem[] = [
     icon: BarChart3,
     image:
       "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/branding.webp",
-    title: "Marketing Automation Stack",
+    title: "ตัวช่วยดูแลธุรกิจอัตโนมัติ",
     description:
-      "วางระบบ AI และการตลาดอัตโนมัติ เพื่อขับเคลื่อนธุรกิจตลอด 24 ชั่วโมง",
+      "วางแผนการดูแลลูกค้าและโปรโมทธุรกิจอัตโนมัติ เพื่อให้ธุรกิจของคุณเติบโตได้ต่อเนื่อง",
     price: { base: "4,xxx" },
-    cta: { label: "ACTIVATE_AUTO", action: "/contact?ref=auto" },
+    cta: { label: "เปิดใช้งานตัวช่วย", action: "/contact?ref=auto" },
     technical: {
-      highlight: "24H_AUTOMATION_STACK",
-      protocol: ["PLAN", "AUTOMATE", "SCALE"],
+      highlight: "BUSINESS_GROWTH",
+      protocol: ["วางแผน", "ตั้งค่าดูแล", "ขยายผล"],
       status: "DEVELOPMENT",
     },
   },
