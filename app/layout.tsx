@@ -1,10 +1,10 @@
 /** @format */
-import React from "react"
+
 import type { Metadata, Viewport } from "next"
 import { Kanit } from "next/font/google"
 import { siteConfig } from "@/config/site"
 import { Providers } from "./providers"
-import { JsonLd } from "@/components/seo/JsonLd" // ✅ Import ที่แยกออกมา
+import { JsonLd } from "@/components/seo/JsonLd"
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
@@ -17,21 +17,27 @@ const kanit = Kanit({
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
+
   title: {
     default: siteConfig.seo.defaultTitle,
     template: siteConfig.seo.titleTemplate,
   },
+
   description: siteConfig.seo.description,
+
+  // 🔧 FIX: แปลง readonly tuple → string[]
   keywords: [...siteConfig.seo.keywords],
+
   authors: [{ name: siteConfig.author.name }],
   creator: siteConfig.author.name,
+
   openGraph: {
-    title: siteConfig.seo.defaultTitle,
-    description: siteConfig.seo.description,
+    type: "website",
     url: siteConfig.url,
     siteName: siteConfig.name,
     locale: siteConfig.locale.replace("-", "_"),
-    type: "website",
+    title: siteConfig.seo.defaultTitle,
+    description: siteConfig.seo.description,
     images: [
       {
         url: siteConfig.assets.ogImage,
@@ -41,12 +47,14 @@ export const metadata: Metadata = {
       },
     ],
   },
+
   twitter: {
     card: "summary_large_image",
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.description,
     images: [siteConfig.assets.ogImage],
   },
+
   icons: {
     icon: siteConfig.assets.favicon,
     apple: siteConfig.assets.appleTouch,
@@ -71,9 +79,9 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        {/* 🛰️ Injection Protocol: ฝังข้อมูล SEO ก่อน Render */}
         <JsonLd />
       </head>
+
       <body
         className={cn(
           "font-kanit min-h-screen bg-industrial-surface antialiased selection:bg-blue-500/30",

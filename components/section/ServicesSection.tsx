@@ -10,7 +10,7 @@ import { ServiceItem } from "@/components/services/types"
 import { Terminal } from "lucide-react"
 
 interface ServicesSectionProps {
-  /** * ✅ FIXED: เปลี่ยนเป็น (_service: ServiceItem) เพื่อบอก Linter ว่านี่คือ Definition 
+  /** * ✅ FIXED: เปลี่ยนเป็น (_service: ServiceItem) เพื่อบอก Linter ว่านี่คือ Definition
    * ป้องกันปัญหา Unused Variable ในระดับ Interface
    */
   onSelect?: (_service: ServiceItem) => void
@@ -50,10 +50,7 @@ export default function ServicesSection({ onSelect }: ServicesSectionProps) {
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
                   {/* ✅ LOGIC: ส่ง item เข้า onSelect เมื่อมีการ Execute */}
-                  <ServiceCard 
-                    item={item} 
-                    onExecute={() => onSelect?.(item)} 
-                  />
+                  <ServiceCard item={item} onExecute={() => onSelect?.(item)} />
                 </div>
               ))}
 

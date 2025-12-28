@@ -10,16 +10,20 @@ import { siteConfig } from "@/config/site"
 interface MobileMenuProps {
   isOpen: boolean
   // ✅ FIXED: ลบพารามิเตอร์ออกเพื่อให้เหลือแค่ Type ป้องกัน no-unused-vars
-  setIsOpen: (status: boolean) => void 
+  setIsOpen: (status: boolean) => void
   navLinks?: { name?: string; label: string; href: string }[]
 }
 
-export default function MobileMenu({ isOpen, setIsOpen, navLinks = [] }: MobileMenuProps) {
+export default function MobileMenu({
+  isOpen,
+  setIsOpen,
+  navLinks = [],
+}: MobileMenuProps) {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
     // 🛡️ Bypass cascading render warning for hydration purposes
-    setMounted(true)  
+    setMounted(true)
   }, [])
 
   useEffect(() => {

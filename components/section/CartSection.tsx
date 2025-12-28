@@ -63,7 +63,6 @@ export default function CartSection({
   return (
     <div className="fixed bottom-6 right-6 z-[90] w-[calc(100%-3rem)] max-w-sm duration-500 ease-out animate-in slide-in-from-right-10 sm:bottom-10 sm:right-10">
       <div className="relative border border-slate-800 bg-slate-900 p-6 shadow-[12px_12px_0px_0px_rgba(15,23,42,1)] backdrop-blur-md">
-        
         {/* 📑 01. HEADER */}
         <div className="mb-6 flex items-center justify-between border-b border-slate-800 pb-4">
           <div className="flex items-center gap-3 text-white">
@@ -71,8 +70,12 @@ export default function CartSection({
               <ReceiptText size={18} />
             </div>
             <div className="flex flex-col">
-              <span className="text-[10px] font-black uppercase tracking-[0.2em]">Selected_Manifest</span>
-              <span className="text-[8px] font-bold uppercase tracking-widest text-slate-500">Status: Ready_to_Execute</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em]">
+                Selected_Manifest
+              </span>
+              <span className="text-[8px] font-bold uppercase tracking-widest text-slate-500">
+                Status: Ready_to_Execute
+              </span>
             </div>
           </div>
           <div className="flex h-6 items-center bg-blue-600 px-2 text-[10px] font-black text-white">
@@ -93,7 +96,11 @@ export default function CartSection({
                     {item.name}
                   </p>
                   <p className="font-mono text-[10px] font-bold text-blue-600">
-                    ฿{parseInt(item.price.replace(/[^0-9]/g, ""), 10).toLocaleString()}
+                    ฿
+                    {parseInt(
+                      item.price.replace(/[^0-9]/g, ""),
+                      10
+                    ).toLocaleString()}
                   </p>
                 </div>
                 <button
@@ -112,7 +119,9 @@ export default function CartSection({
         <div className="mt-6 border-t border-slate-800 pt-5">
           <div className="mb-6 flex items-end justify-between">
             <div className="flex flex-col gap-1">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Total_Estimation</span>
+              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">
+                Total_Estimation
+              </span>
               <div className="h-0.5 w-6 bg-blue-600" />
             </div>
             <span className="text-3xl font-black leading-none tracking-tighter text-white">
@@ -131,14 +140,23 @@ export default function CartSection({
             )}
           >
             EXECUTE_ORDER (LINE)
-            <ArrowRight size={16} className="transition-transform group-hover:translate-x-1" />
+            <ArrowRight
+              size={16}
+              className="transition-transform group-hover:translate-x-1"
+            />
           </Link>
 
           {/* 🛡️ 04. FOOTER */}
           <div className="mt-5 flex items-center justify-between border-t border-slate-800/50 pt-4 text-[8px] font-black uppercase tracking-widest text-slate-500">
-            <div className="flex items-center gap-1.5"><Shield size={10} className="text-blue-600" /> Secured</div>
-            <div className="flex items-center gap-1.5"><FileCheck size={10} className="text-blue-600" /> Confidential</div>
-            <div className="flex items-center gap-1.5"><ShieldAlert size={10} className="text-blue-600" /> 24h_Response</div>
+            <div className="flex items-center gap-1.5">
+              <Shield size={10} className="text-blue-600" /> Secured
+            </div>
+            <div className="flex items-center gap-1.5">
+              <FileCheck size={10} className="text-blue-600" /> Confidential
+            </div>
+            <div className="flex items-center gap-1.5">
+              <ShieldAlert size={10} className="text-blue-600" /> 24h_Response
+            </div>
           </div>
         </div>
 

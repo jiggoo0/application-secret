@@ -46,24 +46,30 @@ export default [
 
       // 🛡️ ระบบจัดการ Unused Variables ให้ยืดหยุ่นขึ้น
       // อนุญาตให้มีตัวแปรที่ไม่ได้ใช้ถ้าขึ้นต้นด้วย _ (Underscore)
-      "@typescript-eslint/no-unused-vars": ["warn", { 
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_",
-        "caughtErrorsIgnorePattern": "^_"
-      }],
-      "no-unused-vars": ["warn", { 
-        "argsIgnorePattern": "^_",
-        "varsIgnorePattern": "^_"
-      }],
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+      "no-unused-vars": [
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+        },
+      ],
 
       "react/jsx-no-comment-textnodes": "error",
       "@next/next/no-img-element": "warn",
       "@typescript-eslint/no-explicit-any": "off",
       "react-hooks/exhaustive-deps": "warn",
       "react/no-unescaped-entities": "off",
-      
+
       // ✅ เพิ่มกฎนี้เพื่อจัดการปัญหา React 19 setState in effect ที่คุณเจอ
-      "react-hooks/set-state-in-effect": "off" 
+      "react-hooks/set-state-in-effect": "off",
     },
   },
 ]
