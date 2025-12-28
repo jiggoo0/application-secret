@@ -3,14 +3,11 @@ import React from "react"
 import type { Metadata, Viewport } from "next"
 import { Kanit } from "next/font/google"
 import { siteConfig } from "@/config/site"
-import { Providers } from "./providers" // ✅ FIXED: เปลี่ยนเป็น Named Import { Providers }
+import { Providers } from "./providers"
+import { JsonLd } from "@/components/seo/JsonLd" // ✅ Import ที่แยกออกมา
 import { cn } from "@/lib/utils"
 import "./globals.css"
 
-/**
- * 🖋️ FONT_STRATEGY: Kanit (Standard for Thai Industrial Design)
- * ใช้ระบบ Variable เพื่อเรียกใช้งานผ่าน Tailwind CSS
- */
 const kanit = Kanit({
   subsets: ["latin", "thai"],
   weight: ["300", "400", "500", "600", "700", "900"],
@@ -18,9 +15,6 @@ const kanit = Kanit({
   display: "swap",
 })
 
-/**
- * 🛰️ METADATA_PROTOCOL: SEO & OpenGraph Configuration
- */
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   title: {
@@ -36,14 +30,14 @@ export const metadata: Metadata = {
     description: siteConfig.seo.description,
     url: siteConfig.url,
     siteName: siteConfig.name,
-    locale: "th_TH",
+    locale: siteConfig.locale.replace("-", "_"),
     type: "website",
     images: [
       {
-        url: siteConfig.ogImage,
+        url: siteConfig.assets.ogImage,
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} Protocol Image`,
+        alt: siteConfig.name,
       },
     ],
   },
@@ -51,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteConfig.seo.defaultTitle,
     description: siteConfig.seo.description,
-    images: [siteConfig.ogImage],
+    images: [siteConfig.assets.ogImage],
   },
   icons: {
     icon: siteConfig.assets.favicon,
@@ -59,34 +53,33 @@ export const metadata: Metadata = {
   },
 }
 
-/**
- * 🖥️ VIEWPORT_STRATEGY: Mobile Optimization
- */
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f172a", // Slate 900 (Industrial Dark)
+  themeColor: "#0f172a",
 }
 
-/**
- * 🏗️ ROOT_LAYOUT_ARCHITECT
- * โครงสร้างพื้นฐานระดับรากของ JP Visual Docs
- */
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
   return (
-    <html lang="th" className="scroll-smooth" suppressHydrationWarning>
+    <html
+      lang={siteConfig.language[0]}
+      className="scroll-smooth"
+      suppressHydrationWarning
+    >
+      <head>
+        {/* 🛰️ Injection Protocol: ฝังข้อมูล SEO ก่อน Render */}
+        <JsonLd />
+      </head>
       <body
         className={cn(
-          "min-h-screen bg-white font-sans antialiased",
-          kanit.variable,
-          "selection:bg-blue-600/20 selection:text-blue-600"
+          "font-kanit min-h-screen bg-industrial-surface antialiased selection:bg-blue-500/30",
+          kanit.variable
         )}
       >
-        {/* 🛠️ EXECUTE_PROVIDERS: จัดการ Theme และ State ทั่วทั้งแอป */}
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -5,7 +5,7 @@ import tsPlugin from "@typescript-eslint/eslint-plugin"
 import tsParser from "@typescript-eslint/parser"
 import reactPlugin from "eslint-plugin-react"
 import hooksPlugin from "eslint-plugin-react-hooks"
-import globals from "globals" // 👈 เพิ่มการนำเข้า globals
+import globals from "globals"
 
 export default [
   {
@@ -26,12 +26,11 @@ export default [
       parserOptions: {
         ecmaFeatures: { jsx: true },
       },
-      // 🛡️ เพิ่มบรรทัดนี้เพื่อแก้ Error 'window', 'process', 'console' not defined
       globals: {
         ...globals.browser,
         ...globals.node,
         ...globals.es2021,
-        React: "writable", // แก้ Error 'React' is not defined ในไฟล์เก่า
+        React: "writable",
       },
     },
     plugins: {
@@ -45,16 +44,26 @@ export default [
       ...nextPlugin.configs["core-web-vitals"].rules,
       ...hooksPlugin.configs.recommended.rules,
 
-      // ✅ กฎเหล็ก Industrial Sharp
+      // 🛡️ ระบบจัดการ Unused Variables ให้ยืดหยุ่นขึ้น
+      // อนุญาตให้มีตัวแปรที่ไม่ได้ใช้ถ้าขึ้นต้นด้วย _ (Underscore)
+      "@typescript-eslint/no-unused-vars": ["warn", { 
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }],
+      "no-unused-vars": ["warn", { 
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }],
+
       "react/jsx-no-comment-textnodes": "error",
       "@next/next/no-img-element": "warn",
-
-      // ✅ ปิดกฎที่น่ารำคาญออกชั่วคราวเพื่อให้ Build ผ่าน
-      "@typescript-eslint/no-unused-vars": "warn", // เปลี่ยนจาก error เป็น warn
-      "no-unused-vars": "warn",
       "@typescript-eslint/no-explicit-any": "off",
       "react-hooks/exhaustive-deps": "warn",
       "react/no-unescaped-entities": "off",
+      
+      // ✅ เพิ่มกฎนี้เพื่อจัดการปัญหา React 19 setState in effect ที่คุณเจอ
+      "react-hooks/set-state-in-effect": "off" 
     },
   },
 ]

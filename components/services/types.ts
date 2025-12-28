@@ -3,13 +3,14 @@ import { LucideIcon } from "lucide-react"
 
 /**
  * 🛠️ SERVICE_CATEGORY
- * แบ่งกลุ่มตามโครงสร้างธุรกิจหลักของ JP Visual Docs
+ * ----------------------------------------------------------------
+ * แบ่งกลุ่มตามโครงสร้างธุรกิจหลักของ JP Visual Docs (JPVD_CORE)
  */
 export type ServiceCategory =
-  | "IMMIGRATION"
-  | "FINANCIAL"
-  | "DOCUMENTATION"
-  | "INFRASTRUCTURE"
+  | "IMMIGRATION" // บริการด้านวีซ่าและตรวจคนเข้าเมือง
+  | "FINANCIAL" // บริการที่ปรึกษาสินเชื่อและรายได้
+  | "DOCUMENTATION" // บริการร่างจดหมายและงานเอกสาร
+  | "INFRASTRUCTURE" // บริการเสริมด้านการเดินทางและที่พัก
 
 /**
  * 🛠️ SYSTEM_STATUS
@@ -17,22 +18,22 @@ export type ServiceCategory =
 export type SystemStatus = "OPERATIONAL" | "DEVELOPMENT" | "HIGH_DEMAND"
 
 /**
- * 🛠️ SERVICE_ITEM
- * โครงสร้างข้อมูลหลัก (Registry System)
- * ✅ FIXED: 'code' property is now integrated into the system logic
+ * 🛠️ SERVICE_ITEM_INTERFACE
+ * ----------------------------------------------------------------
+ * โครงสร้างข้อมูลหลัก (Master Registry System)
  */
 export interface ServiceItem {
-  id: string
-  code: string // รหัสอ้างอิงบริการ (เช่น JPV-001)
+  id: string // Unique UUID (ใช้ใน Logic/Cart)
+  code: string // รหัสอ้างอิงลูกค้า (เช่น JPV-001)
   category: ServiceCategory
   type: "VISA_ASSET" | "GEN_ASSET"
   icon: LucideIcon
-  image: string
+  image: string // Path รูปภาพ (WebP Optimized)
   title: string
   description: string
   price: {
-    base: string
-    suffix?: string
+    base: string // ราคา (เช่น 2,500)
+    suffix?: string // หน่วย (เช่น /เคส)
   }
   cta: {
     label: string
@@ -40,16 +41,22 @@ export interface ServiceItem {
   }
   technical: {
     highlight: string
-    protocol: string[]
+    protocol: string[] // ลำดับขั้นตอนการทำงาน (Industrial Protocol)
     status: SystemStatus
   }
 }
 
 /**
  * 🛠️ SERVICE_CARD_PROPS
- * ✅ OPTIMIZED: Function signature refinement
+ * ----------------------------------------------------------------
+ * ✅ FIXED: ใช้ _id ใน interface เพื่อเลี่ยง Unused Variable Warning
+ * ในขณะที่ยังคงความชัดเจนของ Type Definition
  */
 export interface ServiceCardProps {
   item: ServiceItem
-  onExecute?: (id: string) => void // เปลี่ยนจาก code เป็น id เพื่อให้ตรงกับ Logic หลัก
+  /**
+   * @function onExecute
+   * รับค่า id เพื่อนำไปประมวลผลต่อในระบบ CartSection หรือ Contact Gateway
+   */
+  onExecute?: (_id: string) => void
 }
