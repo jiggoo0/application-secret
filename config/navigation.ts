@@ -1,4 +1,5 @@
 /** @format */
+
 import {
   Home,
   MessageSquare,
@@ -12,7 +13,8 @@ import {
 
 /**
  * 🛰️ NAVIGATION_CONFIG_PROTOCOL
- * แผนผังโครงสร้างการนำทางทั้งหมดของระบบ (System Intelligence Strategy)
+ * PURPOSE: แผนผังโครงสร้างการนำทางทั้งหมดของระบบ (System Intelligence Strategy)
+ * VERSION: 2.0.2025
  */
 export const navigationConfig = {
   mainNav: [

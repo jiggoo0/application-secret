@@ -1,113 +1,118 @@
 /** @format */
 
-import React from "react"
-// 🛰️ FIX: Changed to Named Import to resolve TS2613
-import { ContactForm } from "@/components/form/ContactForm"
-import { Mail, Phone, Globe, Cpu, Hash } from "lucide-react"
 import { Metadata } from "next"
+import { ContactForm } from "@/components/form/ContactForm"
+import { ShieldCheck, Lock, Mail, ChevronRight, Zap } from "lucide-react"
 
 /**
- * 🛰️ SEO_METADATA: Industrial_Sharp_Standard
+ * @description CONTACT_PAGE_PORTAL: หน้าหลักการติดต่อสื่อสาร
+ * @rules Strictly followed Mode A, B, and C as per Handbook v2025
+ * STATUS: PRODUCTION_READY
  */
+
 export const metadata: Metadata = {
-  title: "Contact Hub | JP-VISUAL&DOCS",
-  description:
-    "ศูนย์กลางการติดต่อเพื่อประสานงานด้านเอกสารและวีซ่าระดับพรีเมียม ภายใต้โปรโตคอลความปลอดภัยสูง",
+  title: "Contact | JP‑VISOUL&DOCS",
+  description: "ศูนย์รับเรื่องและคัดกรองข้อมูลเพื่อวางแผนด้านเอกสารและวีซ่า",
 }
 
-/**
- * 🛰️ COMPONENT: ContactPage
- * Gateway สำหรับการส่ง Payload ข้อมูลการติดต่อ
- */
 export default function ContactPage() {
   return (
-    <div className="relative min-h-screen bg-white selection:bg-brand selection:text-slate-950">
-      {/* 🧩 Blueprint Grid Infrastructure */}
-      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.04]" />
-      <div className="pointer-events-none absolute left-0 top-0 h-full w-[1px] bg-slate-100 lg:left-8" />
-      <div className="pointer-events-none absolute right-0 top-0 h-full w-[1px] bg-slate-100 lg:right-8" />
+    <main className="relative min-h-screen overflow-hidden bg-white font-sans">
+      {/* 🧩 UI_DECORATION: Blueprint Grid & Hard Shapes (MODE B) */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]"
+        style={{
+          backgroundImage:
+            "linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)",
+          backgroundSize: "40px 40px",
+        }}
+      />
+      <div className="pointer-events-none absolute right-0 top-0 z-0 h-full w-[40%] translate-x-1/2 -skew-x-12 border-l border-slate-100 bg-slate-50" />
 
-      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-32 pt-40 lg:pt-52">
-        <div className="grid grid-cols-1 items-start gap-20 lg:grid-cols-12">
-          {/* 📟 LEFT_COLUMN: SYSTEM_INFO & IDENTITY */}
-          <div className="space-y-16 lg:col-span-5">
-            <div className="space-y-8">
-              <div className="flex items-center gap-3">
-                <div className="h-2 w-2 animate-ping rounded-none bg-brand" />
-                <span className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-950">
-                  Node_Status: Online
-                </span>
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pb-20 pt-32">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-20">
+          {/* 🌑 LEFT_SECTION: Value Proposition (MODE C) */}
+          <div className="space-y-12 duration-700 animate-in fade-in slide-in-from-left-8 lg:col-span-5">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 bg-[#020617] px-3 py-1 text-[10px] font-black uppercase tracking-[0.2em] text-[#FCDE09] shadow-sharp">
+                <Zap size={14} className="fill-[#FCDE09]" /> Direct_Line_v1.0
               </div>
 
-              <h1 className="text-7xl font-black uppercase italic leading-[0.8] tracking-tighter text-slate-950 md:text-8xl">
-                Contact <br />
-                <span className="relative not-italic text-brand">
-                  Gateway.
-                  <span className="absolute -bottom-2 left-0 -z-10 h-4 w-full bg-slate-950" />
+              <h1 className="text-7xl font-black uppercase italic leading-[0.85] tracking-tighter text-[#020617] md:text-8xl">
+                Connect
+                <br />
+                <span className="text-[#FCDE09] drop-shadow-[4px_4px_0px_#020617]">
+                  Today.
                 </span>
               </h1>
 
-              <div className="max-w-md border-l-4 border-slate-950 pl-6">
-                <p className="font-thai text-xl font-bold leading-relaxed text-slate-500">
-                  ทีมปฏิบัติการของเราพร้อมให้คำปรึกษาและประสานงานเคสของคุณด้วย{" "}
-                  <span className="font-black text-slate-950 underline decoration-brand decoration-4 underline-offset-4">
-                    ความแม่นยำระดับวิศวกรรมเอกสาร
-                  </span>
+              <div className="space-y-4">
+                <p className="max-w-sm font-thai text-xl font-bold leading-snug text-slate-500">
+                  เริ่มเตรียมความพร้อมวันนี้ <br />
+                  <span className="bg-[#FCDE09] px-2 py-0.5 text-[#020617] shadow-sharp">
+                    เพื่อลดความเสี่ยง
+                  </span>{" "}
+                  ในการดำเนินการทุกขั้นตอน
+                </p>
+                <p className="max-w-xs font-thai text-sm font-medium leading-relaxed text-slate-400">
+                  เราใช้ข้อมูลจริงในการวิเคราะห์เพื่อให้คุณได้รับคำแนะนำที่ถูกต้องที่สุดจากทีมที่ปรึกษา
                 </p>
               </div>
             </div>
 
-            {/* Direct Contact Nodes Registry */}
-            <div className="grid grid-cols-1 gap-10 border-t border-slate-100 pt-12 md:grid-cols-2 lg:grid-cols-1">
-              <ContactNode
-                icon={<Phone className="text-slate-950" size={20} />}
-                label="Direct_Line_Channel"
-                value="+66 2 000 0000"
-              />
-              <ContactNode
-                icon={<Mail className="text-slate-950" size={20} />}
-                label="Encrypted_Email_Protocol"
-                value="ops@jp-visualdocs.com"
-              />
-              <ContactNode
-                icon={<Globe className="text-slate-950" size={20} />}
-                label="Global_HQ_Coordinate"
-                value="Sukhumvit, Bangkok, TH"
-              />
-            </div>
+            {/* 🛡️ PROCESS_GUIDE: Steps (MODE B & C) */}
+            <div className="space-y-4 border-t-2 border-[#020617] pt-10">
+              <div className="group flex items-center gap-6">
+                <div className="flex h-14 w-14 items-center justify-center border-2 border-[#020617] bg-white text-[#020617] shadow-sharp transition-all duration-300 group-hover:bg-[#FCDE09]">
+                  <Mail size={24} />
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] font-black uppercase tracking-tighter text-slate-300">
+                    Phase_01
+                  </p>
+                  <p className="font-thai text-[15px] font-black text-[#020617] transition-colors group-hover:text-slate-600">
+                    รับลิงก์ยืนยันทางอีเมล
+                  </p>
+                </div>
+              </div>
 
-            {/* System Metadata Accent */}
-            <div className="hidden pt-8 opacity-40 lg:block">
-              <div className="flex items-center gap-4 font-mono text-[9px] font-bold text-slate-400">
-                <Cpu size={14} />
-                <span className="tracking-[0.3em]">SECURE_PORT: 443</span>
-                <Hash size={14} className="ml-4" />
-                <span className="tracking-[0.3em]">
-                  ENCRYPTION: AES_256_GCM
-                </span>
+              <div className="group flex items-center gap-6">
+                <div className="flex h-14 w-14 items-center justify-center border-2 border-[#020617] bg-white text-[#020617] shadow-sharp transition-all duration-300 group-hover:bg-[#FCDE09]">
+                  <Lock size={24} />
+                </div>
+                <div>
+                  <p className="font-mono text-[10px] font-black uppercase tracking-tighter text-slate-300">
+                    Phase_02
+                  </p>
+                  <p className="font-thai text-[15px] font-black text-[#020617] transition-colors group-hover:text-slate-600">
+                    ปลดล็อกรหัส Ticket & QR Pass
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* 🛠️ RIGHT_COLUMN: FORM_INTERFACE */}
-          <div className="relative lg:col-span-7">
-            {/* Decorative Frame: Rounded-none Enforced */}
-            <div className="absolute -inset-4 -z-10 rounded-none border border-slate-100 bg-slate-50/50" />
+          {/* 🌕 RIGHT_SECTION: Form Terminal (MODE A & B) */}
+          <div className="relative duration-1000 animate-in fade-in slide-in-from-bottom-12 lg:col-span-7">
+            {/* 🛠️ INDUSTRIAL_DECOR: Sharp Edges Frames */}
+            <div className="pointer-events-none absolute -left-6 -top-6 hidden h-24 w-24 border-l-8 border-t-8 border-[#020617] md:block" />
+            <div className="pointer-events-none absolute -bottom-6 -right-6 hidden h-24 w-24 border-b-8 border-r-8 border-[#FCDE09] md:block" />
 
-            <div className="relative rounded-none border-2 border-slate-950 bg-white p-8 shadow-sharp md:p-16">
-              <div className="mb-14 flex items-end justify-between border-b border-slate-100 pb-8">
+            <div className="relative overflow-hidden border-2 border-[#020617] bg-white p-8 shadow-[40px_40px_0px_#f1f5f9] md:p-14">
+              {/* Grid Pattern Overlay */}
+              <div className="pointer-events-none absolute -right-10 -top-10 select-none p-4 opacity-[0.03]">
+                <ShieldCheck size={280} strokeWidth={1} />
+              </div>
+
+              <div className="relative mb-12 flex items-end justify-between">
                 <div>
-                  <h2 className="text-2xl font-black uppercase italic tracking-tight text-slate-950">
-                    Transmission_Form
-                  </h2>
-                  <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-slate-400">
-                    Build: 1.0.4 // Ready_to_Send
-                  </p>
+                  <h3 className="mb-2 font-mono text-xs font-black uppercase leading-none tracking-[0.4em] text-slate-300">
+                    Transmission_Terminal
+                  </h3>
+                  <div className="h-2 w-20 bg-[#FCDE09] shadow-sharp" />
                 </div>
-                <div className="flex h-10 w-10 items-center justify-center rounded-none border-2 border-slate-950 bg-brand shadow-[4px_4px_0px_0px_#020617]">
-                  <span className="font-mono text-xs font-black text-slate-950">
-                    01
-                  </span>
+                <div className="hidden font-mono text-[9px] uppercase tracking-widest text-slate-300 sm:block">
+                  Auth_Level: Secure_Sharp_v3.2
                 </div>
               </div>
 
@@ -116,33 +121,30 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
-    </div>
-  )
-}
 
-/** 🧱 SUB-COMPONENT: ContactNode (Local Helper) */
-function ContactNode({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-}) {
-  return (
-    <div className="group flex items-start gap-5 transition-transform hover:translate-x-2">
-      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-none border border-slate-200 bg-slate-50 transition-colors group-hover:border-slate-950 group-hover:bg-brand">
-        {icon}
+      {/* 📜 TERMINAL_FOOTER: Stats & Meta (MODE B) */}
+      <div className="mx-auto max-w-7xl px-6 pb-12">
+        <div className="flex flex-wrap items-center gap-x-12 gap-y-4 border-t border-slate-100 pt-10 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">
+          <div className="flex items-center gap-2">
+            <div className="h-2.5 w-2.5 animate-pulse rounded-none bg-emerald-500 shadow-sharp" />
+            System_Live: Active
+          </div>
+          <div className="group flex cursor-help items-center gap-2">
+            <ChevronRight
+              size={12}
+              className="text-[#FCDE09] transition-transform group-hover:translate-x-1"
+            />
+            End_To_End_Verification
+          </div>
+          <div className="group flex cursor-help items-center gap-2">
+            <ChevronRight
+              size={12}
+              className="text-[#FCDE09] transition-transform group-hover:translate-x-1"
+            />
+            Identity_Protection_Enabled
+          </div>
+        </div>
       </div>
-      <div className="space-y-1">
-        <span className="block font-mono text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 transition-colors group-hover:text-slate-950">
-          {label}
-        </span>
-        <span className="block text-lg font-black tracking-tight text-slate-950">
-          {value}
-        </span>
-      </div>
-    </div>
+    </main>
   )
 }
