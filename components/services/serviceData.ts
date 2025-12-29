@@ -54,7 +54,7 @@ export const services: ServiceItem[] = [
     type: "VISA_ASSET",
     icon: FileSearch,
     image:
-      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/Service1.webp",
+      "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp",
     title: "ที่ปรึกษาวีซ่าและวางแผนเอกสาร",
     description:
       "วิเคราะห์และช่วยจัดเตรียมเอกสารสำหรับเคสที่กังวล หรือเคยมีประวัติไม่ผ่าน เพื่อสร้างความมั่นใจสูงสุด",

@@ -1,7 +1,8 @@
 /** @format */
+
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { createLead } from "@/app/actions/lead-actions"
 import {
   Loader2,
@@ -9,43 +10,44 @@ import {
   MailCheck,
   ShieldCheck,
   Search,
-  Map,
-  AlertCircle,
-  Briefcase,
   CheckCircle2,
   QrCode,
+  LayoutGrid,
+  History,
+  FileText,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 /**
- * @description CONTACT_FORM_COMPONENT: ระบบจัดการข้อมูลผู้ติดต่อพร้อมการออก Ticket ID
- * @version 3.2.0 (Industrial Sharp Style)
+ * 🛰️ COMPONENT: CONTACT_FORM_PROTOCOL
+ * @version 3.2.2 (Industrial Sharp Edition)
+ * PURPOSE: ระบบจัดการข้อมูลผู้ติดต่อและจัดลำดับคิวปรึกษาอัตโนมัติ
  */
 
 const SERVICE_OPTIONS = [
   {
     id: "GENERAL_INQUIRY",
-    label: "สอบถามทั่วไป",
+    label: "สอบถามข้อมูลเทคนิค",
     icon: Search,
-    desc: "ข้อมูลเบื้องต้นเกี่ยวกับบริการ",
+    desc: "เจาะลึกรายละเอียดและเงื่อนไขการดำเนินการ",
   },
   {
-    id: "STRATEGIC_PLANNING",
-    label: "วางแผนกลยุทธ์",
-    icon: Map,
-    desc: "จัดเตรียมแผนยื่นวีซ่าความสำเร็จสูง",
+    id: "PROFILE_READY",
+    label: "เตรียมความพร้อมโปรไฟล์",
+    icon: LayoutGrid,
+    desc: "จัดระเบียบเอกสารและเพิ่มความน่าเชื่อถือให้ข้อมูล",
   },
   {
     id: "APPEAL_CONSULT",
-    label: "ปรึกษาเคสปฏิเสธ",
-    icon: AlertCircle,
-    desc: "วิเคราะห์และแก้ไขเคสที่ไม่ผ่าน",
+    label: "วิเคราะห์เคสปฏิเสธ",
+    icon: History,
+    desc: "เจาะลึกสาเหตุและวางโครงสร้างใหม่เพื่อแก้ไขประวัติ",
   },
   {
     id: "CORPORATE_DOCUMENT",
-    label: "เอกสารองค์กร",
-    icon: Briefcase,
-    desc: "รองรับการยื่นวีซ่าระดับธุรกิจ",
+    label: "โซลูชันเอกสารธุรกิจ",
+    icon: FileText,
+    desc: "ยกระดับความน่าเชื่อถือขององค์กรในการยื่นระดับสากล",
   },
 ]
 
@@ -57,6 +59,7 @@ export const ContactForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    if (loading) return
     setLoading(true)
 
     const formData = new FormData(e.currentTarget)
@@ -76,38 +79,36 @@ export const ContactForm = () => {
           name: payload.full_name,
         })
         setIsSent(true)
-      } else {
-        // Handle failure if needed (e.g., toast notification)
-        setLoading(false)
       }
     } catch (error) {
       console.error("❌ [CONTACT_ERROR]:", error)
+      alert("ขออภัย ระบบขัดข้องชั่วคราว โปรดตรวจสอบข้อมูลอีกครั้ง")
+    } finally {
       setLoading(false)
     }
   }
 
-  // --- SUCCESS_VIEW: เมื่อส่งข้อมูลสำเร็จ ---
+  // --- SUCCESS_VIEW (MODE B: Industrial Sharp) ---
   if (isSent) {
     return (
-      <div className="relative space-y-8 overflow-hidden rounded-none border-4 border-[#020617] bg-white px-8 py-16 text-center shadow-sharp duration-500 animate-in fade-in zoom-in">
-        {/* Decorative corner accent */}
-        <div className="clip-path-slant absolute right-0 top-0 h-12 w-12 bg-[#FCDE09]" />
+      <div className="relative space-y-8 border-4 border-[#020617] bg-white px-8 py-16 text-center shadow-sharp duration-500 animate-in fade-in zoom-in">
+        <div className="absolute right-0 top-0 h-12 w-12 bg-[#FCDE09] [clip-path:polygon(100%_0,0_0,100%_100%)]" />
 
         <div className="flex justify-center gap-6">
-          <div className="flex h-20 w-20 -rotate-3 transform items-center justify-center border-2 border-[#020617] bg-[#FCDE09] shadow-sharp">
+          <div className="flex h-20 w-20 -rotate-3 transform items-center justify-center border-2 border-[#020617] bg-[#FCDE09] shadow-sharp transition-transform hover:rotate-0">
             <MailCheck className="text-[#020617]" size={40} />
           </div>
-          <div className="flex h-20 w-20 rotate-3 transform items-center justify-center border-2 border-[#020617] bg-white shadow-sharp">
+          <div className="flex h-20 w-20 rotate-3 transform items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-transform hover:rotate-0">
             <QrCode className="text-[#020617]" size={40} />
           </div>
         </div>
 
         <div className="mx-auto max-w-sm space-y-4 font-thai">
           <h3 className="text-3xl font-black uppercase italic tracking-tighter text-[#020617]">
-            Verification_Required
+            Data_Received.
           </h3>
 
-          <div className="bg-[#020617] p-5 shadow-sharp">
+          <div className="bg-[#020617] p-6 shadow-sharp">
             <p className="mb-1 font-mono text-[10px] font-black uppercase tracking-widest text-[#FCDE09]/60">
               Reference_Ticket_ID
             </p>
@@ -116,18 +117,17 @@ export const ContactForm = () => {
             </p>
           </div>
 
-          <div className="space-y-3 pt-4">
-            <p className="text-sm font-bold leading-relaxed text-slate-600">
+          <div className="space-y-4 pt-4">
+            <p className="text-base font-bold leading-relaxed text-slate-600">
               คุณ{" "}
               <span className="text-[#020617] underline decoration-[#FCDE09] decoration-4 underline-offset-4">
                 {ticketData.name}
-              </span>{" "}
-              ระบบได้รับข้อมูลแล้ว
+              </span>
             </p>
-            <p className="border-l-4 border-[#FCDE09] bg-slate-50 p-4 text-[12px] font-medium leading-relaxed text-slate-400">
-              โปรดตรวจสอบอีเมลของคุณเพื่อกดยืนยันตัวตน <br />
-              รหัสนี้จะถูกใช้เพื่อออก <strong>Digital Pass</strong>{" "}
-              สำหรับติดตามเคส
+            <p className="border-l-4 border-[#FCDE09] bg-slate-50 p-4 text-left text-[13px] font-medium leading-relaxed text-slate-500">
+              เจ้าหน้าที่ได้รับข้อมูลเรียบร้อยแล้ว <br />
+              โปรดตรวจสอบอีเมลของคุณเพื่อกดยืนยันการติดต่อ
+              และรับสิทธิ์ดูแลเคสลำดับถัดไป
             </p>
           </div>
         </div>
@@ -135,32 +135,31 @@ export const ContactForm = () => {
     )
   }
 
-  // --- FORM_VIEW: หน้าฟอร์มปกติ ---
   return (
     <form onSubmit={handleSubmit} className="space-y-8 font-thai">
-      {/* IDENTITY_SECTION */}
+      {/* IDENTITY_SECTION (MODE C) */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="space-y-2">
           <label className="ml-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-            Full_Name
+            Full_Name (ชื่อจริง-นามสกุล)
           </label>
           <input
             required
             name="full_name"
-            placeholder="ชื่อ-นามสกุล"
+            placeholder="ระบุชื่อ-นามสกุลของคุณ"
             className="w-full rounded-none border-2 border-slate-100 bg-slate-50 p-4 font-bold shadow-sm outline-none transition-all focus:border-[#020617] focus:bg-white"
           />
         </div>
         <div className="space-y-2">
-          <label className="ml-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-            Official_Email
+          <label className="ml-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-[#020617]">
+            Official_Email (อีเมลติดต่อ)
           </label>
           <input
             required
             type="email"
             name="email"
-            placeholder="EMAIL_ADDRESS"
-            className="w-full rounded-none border-2 border-slate-100 bg-slate-50 p-4 font-mono text-sm shadow-sm outline-none transition-all focus:border-[#020617] focus:bg-white"
+            placeholder="example@email.com"
+            className="w-full rounded-none border-2 border-[#FCDE09] bg-white p-4 font-mono text-sm shadow-sm outline-none transition-all focus:border-[#020617]"
           />
         </div>
       </div>
@@ -168,7 +167,7 @@ export const ContactForm = () => {
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="space-y-2">
           <label className="ml-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-            Contact_Phone
+            Contact_Phone (เบอร์โทรศัพท์)
           </label>
           <input
             required
@@ -178,16 +177,16 @@ export const ContactForm = () => {
           />
         </div>
         <div className="flex items-end">
-          <div className="flex w-full items-center gap-3 border-2 border-transparent bg-slate-100 px-5 py-4 italic">
-            <ShieldCheck size={18} className="text-slate-400" />
+          <div className="flex w-full items-center gap-3 border-2 border-dashed border-slate-200 bg-slate-50 px-5 py-4 italic">
+            <ShieldCheck size={18} className="text-[#10B981]" />
             <span className="font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
-              Auth_Level: Secure_Access
+              Privacy_Protected: Level_03
             </span>
           </div>
         </div>
       </div>
 
-      {/* SERVICE_SELECTION_GRID */}
+      {/* SERVICE_SELECTION (MODE B) */}
       <div className="space-y-4">
         <div className="flex items-center gap-2">
           <div className="h-4 w-1.5 bg-[#FCDE09]" />
@@ -206,7 +205,7 @@ export const ContactForm = () => {
                 type="button"
                 onClick={() => setSelectedService(item.id)}
                 className={cn(
-                  "group relative rounded-none border-2 p-5 text-left transition-all duration-300 active:scale-[0.97]",
+                  "group relative rounded-none border-2 p-5 text-left transition-all duration-300",
                   isActive
                     ? "-translate-y-1 transform border-[#020617] bg-[#020617] text-white shadow-sharp"
                     : "border-slate-100 bg-white hover:border-slate-300 hover:bg-slate-50"
@@ -255,31 +254,31 @@ export const ContactForm = () => {
       {/* DETAIL_SECTION */}
       <div className="space-y-2">
         <label className="ml-1 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">
-          Transmission_Details
+          Case_Details (รายละเอียดที่ต้องการปรึกษา)
         </label>
         <textarea
           required
           name="details"
           rows={5}
-          placeholder="ระบุรายละเอียดเคสหรือคำถามที่คุณต้องการความช่วยเหลือ..."
+          placeholder="แจ้งรายละเอียดเบื้องต้นเพื่อให้เจ้าหน้าที่เตรียมข้อมูลได้ถูกต้อง..."
           className="w-full resize-none rounded-none border-2 border-slate-100 bg-slate-50 p-4 text-sm font-bold shadow-sm outline-none transition-all focus:border-[#020617] focus:bg-white"
         />
       </div>
 
-      {/* ACTION_BUTTON */}
+      {/* ACTION_EXECUTE */}
       <div className="pt-4">
         <button
           disabled={loading}
-          className="group flex w-full items-center justify-center gap-4 rounded-none bg-[#020617] py-7 font-black uppercase tracking-[0.5em] text-white shadow-sharp transition-all hover:bg-[#FCDE09] hover:text-[#020617] disabled:cursor-not-allowed disabled:opacity-70"
+          className="group flex w-full items-center justify-center gap-4 rounded-none bg-[#020617] py-7 font-black uppercase tracking-[0.4em] text-white shadow-sharp transition-all hover:bg-[#FCDE09] hover:text-[#020617] disabled:opacity-70"
         >
           {loading ? (
             <>
               <Loader2 className="animate-spin" size={24} />
-              <span>Syncing_Data...</span>
+              <span className="animate-pulse">กำลังประมวลผลระบบ...</span>
             </>
           ) : (
             <>
-              Execute_Send
+              ส่งข้อมูลเพื่อรับคำปรึกษา
               <SendHorizontal
                 size={22}
                 className="transition-transform duration-300 group-hover:translate-x-3"
@@ -291,8 +290,8 @@ export const ContactForm = () => {
 
       <div className="pointer-events-none flex items-center justify-center gap-4 opacity-30 grayscale">
         <div className="h-[1px] flex-1 bg-slate-300" />
-        <p className="font-mono text-[8px] uppercase tracking-[0.8em] text-slate-500">
-          Secure_Protocol_v3.2_Enabled
+        <p className="text-center font-mono text-[8px] uppercase tracking-[0.8em] text-slate-500">
+          Official_Consultancy_v3.2
         </p>
         <div className="h-[1px] flex-1 bg-slate-300" />
       </div>

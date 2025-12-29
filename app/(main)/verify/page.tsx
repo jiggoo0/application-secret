@@ -5,8 +5,8 @@ import { redirect } from "next/navigation"
 
 /**
  * 🛠️ VERIFICATION_TERMINAL (SERVER-SIDE)
- * หน้าที่: รับช่วงต่อจากอีเมล -> อัปเดต Database -> ส่งไปรับ QR Code
- * Protocol: Secure-Sharp v3.2.1
+ * @version 3.2.2 (Industrial Sharp Edition)
+ * PURPOSE: ประมวลผลการยืนยันตัวตนจากอีเมล -> อัปเดตสถานะ -> Redirect ไปรับ Pass
  */
 
 interface VerifyPageProps {
@@ -14,13 +14,13 @@ interface VerifyPageProps {
 }
 
 export default async function VerifyPage({ searchParams }: VerifyPageProps) {
-  // 1. DATA_EXTRACTION: ดึงค่าจาก URL ที่ส่งมาจาก Resend Email
+  // 1. DATA_EXTRACTION: ถอดรหัสค่าจาก URL (Next.js 15 Async Standard)
   const params = await searchParams
-  const id = params.id as string // Ticket ID (e.g., JPV-XXXX)
-  const name = params.name as string // ชื่อลูกค้า
-  const type = params.type as string // ประเภทบริการ (assessment/contact)
+  const id = typeof params.id === "string" ? params.id : null
+  const name = typeof params.name === "string" ? params.name : "Customer"
+  const type = typeof params.type === "string" ? params.type : "contact"
 
-  // 🛡️ GUARD_CLAUSE: ถ้าไม่มี ID ให้ดีดกลับหน้าแรกทันทีเพื่อความปลอดภัย
+  // 🛡️ GUARD_CLAUSE: ป้องกันการเข้าถึงโดยไม่มีรหัสอ้างอิง
   if (!id) {
     redirect("/")
   }
@@ -28,20 +28,22 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
   try {
     /**
      * 2. DATABASE_SYNCHRONIZATION (MODE A)
-     * ค้นหา Lead ใน Supabase ผ่าน metadata->>ticket_id และเปลี่ยนสถานะเป็น Verified
+     * ทำการอัปเดตสถานะ Lead เป็น "Verified" เพื่อเปิดล็อกฟีเจอร์ QR Code
      */
-    const { error } = await supabaseServer
-      .from("leads")
-      .update({
-        status: "verified_prospect",
-      })
-      .eq("metadata->>ticket_id", id)
+    if (supabaseServer) {
+      const { error } = await supabaseServer
+        .from("leads")
+        .update({
+          status: "verified_prospect", // สถานะสำหรับลูกค้าที่ยืนยันอีเมลแล้ว
+        })
+        .eq("metadata->>ticket_id", id)
 
-    if (error) {
-      // 🚨 LOGGING: บันทึกความผิดพลาดลง Server Log
-      console.error(
-        `❌ [AUTH_ERROR]: ID ${id} failed to update: ${error.message}`
-      )
+      if (error) {
+        // 🚨 LOGGING: บันทึกความผิดพลาดแต่ยังปล่อยให้ Flow ดำเนินต่อเพื่อ UX
+        console.error(
+          `❌ [AUTH_ERROR]: Ticket ${id} update failed: ${error.message}`
+        )
+      }
     }
   } catch (err) {
     console.error("🚨 [CRITICAL_SYSTEM_FAILURE]:", err)
@@ -49,13 +51,14 @@ export default async function VerifyPage({ searchParams }: VerifyPageProps) {
 
   /**
    * 3. DYNAMIC_ROUTING_PROTOCOL
-   * กำหนดเส้นทาง Redirect ตามประเภทงาน
+   * เลือกหน้า Success ที่ถูกต้องตามประเภทของฟอร์มที่ลูกค้ากรอก
    */
   const targetPath =
-    type === "contact" ? "/contact/success" : "/assessment/success"
+    type === "assessment" ? "/assessment/success" : "/contact/success"
 
-  // 🎯 FINAL_REDIRECT: ส่ง Parameter 'verified=true' ไปเพื่อสั่งให้หน้า Success โชว์ QR Code
-  const finalDestination = `${targetPath}?id=${id}&name=${encodeURIComponent(name || "Customer")}&verified=true`
+  // 🎯 FINAL_REDIRECT: ส่ง Parameter ไปเพื่อสั่งให้ Frontend แสดง QR Code และ Ticket ID
+  // verified=true จะเป็นตัว Trigger แอนิเมชันการ Unlock ในหน้า Success
+  const finalDestination = `${targetPath}?id=${id}&name=${encodeURIComponent(name)}&verified=true`
 
   redirect(finalDestination)
 }

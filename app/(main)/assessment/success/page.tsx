@@ -1,118 +1,177 @@
 /** @format */
+
 "use client"
 
+import React, { Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { Lock, ShieldCheck, Home, QrCode } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
 
 /**
- * @description ASSESSMENT_SUCCESS_PAGE: หน้าแสดงสถานะการยืนยันตัวตนและ QR Code
- * @fix Resolved ESLint warning by using Next.js Image component
+ * 🛰️ COMPONENT: ASSESSMENT_SUCCESS_PROTOCOL
+ * @version 3.2.5 (Industrial Sharp Edition)
+ * PURPOSE: หน้าแสดงผลการรับรหัสอ้างอิงและบัตรคิวดิจิทัล
+ * STATUS: ESLint_Warnings_Fixed
  */
-
-export default function AssessmentSuccessPage() {
+function SuccessContent() {
   const searchParams = useSearchParams()
   const isVerified = searchParams.get("verified") === "true"
-  const ticketId = searchParams.get("id") || "PENDING"
-  const name = searchParams.get("name") || "Customer"
+  const ticketId = searchParams.get("id") || "WAITING"
+  const name = searchParams.get("name") || "ท่าน"
 
-  // สร้างลิงก์สำหรับ QR Code เพื่อให้ลูกค้าสแกนเข้าหน้า Digital Pass
+  // 🔗 PASS_GENERATOR_LOGIC
   const passUrl = `https://jpvisouldocs.online/pass/${ticketId}`
-  const qrImage = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(passUrl)}`
+  const qrImage = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+    passUrl
+  )}`
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-white p-6 font-thai">
-      <div className="relative w-full max-w-md overflow-hidden border-[3px] border-slate-950 bg-white p-8 shadow-[20px_20px_0px_0px_#f1f5f9]">
-        {/* 🧩 DECOR_BAR: Status indicator */}
-        <div
-          className={`absolute left-0 top-0 h-2 w-full ${
-            isVerified ? "bg-green-500" : "bg-[#FCDE09]"
-          }`}
-        />
+    <div className="relative w-full max-w-md border-4 border-[#020617] bg-white p-8 shadow-sharp transition-all duration-500 animate-in fade-in zoom-in">
+      {/* 🧩 STATUS_BAR (MODE B) */}
+      <div
+        className={`absolute left-0 top-0 h-2 w-full transition-colors duration-1000 ${
+          isVerified ? "bg-[#10B981]" : "bg-[#FCDE09]"
+        }`}
+      />
 
-        <div className="space-y-6 text-center">
-          {/* 🛡️ ICON_STATUS */}
-          <div className="inline-block bg-slate-950 p-4 text-[#FCDE09] shadow-sharp">
-            {isVerified ? <ShieldCheck size={40} /> : <Lock size={40} />}
-          </div>
-
-          {/* 🏷️ HEADER */}
-          <div className="space-y-1">
-            <h2 className="text-4xl font-black uppercase italic leading-none tracking-tighter text-slate-950">
-              {isVerified ? "Unlocked" : "Locked"}
-              <span className="text-[#FCDE09]">.</span>
-            </h2>
-            <p className="font-mono text-[10px] font-bold tracking-[0.3em] text-slate-400">
-              STATUS: {isVerified ? "IDENTITY_CONFIRMED" : "WAITING_FOR_AUTH"}
-            </p>
-          </div>
-
-          {/* 🔑 TICKET_DISPLAY */}
-          <div className="group relative border-2 border-dashed border-slate-200 bg-slate-50 p-6 transition-colors hover:border-slate-300">
-            <p className="mb-2 font-mono text-[10px] font-black uppercase text-slate-400">
-              Access_Key
-            </p>
-            <p className="font-mono text-3xl font-black tracking-[0.2em] text-slate-950">
-              {isVerified ? ticketId : "XXXX-XXXX"}
-            </p>
-            <div className="absolute -right-2 -top-2 bg-slate-950 px-2 py-0.5 text-[8px] font-bold italic text-white">
-              V.2025
-            </div>
-          </div>
-
-          {/* 📲 QR_CODE_SECTION: Optimized with next/image */}
-          {isVerified && (
-            <div className="py-4 duration-700 animate-in fade-in slide-in-from-bottom-4">
-              <div className="inline-block border-2 border-slate-950 bg-white p-3 shadow-sharp">
-                <Image
-                  src={qrImage}
-                  alt="Digital Pass QR"
-                  width={160}
-                  height={160}
-                  className="h-40 w-40"
-                  unoptimized // ใช้ unoptimized เพราะเป็น external API ที่ generate รูปสด
-                  priority
-                />
-              </div>
-              <p className="mt-3 flex items-center justify-center gap-2 text-[10px] font-black uppercase text-slate-400">
-                <QrCode size={12} /> Scan to view Digital Pass
-              </p>
-            </div>
+      <div className="space-y-8 text-center">
+        {/* 🛡️ STATUS_ICON */}
+        <div className="inline-block border-2 border-[#020617] bg-[#020617] p-5 text-[#FCDE09] shadow-sharp transition-transform hover:scale-105">
+          {isVerified ? (
+            <ShieldCheck size={48} strokeWidth={2.5} />
+          ) : (
+            <Lock size={48} strokeWidth={2.5} />
           )}
+        </div>
 
-          {/* 💬 MESSAGE */}
-          <div className="space-y-4 px-2">
-            <p className="text-sm font-bold leading-relaxed text-slate-600">
-              {isVerified
-                ? `คุณ ${name} ได้รับการยืนยันแล้ว ระบบได้ออกบัตรดิจิทัลให้คุณเรียบร้อย เจ้าหน้าที่จะติดต่อกลับโดยเร็วที่สุด`
-                : "กรุณาตรวจสอบอีเมลและกดปุ่มยืนยันตัวตน เพื่อเข้าถึงรหัสคีย์และบัตรดิจิทัลของคุณ"}
-            </p>
-            {!isVerified && (
-              <div className="border-l-4 border-[#FCDE09] bg-slate-50 p-4 text-left">
-                <p className="text-[11px] font-bold text-slate-500">
-                  <span className="text-slate-950">Note:</span>{" "}
-                  หากไม่พบอีเมลในกล่องจดหมายหลัก โปรดตรวจสอบใน Junk/Spam folder
-                </p>
-              </div>
+        {/* 🏷️ HEADER_TITLE */}
+        <div className="space-y-2">
+          <h2 className="text-5xl font-black uppercase italic leading-none tracking-tighter text-[#020617]">
+            {isVerified ? "Ready" : "Waiting"}
+            <span className="text-[#FCDE09]">.</span>
+          </h2>
+          <p className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+            SYSTEM_STATUS:{" "}
+            {isVerified ? "ACCESS_GRANTED" : "PENDING_VERIFICATION"}
+          </p>
+        </div>
+
+        {/* 🔑 TICKET_MANIFEST */}
+        <div className="relative border-2 border-dashed border-slate-200 bg-slate-50 p-8 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)]">
+          <p className="mb-2 font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+            Reference_ID
+          </p>
+          <p className="font-mono text-3xl font-black tracking-[0.15em] text-[#020617]">
+            {isVerified ? ticketId : "XXXX-XXXX"}
+          </p>
+          <div className="absolute -right-3 -top-3 bg-[#020617] px-3 py-1 text-[9px] font-black italic text-[#FCDE09] shadow-sharp">
+            V.2025_SECURE
+          </div>
+        </div>
+
+        {/* 📲 QR_PROTOCOL (MODE B: Sharp Edges) */}
+        {isVerified && (
+          <div className="py-2 duration-1000 animate-in fade-in slide-in-from-bottom-6">
+            <div className="inline-block border-4 border-[#020617] bg-white p-4 shadow-sharp transition-transform hover:-rotate-1">
+              <Image
+                src={qrImage}
+                alt="Digital Pass QR"
+                width={180}
+                height={180}
+                className="h-44 w-44 grayscale transition-all duration-500 hover:grayscale-0"
+                unoptimized
+                priority
+              />
+            </div>
+            <div className="mt-4 flex items-center justify-center gap-2 font-mono text-[10px] font-black uppercase tracking-widest text-slate-500">
+              <QrCode size={14} className="text-[#020617]" />
+              Scan for Digital Identity Pass
+            </div>
+          </div>
+        )}
+
+        {/* 💬 COMMUNICATION_TONE (MODE C: Advisor Voice) */}
+        <div className="space-y-5 px-2">
+          <div className="font-thai text-base font-bold leading-relaxed text-slate-600">
+            {isVerified ? (
+              <p>
+                คุณ{" "}
+                <span className="text-[#020617] underline decoration-[#FCDE09] decoration-4 underline-offset-4">
+                  {name}
+                </span>{" "}
+                ได้รับรหัสอ้างอิงเรียบร้อยแล้ว <br />
+                ที่ปรึกษาจะตรวจสอบข้อมูลและติดต่อกลับเพื่อเริ่มขั้นตอนถัดไป
+              </p>
+            ) : (
+              <p>
+                กรุณาตรวจสอบกล่องจดหมายของคุณ <br />
+                และกดปุ่ม{" "}
+                <span className="font-black text-[#020617]">
+                  "ยืนยันข้อมูล"
+                </span>{" "}
+                เพื่อเปิดล็อกบัตรคิวดิจิทัล
+              </p>
             )}
           </div>
 
-          {/* 🏠 ACTIONS */}
-          <div className="flex flex-col items-center gap-4 border-t border-slate-100 pt-6">
-            <Link
-              href="/"
-              className="group flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400 transition-colors hover:text-slate-950"
-            >
-              <Home
-                size={14}
-                className="transition-transform group-hover:-translate-y-0.5"
-              />
-              Return_to_base
-            </Link>
-          </div>
+          {!isVerified && (
+            <div className="border-l-4 border-[#FCDE09] bg-slate-50 p-5 text-left shadow-sm">
+              <p className="font-thai text-[12px] font-bold leading-snug text-slate-500">
+                <span className="uppercase text-[#020617]">Note:</span>{" "}
+                หากไม่พบอีเมลในกล่องข้อความหลัก โปรดตรวจสอบใน "จดหมายขยะ" (Spam)
+                เพื่อป้องกันความล่าช้าในการตรวจสอบ
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* 🏠 ACTION_HUB */}
+        <div className="flex flex-col items-center gap-6 border-t border-slate-100 pt-8">
+          <Link
+            href="/"
+            className="group flex items-center gap-3 font-mono text-[11px] font-black uppercase tracking-[0.2em] text-slate-400 transition-all hover:text-[#020617]"
+          >
+            <Home
+              size={16}
+              className="transition-transform group-hover:-translate-y-1"
+            />
+            Return_to_Main_Terminal
+          </Link>
         </div>
       </div>
+    </div>
+  )
+}
+
+/**
+ * 🛰️ WRAPPER: ASSESSMENT_SUCCESS_PAGE
+ */
+export default function AssessmentSuccessPage() {
+  return (
+    <main className="relative flex min-h-screen items-center justify-center bg-white p-6 font-thai selection:bg-[#FCDE09] selection:text-[#020617]">
+      {/* BACKGROUND_DECOR (MODE B: Blueprint Grid) */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: "radial-gradient(#000 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
+      <div className="pointer-events-none absolute left-0 top-0 h-full w-full opacity-[0.01] [background-image:linear-gradient(to_right,#808080_1px,transparent_1px),linear-gradient(to_bottom,#808080_1px,transparent_1px)] [background-size:100px_100px]" />
+
+      <Suspense
+        fallback={
+          <div className="flex flex-col items-center gap-4">
+            <div className="h-8 w-8 animate-spin border-4 border-[#FCDE09] border-t-[#020617]" />
+            <p className="animate-pulse font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+              Syncing_Encrypted_Protocol...
+            </p>
+          </div>
+        }
+      >
+        <SuccessContent />
+      </Suspense>
     </main>
   )
 }
