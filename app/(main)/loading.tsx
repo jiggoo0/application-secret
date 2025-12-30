@@ -1,7 +1,7 @@
 /** @format */
-"use client"
+'use client'
 
-import React, { useEffect, useState } from "react"
+import React, { useEffect, useState } from 'react'
 
 export default function Loading() {
   const [progress, setProgress] = useState(0)
@@ -16,7 +16,7 @@ export default function Loading() {
   return (
     <div className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-white p-6">
       {/* 🧩 Background Technical Grid */}
-      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
+      <div className="bg-blueprint-grid pointer-events-none absolute inset-0 opacity-[0.03]" />
 
       <div className="relative w-full max-w-sm">
         {/* Upper Label */}
@@ -50,9 +50,7 @@ export default function Loading() {
               Boutique_Registry_V2.5
             </span>
           </div>
-          <span className="font-mono text-[7px] uppercase text-slate-400">
-            © 2024_OP_CORE
-          </span>
+          <span className="font-mono text-[7px] uppercase text-slate-400">© 2024_OP_CORE</span>
         </div>
       </div>
     </div>

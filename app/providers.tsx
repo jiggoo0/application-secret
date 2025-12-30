@@ -1,32 +1,32 @@
 /** @format */
 
-"use client"
+'use client'
 
-import * as React from "react"
-import { ThemeProvider } from "next-themes"
+import * as React from 'react'
+import { ThemeProvider } from 'next-themes'
 
 /**
- * 🛰️ SYSTEM_PROVIDERS_PROTOCOL
+ * 🛰️ SYSTEM_PROVIDERS_PROTOCOL (UPDATED – DARK LUXURY)
  * ----------------------------------------------------------------
- * จัดการ Context และสภาวะแวดล้อมของแอปพลิเคชัน
- * ✅ ENFORCED: Named Export Strategy
- * ✅ ENFORCED: Industrial Sharp Selection Color
+ * - บังคับ Dark Theme เป็นค่าเริ่มต้น
+ * - ตัด white scaffold ทิ้ง
+ * - ใช้ token จาก globals.css โดยตรง
+ * - ป้องกัน FOUC แบบไม่ทำลาย theme
  */
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   const [mounted, setMounted] = React.useState(false)
 
-  // 🛡️ HYDRATION_PROTOCOL: ยืนยันสถานะ Client-side
   React.useEffect(() => {
     setMounted(true)
   }, [])
 
   /**
-   * 🏗️ PRE-RENDER_SCAFFOLD
-   * ป้องกัน Flash of Unstyled Content (FOUC) โดยรักษาโครงสร้างสีขาวสะอาดตา
+   * 🛡️ HYDRATION_SAFETY
+   * ใช้พื้นหลังตาม token จริง (ไม่ใช้ white)
    */
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-white" aria-hidden="true">
+      <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
         <div className="opacity-0">{children}</div>
       </div>
     )
@@ -35,12 +35,12 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
   return (
     <ThemeProvider
       attribute="class"
-      defaultTheme="light"
+      defaultTheme="dark"
       enableSystem={false}
       disableTransitionOnChange
     >
-      {/* 🚀 GLOBAL_LAYOUT_WRAPPER: บังคับใช้สีแบรนด์และพื้นหลังที่เสถียร */}
-      <div className="relative flex min-h-screen flex-col selection:bg-[#FCDE09] selection:text-slate-950">
+      {/* 🚀 GLOBAL_LAYOUT_WRAPPER */}
+      <div className="relative flex min-h-screen flex-col bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[rgba(200,164,93,0.25)] selection:text-white">
         {children}
       </div>
     </ThemeProvider>

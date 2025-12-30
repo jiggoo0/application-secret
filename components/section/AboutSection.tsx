@@ -1,171 +1,114 @@
-/** @format */
-
-"use client"
-
-import React from "react"
-import { ArrowUpRight, CheckCircle2, ShieldCheck, Target } from "lucide-react"
-
-/**
- * 📝 CORE_VALUES: Trusted Consultant Tone
+/** * @format
+ * @description ABOUT_SECTION: The Industrial Philosophy Node
+ * ✅ FIXED: Removed unused 'cn' to pass lint
+ * ✅ REFINED: Font mapping for maximum clarity
  */
-const coreValues = [
+
+'use client'
+
+import React from 'react'
+import { ShieldCheck, Target, Lock } from 'lucide-react'
+// 🛡️ REMOVED: import { cn } from '@/lib/utils' (แก้ปัญหา 'cn' is defined but never used)
+
+const values = [
   {
     icon: ShieldCheck,
-    title: "Legal Care",
-    description: "ดูแลทุกขั้นตอนให้ถูกต้องตามระเบียบกงสุลและกฎหมายอย่างถี่ถ้วน",
+    title: 'Professional Standard',
+    desc: 'โครงสร้างงานถูกออกแบบให้ดูเป็นระบบ มีมาตรฐาน และตรวจสอบได้ในระดับสากล',
   },
   {
-    icon: ShieldCheck, // Changed to consistent industrial icon
-    title: "Personal Privacy",
-    description: "รักษาความลับและข้อมูลส่วนบุคคลของคุณด้วยมาตรการที่เข้มงวด",
+    icon: Lock,
+    title: 'Client Confidentiality',
+    desc: 'กฎข้อแรกคือความลับของลูกค้า ข้อมูลทุกอย่างถูกเข้ารหัสและควบคุมการเข้าถึงอย่างเข้มงวด',
   },
   {
     icon: Target,
-    title: "Client Success",
-    description:
-      "มุ่งเน้นความสำเร็จของทุกคำร้อง เพื่อให้คุณได้รับผลลัพธ์ตามเป้าหมาย",
+    title: 'Result Orientation',
+    desc: 'ทำงานโดยยึดผลลัพธ์ที่จับต้องได้จริงเป็นหลัก ตัดทอนทฤษฎีที่ไม่จำเป็นเพื่อความรวดเร็ว',
   },
 ]
 
-/**
- * 🛰️ COMPONENT: AboutSection
- * นำเสนออัตลักษณ์ผ่านภาษาที่สร้างความสบายใจ (Industrial_Sharp_V1)
- * 🛡️ ENFORCEMENT: Named Export & Rounded-None
- */
 export const AboutSection = () => {
   return (
-    <section className="relative overflow-hidden bg-white py-24 selection:bg-brand selection:text-slate-950">
-      {/* 🧩 Background Elements */}
-      <div className="absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-      <div className="absolute left-[8%] top-0 h-full w-[1px] bg-slate-100" />
+    <section className="relative bg-white py-32 text-slate-950 selection:bg-brand selection:text-slate-950">
+      {/* 🧩 BLUEPRINT_INTEGRATION: เชื่อมต่อลายกริตจากระบบหลัก */}
+      <div className="bg-blueprint-grid pointer-events-none absolute inset-0 opacity-[0.03]" />
 
       <div className="container relative z-10 mx-auto px-6">
-        <div className="grid grid-cols-1 items-start gap-16 lg:grid-cols-12">
-          {/* 🏛️ LEFT: IDENTITY & VISION */}
-          <div className="sticky top-24 lg:col-span-5">
-            <div className="mb-6 inline-flex items-center gap-2">
-              <div className="h-[2px] w-10 bg-brand" />
-              <span className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">
-                Who_We_Are
-              </span>
-            </div>
-
-            <h2 className="mb-8 text-5xl font-black uppercase leading-[0.9] tracking-tighter text-slate-950 md:text-6xl">
-              Reliability <br />
-              <span className="italic text-brand drop-shadow-[2px_2px_0px_#020617]">
-                Redefined.
-              </span>
-            </h2>
-
-            <div className="space-y-6 font-thai text-lg leading-relaxed text-slate-500">
-              <p>
-                เราคือที่ปรึกษาด้านวีซ่าและงานเอกสารที่ก่อตั้งขึ้นจากความตั้งใจที่ว่า
-                <span className="font-bold text-slate-950">
-                  {" "}
-                  "ความถูกต้องแม่นยำ คือจุดเริ่มต้นของทุกความสำเร็จ"
-                </span>
-              </p>
-              <p>
-                ด้วยประสบการณ์กว่า 8 ปี เราไม่ได้เพียงแค่จัดเตรียมเอกสาร
-                แต่เราช่วยวางแผนและดูแลในทุกรายละเอียด
-                เพื่อให้ทุกความตั้งใจของคุณ ดำเนินไปได้อย่างราบรื่นที่สุด
-                ช่วยลดความกังวลและรักษาเวลาที่มีค่าของคุณ
-              </p>
-            </div>
-
-            <button className="group mt-10 flex items-center gap-4 text-xs font-black uppercase tracking-widest text-slate-950 transition-all">
-              <span className="border-b-2 border-slate-950 pb-1 group-hover:border-brand">
-                ทำความรู้จักเราให้มากขึ้น
-              </span>
-              <ArrowUpRight
-                size={18}
-                className="transition-transform group-hover:-translate-y-1 group-hover:translate-x-1"
-              />
-            </button>
+        {/* 🏗️ HEADER_TERMINAL */}
+        <div className="mb-24 max-w-3xl">
+          <div className="mb-6 flex items-center gap-4">
+            <span className="h-px w-10 bg-brand" />
+            <span className="font-mono text-xs font-black uppercase tracking-[0.4em] text-brand">
+              JP Visual & Docs
+            </span>
           </div>
 
-          {/* 🛠️ RIGHT: STRUCTURAL EXCELLENCE */}
-          <div className="lg:col-span-7">
-            <div className="grid grid-cols-1 gap-px border-2 border-slate-950 bg-slate-950 shadow-sharp md:grid-cols-2">
-              {/* Feature Box: Heritage */}
-              <div className="flex min-h-[300px] flex-col justify-between bg-white p-10">
-                <div className="font-mono text-4xl font-black italic text-brand">
-                  08
-                </div>
-                <div>
-                  <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-slate-950">
-                    Years of Trust
-                  </h3>
-                  <p className="font-thai text-sm leading-relaxed text-slate-500">
-                    สะสมประสบการณ์ผ่านการดูแลเคสที่หลากหลายกว่า 2,500 ราย
-                    ทั่วโลก
-                  </p>
-                </div>
+          <h2 className="mb-8 text-5xl font-black uppercase italic leading-[1.1] tracking-tighter lg:text-6xl">
+            ยกระดับธุรกิจสีเทา
+            <br />
+            <span className="text-brand">ให้ดูเป็นมืออาชีพ</span>
+          </h2>
+
+          <p className="max-w-2xl font-sans text-lg font-bold leading-relaxed text-slate-500">
+            เราออกแบบโครงสร้าง เอกสาร และระบบภาพลักษณ์
+            เพื่อทำให้งานที่อยู่นอกกรอบทั่วไปดูน่าเชื่อถือ ปลอดภัย
+            และสามารถใช้งานในระบบเศรษฐกิจกระแสหลักได้อย่างไร้รอยต่อ
+          </p>
+        </div>
+
+        {/* 🧱 VALUE_MATRIX: การจัดวางกล่องข้อมูลแบบ Industrial */}
+        <div className="grid grid-cols-1 gap-1 border-y border-slate-100 bg-slate-100 md:grid-cols-3">
+          {values.map((v, i) => (
+            <div
+              key={i}
+              className="group relative bg-white p-12 transition-all duration-500 hover:bg-slate-50"
+            >
+              {/* Icon Node */}
+              <div className="shadow-sharp mb-10 flex h-14 w-14 items-center justify-center border border-slate-200 bg-white text-brand transition-all duration-500 group-hover:rotate-[360deg] group-hover:border-brand group-hover:bg-brand group-hover:text-slate-950">
+                <v.icon size={24} strokeWidth={1.5} />
               </div>
 
-              {/* Feature Box: Worldwide Reach */}
-              <div className="flex min-h-[300px] flex-col justify-between bg-slate-950 p-10 text-white">
-                <div className="flex -space-x-2">
-                  {[1, 2, 3, 4].map((i) => (
-                    <div
-                      key={i}
-                      className="h-10 w-10 overflow-hidden rounded-none border-2 border-slate-950 bg-slate-800"
-                    />
-                  ))}
-                  <div className="flex h-10 w-10 items-center justify-center rounded-none border-2 border-slate-950 bg-brand text-[10px] font-black italic text-slate-950">
-                    +
-                  </div>
-                </div>
-                <div>
-                  <h3 className="mb-3 text-xl font-black uppercase tracking-tight text-brand">
-                    Worldwide Reach
-                  </h3>
-                  <p className="font-thai text-sm leading-relaxed text-slate-300">
-                    เครือข่ายความร่วมมือและพันธมิตรที่ครอบคลุมกว่า 50 ประเทศ
-                  </p>
-                </div>
+              <h3 className="mb-5 font-mono text-xl font-black uppercase tracking-tight text-slate-950">
+                {v.title}
+              </h3>
+
+              <p className="font-sans text-sm font-bold leading-relaxed text-slate-500 transition-colors group-hover:text-slate-700">
+                {v.desc}
+              </p>
+
+              {/* Functional Decorative Element */}
+              <div className="absolute right-8 top-8 font-mono text-xs font-black text-slate-100 transition-colors group-hover:text-brand/20">
+                0{i + 1}
               </div>
 
-              {/* Core Values Row (Span 2) */}
-              <div className="bg-[#FAFAFA] p-10 md:col-span-2 lg:p-12">
-                <h4 className="mb-10 font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">
-                  Core_Infrastructure
-                </h4>
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-                  {coreValues.map((value, i) => (
-                    <div key={`value-${i}`} className="space-y-4">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-none border-2 border-slate-950 bg-white text-slate-950 shadow-[4px_4px_0px_0px_rgba(2,6,23,1)]">
-                        <value.icon size={20} />
-                      </div>
-                      <h5 className="text-sm font-black uppercase tracking-tight text-slate-950">
-                        {value.title}
-                      </h5>
-                      <p className="font-thai text-xs leading-relaxed text-slate-500">
-                        {value.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
+              {/* Bottom Accent Line */}
+              <span className="absolute inset-x-0 bottom-0 h-1 translate-y-full bg-brand transition-transform duration-500 group-hover:translate-y-0" />
             </div>
+          ))}
+        </div>
 
-            {/* Bottom Certification Badge */}
-            <div className="mt-8 flex items-center justify-between border-t border-slate-100 pt-6">
-              <div className="flex items-center gap-4 opacity-50 grayscale">
-                <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">
-                  Standard_Quality
-                </span>
-                <span className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-400">
-                  Privacy_Secured
-                </span>
-              </div>
-              <div className="flex items-center gap-2 text-emerald-600">
-                <CheckCircle2 size={14} />
-                <span className="font-mono text-[9px] font-black uppercase italic tracking-widest">
-                  Ready_to_Serve
-                </span>
-              </div>
-            </div>
+        {/* 🏁 FOOTER_STATEMENT: การยืนยันตัวตนระดับวิศวกรรม */}
+        <div className="mt-32 flex flex-col justify-between gap-10 border-t border-slate-200 pt-12 lg:flex-row lg:items-center">
+          <div className="space-y-4">
+            <p className="font-mono text-[10px] font-black uppercase tracking-[0.5em] text-slate-400">
+              Exp 8+ Years // Confidential Protocol // System Driven
+            </p>
+            <p className="max-w-2xl font-sans text-[15px] font-bold leading-relaxed text-slate-500">
+              เราไม่ได้เพียงแค่ทำงาน แต่เราสร้างระบบที่ช่วยลดความเสี่ยง เพิ่มความน่าเชื่อถือ
+              และทำให้ธุรกิจของคุณเติบโตได้อย่างมั่นคง
+              โดยยึดถือผลลัพธ์ที่จับต้องได้จริงเป็นบรรทัดฐานสูงสุด
+            </p>
+          </div>
+
+          {/* Signature Label */}
+          <div className="border-l-4 border-brand pl-6">
+            <span className="block font-mono text-xs font-black uppercase text-slate-400">
+              Verified_Agent
+            </span>
+            <span className="block text-2xl font-black uppercase italic tracking-tighter text-slate-950">
+              The_JP_Visual
+            </span>
           </div>
         </div>
       </div>

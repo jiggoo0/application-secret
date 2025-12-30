@@ -7,7 +7,7 @@
  */
 export interface Artifact {
   label: string
-  type: "document" | "code" | "diagram" | "link" | string
+  type: 'document' | 'code' | 'diagram' | 'link' | string
   description: string
   title?: string
   url?: string
@@ -20,14 +20,7 @@ export interface Artifact {
 export interface ActivityLog {
   day: number
   event: string
-  status:
-    | "success"
-    | "warning"
-    | "info"
-    | "ANALYZED"
-    | "EXECUTED"
-    | "VERIFIED"
-    | string
+  status: 'success' | 'warning' | 'info' | 'ANALYZED' | 'EXECUTED' | 'VERIFIED' | string
 }
 
 /**
@@ -40,13 +33,7 @@ export interface CaseShowcase {
   slug: string
   title: string
   executive_summary: string
-  client_category:
-    | "FREELANCE"
-    | "FAMILY"
-    | "INDIVIDUAL"
-    | "SME_OWNER"
-    | "HNWI"
-    | string
+  client_category: 'FREELANCE' | 'FAMILY' | 'INDIVIDUAL' | 'SME_OWNER' | 'HNWI' | string
 
   // Optional Fields for Type-Safety (TS2740 Fix)
   description?: string
@@ -59,7 +46,7 @@ export interface CaseShowcase {
   // Performance Data Structure
   stats?: {
     docs_processed?: number | string
-    complexity_level: "LOW" | "MEDIUM" | "HIGH" | "CRITICAL" | string
+    complexity_level: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | string
     processing_time?: string
   }
 

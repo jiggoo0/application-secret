@@ -9,7 +9,7 @@ import {
   Zap,
   ClipboardCheck,
   Briefcase,
-} from "lucide-react"
+} from 'lucide-react'
 
 /**
  * 🛰️ NAVIGATION_CONFIG_PROTOCOL
@@ -19,59 +19,59 @@ import {
 export const navigationConfig = {
   mainNav: [
     {
-      title: "หน้าหลัก",
-      href: "/",
-      label: "HOME_BASE",
+      title: 'หน้าหลัก',
+      href: '/',
+      label: 'HOME_BASE',
       icon: Home,
     },
     {
-      title: "ผลงาน",
-      href: "/showcase",
-      label: "CASE_VAULT",
+      title: 'ผลงาน',
+      href: '/showcase',
+      label: 'CASE_VAULT',
       icon: Briefcase,
     },
     {
-      title: "บริการ",
-      href: "/#services",
-      label: "SOLUTIONS",
+      title: 'บริการ',
+      href: '/#services',
+      label: 'SOLUTIONS',
       icon: LayoutGrid,
     },
     {
-      title: "ประเมินเอกสาร",
-      href: "/assessment",
-      label: "RISK_AUDIT",
+      title: 'ประเมินเอกสาร',
+      href: '/assessment',
+      label: 'RISK_AUDIT',
       icon: ClipboardCheck,
     },
     {
-      title: "ติดต่อ",
-      href: "/contact",
-      label: "INQUIRY",
+      title: 'ติดต่อ',
+      href: '/contact',
+      label: 'INQUIRY',
       icon: MessageSquare,
     },
   ],
 
   footerNav: {
     solutions: [
-      { name: "Technical Showcase", href: "/showcase" },
-      { name: "Risk Assessment", href: "/assessment" },
-      { name: "Service Index", href: "/#services" },
+      { name: 'Technical Showcase', href: '/showcase' },
+      { name: 'Risk Assessment', href: '/assessment' },
+      { name: 'Service Index', href: '/#services' },
     ],
     company: [
-      { name: "Identity Core", href: "/#about" },
-      { name: "Operational Process", href: "/#process" },
-      { name: "Contact Hub", href: "/contact" },
+      { name: 'Identity Core', href: '/#about' },
+      { name: 'Operational Process', href: '/#process' },
+      { name: 'Contact Hub', href: '/contact' },
     ],
     legal: [
       {
-        name: "Privacy Protocol",
-        href: "/privacy",
-        label: "PRIVACY_CONTROL",
+        name: 'Privacy Protocol',
+        href: '/privacy',
+        label: 'PRIVACY_CONTROL',
         icon: ShieldAlert,
       },
       {
-        name: "SLA Policy",
-        href: "/terms",
-        label: "TERMS_OF_SERVICE",
+        name: 'SLA Policy',
+        href: '/terms',
+        label: 'TERMS_OF_SERVICE',
         icon: Gavel,
       },
     ],
@@ -79,9 +79,9 @@ export const navigationConfig = {
 
   actions: {
     primary: {
-      name: "ประเมินความเสี่ยงฟรี",
-      href: "/assessment",
-      label: "START_AUDIT",
+      name: 'ประเมินความเสี่ยงฟรี',
+      href: '/assessment',
+      label: 'START_AUDIT',
       icon: Zap,
     },
   },
@@ -90,5 +90,4 @@ export const navigationConfig = {
 // 🏷️ TYPE_EXPORT_PROTOCOL
 export type NavigationConfig = typeof navigationConfig
 export type NavItem = (typeof navigationConfig.mainNav)[number]
-export type FooterNavItem =
-  (typeof navigationConfig.footerNav.solutions)[number]
+export type FooterNavItem = (typeof navigationConfig.footerNav.solutions)[number]

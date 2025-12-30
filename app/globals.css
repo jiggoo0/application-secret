@@ -1,100 +1,75 @@
 /** @format */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: #ffffff;
-    --foreground: #020617; /* Slate-950 */
-    --brand: #fcde09; /* Pure Brand Yellow */
-  }
+    /* 🏛️ PRIMARY_AXIS: Synced with Master Theme V4.5.0 */
+    --background: 5 8 10; /* #05080A (Rich Black) */
+    --foreground: 248 250 252; /* #F8FAFC (Clean White) */
 
-  /* 🛠️ CORE_SYSTEM: พื้นฐานสำหรับทุกอุปกรณ์ */
-  html {
-    scroll-behavior: smooth;
-    -webkit-tap-highlight-color: transparent;
+    --brand: 200 164 93; /* #C8A45D (Champagne Gold) */
+    --brand-dark: 11 31 51; /* #0B1F33 (Deep Navy) */
+
+    --border: 30 41 59; /* #1E293B (Steel Gray) */
+    --muted: 100 116 139; /* #64748B */
+
+    --card: 19 28 46; /* #131C2E */
   }
 
   body {
-    @apply bg-white text-slate-950 antialiased selection:bg-brand selection:text-slate-950;
-    min-height: 100dvh;
-    text-rendering: optimizeLegibility;
+    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))] antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
-  /* 📜 SHARP_SCROLLBAR: ระบบแถบเลื่อนแบบเครื่องจักร */
+  /* 📜 INDUSTRIAL_SCROLLBAR: Precision Engineered */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 4px;
   }
   ::-webkit-scrollbar-track {
-    @apply bg-slate-50;
+    background: rgb(var(--background));
   }
   ::-webkit-scrollbar-thumb {
-    @apply border-2 border-slate-50 bg-slate-950 transition-all;
+    background: rgb(var(--brand) / 0.3);
+    border-radius: 0px;
+    border: 1px solid rgb(var(--background));
   }
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-brand;
+    background: rgb(var(--brand));
   }
 }
 
-@layer components {
-  /* 📋 ASSESSMENT_FORM_SYSTEM: ระบบอินพุตสำหรับการประเมิน */
-  .audit-label {
-    @apply mb-2 block font-mono text-[10px] font-black uppercase tracking-widest text-slate-500;
+@layer utilities {
+  /**
+   * 🧩 PRECISION_BLUEPRINT_GRID (Dark Edition)
+   */
+  .bg-blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgb(var(--brand) / 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--brand) / 0.05) 1px, transparent 1px),
+      linear-gradient(to right, rgb(var(--brand) / 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(var(--brand) / 0.1) 1px, transparent 1px);
+    background-size:
+      20px 20px,
+      20px 20px,
+      100px 100px,
+      100px 100px;
   }
 
-  .audit-input {
-    @apply w-full border-b-2 border-slate-200 bg-slate-50 px-4 py-4 text-sm font-medium text-slate-950 transition-all duration-300 placeholder:text-slate-300 focus:border-brand focus:bg-white focus:outline-none;
+  /* 💎 HARD_EDGE_EFFECTS: เงาต้องคมเหมือนตัดด้วยเลเซอร์ */
+  .shadow-sharp-gold {
+    box-shadow: 4px 4px 0px 0px rgb(var(--brand));
   }
 
-  /* 🔘 PREMIUM_INDUSTRIAL_BUTTON: ปุ่มหลักที่มีน้ำหนักและเงาคม */
-  .btn-industrial {
-    @apply relative flex items-center justify-center gap-3 bg-slate-950 px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-brand shadow-sharp transition-all hover:bg-brand hover:text-slate-950 hover:shadow-sharp-brand active:translate-x-1 active:translate-y-1 disabled:pointer-events-none disabled:opacity-50;
+  .shadow-sharp-black {
+    box-shadow: 8px 8px 0px 0px #000000;
   }
 
-  /* 🔘 SECONDARY_OUTLINE_BUTTON: ปุ่มรองแบบเส้นขอบ */
-  .btn-outline {
-    @apply relative flex items-center justify-center gap-3 border-2 border-slate-950 bg-transparent px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-slate-950 transition-all hover:bg-slate-950 hover:text-brand active:scale-[0.98];
+  /* UTILITY: สำหรับขอบทองบางเฉียบแบบ Luxury */
+  .border-luxury {
+    border: 1px solid rgb(var(--brand) / 0.5);
+    position: relative;
   }
-
-  /* 📐 BLUEPRINT_GRIDS: ระบบตารางเบื้องหลัง */
-  .bg-grid-sm {
-    background-size: 20px 20px;
-    background-image: url("/grid-pattern.svg");
-    @apply opacity-[0.03];
-  }
-
-  .bg-grid-md {
-    background-size: 40px 40px;
-    background-image: url("/grid-pattern.svg");
-    @apply opacity-[0.05];
-  }
-
-  /* 🗚 TYPOGRAPHY_UTILITIES: ระบบหัวข้อและข้อมูลเสริม */
-  .text-h1 {
-    @apply text-5xl font-black uppercase italic leading-[0.85] tracking-tighter md:text-7xl lg:text-8xl;
-  }
-
-  .text-metadata {
-    @apply font-mono text-[9px] font-bold uppercase tracking-[0.3em] text-slate-400;
-  }
-
-  /* 🚄 CONTAINER_SYSTEM: จัดระเบียบเนื้อหาให้สมมาตร */
-  .container-tight {
-    @apply container mx-auto max-w-7xl px-6;
-  }
-}
-
-/* ✒️ ADVANCED_TEXT_OUTLINE: ระบบตัวอักษรโปร่งแสง */
-.text-outline-dark {
-  -webkit-text-stroke: 1.5px #020617;
-  color: transparent;
-  paint-order: stroke fill;
-}
-
-.text-outline-white {
-  -webkit-text-stroke: 1px #ffffff;
-  color: transparent;
-  paint-order: stroke fill;
 }

@@ -1,7 +1,10 @@
-/** @format */
+/** * @format
+ * @description METRICS_PANEL: Data Audit Visualization (V2.6)
+ * ✅ ENFORCEMENT: High-Contrast Risk-Leveling, Precision Metering, Zero-Radius
+ */
 
-import React from "react"
-import { cn } from "@/lib/utils"
+import React from 'react'
+import { cn } from '@/lib/utils'
 
 interface MetricsPanelProps {
   stats: {
@@ -12,101 +15,111 @@ interface MetricsPanelProps {
   technical_strategy: string[]
 }
 
-/**
- * 🛠️ COMPONENT: MetricsPanel
- * STYLE: Industrial Black Ops / Data Audit Visualization
- */
-export const MetricsPanel = ({
-  stats,
-  technical_strategy,
-}: MetricsPanelProps) => {
+export const MetricsPanel = ({ stats, technical_strategy }: MetricsPanelProps) => {
+  // 🛡️ Logic Enforcement for Risk Leveling
+  const isCritical = stats.complexity_level === 'HIGH' || stats.complexity_level === 'CRITICAL'
+
   return (
-    <div className="space-y-0 border-l border-slate-950">
-      {/* 📊 SECTION_01: Audit Metrics */}
-      <div className="bg-slate-950 p-10 text-white">
-        <div className="mb-10 flex items-center justify-between border-b border-white/10 pb-6">
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 bg-[#FCDE09]" />
-            <span className="text-[10px] font-black uppercase tracking-[0.4em]">
-              Audit_Metrics
+    <div className="shadow-sharp relative overflow-hidden border-l-4 border-slate-950">
+      {/* 📊 SECTION_01: AUDIT_METRICS (Dark Terminal) */}
+      <div className="bg-slate-950 p-10 text-white selection:bg-brand selection:text-slate-950">
+        {/* Terminal Header */}
+        <div className="mb-12 flex items-center justify-between border-b border-white/10 pb-6">
+          <div className="flex items-center gap-4">
+            <div className="h-2.5 w-2.5 animate-pulse bg-brand" />
+            <span className="font-mono text-[11px] font-black uppercase tracking-[0.5em]">
+              Audit_Telemetry
             </span>
           </div>
-          <span className="text-[9px] font-bold uppercase italic text-slate-500 underline underline-offset-4">
-            Live_System
+          <span className="font-mono text-[9px] font-black uppercase tracking-widest text-slate-600">
+            Node_Ref::[Live_Feed]
           </span>
         </div>
 
-        <div className="space-y-10">
-          {/* Complexity Bar */}
-          <div>
-            <div className="mb-3 flex justify-between text-[10px] font-black uppercase tracking-widest">
-              <span className="text-slate-400">Risk_Assessment</span>
-              <span
-                className={cn(
-                  stats.complexity_level === "HIGH" ||
-                    stats.complexity_level === "CRITICAL"
-                    ? "text-red-500"
-                    : "text-[#FCDE09]"
-                )}
-              >
+        <div className="space-y-12">
+          {/* Risk_Assessment_Meter */}
+          <div className="relative">
+            <div className="mb-4 flex justify-between font-mono text-[10px] font-black uppercase tracking-[0.2em]">
+              <span className="text-slate-500">Analysis_Risk_Level</span>
+              <span className={cn(isCritical ? 'animate-pulse text-red-500' : 'text-brand')}>
                 {stats.complexity_level}
               </span>
             </div>
-            <div className="h-1.5 w-full bg-white/5">
+
+            {/* Industrial Meter Bar */}
+            <div className="relative h-2 w-full bg-white/5">
               <div
                 className={cn(
-                  "h-full transition-all duration-700",
-                  stats.complexity_level === "HIGH"
-                    ? "w-4/5 bg-red-600"
-                    : "w-2/5 bg-[#FCDE09]"
+                  'h-full transition-all duration-1000 ease-out',
+                  isCritical ? 'bg-red-600 shadow-[0_0_10px_rgba(220,38,38,0.5)]' : 'bg-brand',
                 )}
+                style={{ width: isCritical ? '92%' : '45%' }}
               />
+              {/* Scale Notches */}
+              <div className="absolute inset-0 flex justify-between opacity-30">
+                {[...Array(5)].map((_, i) => (
+                  <div key={i} className="h-full w-px bg-slate-950" />
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Metric Grid: Sharp & Heavy */}
-          <div className="grid grid-cols-2 border-t border-white/10">
-            <div className="border-r border-white/10 pr-4 pt-6">
-              <span className="mb-2 block text-[9px] font-bold uppercase tracking-widest text-slate-500">
-                Processing
+          {/* Metric Grid: High-Performance Data */}
+          <div className="grid grid-cols-2 divide-x divide-white/10 border-t border-white/10">
+            <div className="pr-6 pt-8">
+              <span className="mb-3 block font-mono text-[9px] font-bold uppercase tracking-widest text-slate-500">
+                Cycle_Time
               </span>
-              <span className="text-3xl font-black uppercase italic tracking-tighter text-white">
+              <span className="text-4xl font-black uppercase italic tracking-tighter text-white">
                 {stats.processing_time}
               </span>
             </div>
-            <div className="pl-6 pt-6">
-              <span className="mb-2 block text-[9px] font-bold uppercase tracking-widest text-slate-500">
-                Analysis
+            <div className="pl-10 pt-8">
+              <span className="mb-3 block font-mono text-[9px] font-bold uppercase tracking-widest text-slate-500">
+                Data_Volume
               </span>
-              <span className="text-3xl font-black uppercase italic tracking-tighter text-white">
-                {stats.docs_processed}+
+              <span className="text-4xl font-black uppercase italic tracking-tighter text-white">
+                {stats.docs_processed}
+                <span className="ml-1 text-2xl text-brand">+</span>
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 🛠️ SECTION_02: Core Protocols */}
-      <div className="border-t border-slate-950 bg-white p-10">
-        <h4 className="mb-8 flex items-center text-[11px] font-black uppercase tracking-[0.3em] text-slate-950">
-          <span className="mr-3 block h-4 w-1 bg-slate-950" />
-          Core_Protocols
-        </h4>
-        <div className="space-y-6">
+      {/* 🛠️ SECTION_02: CORE_PROTOCOLS (Light Registry) */}
+      <div className="bg-white p-10">
+        <header className="mb-10 flex items-center justify-between">
+          <h4 className="flex items-center font-mono text-[11px] font-black uppercase tracking-[0.4em] text-slate-950">
+            <span className="mr-4 block h-5 w-1.5 bg-slate-950" />
+            Core_Protocols
+          </h4>
+          <div className="ml-6 h-px flex-1 bg-slate-100" />
+        </header>
+
+        <div className="grid grid-cols-1 gap-5">
           {technical_strategy.map((s, i) => (
             <div
               key={i}
-              className="group flex gap-4 border-b border-slate-100 pb-6 last:border-0 last:pb-0"
+              className="group flex items-start gap-6 border-b border-slate-50 pb-5 last:border-0 last:pb-0"
             >
-              <span className="h-fit bg-slate-950 px-1.5 py-0.5 text-[11px] font-black leading-none text-[#FCDE09]">
-                0{i + 1}
-              </span>
-              <span className="text-[13px] font-bold uppercase leading-tight tracking-tight text-slate-700 transition-colors group-hover:text-slate-950">
+              <div className="flex flex-col items-center">
+                <span className="bg-slate-950 px-2 py-0.5 font-mono text-[10px] font-black leading-none text-brand">
+                  {(i + 1).toString().padStart(2, '0')}
+                </span>
+                <div className="mt-2 h-full w-px bg-slate-100 group-last:hidden" />
+              </div>
+              <span className="font-thai text-[15px] font-bold uppercase leading-tight tracking-tight text-slate-600 transition-colors group-hover:text-slate-950">
                 {s}
               </span>
             </div>
           ))}
         </div>
+      </div>
+
+      {/* 📐 Coordinate Stamp */}
+      <div className="absolute right-0 top-0 p-2 opacity-5">
+        <span className="font-mono text-[8px] text-white">SEC_MODULE_v2.6</span>
       </div>
     </div>
   )

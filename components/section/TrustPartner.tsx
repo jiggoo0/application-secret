@@ -1,115 +1,121 @@
-/** @format */
-
-"use client"
-
-import React from "react"
-import { Shield, Globe, Award, Users } from "lucide-react"
-
-/**
- * 📊 DATA: Performance Metrics
+/** * @format
+ * @description TRUST_PARTNER: The Verification Layer (Clean Build V2.6.1)
+ * ✅ FIXED: Removed unused 'cn' to pass system lint
+ * ✅ OPTIMIZED: Font mapping for maximum clarity
  */
+
+'use client'
+
+import React from 'react'
+import { Shield, Globe, Award, Users } from 'lucide-react'
+// 🛡️ REMOVED: import { cn } from '@/lib/utils' (เพื่อกำจัด Lint Error)
+
 const stats = [
   {
-    label: "Success_Rate",
-    value: "98.7%",
+    label: 'Success_Rate',
+    value: '98.7%',
     icon: Shield,
-    detail: "Embassy-Grade Verified",
+    detail: 'Embassy-Grade Verified',
   },
   {
-    label: "Cases_Processed",
-    value: "4,500+",
+    label: 'Cases_Processed',
+    value: '4,500+',
     icon: Globe,
-    detail: "Global Distribution",
+    detail: 'Global Distribution',
   },
   {
-    label: "Expert_Engineers",
-    value: "12",
+    label: 'Expert_Engineers',
+    value: '12',
     icon: Award,
-    detail: "Verified Specialists",
+    detail: 'Verified Specialists',
   },
   {
-    label: "Corporate_Clients",
-    value: "120+",
+    label: 'Corporate_Clients',
+    value: '120+',
     icon: Users,
-    detail: "Infrastructure Partners",
+    detail: 'Infrastructure Partners',
   },
 ]
 
-/**
- * 🤝 DATA: Partner Registry
- */
 const partners = [
-  { name: "Partner_01", logo: "VFS_GLOBAL" },
-  { name: "Partner_02", logo: "TLS_CONTACT" },
-  { name: "Partner_03", logo: "GOV_GATEWAY" },
-  { name: "Partner_04", logo: "INTER_LEGAL" },
-  { name: "Partner_05", logo: "AMCHAM_TH" },
+  { name: 'P_01', logo: 'VFS_GLOBAL' },
+  { name: 'P_02', logo: 'TLS_CONTACT' },
+  { name: 'P_03', logo: 'GOV_GATEWAY' },
+  { name: 'P_04', logo: 'INTER_LEGAL' },
+  { name: 'P_05', logo: 'AMCHAM_TH' },
 ]
 
-/**
- * 🛰️ COMPONENT: TrustPartner
- * ระบบตรวจสอบความน่าเชื่อถือและเครือข่ายพันธมิตร (Industrial_Sharp_V1)
- */
 export const TrustPartner = () => {
   return (
-    <section className="relative overflow-hidden border-y border-slate-100 bg-white py-28 selection:bg-brand selection:text-slate-950">
-      {/* 🧩 Technical Background Grid */}
-      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
+    <section className="relative overflow-hidden border-y border-slate-100 bg-white py-32 selection:bg-brand selection:text-slate-950">
+      {/* 🧩 BLUEPRINT_DECOR: กริตตารางจางพิเศษ 3% opacity */}
+      <div className="bg-blueprint-grid pointer-events-none absolute inset-0 opacity-[0.03]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        {/* --- PART 01: PERFORMANCE COUNTERS --- */}
-        <div className="mb-28 grid grid-cols-2 gap-y-12 lg:grid-cols-4 lg:gap-8">
+        {/* --- 📊 PART 01: PERFORMANCE_TELEMETRY --- */}
+        <div className="mb-32 grid grid-cols-2 gap-y-16 lg:grid-cols-4 lg:gap-12">
           {stats.map((stat, idx) => (
             <div
               key={`stat-${idx}`}
               className="group relative flex flex-col items-center text-center lg:items-start lg:text-left"
             >
-              <div className="mb-5 flex items-center gap-3">
-                {/* Enforced rounded-none for industrial look */}
-                <div className="flex h-8 w-8 items-center justify-center rounded-none bg-slate-50 transition-colors group-hover:bg-brand">
+              {/* 📟 Metric Label */}
+              <div className="mb-6 flex items-center gap-4">
+                <div className="flex h-10 w-10 items-center justify-center border border-slate-200 bg-slate-50 transition-all duration-500 group-hover:border-brand group-hover:bg-brand group-hover:text-slate-950">
                   <stat.icon
-                    size={14}
-                    className="text-slate-400 transition-colors group-hover:text-slate-950"
+                    size={16}
+                    strokeWidth={1.5}
+                    className="text-slate-400 group-hover:text-inherit"
                   />
                 </div>
-                <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
+                <div className="h-[1px] w-6 bg-slate-100 group-hover:bg-brand/40" />
+                <span className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">
                   {stat.label}
                 </span>
               </div>
-              <div className="space-y-1">
-                <h3 className="text-5xl font-black tracking-tighter text-slate-950 transition-transform group-hover:translate-x-1 md:text-6xl">
+
+              {/* 📈 Value Output */}
+              <div className="relative space-y-2">
+                <h3 className="text-6xl font-black uppercase italic tracking-tighter text-slate-950 transition-all duration-500 group-hover:text-brand md:text-7xl">
                   {stat.value}
                 </h3>
-                <p className="font-mono text-[9px] font-bold uppercase tracking-widest text-slate-300">
-                  {/* Corrected Comment Syntax */}
-                  {`// ${stat.detail}`}
+                <p className="font-mono text-[9px] font-black uppercase tracking-[0.2em] text-slate-300">
+                  {`// STATUS: ${stat.detail}`}
                 </p>
               </div>
-              <div className="mt-6 h-[1px] w-12 bg-slate-100 transition-all duration-700 group-hover:w-full group-hover:bg-brand" />
+
+              {/* Progress Line Decoration */}
+              <div className="mt-8 h-[2px] w-full overflow-hidden bg-slate-50">
+                <div className="h-full w-0 bg-brand transition-all duration-1000 ease-out group-hover:w-full" />
+              </div>
             </div>
           ))}
         </div>
 
-        {/* --- PART 02: PARTNER REGISTRY --- */}
-        <div className="border-t border-slate-100 pt-24">
-          <div className="flex flex-col items-center gap-16 lg:flex-row lg:justify-between">
+        {/* --- 🤝 PART 02: STRATEGIC_NETWORK_INTERFACE --- */}
+        <div className="border-t border-slate-900 pt-28">
+          <div className="flex flex-col items-center gap-20 lg:flex-row lg:justify-between">
             <div className="shrink-0 text-center lg:text-left">
-              <span className="mb-3 block font-mono text-[11px] font-black uppercase tracking-[0.5em] text-slate-900">
-                Strategic_Network
-              </span>
-              <p className="font-thai text-[13px] font-bold leading-relaxed text-slate-400">
+              <div className="mb-4 inline-flex items-center gap-3">
+                <div className="h-2 w-2 animate-pulse bg-brand" />
+                <span className="font-mono text-[11px] font-black uppercase tracking-[0.5em] text-slate-950">
+                  Strategic_Network
+                </span>
+              </div>
+              <p className="font-sans text-xl font-black leading-snug text-slate-500">
                 เครือข่ายความร่วมมือเชิงกลยุทธ์ <br />
-                กับหน่วยงานรับคำร้องระดับสากล
+                <span className="uppercase italic text-slate-950">International Protocols</span>
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-10 opacity-25 grayscale transition-all duration-1000 hover:opacity-100 lg:gap-x-20">
+            {/* Logo Cloud with Kinetic Typography Effect */}
+            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-12 transition-all duration-700 lg:gap-x-16">
               {partners.map((p) => (
                 <div key={p.name} className="group relative">
-                  <span className="font-mono text-xl font-black uppercase italic tracking-tighter text-slate-400 transition-all group-hover:tracking-normal group-hover:text-slate-950 md:text-3xl">
+                  <span className="font-mono text-2xl font-black uppercase italic tracking-tighter text-slate-300 transition-all duration-500 group-hover:tracking-widest group-hover:text-slate-950 md:text-4xl">
                     {p.logo}
                   </span>
-                  <div className="absolute -bottom-4 left-0 h-0.5 w-0 bg-brand transition-all duration-300 group-hover:w-full" />
+                  <div className="absolute -bottom-4 left-0 h-1 w-0 bg-brand transition-all duration-500 group-hover:w-full" />
                 </div>
               ))}
             </div>
@@ -117,9 +123,13 @@ export const TrustPartner = () => {
         </div>
       </div>
 
-      {/* 📐 Industrial Edge Decorations */}
-      <div className="absolute left-0 top-0 h-2 w-[1px] bg-brand" />
-      <div className="absolute bottom-0 right-0 h-2 w-[1px] bg-brand shadow-sharp" />
+      {/* 📐 INDUSTRIAL_MARKERS: จุดระบุพิกัดที่มุม Section */}
+      <div className="absolute left-6 top-6 font-mono text-[8px] font-black text-slate-200">
+        ID_REF::STATS_MDL_01
+      </div>
+      <div className="absolute bottom-6 right-6 font-mono text-[8px] font-black uppercase text-slate-200">
+        Secure_Node_Active
+      </div>
     </section>
   )
 }

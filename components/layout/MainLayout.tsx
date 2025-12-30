@@ -1,14 +1,17 @@
-/** @format */
-"use client"
+/** * @format
+ * @description MAIN_LAYOUT: Seamless Blueprint Edition (V2.6)
+ * ✅ ENFORCEMENT: Global White Base with Persistent Blueprint Grid
+ */
 
-import React, { useState, useEffect } from "react"
-// 🏗️ PROTOCOL_SYNC: นำเข้าแบบ Named Import ทั้งหมด
-import { Header } from "@/components/Header"
-import { Footer } from "@/components/Footer"
-import { MobileMenu } from "@/components/MobileMenu"
-import { navigationConfig } from "@/config/navigation"
-import { inter, ibmPlexSansThai, jetbrainsMono } from "@/lib/fonts"
-import { cn } from "@/lib/utils"
+'use client'
+
+import React, { useState, useEffect } from 'react'
+import { Header } from '@/components/Header'
+import { Footer } from '@/components/Footer'
+import { MobileMenu } from '@/components/MobileMenu'
+import { navigationConfig } from '@/config/navigation'
+import { inter, ibmPlexSansThai, jetbrainsMono } from '@/lib/fonts'
+import { cn } from '@/lib/utils'
 
 interface MainLayoutProps {
   children: React.ReactNode
@@ -17,10 +20,15 @@ interface MainLayoutProps {
 export function MainLayout({ children }: MainLayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  // 🛡️ PROTOCOL: Body Scroll Locking
   useEffect(() => {
-    document.body.style.overflow = isMenuOpen ? "hidden" : ""
+    if (isMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
     return () => {
-      document.body.style.overflow = ""
+      document.body.style.overflow = ''
     }
   }, [isMenuOpen])
 
@@ -30,7 +38,7 @@ export function MainLayout({ children }: MainLayoutProps) {
         inter.variable,
         ibmPlexSansThai.variable,
         jetbrainsMono.variable,
-        "min-h-screen bg-white"
+        'relative flex min-h-screen flex-col bg-white font-sans antialiased selection:bg-brand selection:text-slate-950',
       )}
     >
       <MobileMenu
@@ -41,7 +49,14 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       <Header onMenuOpen={() => setIsMenuOpen(true)} />
 
-      <main className="relative flex flex-1 flex-col pt-20">{children}</main>
+      {/* 🚀 CORE_INFRASTRUCTURE: พื้นที่แสดงผลหลักพร้อมลายกริตต่อเนื่อง */}
+      <main className="relative flex-grow pt-20 outline-none">
+        {/* 🧩 GLOBAL_BLUEPRINT: ลายกริตที่จะปรากฏอยู่เบื้องหลังทุก Section */}
+        <div className="bg-blueprint-grid pointer-events-none absolute inset-0 z-0 opacity-[0.03]" />
+
+        {/* Content Container: อยู่เหนือ Blueprint */}
+        <div className="relative z-10">{children}</div>
+      </main>
 
       <Footer />
     </div>

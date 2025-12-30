@@ -1,123 +1,112 @@
-/** @format */
-"use server"
-
-import { supabaseServer } from "@/lib/supabase/server"
-import { revalidatePath } from "next/cache"
-import { headers } from "next/headers"
-import { Resend } from "resend"
-
 /**
- * 🛰️ ACTION_PROTOCOL: CREATE_LEAD_WITH_VERIFICATION
- * @version 3.2.3 (Build-Safe Edition)
+ * @format
+ * @description ACTION_PROTOCOL: CREATE_LEAD_WITH_VERIFICATION (V3.3.1)
+ * ✅ FIXED: Removed potential unused variables & strictly typed Next.js 15 Headers
+ * ✅ OPTIMIZED: Cleaned up HTML template logic for production build
  */
 
-// ✅ FIX: สร้างฟังก์ชันเพื่อเรียกใช้ Resend เฉพาะตอนใช้งานจริง (ป้องกัน Build Error)
-const getResendClient = () => {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) {
-    console.warn("⚠️ RESEND_API_KEY is missing. Email dispatch will fail.")
-    return null
-  }
-  return new Resend(apiKey)
-}
+'use server'
 
-interface LeadData {
-  full_name: string
-  phone: string
-  email?: string
-  line_id?: string
-  service_type: string
-  details: string
-  assessment_profile?: {
-    travel_history?: string
-    denial_history?: boolean
-    financial_status?: string
-    target_country?: string
-    urgency_level?: "standard" | "express" | "critical"
-    objective?: string
-  }
-}
+import { z } from 'zod'
+import { revalidatePath } from 'next/cache'
+import { headers } from 'next/headers'
+import { Resend } from 'resend'
+import { createServerClient } from '@/lib/supabase/server'
 
-export async function createLead(formData: LeadData) {
+// 🛡️ VALIDATION_SCHEMA
+const AssessmentProfileSchema = z.object({
+  travel_history: z.string().optional(),
+  denial_history: z.boolean().optional(),
+  financial_status: z.string().optional(),
+  target_country: z.string().optional(),
+  urgency_level: z.enum(['standard', 'express', 'critical']).optional(),
+  objective: z.string().optional(),
+})
+
+const CreateLeadSchema = z.object({
+  full_name: z.string().min(2, 'REQUIRED_NAME_MIN_2'),
+  phone: z.string().min(9, 'INVALID_PHONE_FORMAT'),
+  email: z.string().email('INVALID_EMAIL').optional().or(z.literal('')),
+  line_id: z.string().optional(),
+  service_type: z.string(),
+  details: z.string().min(5, 'REQUIRED_DETAILS_MIN_5'),
+  assessment_profile: AssessmentProfileSchema.optional(),
+})
+
+type CreateLeadInput = z.infer<typeof CreateLeadSchema>
+
+export async function createLead(rawInput: CreateLeadInput) {
   try {
+    // 1. VALIDATION_PHASE
+    const validatedData = CreateLeadSchema.parse(rawInput)
+
+    // Next.js 15: headers() is now async
     const headerList = await headers()
-    const ip = headerList.get("x-forwarded-for")?.split(",")[0] || "unknown"
-    const userAgent = headerList.get("user-agent") || "unknown"
+    const ip = headerList.get('x-forwarded-for')?.split(',')[0] || 'unknown'
+    const agent = headerList.get('user-agent') || 'unknown'
 
-    if (!supabaseServer) throw new Error("CRITICAL_DB_UNAVAILABLE")
-    if (!process.env.NEXT_PUBLIC_APP_URL)
-      throw new Error("SYSTEM_URL_MISCONFIGURED")
+    const supabase = await createServerClient()
+    const resendKey = process.env.RESEND_API_KEY
 
-    const randomCode = Math.random().toString(36).substring(2, 6).toUpperCase()
-    const ticketId = `JPV-${randomCode}`
+    // 2. IDENTIFIER_GENERATION
+    const ticketId = `JPV-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
 
-    const { error: dbError } = await supabaseServer.from("leads").insert([
+    // 3. DATABASE_TRANSACTION
+    const { error: dbError } = await supabase.from('leads').insert([
       {
-        name: formData.full_name,
-        phone: formData.phone,
-        email: formData.email || null,
-        message: formData.details,
-        category: formData.service_type,
-        status: "pending_verification",
+        name: validatedData.full_name,
+        phone: validatedData.phone,
+        email: validatedData.email || null,
+        message: validatedData.details,
+        category: validatedData.service_type,
+        status: 'pending_verification',
         metadata: {
           transmitted_at: new Date().toISOString(),
-          protocol_version: "v3.2.3-secure-sharp",
+          protocol_version: 'v3.3.1-production',
           ticket_id: ticketId,
-          verification_level: 0,
-          line_id: formData.line_id || "N/A",
-          case_profile: formData.assessment_profile || null,
-          network_context: { ip_address: ip, user_agent: userAgent },
+          line_id: validatedData.line_id || 'N/A',
+          case_profile: validatedData.assessment_profile || null,
+          network_context: { ip_address: ip, user_agent: agent },
         },
       },
     ])
 
-    if (dbError) throw new Error(`DATABASE_REJECTED: ${dbError.message}`)
+    if (dbError) throw new Error(`DB_REJECTED: ${dbError.message}`)
 
-    // 📧 EMAIL_DISPATCH_LOGIC
-    if (formData.email) {
-      const resend = getResendClient()
-      if (!resend) throw new Error("MAIL_PROTOCOL_HALTED: MISSING_KEY")
-
-      const typeKey = formData.service_type.includes("ASSESSMENT")
-        ? "assessment"
-        : "contact"
-      const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify?id=${ticketId}&name=${encodeURIComponent(formData.full_name)}&type=${typeKey}`
+    // 4. NOTIFICATION_PHASE
+    if (validatedData.email && resendKey) {
+      const resend = new Resend(resendKey)
+      const isAssessmentMode = validatedData.service_type.includes('ASSESSMENT')
+      const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify?id=${ticketId}&type=${isAssessmentMode ? 'assessment' : 'contact'}`
 
       await resend.emails.send({
-        from: "JP-VISOUL&DOCS <noreply@jpvisouldocs.online>",
-        to: [formData.email],
-        subject: `[ACTION REQUIRED] ยืนยันข้อมูลรหัสอ้างอิง: ${ticketId}`,
-        html: `
-          <div style="font-family: 'Courier New', Courier, monospace; background-color: #ffffff; padding: 40px 20px;">
-            <div style="max-width: 500px; margin: 0 auto; border: 4px solid #020617; box-shadow: 20px 20px 0px #f1f5f9;">
-              <div style="background: #020617; padding: 25px; text-align: left;">
-                <span style="background: #FCDE09; color: #020617; padding: 2px 8px; font-size: 10px; font-weight: 900; letter-spacing: 2px;">SECURE_MAIL_v3.2</span>
-                <h1 style="color: #ffffff; margin: 15px 0 0 0; font-size: 24px; font-weight: 900; text-transform: uppercase; font-style: italic;">Identity Check.</h1>
-              </div>
-              <div style="padding: 40px 30px; color: #020617;">
-                <p style="font-size: 14px; font-weight: 900;">เรียน คุณ ${formData.full_name},</p>
-                <p style="font-size: 13px; line-height: 1.8; color: #475569;">
-                  โปรดยืนยันตัวตนผ่านปุ่มด้านล่าง เพื่อเปิดใช้งาน <strong>Digital Pass</strong> ของคุณ:
-                </p>
-                <div style="text-align: center; margin: 40px 0;">
-                  <a href="${verifyUrl}" style="background: #020617; color: #FCDE09; padding: 20px 40px; text-decoration: none; font-weight: 900; font-size: 14px; display: inline-block; letter-spacing: 3px; box-shadow: 8px 8px 0px #FCDE09;">
-                    VERIFY_IDENTITY
-                  </a>
-                </div>
-                <div style="background: #f8fafc; border-left: 8px solid #FCDE09; padding: 20px;">
-                   <span style="font-size: 11px; color: #94a3b8;">TICKET_ID: <strong>${ticketId}</strong></span>
-                </div>
-              </div>
-            </div>
-          </div>
-        `,
+        from: 'JP-VISUAL&DOCS <noreply@jpvisualdocs.online>',
+        to: [validatedData.email],
+        subject: `[ACTION_REQUIRED] :: ${ticketId} :: Identity Verification`,
+        html: generateIndustrialEmail(validatedData.full_name, ticketId, verifyUrl),
       })
     }
 
-    revalidatePath("/admin/leads")
-    return { success: true, ticketId, name: formData.full_name }
-  } catch (error: any) {
-    console.error("🚨 [ACTION_FAILURE]:", error.message)
-    return { success: false, error: error.message }
+    revalidatePath('/admin/leads')
+    return { success: true, ticketId, name: validatedData.full_name }
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'UNKNOWN_PROTOCOL_ERROR'
+    console.error('🚨 [CRITICAL_FAILURE]:', message)
+    return { success: false, error: message }
   }
+}
+
+// 🎨 HELPER: Industrial Sharp Email Template
+function generateIndustrialEmail(name: string, ticketId: string, url: string) {
+  return `
+    <div style="font-family: monospace; background-color: #020617; color: #f8fafc; padding: 40px; border-top: 4px solid #c8a45d;">
+      <h2 style="color: #c8a45d; text-transform: uppercase; font-style: italic;">System_Verification_Required</h2>
+      <p style="font-size: 14px; color: #94a3b8;">CLIENT_NAME: ${name}</p>
+      <p style="font-size: 14px; color: #94a3b8;">TICKET_ID: ${ticketId}</p>
+      <div style="margin: 30px 0;">
+        <a href="${url}" style="background-color: #c8a45d; color: #020617; padding: 15px 30px; text-decoration: none; font-weight: bold; display: inline-block;">EXECUTE_VERIFICATION</a>
+      </div>
+      <p style="font-size: 10px; color: #475569;">ID_HASH: ${Buffer.from(ticketId).toString('base64')}</p>
+    </div>
+  `
 }

@@ -1,37 +1,39 @@
-/** @format */
-
-import { Inter, IBM_Plex_Sans_Thai, JetBrains_Mono } from "next/font/google"
-
-/**
- * 🌐 ENGLISH_PRIMARY: Inter
- * มาตรฐานอุตสาหกรรมสำหรับเนื้อหา Global Tech และ UI ส่วนกลาง
+/** * @format
+ * @description TYPOGRAPHY_ENGINE: ระบบจัดการฟอนต์มาตรฐานสูงสุดสำหรับภาษาไทยและอังกฤษ
  */
+
+import { Inter, IBM_Plex_Sans_Thai, JetBrains_Mono } from 'next/font/google'
+
+/* --------------------------------------------------------------------------
+   INTER: UI / Global Sans (English)
+   -------------------------------------------------------------------------- */
 export const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-inter',
+  weight: ['400', '500', '600', '700'],
+  adjustFontFallback: true,
 })
 
-/**
- * 🇹🇭 THAI_PRIMARY: IBM Plex Sans Thai
- * ฟอนต์ไม่มีหัว (Sans-serif) ที่ให้ความรู้สึก Modern, Sharp และเป็นมืออาชีพ
- * สอดคล้องกับตัวตน "The Trusted Professional Peer"
- */
+/* --------------------------------------------------------------------------
+   IBM PLEX SANS THAI: Main Content (Thai)
+   เน้นความอ่านง่ายสำหรับเอกสารกฎหมายและข้อมูลวีซ่า
+   -------------------------------------------------------------------------- */
 export const ibmPlexSansThai = IBM_Plex_Sans_Thai({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["thai", "latin"],
-  variable: "--font-thai",
-  display: "swap",
+  subsets: ['thai', 'latin'],
+  display: 'swap',
+  variable: '--font-ibm-plex-sans-thai',
+  weight: ['400', '500', '600', '700'], // ตัด 300 ออกหากไม่ได้ใช้ใน Industrial Design
+  preload: true,
 })
 
-/**
- * 💻 TECHNICAL_MONO: JetBrains Mono
- * ฟอนต์สำหรับ Metadata, ตัวเลข และรหัสการดำเนินงาน (Case IDs)
- * ให้ความรู้สึกถึงความแม่นยำสูง (High Precision) แบบวิศวกรรม
- */
+/* --------------------------------------------------------------------------
+   JETBRAINS MONO: System / Meta Data / Code
+   สร้างความรู้สึกแบบ Technical & Sharp
+   -------------------------------------------------------------------------- */
 export const jetbrainsMono = JetBrains_Mono({
-  // เปลี่ยนจาก mono เป็น jetbrainsMono
-  subsets: ["latin"],
-  variable: "--font-mono",
-  display: "swap",
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jetbrains-mono',
+  weight: ['400', '700'], // โหลดเฉพาะน้ำหนักที่จำเป็นสำหรับ UI Mono
 })

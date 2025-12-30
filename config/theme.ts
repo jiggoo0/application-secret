@@ -1,40 +1,74 @@
 /** @format */
 
-export const DESIGN_TOKENS = {
+/**
+ * 🛰️ MASTER_THEME_CONFIGURATION (V4.5.0 - LUXURY_INDUSTRIAL)
+ * ✅ MISSION: SINGLE SOURCE OF TRUTH - บังคับใช้มาตรฐานทองคำและขอบคม
+ */
+
+export const theme = {
   colors: {
-    // 🎨 Branding & Core
-    brand: "#FCDE09", // เหลืองเอกลักษณ์
-    brandDark: "#EAB308",
-
-    // 🏛️ Authority Colors
-    slate950: "#020617", // หัวข้อและปุ่มหลัก (Deep Trust)
-    slate500: "#64748B", // คำอธิบายและรายละเอียด (Professional Gray)
-    slate50: "#F8FAFC", // พื้นหลังส่วนรอง (Subtle Depth)
-
-    // ✅ Functional
-    success: "#10B981",
-    error: "#EF4444",
-    white: "#FFFFFF",
+    brand: {
+      primary: '#020617', // Deepest Space (Black)
+      secondary: '#0F172A', // Navy Steel
+      accent: '#C8A45D', // Champagne Gold (Authority)
+      accentHover: '#D9B87A', // Light Gold
+    },
+    base: {
+      bg: '#05080A', // Ultra Dark Background
+      surface: '#0F172A',
+      card: '#131C2E',
+      border: '#1E293B', // Industrial Bolt Gray
+      text: '#F8FAFC', // Clean White
+      muted: '#64748B', // Steel Muted
+    },
+    status: {
+      success: '#10B981', // Emerald
+      warning: '#F59E0B', // Amber
+      error: '#EF4444', // Rose
+    },
   },
 
-  typography: {
-    // หัวข้อหลัก: เน้นความใหญ่และ Tracking ที่ชิดกันเพื่อความ Sharp (ลดความเอียงลง)
-    h1: "text-6xl md:text-8xl lg:text-[120px] font-black uppercase tracking-tighter leading-[0.9]",
-    h2: "text-5xl md:text-7xl font-black uppercase tracking-tight leading-none",
-
-    // ข้อมูลทางเทคนิค: ใช้ Font Mono เพื่อสื่อถึงระบบและรหัสเอกสาร
-    label:
-      "font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-500",
-
-    // เนื้อหา: เน้นอ่านง่าย มั่นคง
-    body: "text-base font-bold leading-relaxed text-slate-500",
+  font: {
+    family: {
+      body: 'var(--font-inter), var(--font-ibm-plex-sans-thai), sans-serif',
+      mono: 'var(--font-jetbrains-mono), monospace',
+    },
+    weight: {
+      normal: '400',
+      medium: '500',
+      semibold: '600',
+      bold: '900', // เน้นความหนักแน่นแบบ Industrial
+    },
+    letterSpacing: {
+      tight: '-0.02em',
+      normal: '0em',
+      wide: '0.05em', // สำหรับ Header ที่ต้องการความหรูหรา
+    },
   },
 
-  shadows: {
-    // เงาแข็งที่เป็นเอกลักษณ์ของ Industrial Sharp
-    sharp: "shadow-[8px_8px_0px_0px_#020617]",
-    sharpBrand: "shadow-[8px_8px_0px_0px_#FCDE09]",
+  // 📐 SHARP_ENFORCEMENT: ยกเลิกความโค้งมนทั้งหมด
+  radius: {
+    none: '0px',
+    sharp: '0px',
+    sm: '0px', // Override เพื่อป้องกันความผิดพลาด
+    md: '0px',
+    lg: '0px',
+    full: '9999px', // อนุญาตเฉพาะรูปโปรไฟล์หรือป้ายสถานะเท่านั้น
   },
 
-  transitions: "duration-300 ease-in-out",
+  shadow: {
+    // Hard Shadows เท่านั้น (ไม่มี Blur เยอะ)
+    soft: '2px 2px 0px 0px rgba(0,0,0,1)',
+    card: '6px 6px 0px 0px #020617',
+    gold: '0 0 0 1px #C8A45D', // Precision Border
+    none: 'none',
+  },
+
+  layout: {
+    container: '1200px',
+    section: '8rem',
+    header: '4.5rem',
+  },
 } as const
+
+export type Theme = typeof theme

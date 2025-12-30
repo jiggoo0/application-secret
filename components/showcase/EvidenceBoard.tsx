@@ -1,9 +1,9 @@
-/** @format */
-
-import React from "react"
-/** * MODE A: Cleanup Enforcement
- * ลบการนำเข้า cn เนื่องจากไม่ได้ถูกใช้งานใน Component นี้ (Fix ESLint Warning)
+/** * @format
+ * @description EVIDENCE_BOARD: Industrial Asset Tracking (V2.6)
+ * ✅ ENFORCEMENT: Sharp-Edge Geometry, Dot-Matrix Substrate, Kinetic Markers
  */
+
+import React from 'react'
 
 interface Artifact {
   label: string
@@ -11,73 +11,82 @@ interface Artifact {
   description: string
 }
 
-/**
- * 🛠️ COMPONENT: EvidenceBoard
- * STYLE: Industrial Asset Tracking / Non-Radius Sharp Design
- * * 📐 DESIGN SPEC:
- * - Grid 1px Border-Collapse Logic
- * - Dot Matrix Pattern Placeholder
- * - Zero Border-Radius Policy
- */
 export const EvidenceBoard = ({ artifacts }: { artifacts: Artifact[] }) => {
   return (
-    <div className="relative rounded-none border-2 border-slate-950 bg-white p-6 shadow-sharp md:p-10">
-      {/* 📁 HEADER: Artifact Identification */}
-      <div className="mb-12 flex items-center justify-between border-b border-slate-100 pb-6">
-        <div className="flex items-center gap-4">
-          <div className="flex h-5 w-5 items-center justify-center rounded-none bg-slate-950">
-            <div className="h-2 w-2 bg-[#FCDE09]" />
+    <div className="shadow-sharp relative rounded-none border-2 border-slate-950 bg-white p-6 selection:bg-brand selection:text-slate-950 md:p-10">
+      {/* 🧩 BLUEPRINT_SUBSTRATE: ลายกริตภายในบอร์ดหลัก */}
+      <div className="bg-blueprint-grid pointer-events-none absolute inset-0 opacity-[0.02]" />
+
+      {/* 📁 HEADER: Operational Identifier --- */}
+      <div className="relative z-10 mb-12 flex items-center justify-between border-b-2 border-slate-950 pb-8">
+        <div className="flex items-center gap-5">
+          {/* Active Terminal Indicator */}
+          <div className="relative flex h-6 w-6 items-center justify-center bg-slate-950">
+            <div className="h-2 w-2 animate-pulse bg-brand" />
+            <div className="absolute -inset-1 border border-slate-950 opacity-20" />
           </div>
-          <h3 className="text-[11px] font-black uppercase tracking-[0.4em] text-slate-950">
-            Technical_Evidence_Artifacts
-          </h3>
+          <div>
+            <h3 className="text-[12px] font-black uppercase tracking-[0.5em] text-slate-950">
+              Technical_Evidence_Artifacts
+            </h3>
+            <span className="font-mono text-[8px] font-bold uppercase tracking-widest text-slate-400">
+              Secured_Data_Stream // Protocol_Active
+            </span>
+          </div>
         </div>
-        <div className="font-mono text-[10px] font-bold text-slate-400">
-          QUERY_COUNT: {artifacts.length.toString().padStart(2, "0")}
+        <div className="flex flex-col items-end gap-1">
+          <div className="bg-slate-100 px-2 py-0.5 font-mono text-[10px] font-black text-slate-950">
+            COUNT::{artifacts.length.toString().padStart(2, '0')}
+          </div>
         </div>
       </div>
 
-      {/* 🏗️ ARTIFACT_GRID: Sharp Edge Container */}
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+      {/* 🏗️ ARTIFACT_GRID: Sharp Edge Infrastructure --- */}
+      <div className="relative z-10 grid grid-cols-1 gap-px border border-slate-200 bg-slate-200 md:grid-cols-2">
         {artifacts.map((art, i) => (
           <div
             key={i}
-            className="group relative rounded-none border border-slate-200 bg-white p-0 transition-all duration-300 hover:border-slate-950"
+            className="group relative flex flex-col bg-white transition-all duration-500 hover:z-20 hover:shadow-[20px_20px_0px_0px_rgba(var(--brand-rgb),0.1)]"
           >
-            {/* Metadata Header: ใช้ Slate 950 เมื่อ Hover เพื่อความ High-Contrast */}
-            <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 p-4 transition-colors group-hover:bg-slate-950">
-              <span className="text-[9px] font-black uppercase tracking-widest text-slate-500 group-hover:text-[#FCDE09]">
-                ASSET_TYPE: {art.type}
-              </span>
-              <span className="text-[9px] font-black uppercase text-slate-300">
-                0{i + 1}
+            {/* Metadata Header */}
+            <div className="flex items-center justify-between border-b border-slate-100 bg-white p-5 transition-colors group-hover:bg-slate-950">
+              <div className="flex items-center gap-3">
+                <div className="h-1.5 w-1.5 bg-brand group-hover:animate-ping" />
+                <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-brand">
+                  ASSET_TYPE::{art.type}
+                </span>
+              </div>
+              <span className="font-mono text-[9px] font-black text-slate-300 group-hover:text-slate-700">
+                REF_0{i + 1}
               </span>
             </div>
 
-            {/* Asset Preview Placeholder: Dot Matrix & Watermark */}
-            <div className="relative aspect-[16/9] w-full overflow-hidden border-b border-slate-200 bg-slate-100">
-              <div className="absolute inset-0 bg-[radial-gradient(#000_1px,transparent_1px)] opacity-20 [background-size:10px_10px]" />
+            {/* Asset Preview: Dot Matrix Pattern */}
+            <div className="relative aspect-[16/10] w-full overflow-hidden bg-slate-50 transition-colors group-hover:bg-slate-100/50">
+              <div className="absolute inset-0 bg-[radial-gradient(#000_1px,transparent_1px)] opacity-[0.08] [background-size:8px_8px]" />
+
+              {/* Central Watermark */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="border border-dashed border-slate-300 p-4 text-center">
-                  <span className="block rotate-[-5deg] text-[10px] font-black uppercase tracking-[0.6em] text-slate-300">
-                    SECURED_DOCUMENT_STUB
+                <div className="border border-slate-200 bg-white/50 px-6 py-3 backdrop-blur-sm transition-all group-hover:border-brand">
+                  <span className="block text-[9px] font-black uppercase tracking-[0.8em] text-slate-400 transition-all group-hover:text-slate-950">
+                    CONFIDENTIAL
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Label & Description: Typography Hierarchy */}
-            <div className="p-6">
-              <h4 className="mb-3 text-sm font-black uppercase italic tracking-tight text-slate-950">
+            {/* Content Area */}
+            <div className="p-8">
+              <h4 className="mb-4 text-xl font-black uppercase italic leading-none tracking-tighter text-slate-950 transition-colors group-hover:text-brand">
                 {art.label}
               </h4>
-              <p className="text-[11px] font-medium uppercase leading-relaxed tracking-tight text-slate-500">
+              <p className="font-thai text-[13px] font-bold leading-relaxed text-slate-500 transition-colors group-hover:text-slate-700">
                 {art.description}
               </p>
             </div>
 
-            {/* Industrial corner mark: Visual feedback on hover */}
-            <div className="absolute bottom-0 right-0 h-3 w-3 bg-slate-950 opacity-0 transition-opacity group-hover:opacity-100" />
+            {/* Mechanical Corner Marker */}
+            <div className="absolute bottom-0 right-0 h-4 w-4 translate-x-1 translate-y-1 bg-slate-950 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:translate-y-0 group-hover:opacity-100" />
           </div>
         ))}
       </div>

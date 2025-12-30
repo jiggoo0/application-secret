@@ -1,24 +1,23 @@
 /** @format */
 
-import { Metadata } from "next"
+import { Metadata } from 'next'
 // 🛰️ FIX: Changed to Named Imports to resolve TS2613 errors
-import { HeroSection } from "@/components/section/HeroSection"
-import { AboutSection } from "@/components/section/AboutSection"
-import { ServiceGrid } from "@/components/section/ServiceGrid"
-import { ProcessStep } from "@/components/section/ProcessStep"
-import { TrustPartner } from "@/components/section/TrustPartner"
-import { FAQSection } from "@/components/section/FAQSection"
-import { CaseSectionPreview } from "@/components/showcase/CaseSectionPreview"
+import { HeroSection } from '@/components/section/HeroSection'
+import { AboutSection } from '@/components/section/AboutSection'
+import { ServiceGrid } from '@/components/section/ServiceGrid'
+import { ProcessStep } from '@/components/section/ProcessStep'
+import { TrustPartner } from '@/components/section/TrustPartner'
+import { FAQSection } from '@/components/section/FAQSection'
+import { CaseSectionPreview } from '@/components/showcase/CaseSectionPreview'
 
 /**
  * 🔍 SEO_METADATA_PROTOCOL
  * Industrial Standard for Professional Documentation Services
  */
 export const metadata: Metadata = {
-  title:
-    "JP Visual.Docs | ที่ปรึกษาด้านเอกสารและวีซ่ามืออาชีพ ครบถ้วนและรวดเร็ว",
+  title: 'JP Visual.Docs | ที่ปรึกษาด้านเอกสารและวีซ่ามืออาชีพ ครบถ้วนและรวดเร็ว',
   description:
-    "บริการช่วยเตรียมเอกสารวีซ่าและงานเอกสารสำคัญ โดยที่ปรึกษาผู้เชี่ยวชาญ ช่วยลดความเสี่ยง เพิ่มความสำเร็จ และให้คุณมั่นใจในทุกขั้นตอน",
+    'บริการช่วยเตรียมเอกสารวีซ่าและงานเอกสารสำคัญ โดยที่ปรึกษาผู้เชี่ยวชาญ ช่วยลดความเสี่ยง เพิ่มความสำเร็จ และให้คุณมั่นใจในทุกขั้นตอน',
 }
 
 /**

@@ -1,10 +1,10 @@
 /** @format */
 
-import React from "react"
-import { cn } from "@/lib/utils"
+import React from 'react'
+import { cn } from '@/lib/utils'
 
 interface AuditStampProps {
-  status?: "PASSED" | "VERIFIED" | "APPROVED" | "SUCCESS"
+  status?: 'PASSED' | 'VERIFIED' | 'APPROVED' | 'SUCCESS'
   className?: string
 }
 
@@ -13,17 +13,14 @@ interface AuditStampProps {
  * STYLE: Industrial Verification Seal / Raw Ink Aesthetic
  * ROLE: Visual confirmation for verified documentation protocols
  */
-export const AuditStamp = ({
-  status = "VERIFIED",
-  className,
-}: AuditStampProps) => {
+export const AuditStamp = ({ status = 'VERIFIED', className }: AuditStampProps) => {
   return (
     <div
       className={cn(
-        "relative flex h-40 w-40 select-none items-center justify-center border-[6px] border-double transition-all duration-500",
-        "rotate-[-15deg] border-emerald-600/30 text-emerald-600/50 group-hover:rotate-[-5deg] group-hover:border-emerald-600/50 group-hover:text-emerald-600/70",
-        "bg-white/5",
-        className
+        'relative flex h-40 w-40 select-none items-center justify-center border-[6px] border-double transition-all duration-500',
+        'rotate-[-15deg] border-emerald-600/30 text-emerald-600/50 group-hover:rotate-[-5deg] group-hover:border-emerald-600/50 group-hover:text-emerald-600/70',
+        'bg-white/5',
+        className,
       )}
     >
       {/* 🧩 STRUCTURAL_LAYERS: Sharp Concentric Frames */}

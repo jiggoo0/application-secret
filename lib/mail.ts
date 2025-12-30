@@ -1,18 +1,14 @@
 /** @format */
-import { Resend } from "resend"
+import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export async function sendAssessmentEmail(
-  email: string,
-  name: string,
-  ticketId: string
-) {
-  if (!email) return { success: false, error: "Missing email address" }
+export async function sendAssessmentEmail(email: string, name: string, ticketId: string) {
+  if (!email) return { success: false, error: 'Missing email address' }
 
   try {
     const { data, error } = await resend.emails.send({
-      from: "JP Visual Docs <verification@jpvisouldocs.online>",
+      from: 'JP Visual Docs <verification@jpvisouldocs.online>',
       to: [email],
       // หัวข้ออีเมล: สุภาพ ชัดเจน และระบุชื่อลูกค้าเพื่อกันสแปม
       subject: `ยืนยันตัวตนเพื่อรับสิทธิ์การประเมินของคุณ: ${name}`,
@@ -58,13 +54,13 @@ export async function sendAssessmentEmail(
     })
 
     if (error) {
-      console.error("Resend Error:", error)
+      console.error('Resend Error:', error)
       return { success: false, error }
     }
 
     return { success: true, data }
   } catch (err) {
-    console.error("Mail Dispatch Error:", err)
+    console.error('Mail Dispatch Error:', err)
     return { success: false, err }
   }
 }
