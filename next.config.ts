@@ -1,6 +1,9 @@
-// next.config.ts
 import type { NextConfig } from 'next'
 
+/**
+ * @description THE_MASTER_ARCHITECT_CONFIG:
+ * ปรับแต่งเพื่อความเนียนระดับ Industrial Sharp และความปลอดภัยสูงสุด
+ */
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
@@ -8,6 +11,7 @@ const nextConfig: NextConfig = {
     contentDispositionType: 'attachment',
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     formats: ['image/avif', 'image/webp'],
+    // 🟢 เน้นคุณภาพรูปภาพที่เหมาะสมสำหรับงาน High-end Visuals
     qualities: [75, 85, 100],
     remotePatterns: [
       {
@@ -15,6 +19,7 @@ const nextConfig: NextConfig = {
         hostname: 'ui-avatars.com',
         pathname: '/api/**',
       },
+      // 🟢 จัดการช่องโหว่การดึงภาพจาก Supabase ทั้งโปรเจกต์เก่าและใหม่
       {
         protocol: 'https',
         hostname: 'dpgmfbnzyhnhwzyozoxe.supabase.co',
@@ -22,7 +27,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'ksiobbrextlywypdzaze.supabase.co', // ✅ เพิ่มบรรทัดนี้
+        hostname: 'ksiobbrextlywypdzaze.supabase.co',
         pathname: '/storage/v1/object/public/**',
       },
       {
@@ -48,6 +53,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
+    // 🟢 ทางลัดพิเศษ: ลด Bundle Size โดยการ Optimize การดึงไอคอน
     optimizePackageImports: ['lucide-react'],
   },
 }

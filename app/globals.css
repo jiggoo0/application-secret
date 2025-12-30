@@ -1,75 +1,113 @@
-/** @format */
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    /* 🏛️ PRIMARY_AXIS: Synced with Master Theme V4.5.0 */
-    --background: 5 8 10; /* #05080A (Rich Black) */
-    --foreground: 248 250 252; /* #F8FAFC (Clean White) */
+    /* 🎨 CORE_PALETTE (Design Tokens Sync) */
+    --background: #020617;
+    --foreground: #f1f5f9;
+    --brand: #fcde09;
 
-    --brand: 200 164 93; /* #C8A45D (Champagne Gold) */
-    --brand-dark: 11 31 51; /* #0B1F33 (Deep Navy) */
+    /* 🛰️ SIDEBAR_SYSTEM (Shadcn Compatible) */
+    --sidebar-background: 222 47% 4%;
+    --sidebar-foreground: 214 32% 91%;
+    --sidebar-primary: 50 98% 51%;
+    --sidebar-primary-foreground: 222 47% 4%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 40% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 50 98% 51%;
+  }
 
-    --border: 30 41 59; /* #1E293B (Steel Gray) */
-    --muted: 100 116 139; /* #64748B */
-
-    --card: 19 28 46; /* #131C2E */
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--background);
   }
 
   body {
-    @apply bg-[rgb(var(--background))] text-[rgb(var(--foreground))] antialiased;
-    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    @apply bg-[#020617] text-slate-200 antialiased selection:bg-[#fcde09] selection:text-slate-950;
+    min-height: 100dvh;
+    text-rendering: optimizeLegibility;
   }
 
-  /* 📜 INDUSTRIAL_SCROLLBAR: Precision Engineered */
+  /* 🛡️ SYSTEM_BORDER_OVERRIDE */
+  * {
+    @apply border-slate-800;
+  }
+
+  /* 📜 SHARP_SCROLLBAR */
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
+    height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: rgb(var(--background));
+    @apply bg-slate-950;
   }
   ::-webkit-scrollbar-thumb {
-    background: rgb(var(--brand) / 0.3);
-    border-radius: 0px;
-    border: 1px solid rgb(var(--background));
+    @apply border-2 border-slate-950 bg-slate-700 transition-all;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: rgb(var(--brand));
+    @apply bg-[#fcde09];
+  }
+}
+
+@layer components {
+  /* 📊 INDUSTRIAL_FORM_INPUTS */
+  .audit-label {
+    @apply mb-2 block font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-300;
+  }
+
+  .audit-input {
+    @apply w-full border-b-2 border-slate-800 bg-slate-900/30 px-4 py-4 text-sm font-medium text-white transition-all duration-300 placeholder:text-slate-600 focus:border-[#fcde09] focus:bg-slate-900/60 focus:outline-none;
+  }
+
+  /* 🔘 PREMIUM_BUTTONS (Shadow-Sharp System) */
+  .btn-industrial {
+    @apply relative flex items-center justify-center gap-3 bg-[#fcde09] px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-slate-950 transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-0 active:translate-y-0 disabled:pointer-events-none disabled:opacity-50;
+    box-shadow: 6px 6px 0px 0px #000;
+  }
+
+  .btn-outline {
+    @apply relative flex items-center justify-center gap-3 border-2 border-white bg-transparent px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-all hover:bg-white hover:text-slate-950 active:scale-[0.98];
+  }
+
+  /* 📐 BLUEPRINT_GRIDS */
+  .bg-blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(252, 222, 9, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(252, 222, 9, 0.03) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+
+  /* 🗚 TYPOGRAPHY_EXTENSIONS */
+  .text-h1-industrial {
+    @apply text-6xl font-black uppercase italic leading-[0.85] tracking-tighter text-white md:text-8xl lg:text-[110px];
+  }
+
+  /* ✅ WEBKit_STROKE_STABLE: แก้ปัญหา Build Error บรรทัดที่ 76 */
+  .text-outline-dark {
+    -webkit-text-stroke-width: 1.5px;
+    -webkit-text-stroke-color: rgba(255, 255, 255, 0.12);
+    color: transparent;
+    paint-order: stroke fill;
+  }
+
+  .text-outline-brand {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: #fcde09;
+    color: transparent;
+    paint-order: stroke fill;
   }
 }
 
 @layer utilities {
-  /**
-   * 🧩 PRECISION_BLUEPRINT_GRID (Dark Edition)
-   */
-  .bg-blueprint-grid {
-    background-image:
-      linear-gradient(to right, rgb(var(--brand) / 0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--brand) / 0.05) 1px, transparent 1px),
-      linear-gradient(to right, rgb(var(--brand) / 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgb(var(--brand) / 0.1) 1px, transparent 1px);
-    background-size:
-      20px 20px,
-      20px 20px,
-      100px 100px,
-      100px 100px;
+  .text-balance {
+    text-wrap: balance;
   }
 
-  /* 💎 HARD_EDGE_EFFECTS: เงาต้องคมเหมือนตัดด้วยเลเซอร์ */
-  .shadow-sharp-gold {
-    box-shadow: 4px 4px 0px 0px rgb(var(--brand));
-  }
-
-  .shadow-sharp-black {
-    box-shadow: 8px 8px 0px 0px #000000;
-  }
-
-  /* UTILITY: สำหรับขอบทองบางเฉียบแบบ Luxury */
-  .border-luxury {
-    border: 1px solid rgb(var(--brand) / 0.5);
-    position: relative;
+  .clip-corner {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
   }
 }

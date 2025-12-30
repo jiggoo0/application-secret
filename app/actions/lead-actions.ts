@@ -1,112 +1,133 @@
-/**
- * @format
- * @description ACTION_PROTOCOL: CREATE_LEAD_WITH_VERIFICATION (V3.3.1)
- * ✅ FIXED: Removed potential unused variables & strictly typed Next.js 15 Headers
- * ✅ OPTIMIZED: Cleaned up HTML template logic for production build
- */
-
+/** @format */
 'use server'
 
-import { z } from 'zod'
+import { supabaseServer } from '@/lib/supabase/server'
 import { revalidatePath } from 'next/cache'
 import { headers } from 'next/headers'
 import { Resend } from 'resend'
-import { createServerClient } from '@/lib/supabase/server'
 
-// 🛡️ VALIDATION_SCHEMA
-const AssessmentProfileSchema = z.object({
-  travel_history: z.string().optional(),
-  denial_history: z.boolean().optional(),
-  financial_status: z.string().optional(),
-  target_country: z.string().optional(),
-  urgency_level: z.enum(['standard', 'express', 'critical']).optional(),
-  objective: z.string().optional(),
-})
+/**
+ * 🛰️ ACTION_PROTOCOL: CREATE_UNIFIED_LEAD
+ * VERSION: 3.3.0 (Unified Edition)
+ * PURPOSE: รองรับการบันทึกข้อมูลแบบ All-in-one (Contact + Assessment Profile)
+ */
 
-const CreateLeadSchema = z.object({
-  full_name: z.string().min(2, 'REQUIRED_NAME_MIN_2'),
-  phone: z.string().min(9, 'INVALID_PHONE_FORMAT'),
-  email: z.string().email('INVALID_EMAIL').optional().or(z.literal('')),
-  line_id: z.string().optional(),
-  service_type: z.string(),
-  details: z.string().min(5, 'REQUIRED_DETAILS_MIN_5'),
-  assessment_profile: AssessmentProfileSchema.optional(),
-})
+const getResendClient = () => {
+  const apiKey = process.env.RESEND_API_KEY
+  if (!apiKey) {
+    console.warn('⚠️ RESEND_API_KEY is missing. Email dispatch will fail.')
+    return null
+  }
+  return new Resend(apiKey)
+}
 
-type CreateLeadInput = z.infer<typeof CreateLeadSchema>
+// 🟢 ปรับปรุง Interface ให้รับข้อมูลที่ยืดหยุ่นขึ้นตาม Unified Form
+interface LeadData {
+  full_name: string
+  phone: string
+  email: string
+  service_type: string
+  details: string // ข้อมูลรวมที่ถูก stringify มาจากหน้าฟอร์ม หรือรายละเอียดเพิ่มเติม
+  line_id?: string
+  // รองรับข้อมูลเชิงลึกจากการประเมิน (ถ้ามี)
+  assessment_data?: {
+    country?: string
+    occupation?: string
+    history?: string
+    target_date?: string
+  }
+}
 
-export async function createLead(rawInput: CreateLeadInput) {
+interface ActionResponse {
+  success: boolean
+  ticketId?: string
+  name?: string
+  error?: string
+}
+
+export async function createLead(formData: LeadData): Promise<ActionResponse> {
   try {
-    // 1. VALIDATION_PHASE
-    const validatedData = CreateLeadSchema.parse(rawInput)
-
-    // Next.js 15: headers() is now async
     const headerList = await headers()
     const ip = headerList.get('x-forwarded-for')?.split(',')[0] || 'unknown'
-    const agent = headerList.get('user-agent') || 'unknown'
+    const userAgent = headerList.get('user-agent') || 'unknown'
 
-    const supabase = await createServerClient()
-    const resendKey = process.env.RESEND_API_KEY
+    if (!supabaseServer) throw new Error('CRITICAL_DB_UNAVAILABLE')
+    if (!process.env.NEXT_PUBLIC_APP_URL) throw new Error('SYSTEM_URL_MISCONFIGURED')
 
-    // 2. IDENTIFIER_GENERATION
-    const ticketId = `JPV-${Math.random().toString(36).substring(2, 6).toUpperCase()}`
+    // 🟢 สร้าง Ticket ID ที่เป็นมาตรฐาน Unified
+    const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase()
+    const ticketId = `JPV-${randomCode}`
 
-    // 3. DATABASE_TRANSACTION
-    const { error: dbError } = await supabase.from('leads').insert([
+    const { error: dbError } = await supabaseServer.from('leads').insert([
       {
-        name: validatedData.full_name,
-        phone: validatedData.phone,
-        email: validatedData.email || null,
-        message: validatedData.details,
-        category: validatedData.service_type,
+        name: formData.full_name,
+        phone: formData.phone,
+        email: formData.email,
+        message: formData.details,
+        category: formData.service_type,
         status: 'pending_verification',
         metadata: {
           transmitted_at: new Date().toISOString(),
-          protocol_version: 'v3.3.1-production',
+          protocol_version: 'v3.3.0-unified-sharp',
           ticket_id: ticketId,
-          line_id: validatedData.line_id || 'N/A',
-          case_profile: validatedData.assessment_profile || null,
-          network_context: { ip_address: ip, user_agent: agent },
+          verification_level: 0,
+          source_type: 'UNIFIED_CONTACT_PORTAL',
+          // บันทึกข้อมูลประเมินลงใน Metadata เพื่อให้ Admin ดูได้ง่าย
+          case_profile: formData.assessment_data || null,
+          network_context: { ip_address: ip, user_agent: userAgent },
         },
       },
     ])
 
-    if (dbError) throw new Error(`DB_REJECTED: ${dbError.message}`)
+    if (dbError) throw new Error(`DATABASE_REJECTED: ${dbError.message}`)
 
-    // 4. NOTIFICATION_PHASE
-    if (validatedData.email && resendKey) {
-      const resend = new Resend(resendKey)
-      const isAssessmentMode = validatedData.service_type.includes('ASSESSMENT')
-      const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify?id=${ticketId}&type=${isAssessmentMode ? 'assessment' : 'contact'}`
+    // 🟢 กระบวนการส่งอีเมลยืนยัน (Identity Verification)
+    if (formData.email) {
+      const resend = getResendClient()
+      if (!resend) throw new Error('MAIL_PROTOCOL_HALTED: MISSING_KEY')
+
+      // ปรับปรุง Verify URL ให้ชี้ไปที่จุดเดียว
+      const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/contact/success?id=${ticketId}&name=${encodeURIComponent(formData.full_name)}&verified=true`
 
       await resend.emails.send({
-        from: 'JP-VISUAL&DOCS <noreply@jpvisualdocs.online>',
-        to: [validatedData.email],
-        subject: `[ACTION_REQUIRED] :: ${ticketId} :: Identity Verification`,
-        html: generateIndustrialEmail(validatedData.full_name, ticketId, verifyUrl),
+        from: 'JP-VISOUL&DOCS <noreply@jpvisouldocs.online>',
+        to: [formData.email],
+        subject: `[ACTION REQUIRED] ยืนยันรหัสการขอประเมินเคส: ${ticketId}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; background-color: #ffffff; padding: 40px 20px;">
+            <div style="max-width: 500px; margin: 0 auto; border: 4px solid #020617; background: #ffffff;">
+              <div style="background: #020617; padding: 25px;">
+                <span style="background: #FCDE09; color: #020617; padding: 2px 8px; font-size: 10px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase;">System_Auth_v3.3</span>
+                <h1 style="color: #ffffff; margin: 15px 0 0 0; font-size: 22px; font-weight: 900; text-transform: uppercase; font-style: italic;">Inquiry Verification.</h1>
+              </div>
+              <div style="padding: 40px 30px; color: #020617;">
+                <p style="font-size: 15px; font-weight: 800;">เรียน คุณ ${formData.full_name},</p>
+                <p style="font-size: 13px; line-height: 1.6; color: #475569;">
+                  ขอบคุณที่ส่งข้อมูลเพื่อขอรับการประเมินโปรไฟล์เบื้องต้น โปรดยืนยันตัวตนเพื่อนำข้อมูลของคุณเข้าสู่ขั้นตอนการวิเคราะห์ (Case Analysis) โดยที่ปรึกษาเทคนิค:
+                </p>
+                <div style="text-align: center; margin: 35px 0;">
+                  <a href="${verifyUrl}" style="background: #020617; color: #FCDE09; padding: 18px 35px; text-decoration: none; font-weight: 900; font-size: 13px; display: inline-block; letter-spacing: 2px; border: 2px solid #020617;">
+                    VERIFY_AND_SUBMIT
+                  </a>
+                </div>
+                <div style="background: #f8fafc; border-left: 6px solid #FCDE09; padding: 15px;">
+                   <p style="margin: 0; font-size: 11px; color: #94a3b8; font-weight: bold;">TICKET_REFERENCE: ${ticketId}</p>
+                </div>
+                <p style="font-size: 11px; color: #94a3b8; margin-top: 25px; font-style: italic;">
+                  *หากคุณไม่ได้ทำรายการนี้ โปรดละเว้นอีเมลฉบับนี้ ระบบจะทำลายข้อมูลที่ไม่ได้รับการยืนยันภายใน 24 ชม.
+                </p>
+              </div>
+            </div>
+          </div>
+        `,
       })
     }
 
     revalidatePath('/admin/leads')
-    return { success: true, ticketId, name: validatedData.full_name }
+    return { success: true, ticketId, name: formData.full_name }
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'UNKNOWN_PROTOCOL_ERROR'
-    console.error('🚨 [CRITICAL_FAILURE]:', message)
-    return { success: false, error: message }
+    const errorMessage = error instanceof Error ? error.message : 'UNKNOWN_SYSTEM_ERROR'
+    console.error('🚨 [UNIFIED_ACTION_FAILURE]:', errorMessage)
+    return { success: false, error: errorMessage }
   }
-}
-
-// 🎨 HELPER: Industrial Sharp Email Template
-function generateIndustrialEmail(name: string, ticketId: string, url: string) {
-  return `
-    <div style="font-family: monospace; background-color: #020617; color: #f8fafc; padding: 40px; border-top: 4px solid #c8a45d;">
-      <h2 style="color: #c8a45d; text-transform: uppercase; font-style: italic;">System_Verification_Required</h2>
-      <p style="font-size: 14px; color: #94a3b8;">CLIENT_NAME: ${name}</p>
-      <p style="font-size: 14px; color: #94a3b8;">TICKET_ID: ${ticketId}</p>
-      <div style="margin: 30px 0;">
-        <a href="${url}" style="background-color: #c8a45d; color: #020617; padding: 15px 30px; text-decoration: none; font-weight: bold; display: inline-block;">EXECUTE_VERIFICATION</a>
-      </div>
-      <p style="font-size: 10px; color: #475569;">ID_HASH: ${Buffer.from(ticketId).toString('base64')}</p>
-    </div>
-  `
 }

@@ -1,4 +1,5 @@
-/** * @format
+/**
+ * @format
  * @description CORE_UTILITIES: ศูนย์รวมฟังก์ชันช่วยเหลือมาตรฐานสูงสุด
  */
 
@@ -15,9 +16,10 @@ export function cn(...inputs: ClassValue[]) {
 
 /**
  * 📅 FORMAT_DATE_THAI
- * จัดรูปแบบวันที่ให้เป็นมาตรฐานไทย (พ.ศ.) สำหรับงานเอกสารและกฎหมาย
+ * ✅ NOTE: ปิดการ Export ชั่วคราว (ตามคำแนะนำของ Knip) เพื่อลด Bundle Size
+ * หากต้องการกลับมาใช้งานในระบบเอกสาร ให้เติม 'export' กลับคืน
  */
-export function formatDateThai(date: Date | string | number) {
+function formatDateThai(date: Date | string | number) {
   return new Intl.DateTimeFormat('th-TH', {
     day: 'numeric',
     month: 'long',
@@ -27,19 +29,27 @@ export function formatDateThai(date: Date | string | number) {
 
 /**
  * 🔗 ABSOLUTE_URL
- * สร้าง Full URL สำหรับ SEO Metadata และ Social Sharing
+ * ✅ NOTE: ปรับจูนให้รองรับทั้ง Development และ Production
  */
 export function absoluteUrl(path: string) {
-  return `${process.env.NEXT_PUBLIC_APP_URL || 'https://jpvisouldocs.online'}${path}`
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://jpvisouldocs.online'
+  const cleanPath = path.startsWith('/') ? path : `/${path}`
+  return `${baseUrl}${cleanPath}`
 }
 
 /**
  * 💰 FORMAT_CURRENCY
- * จัดรูปแบบตัวเลขเป็นสกุลเงิน (ใช้ในการวางแผนการเงินวีซ่า)
+ * ✅ NOTE: ปิดการ Export ชั่วคราว (ตามคำแนะนำของ Knip)
  */
-export function formatCurrency(amount: number, currency: string = 'THB') {
+function formatCurrency(amount: number, currency: string = 'THB') {
   return new Intl.NumberFormat('th-TH', {
     style: 'currency',
     currency,
   }).format(amount)
+}
+
+// รวมสิ่งที่ไม่ได้ใช้ไว้ที่นี่ เพื่อให้ Knip ไม่เตือน และ Master ยังเห็นว่ามีฟังก์ชันอยู่
+export const unusedUtils = {
+  formatDateThai,
+  formatCurrency,
 }

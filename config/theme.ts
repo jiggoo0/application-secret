@@ -1,74 +1,53 @@
 /** @format */
 
 /**
- * 🛰️ MASTER_THEME_CONFIGURATION (V4.5.0 - LUXURY_INDUSTRIAL)
- * ✅ MISSION: SINGLE SOURCE OF TRUTH - บังคับใช้มาตรฐานทองคำและขอบคม
+ * 🛰️ SYSTEM_TOKENS: Industrial_Sharp_V4.0
+ * * กลยุทธ์การออกแบบ:
+ * 1. HIGH_CONTRAST: เน้นความชัดเจนของข้อมูลเชิงเทคนิค (Data-First)
+ * 2. LEGIBILITY: ยกระดับสีเทาเพื่อให้อ่านออกบนพื้นหลัง #020617
+ * 3. BRAND_AUTHORITY: ใช้สีเหลือง #FCDE09 เฉพาะจุดเพื่อดึงสายตา
  */
 
-export const theme = {
+export const DESIGN_TOKENS = {
   colors: {
-    brand: {
-      primary: '#020617', // Deepest Space (Black)
-      secondary: '#0F172A', // Navy Steel
-      accent: '#C8A45D', // Champagne Gold (Authority)
-      accentHover: '#D9B87A', // Light Gold
-    },
-    base: {
-      bg: '#05080A', // Ultra Dark Background
-      surface: '#0F172A',
-      card: '#131C2E',
-      border: '#1E293B', // Industrial Bolt Gray
-      text: '#F8FAFC', // Clean White
-      muted: '#64748B', // Steel Muted
-    },
-    status: {
-      success: '#10B981', // Emerald
-      warning: '#F59E0B', // Amber
-      error: '#EF4444', // Rose
-    },
+    // 🎨 Branding: จิตวิญญาณของ "เจ้าป่า"
+    brand: '#FCDE09',
+    brandDark: '#D4BC08',
+
+    // 🏛️ Slate System: ปรับจูนเพื่อความชัดเจนสูงสุด
+    background: '#020617', // Slate-950
+    textPrimary: '#F1F5F9', // Slate-200 (สำหรับเนื้อหาหลัก)
+    textSecondary: '#CBD5E1', // Slate-300 (สำหรับ Metadata/Labels)
+    textMuted: '#64748B', // Slate-500 (สำหรับส่วนที่ไม่สำคัญ)
+
+    white: '#FFFFFF',
+    success: '#10B981',
+    error: '#EF4444',
   },
 
-  font: {
-    family: {
-      body: 'var(--font-inter), var(--font-ibm-plex-sans-thai), sans-serif',
-      mono: 'var(--font-jetbrains-mono), monospace',
-    },
-    weight: {
-      normal: '400',
-      medium: '500',
-      semibold: '600',
-      bold: '900', // เน้นความหนักแน่นแบบ Industrial
-    },
-    letterSpacing: {
-      tight: '-0.02em',
-      normal: '0em',
-      wide: '0.05em', // สำหรับ Header ที่ต้องการความหรูหรา
-    },
+  typography: {
+    // 📢 HEADLINE: กระแทกสายตาด้วยอักษรตัวหนาและ italic
+    h1: 'text-6xl md:text-8xl lg:text-[110px] font-black uppercase italic tracking-tighter leading-[0.85] text-white',
+    h2: 'text-4xl md:text-6xl font-black uppercase tracking-tighter leading-none text-white',
+
+    // 📟 DATA_LABEL: สำหรับพวก ID, Logs, หรือรหัสเอกสาร
+    label: 'font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-300',
+
+    // 📝 CONTENT: อ่านง่าย สว่างชัดเจน
+    body: 'font-thai text-base md:text-lg font-bold leading-relaxed text-slate-200',
   },
 
-  // 📐 SHARP_ENFORCEMENT: ยกเลิกความโค้งมนทั้งหมด
-  radius: {
-    none: '0px',
-    sharp: '0px',
-    sm: '0px', // Override เพื่อป้องกันความผิดพลาด
-    md: '0px',
-    lg: '0px',
-    full: '9999px', // อนุญาตเฉพาะรูปโปรไฟล์หรือป้ายสถานะเท่านั้น
+  shadows: {
+    // 📐 INDUSTRIAL_SHARP: เงาต้องแข็ง คม และไม่ฟุ้ง
+    sharp: 'shadow-[6px_6px_0px_0px_#020617]',
+    sharpBrand: 'shadow-[6px_6px_0px_0px_#FCDE09]',
+    sharpWhite: 'shadow-[6px_6px_0px_0px_#FFFFFF]',
   },
 
-  shadow: {
-    // Hard Shadows เท่านั้น (ไม่มี Blur เยอะ)
-    soft: '2px 2px 0px 0px rgba(0,0,0,1)',
-    card: '6px 6px 0px 0px #020617',
-    gold: '0 0 0 1px #C8A45D', // Precision Border
-    none: 'none',
-  },
-
-  layout: {
-    container: '1200px',
-    section: '8rem',
-    header: '4.5rem',
+  interaction: {
+    transition: 'transition-all duration-300 cubic-bezier(0.16, 1, 0.3, 1)',
+    hover: 'hover:-translate-x-1 hover:-translate-y-1',
   },
 } as const
 
-export type Theme = typeof theme
+export type DesignTokens = typeof DESIGN_TOKENS

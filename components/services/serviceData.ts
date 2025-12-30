@@ -1,120 +1,157 @@
-/**
- * @format
- * @description SERVICE_REGISTRY: High-Precision Data Nodes (V3.5.1-HOTFIX)
- * ✅ FIX: Removed unused icons, added strict interface, passed lint-check
- */
-
+/** @format */
 import {
   FileSearch,
+  PenTool,
+  Plane,
   TrendingUp,
   Layers,
   CreditCard,
-  BarChart3,
-  type LucideIcon,
+  FileText,
+  LucideIcon,
 } from 'lucide-react'
 
-// 🏛️ INTERFACE_DEFINITION: บังคับใช้โครงสร้างข้อมูลที่เข้มงวด
+// --- 1. DATA_INTERFACES (ปิดช่องโหว่ Type Safety) ---
+export interface ServicePrice {
+  base: string
+  suffix?: string
+}
+
+export interface ServiceTechnical {
+  highlight: string
+  protocol: string[]
+  status: 'OPERATIONAL' | 'HIGH_DEMAND' | 'DEVELOPMENT' | 'SYSTEM_CHECK'
+}
+
 export interface ServiceItem {
   id: string
   code: string
-  category: 'FINANCIAL' | 'IMMIGRATION' | 'SYSTEMS' | 'DOCUMENTATION' | 'INFRASTRUCTURE'
-  type: 'GEN_ASSET' | 'VISA_ASSET'
+  category: 'IMMIGRATION' | 'FINANCIAL' | 'DOCUMENTATION' | 'INFRASTRUCTURE' | 'SYSTEMS'
+  type: string
   icon: LucideIcon
   image: string
   title: string
   description: string
-  price: {
-    base: string
-    suffix: string
-  }
+  price: ServicePrice
   cta: {
     label: string
     action: string
   }
-  technical: {
-    highlight: string
-    protocol: string[]
-    status: 'OPERATIONAL' | 'HIGH_DEMAND' | 'MAINTENANCE'
-  }
+  technical: ServiceTechnical
 }
 
-const SERVICE_IMAGE =
-  'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/service.webp'
-
-/**
- * 🛰️ SERVICES_REGISTRY
- * ข้อมูลบริการทั้งหมดที่ถูกเชื่อมโยงกับ UI ผ่าน Type-Safe Interface
- */
+// --- 2. CORE_SERVICE_REGISTRY (v3.3.1 - Expert Companion Edition) ---
 export const services: ServiceItem[] = [
   {
-    id: 'loan-consult-001',
+    id: 'loan-strategy-001',
     code: 'SRV-FIN-01',
     category: 'FINANCIAL',
     type: 'GEN_ASSET',
     icon: TrendingUp,
-    image: SERVICE_IMAGE,
-    title: 'Asset & Loan Strategy',
+    image:
+      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
+    title: 'ที่ปรึกษาสินเชื่อส่วนบุคคลและธุรกิจ',
     description:
-      'วิเคราะห์โปรไฟล์เชิงลึกเพื่อการยื่นกู้สินเชื่อส่วนบุคคลและธุรกิจ จัดชุดเอกสารตามมาตรฐานสถาบันการเงิน (Tier-1)',
-    price: { base: '2,500', suffix: 'START_FEE' },
-    cta: { label: 'ปรึกษาสินเชื่อ', action: '/contact?ref=loan' },
+      'ช่วยวิเคราะห์โปรไฟล์และเลือกแผนที่เหมาะสมที่สุด จัดชุดเอกสารให้ครบตามเงื่อนไขแบงก์ ดูแลการยื่นกู้ให้แบบมืออาชีพโดยที่คุณไม่ต้องจัดการเองให้วุ่นวาย',
+    price: { base: 'X,XXX' },
+    cta: { label: 'คุยแผนการกู้', action: '/contact?ref=loan' },
     technical: {
       highlight: 'LOAN_STRATEGY',
-      protocol: ['Profile_Audit', 'Document_Stacking', 'Bank_Alignment'],
+      protocol: ['เช็กโปรไฟล์', 'เตรียมเอกสาร', 'ส่งยื่นมืออาชีพ'],
       status: 'OPERATIONAL',
     },
   },
   {
-    id: 'visa-doc-care-001',
-    code: 'SRV-VSA-02',
+    id: 'travel-booking-001',
+    code: 'SRV-IMM-01',
+    category: 'IMMIGRATION',
+    type: 'VISA_ASSET',
+    icon: Plane,
+    image:
+      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
+    title: 'ตั๋วเครื่องบินและโรงแรม (ตรวจสอบได้จริง)',
+    description:
+      'จัดการจองตั๋วและที่พักทั่วโลก ข้อมูลลิ้งก์เข้าระบบ E-booking และ Google ค้นหาเจอสถานะจริง การันตีงานด่วนจบไวภายใน 1 วัน เพื่อความราบรื่นในการเดินทาง',
+    price: { base: 'ราคาพิเศษ' },
+    cta: { label: 'เช็กราคาห้องพัก/ตั๋ว', action: '/contact?ref=booking' },
+    technical: {
+      highlight: 'REAL_TIME_BOOKING',
+      protocol: ['จองผ่านระบบ', 'ยืนยันสถานะ', 'ส่งใบจองทางการ'],
+      status: 'OPERATIONAL',
+    },
+  },
+  {
+    id: 'legal-writing-001',
+    code: 'SRV-DOC-01',
+    category: 'DOCUMENTATION',
+    type: 'GEN_ASSET',
+    icon: PenTool,
+    image:
+      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
+    title: 'ร่างจดหมายสำคัญโดยผู้เชี่ยวชาญ',
+    description:
+      'รับเขียนจดหมายแนะนำตัว (Cover Letter) หรือจดหมายรับรอง/สปอนเซอร์ ทั้งไทยและอังกฤษ ปรับโทนให้ดูน่าเชื่อถือและเพิ่มโอกาสผ่านได้จริง',
+    price: { base: '1,000' },
+    cta: { label: 'เริ่มร่างเนื้อหา', action: '/contact?ref=writing' },
+    technical: {
+      highlight: 'PROFESSIONAL_CONTENT',
+      protocol: ['คุยเนื้อหาหลัก', 'เรียบเรียงภาษา', 'ส่งเล่มจริง'],
+      status: 'OPERATIONAL',
+    },
+  },
+  {
+    id: 'visa-work-001',
+    code: 'SRV-IMM-02',
     category: 'IMMIGRATION',
     type: 'VISA_ASSET',
     icon: FileSearch,
-    image: SERVICE_IMAGE,
-    title: 'Professional Visa Logistics',
+    image:
+      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
+    title: 'ดูแลเอกสารยื่นวีซ่า (เน้นสายทำงาน)',
     description:
-      'ตรวจสอบและจัดการชุดเอกสารสำหรับการยื่นวีซ่าทุกประเภท โดยเฉพาะสายทำงานและกลุ่มพำนักระยะยาว',
-    price: { base: '3,000', suffix: 'PER_CASE' },
-    cta: { label: 'ดูแลเอกสารวีซ่า', action: '/contact?ref=visa' },
+      'จัดชุดเอกสารให้ครบและเนี้ยบที่สุดสำหรับกลุ่มสายทำงาน ปรับปรุงข้อมูลให้สอดคล้องกับเกณฑ์ของประเทศปลายทาง เพื่อให้ผลลัพธ์ผ่านฉลุยไม่มีสะดุด',
+    price: { base: 'X,XXX' },
+    cta: { label: 'ปรึกษาการยื่น', action: '/contact?ref=visa' },
     technical: {
-      highlight: 'VISA_DOCUMENT_CARE',
-      protocol: ['Requirement_Matching', 'Data_Refinement', 'Final_Stack_Check'],
+      highlight: 'VISA_PREPARATION',
+      protocol: ['เช็กเอกสารเดิม', 'เติมส่วนขาด', 'จัดชุดพร้อมยื่น'],
+      status: 'OPERATIONAL',
+    },
+  },
+  {
+    id: 'doc-creation-001',
+    code: 'SRV-DOC-02',
+    category: 'DOCUMENTATION',
+    type: 'GEN_ASSET',
+    icon: FileText,
+    image:
+      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
+    title: 'แก้ไขและจัดหาเอกสารเฉพาะทาง',
+    description:
+      'บริการปรับแก้หรือสร้างเอกสารใหม่ตามโจทย์ที่คุณต้องการ จัดหาเอกสารทุกรูปแบบอย่างแม่นยำ งานเนียนและรวดเร็ว เหมาะสำหรับคนที่มีงานด่วนพิเศษ',
+    price: { base: '450', suffix: '- 8XX' },
+    cta: { label: 'ส่งโจทย์ให้แอดมิน', action: '/contact?ref=doc-fix' },
+    technical: {
+      highlight: 'CUSTOM_DOCUMENT',
+      protocol: ['รับบรีฟละเอียด', 'ดำเนินการผลิต', 'เช็กความถูกต้อง'],
       status: 'HIGH_DEMAND',
     },
   },
   {
-    id: 'vifily-verify-001',
+    id: 'vifily-system-001',
     code: 'SRV-SYS-01',
     category: 'SYSTEMS',
     type: 'GEN_ASSET',
-    icon: BarChart3,
-    image: SERVICE_IMAGE,
-    title: 'Vifily Digital Verification',
-    description:
-      'ออกเอกสารรับรองดิจิทัลพร้อมระบบตรวจสอบความถูกต้องผ่าน QR Code (Real-time Database)',
-    price: { base: '1,200', suffix: 'GEN_CODE' },
-    cta: { label: 'สร้างเอกสารรับรอง', action: '/contact?ref=vifily' },
-    technical: {
-      highlight: 'QR_VERIFICATION',
-      protocol: ['Data_Injection', 'QR_Mapping', 'Live_Deployment'],
-      status: 'OPERATIONAL',
-    },
-  },
-  {
-    id: 'doc-custom-001',
-    code: 'SRV-DOC-02',
-    category: 'DOCUMENTATION',
-    type: 'GEN_ASSET',
     icon: Layers,
-    image: SERVICE_IMAGE,
-    title: 'Custom Document Synthesis',
+    image:
+      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
+    title: 'เอกสารรับรองดิจิทัล (ระบบ Vifily)',
     description:
-      'บริการปรับแต่งและร่างเอกสารใหม่ตามเงื่อนไขเฉพาะทาง (Tailor-made) สำหรับเคสเร่งด่วนและงานซับซ้อน',
-    price: { base: '1,500', suffix: 'ESTIMATE' },
-    cta: { label: 'แจ้งความต้องการ', action: '/contact?ref=custom-doc' },
+      'สร้างความมั่นใจในระดับสากลด้วยระบบ Vifily ออกเอกสารรับรองที่มาพร้อม QR Code สำหรับสแกนเช็กข้อมูลจริงได้ทันที ดูโปรไฟล์ได้จากทุกที่ทั่วโลก',
+    price: { base: 'XXX', suffix: '- X,XXX' },
+    cta: { label: 'เปิดระบบ Vifily', action: '/contact?ref=vifily' },
     technical: {
-      highlight: 'CUSTOM_DOCUMENT',
-      protocol: ['Need_Assessment', 'Draft_Production', 'Quality_Control'],
+      highlight: 'DIGITAL_VERIFY',
+      protocol: ['อัปโหลดฐานข้อมูล', 'สร้าง QR พิเศษ', 'เปิดระบบเช็กสถานะ'],
       status: 'OPERATIONAL',
     },
   },
@@ -124,15 +161,16 @@ export const services: ServiceItem[] = [
     category: 'INFRASTRUCTURE',
     type: 'GEN_ASSET',
     icon: CreditCard,
-    image: SERVICE_IMAGE,
-    title: 'Smart Card Infrastructure',
+    image:
+      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
+    title: 'ผลิตบัตรจริงเกรดพรีเมียม (แข็ง/อ่อน)',
     description:
-      'ผลิตบัตรประจำตัว บัตรสมาชิก ทั้งรูปแบบบัตรแข็งและบัตรอ่อน พร้อมระบบความปลอดภัยในการขนส่ง',
-    price: { base: '500', suffix: 'MIN_ORDER' },
-    cta: { label: 'สั่งผลิตบัตร', action: '/contact?ref=card' },
+      'งานพิมพ์คุณภาพสูง พร้อมระบบการจัดส่งที่รัดกุมและเป็นส่วนตัว (Messenger/รถทัวร์) เพื่อให้ถึงมือคุณอย่างปลอดภัยและเป็นความลับที่สุด',
+    price: { base: 'X,XXX' },
+    cta: { label: 'ดูตัวอย่างบัตร', action: '/contact?ref=card' },
     technical: {
       highlight: 'SECURE_PRODUCTION',
-      protocol: ['Physical_Print', 'ID_Validation', 'Secure_Delivery'],
+      protocol: ['สรุปแบบบัตร', 'ผลิตชิ้นงานจริง', 'ส่งมอบส่วนตัว'],
       status: 'OPERATIONAL',
     },
   },

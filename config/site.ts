@@ -1,84 +1,52 @@
+/** @format */
+
+// 🛠️ IMPORT_NODE
+import { services } from '@/components/services/serviceData'
+import { ALL_CASES } from './showcase/all-cases'
+
+// 🌐 NETWORK_PROTOCOL: ตรวจสอบให้แน่ใจว่า URL ไม่มี "/" ปิดท้าย
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://jpvisouldocs.online'
+
 /**
- * @format
- * @description SITE_CONFIG: Central Command Infrastructure (V2.9.6 Zero-Error)
- * ✅ FIXED: Removed unused imports 'services' and 'ALL_CASES'
- * ✅ FIXED: Ensured 'messenger' property exists for JsonLd synergy
+ * 🛰️ SITE_CONFIG_PROTOCOL
+ * ✅ ENFORCED: Unified Inquiry & Assessment Architecture
+ * VERSION: 3.3.0 (Unified Edition)
  */
-
-import { env } from '@/lib/env'
-
-export interface SiteConfig {
-  name: string
-  shortName: string
-  description: string
-  domain: string
-  url: string
-  locale: string
-  language: string[]
-  author: {
-    name: string
-    email: string
-    role: string
-  }
-  system: {
-    status: 'SYSTEM_ACTIVE' | 'MAINTENANCE' | 'OFFLINE'
-    label: string
-    version: string
-  }
-  contact: {
-    phone: string
-    phoneFull: string
-    lineId: string
-    lineLink: string
-    email: string
-    address: string
-  }
-  social: {
-    facebook: string
-    tiktok: string
-    line: string
-    messenger: string
-  }
-  seo: {
-    titleTemplate: string
-    defaultTitle: string
-    description: string
-    keywords: string[]
-  }
-  assets: {
-    ogImage: string
-    favicon: string
-    logo: string
-    grid: string
-    appleTouch: string
-  }
-}
-
-export const siteConfig: SiteConfig = {
+export const siteConfig = {
   name: 'JP Visual Docs',
   shortName: 'JPVD',
-  description: 'ที่ปรึกษาด้านการจัดการเอกสารและวางแผนวีซ่าครบวงจร',
+  description:
+    'ศูนย์วิเคราะห์และจัดการเอกสารครบวงจร บริการประเมินโอกาสสำเร็จเบื้องต้น ปรับจูนโปรไฟล์ และวางแผนวีซ่าอย่างเป็นระบบเพื่อให้ได้ผลลัพธ์ที่ดีที่สุด',
   domain: 'jpvisouldocs.online',
-  url: env.NEXT_PUBLIC_APP_URL || 'https://jpvisouldocs.online',
+  url: baseUrl,
 
   locale: 'th-TH',
   language: ['th', 'en'],
 
+  services,
+  showcaseRegistry: ALL_CASES,
+
   author: {
     name: 'เจ้าป่า (JP Visual Docs)',
     email: 'contact@jpvisouldocs.online',
-    role: 'ที่ปรึกษาด้านการวางแผนเอกสารมืออาชีพ',
+    role: 'Technical Document & Visa Strategist',
+    contacts: {
+      phone: '091-054-0710',
+      email: 'contact@jpvisouldocs.online',
+    },
   },
 
+  // 📟 OPERATIONAL_METADATA
   system: {
     status: 'SYSTEM_ACTIVE',
-    label: 'พร้อมให้บริการ',
-    version: '2.9.6',
+    label: 'READY_FOR_ASSESSMENT',
+    version: '3.3.0',
+    indicatorColor: 'bg-[#FCDE09]', // เปลี่ยนเป็นสีแบรนด์เหลืองเพื่อให้เข้าธีมใหม่
   },
 
   contact: {
-    phone: '091-054-0710',
-    phoneFull: '+66910540710',
+    phone: '012-345-67890',
+    phoneFull: '+6634567890',
     lineId: '@462fqtfc',
     lineLink: 'https://lin.ee/ZYTzBaIE',
     email: 'contact@jpvisouldocs.online',
@@ -86,29 +54,41 @@ export const siteConfig: SiteConfig = {
   },
 
   social: {
-    facebook: 'https://facebook.com/jpvisouldocs',
-    tiktok: 'https://tiktok.com/@jpvisouldocs',
+    facebook: 'https://www.facebook.com/profile.php?id=61575050976562',
+    messenger: 'https://m.me/61575050976562',
     line: 'https://lin.ee/ZYTzBaIE',
-    messenger: 'https://m.me/jpvisouldocs',
   },
 
+  // 🔍 SEO_ARCHITECTURE: Optimized for Unified Inquiry
   seo: {
     titleTemplate: '%s | JP Visual Docs',
-    defaultTitle: 'JP Visual Docs – วางแผนวีซ่า และจัดเตรียมเอกสารระดับมืออาชีพ',
-    description: 'ช่วยวิเคราะห์จุดอ่อนของเคส วางแผนการเงิน และจัดเตรียมเอกสารวีซ่า',
+    defaultTitle: 'JP Visual Docs – ประเมินโอกาสสำเร็จ วางแผนโปรไฟล์ และจัดการเอกสารวีซ่าครบวงจร',
+    // 📝 ENFORCED: เน้นเรื่องการ "ประเมิน" และ "แก้เคสยาก" ในจุดเดียว
+    description:
+      'บริการประเมินโปรไฟล์และวางแผนเอกสารระดับมืออาชีพ วิเคราะห์จุดอ่อนเคสยาก จัดโครงสร้างเอกสารการเงิน และดูแลการยื่นวีซ่าครบจบในที่เดียวโดยทีมงานเฉพาะทาง',
     keywords: [
+      'ประเมินโอกาสวีซ่า',
+      'วิเคราะห์โปรไฟล์วีซ่า',
       'ที่ปรึกษาเอกสารวีซ่า',
       'ปั้นเคสวีซ่า',
-      'Visa Consultant Thailand',
+      'รับเตรียมเอกสารวีซ่า',
+      'วางแผนเอกสารการเงิน',
+      'แก้ไขวีซ่าไม่ผ่าน',
+      'Visa Strategy Thailand',
       'JP Visual Docs',
-    ],
+      'เจ้าป่า',
+    ] as string[],
   },
 
+  // 🖼️ ASSET_REGISTRY
   assets: {
-    ogImage: '/images/og-image.jpg',
+    ogImage: `${baseUrl}/images/og-image.jpg`,
     favicon: '/favicon.ico',
+    appleTouch: '/apple-touch-icon.png',
     logo: '/images/เจ้าป่า.webp',
+    hero: '/images/hero/HeroBackground.png',
     grid: '/grid-pattern.svg',
-    appleTouch: '/images/apple-touch-icon.png',
   },
-}
+} as const
+
+export type SiteConfig = typeof siteConfig

@@ -1,7 +1,4 @@
-/** * @format
- * @description MAIN_LAYOUT: Seamless Blueprint Edition (V2.6)
- * ✅ ENFORCEMENT: Global White Base with Persistent Blueprint Grid
- */
+/** @format */
 
 'use client'
 
@@ -17,10 +14,16 @@ interface MainLayoutProps {
   children: React.ReactNode
 }
 
-export function MainLayout({ children }: MainLayoutProps) {
+/**
+ * 🛰️ COMPONENT: MainLayout
+ * PURPOSE: โครงสร้างหลักของเว็บไซต์ (Unified Architecture)
+ * ✅ FIXED: แก้ไข Path การ Import ให้ตรงกับ Folder Structure จริง
+ * ✅ FIXED: ตัดการทำ Double Export เพื่อแก้ปัญหา Knip Duplicate Exports
+ */
+export default function MainLayout({ children }: MainLayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  // 🛡️ PROTOCOL: Body Scroll Locking
+  // 🔒 SCROLL_LOCK_PROTOCOL: ป้องกันการเลื่อนหน้าจอเมื่อเปิดเมนู Mobile
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden'
@@ -38,9 +41,10 @@ export function MainLayout({ children }: MainLayoutProps) {
         inter.variable,
         ibmPlexSansThai.variable,
         jetbrainsMono.variable,
-        'relative flex min-h-screen flex-col bg-white font-sans antialiased selection:bg-brand selection:text-slate-950',
+        'min-h-screen bg-white font-sans selection:bg-[#FCDE09] selection:text-[#020617]',
       )}
     >
+      {/* 🧭 NAVIGATION_SYSTEM */}
       <MobileMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
@@ -49,18 +53,11 @@ export function MainLayout({ children }: MainLayoutProps) {
 
       <Header onMenuOpen={() => setIsMenuOpen(true)} />
 
-      {/* 🚀 CORE_INFRASTRUCTURE: พื้นที่แสดงผลหลักพร้อมลายกริตต่อเนื่อง */}
-      <main className="relative flex-grow pt-20 outline-none">
-        {/* 🧩 GLOBAL_BLUEPRINT: ลายกริตที่จะปรากฏอยู่เบื้องหลังทุก Section */}
-        <div className="bg-blueprint-grid pointer-events-none absolute inset-0 z-0 opacity-[0.03]" />
+      {/* 🏗️ CONTENT_STRATA: ปรับ Padding-top ให้พอดีกับ Header ความสูง 20 unit */}
+      <main className="relative flex flex-1 flex-col pt-20">{children}</main>
 
-        {/* Content Container: อยู่เหนือ Blueprint */}
-        <div className="relative z-10">{children}</div>
-      </main>
-
+      {/* 🏁 FOOTER_SYSTEM */}
       <Footer />
     </div>
   )
 }
-
-export default MainLayout

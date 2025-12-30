@@ -1,22 +1,24 @@
-import { createServerClient as createSSRClient, type CookieOptions } from '@supabase/ssr'
-import { cookies } from 'next/headers'
-import { env } from '@/lib/env'
+/** @format */
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-export async function createServerClient() {
-  const cookieStore = await cookies()
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
+const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY
 
-  return createSSRClient(env.NEXT_PUBLIC_SUPABASE_URL, env.NEXT_PUBLIC_SUPABASE_ANON_KEY, {
-    cookies: {
-      getAll() {
-        return cookieStore.getAll()
-      },
-      setAll(cookiesToSet: { name: string; value: string; options: CookieOptions }[]) {
-        try {
-          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
-        } catch {
-          /* Action context handling */
-        }
-      },
-    },
-  })
+// 🛡️ Singleton Pattern: ตรวจสอบความถูกต้องของ Environment
+if (!supabaseUrl || !supabaseServiceRoleKey) {
+  throw new Error(
+    '❌ SUPABASE_CONFIG_ERROR: Missing URL or Service Role Key in Environment Variables',
+  )
 }
+
+/**
+ * 🛰️ SUPABASE_SERVER_CLIENT (ADMIN_PRIVILEGES)
+ * ใช้สำหรับ Server Actions หรือ API Routes เท่านั้น
+ * คีย์นี้มีความปลอดภัยสูง ห้ามใช้ใน Client Component เด็ดขาด
+ */
+export const supabaseServer: SupabaseClient = createClient(supabaseUrl, supabaseServiceRoleKey, {
+  auth: {
+    autoRefreshToken: false,
+    persistSession: false,
+  },
+})

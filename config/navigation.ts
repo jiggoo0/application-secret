@@ -1,20 +1,13 @@
 /** @format */
 
-import {
-  Home,
-  MessageSquare,
-  LayoutGrid,
-  ShieldAlert,
-  Gavel,
-  Zap,
-  ClipboardCheck,
-  Briefcase,
-} from 'lucide-react'
+import { Home, LayoutGrid, ShieldAlert, Gavel, Activity, Briefcase, FileSearch } from 'lucide-react'
 
 /**
  * 🛰️ NAVIGATION_CONFIG_PROTOCOL
- * PURPOSE: แผนผังโครงสร้างการนำทางทั้งหมดของระบบ (System Intelligence Strategy)
- * VERSION: 2.0.2025
+ * PURPOSE: แผนผังโครงสร้างการนำทาง (Unified Inquiry Architecture)
+ * VERSION: 3.3.2025 (Clean Edition)
+ * ✅ FIXED: ESLint error - ลบ 'MessageSquare' และ 'Zap' ที่ไม่ได้ใช้งานออก
+ * ✅ STRATEGY: รวมทุกการติดต่อและการประเมินไว้ที่ /contact เพื่อลดความสับสนของผู้ใช้
  */
 export const navigationConfig = {
   mainNav: [
@@ -37,29 +30,23 @@ export const navigationConfig = {
       icon: LayoutGrid,
     },
     {
-      title: 'ประเมินเอกสาร',
-      href: '/assessment',
-      label: 'RISK_AUDIT',
-      icon: ClipboardCheck,
-    },
-    {
-      title: 'ติดต่อ',
+      title: 'ปรึกษา & ประเมิน',
       href: '/contact',
-      label: 'INQUIRY',
-      icon: MessageSquare,
+      label: 'STRATEGIC_INQUIRY',
+      icon: FileSearch, // สื่อถึงการสืบค้นและวิเคราะห์โปรไฟล์เชิงลึก
     },
   ],
 
   footerNav: {
     solutions: [
       { name: 'Technical Showcase', href: '/showcase' },
-      { name: 'Risk Assessment', href: '/assessment' },
+      { name: 'Profile Assessment', href: '/contact' },
       { name: 'Service Index', href: '/#services' },
     ],
     company: [
       { name: 'Identity Core', href: '/#about' },
       { name: 'Operational Process', href: '/#process' },
-      { name: 'Contact Hub', href: '/contact' },
+      { name: 'Unified Contact Hub', href: '/contact' },
     ],
     legal: [
       {
@@ -79,10 +66,10 @@ export const navigationConfig = {
 
   actions: {
     primary: {
-      name: 'ประเมินความเสี่ยงฟรี',
-      href: '/assessment',
-      label: 'START_AUDIT',
-      icon: Zap,
+      name: 'ประเมินโปรไฟล์ฟรี',
+      href: '/contact',
+      label: 'START_ASSESSMENT',
+      icon: Activity, // สื่อถึงการวิเคราะห์ข้อมูลแบบ Live Monitoring
     },
   },
 } as const

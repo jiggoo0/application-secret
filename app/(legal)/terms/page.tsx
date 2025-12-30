@@ -1,195 +1,179 @@
-/** * @format
- * @description TERMS_OF_SERVICE: Service Protocol Agreement (V2.0.2025)
- * ✅ FIXED: Escaped HTML entities to pass linting
- * ✅ REFINED: Typography mapping for Industrial Sharp aesthetics
+/** @format */
+import React from 'react'
+import { Scale, Coins, CheckCircle2, FileLock2, ShieldAlert } from 'lucide-react'
+
+/**
+ * @description TERMS_OF_SERVICE: หน้าข้อกำหนดและเงื่อนไข (Service Protocol Agreement)
+ * 🟢 FIXED: ปิดช่องโหว่ react/no-unescaped-entities และปรับจูนความเนียนของภาษา
  */
 
-import React from 'react'
-import { Scale, Coins, CheckCircle2, FileLock2, ShieldAlert, Signature } from 'lucide-react'
-
 export const metadata = {
-  title: 'Terms_of_Service | JP-VISUAL&DOCS',
+  title: 'Terms_of_Service | JP‑VISOUL&DOCS',
   description: 'ข้อกำหนดและเงื่อนไขการใช้บริการระบบปฏิบัติการเอกสาร (Service Protocol Agreement)',
 }
 
 export default function TermsPage() {
   return (
-    <main className="relative min-h-screen bg-white pb-32 pt-32 font-sans selection:bg-brand selection:text-slate-950 lg:pt-48">
-      {/* 🧩 BLUEPRINT_CANVAS */}
-      <div className="bg-blueprint-grid pointer-events-none absolute inset-0 opacity-[0.04]" />
+    <main className="relative min-h-screen bg-white pb-32 pt-32 font-sans lg:pt-48">
+      {/* 🧩 UI_DECORATION: Blueprint Grid (MODE B) */}
+      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
 
       <article className="container relative z-10 mx-auto max-w-4xl px-6">
-        {/* --- 📟 CONTRACT_HEADER --- */}
-        <div className="mb-24 border-b-4 border-slate-950 pb-16">
-          <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
-            <div className="shadow-sharp inline-flex items-center gap-3 bg-slate-950 px-4 py-2 font-mono text-[11px] font-black uppercase tracking-[0.3em] text-brand">
-              Contract_ID::JPV-TOS-2025
+        {/* --- CONTRACT_HEADER (MODE B) --- */}
+        <div className="mb-20 border-b-4 border-[#020617] pb-12">
+          <div className="mb-8 flex items-center justify-between">
+            <div className="inline-flex items-center gap-2 bg-[#020617] px-3 py-1 font-mono text-[10px] font-black uppercase tracking-[0.3em] text-[#FCDE09] shadow-sharp">
+              Contract_ID: JPV-TOS-2025
             </div>
-            <div className="flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-tighter text-slate-300">
-              <Signature size={14} className="text-slate-200" />
-              STATUS::SYSTEM_ENFORCED_AUTHORIZED
+            <div className="font-mono text-[10px] font-black uppercase tracking-tighter text-slate-300">
+              Stamp: System_Enforced_Authorized
             </div>
           </div>
 
-          <h1 className="text-7xl font-black uppercase italic leading-[0.8] tracking-tighter text-slate-950 md:text-9xl">
+          <h1 className="text-6xl font-black uppercase italic leading-[0.85] tracking-tighter text-[#020617] md:text-8xl">
             Terms <br />
-            <span className="not-italic text-brand drop-shadow-[6px_6px_0px_#020617]">
+            <span className="not-italic text-[#FCDE09] drop-shadow-[4px_4px_0px_#020617]">
               Of_Service.
             </span>
           </h1>
 
-          <div className="mt-12 grid grid-cols-1 gap-10 md:grid-cols-2">
-            <p className="font-sans text-lg font-bold leading-relaxed text-slate-950">
+          <div className="mt-10 grid grid-cols-1 gap-8 md:grid-cols-2">
+            <p className="font-thai text-base font-bold leading-relaxed text-[#020617]">
               เงื่อนไขนี้มีผลผูกพันทางกฎหมายทันทีที่มีการส่งข้อมูลผ่านระบบ
-              โปรดศึกษาข้อตกลงเพื่อรับทราบ{' '}
-              <span className="underline decoration-brand decoration-4 underline-offset-4">
-                ขอบเขตความรับผิดชอบ
-              </span>{' '}
-              และสิทธิ์ในการดำเนินงาน
+              กรุณาอ่านข้อตกลงเพื่อรับทราบขอบเขตความรับผิดชอบและสิทธิ์ในการดำเนินงานของเรา
             </p>
-            <div className="flex flex-col items-end justify-end gap-3 font-mono text-[10px] font-black uppercase text-slate-400">
-              <div className="flex flex-col items-end border-r-4 border-brand pr-4">
-                <span>REVISION: v2.0.2025</span>
-                <span className="text-slate-950">EFFECTIVE: IMMEDIATE_LEGALITY</span>
-              </div>
+            <div className="flex flex-col items-end justify-end gap-2 font-mono text-[10px] font-black uppercase text-slate-400">
+              <span>Revision: v2.0.2025</span>
+              <span className="bg-[#FCDE09] px-2 py-0.5 text-[#020617] shadow-sharp">
+                Effect: Immediate_Legality
+              </span>
             </div>
           </div>
         </div>
 
-        {/* --- 🛡️ PROTOCOL_GRID --- */}
-        <div className="space-y-32 font-sans text-slate-950">
-          {/* Protocol 01 */}
-          <section className="group relative">
-            <div className="mb-10 flex items-start gap-6">
-              <div className="shadow-sharp flex h-16 w-16 shrink-0 items-center justify-center border-2 border-slate-950 bg-white transition-all group-hover:bg-brand">
-                <Scale size={28} />
+        {/* --- PROTOCOL_SECTIONS --- */}
+        <div className="space-y-24 font-thai text-[#020617]">
+          {/* Protocol 01: ขอบเขตและอำนาจตัดสินใจ */}
+          <section className="group">
+            <div className="mb-8 flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
+                <Scale size={24} />
               </div>
               <div>
-                <span className="font-mono text-[11px] font-black uppercase italic tracking-[0.2em] text-slate-400 group-hover:text-brand">
+                <span className="font-mono text-[10px] font-black uppercase italic tracking-widest text-slate-400">
                   Protocol_01
                 </span>
-                <h2 className="text-4xl font-black uppercase italic tracking-tight text-slate-950">
+                <h2 className="text-3xl font-black uppercase italic tracking-tight text-[#020617]">
                   ขอบเขตหน้าที่ (Operational_Scope)
                 </h2>
               </div>
             </div>
-            <div className="ml-24 space-y-8 border-l-2 border-slate-100 pl-12 transition-colors group-hover:border-brand">
-              <p className="text-xl font-bold leading-relaxed">
-                เราให้บริการในฐานะที่ปรึกษาและผู้วางแผนกลยุทธ์ด้านเอกสารเท่านั้น <br />
-                <span className="bg-slate-950 px-2 text-white">
+            <div className="ml-18 space-y-6 border-l-2 border-slate-100 pl-10 transition-colors group-hover:border-[#FCDE09]">
+              <p className="text-lg font-medium leading-relaxed">
+                เราให้บริการในฐานะที่ปรึกษาและผู้วางแผนกลยุทธ์ด้านเอกสารเท่านั้น{' '}
+                <span className="font-black underline decoration-[#FCDE09] decoration-4">
                   การตัดสินใจผลวีซ่าเป็นอำนาจเด็ดขาดของสถานทูต
                 </span>
               </p>
-              <div className="shadow-sharp relative overflow-hidden bg-slate-950 p-8 text-white">
+              <div className="relative flex gap-4 overflow-hidden bg-[#020617] p-6 text-white shadow-sharp">
                 <ShieldAlert
-                  size={80}
-                  className="absolute -bottom-6 -right-6 shrink-0 text-brand opacity-10"
+                  size={48}
+                  className="absolute -bottom-4 -right-4 shrink-0 text-[#FCDE09] opacity-20"
                 />
                 <div className="relative z-10">
-                  <p className="text-[15px] font-bold leading-relaxed">
-                    [DISCLAIMER]: เราไม่รับประกันผลการอนุมัติวีซ่าในทุกกรณี
+                  <p className="text-sm font-bold leading-relaxed">
+                    ข้อจำกัดความรับผิดชอบ: เราไม่รับประกันผลการอนุมัติวีซ่าในทุกกรณี
                     และไม่สามารถถูกฟ้องร้องหรือเรียกค่าเสียหายจากการตัดสินใจของเจ้าหน้าที่กงสุลหรือสถานทูตได้
-                    เนื่องจากเราไม่มีส่วนเกี่ยวข้องกับอำนาจการพิจารณาของรัฐบาลต่างประเทศ
                   </p>
                 </div>
               </div>
             </div>
           </section>
 
-          {/* Protocol 02 */}
-          <section className="group relative">
-            <div className="mb-10 flex items-start gap-6">
-              <div className="shadow-sharp flex h-16 w-16 shrink-0 items-center justify-center border-2 border-slate-950 bg-white transition-all group-hover:bg-brand">
-                <FileLock2 size={28} />
+          {/* Protocol 02: กรรมสิทธิ์ในข้อมูล */}
+          <section className="group">
+            <div className="mb-8 flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
+                <FileLock2 size={24} />
               </div>
               <div>
-                <span className="font-mono text-[11px] font-black uppercase italic tracking-[0.2em] text-slate-400 group-hover:text-brand">
+                <span className="font-mono text-[10px] font-black uppercase italic tracking-widest text-slate-400">
                   Protocol_02
                 </span>
-                <h2 className="text-4xl font-black uppercase italic tracking-tight text-slate-950">
-                  กรรมสิทธิ์ในข้อมูล (IP_Matrix)
+                <h2 className="text-3xl font-black uppercase italic tracking-tight text-[#020617]">
+                  กรรมสิทธิ์ในข้อมูล (Intellectual_Property)
                 </h2>
               </div>
             </div>
-            <div className="ml-24 space-y-8 border-l-2 border-slate-100 pl-12 transition-colors group-hover:border-brand">
-              <p className="text-xl font-bold leading-relaxed">
-                แผนกลยุทธ์และรูปแบบการจัดเตรียมเอกสารที่บริษัทสร้างขึ้น <br />
-                <span className="underline decoration-brand decoration-4 underline-offset-4">
-                  ถือเป็นทรัพย์สินทางปัญญาของบริษัทแต่เพียงผู้เดียว
+            <div className="ml-18 space-y-6 border-l-2 border-slate-100 pl-10 transition-colors group-hover:border-[#FCDE09]">
+              <p className="text-lg font-medium leading-relaxed">
+                ผลการวิเคราะห์ แผนกลยุทธ์ และเอกสารประกอบที่จัดทำขึ้น{' '}
+                <span className="font-black underline decoration-[#FCDE09] decoration-4">
+                  ถือเป็นทรัพย์สินทางปัญญาของเรา
                 </span>
               </p>
-              <p className="text-[16px] font-medium italic text-slate-500">
-                ผู้รับบริการห้ามมิให้นำแนวทางหรือรูปแบบเอกสารไปเผยแพร่ ขายต่อ
-                หรือใช้ในเชิงพาณิชย์อื่นใดโดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษรจาก JP-VISUAL&DOCS
+              <p className="text-base italic text-slate-500">
+                ผู้รับบริการไม่มีสิทธิ์นำแนวทางหรือรูปแบบการจัดเตรียมเอกสารของเราไปเผยแพร่ ขายต่อ
+                หรือใช้ในเชิงพาณิชย์อื่นใดโดยไม่ได้รับอนุญาตเป็นลายลักษณ์อักษร
               </p>
             </div>
           </section>
 
-          {/* Protocol 03 */}
-          <section className="group relative">
-            <div className="mb-10 flex items-start gap-6">
-              <div className="shadow-sharp flex h-16 w-16 shrink-0 items-center justify-center border-2 border-slate-950 bg-white transition-all group-hover:bg-brand">
-                <Coins size={28} />
+          {/* Protocol 03: นโยบายค่าธรรมเนียม */}
+          <section className="group">
+            <div className="mb-8 flex items-start gap-4">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
+                <Coins size={24} />
               </div>
               <div>
-                <span className="font-mono text-[11px] font-black uppercase italic tracking-[0.2em] text-slate-400 group-hover:text-brand">
+                <span className="font-mono text-[10px] font-black uppercase italic tracking-widest text-slate-400">
                   Protocol_03
                 </span>
-                <h2 className="text-4xl font-black uppercase italic tracking-tight text-slate-950">
-                  นโยบายค่าธรรมเนียม (Billing_Policy)
+                <h2 className="text-3xl font-black uppercase italic tracking-tight text-[#020617]">
+                  นโยบายการชำระเงิน (No_Refund_Protocol)
                 </h2>
               </div>
             </div>
-            <div className="ml-24 space-y-8 border-l-2 border-slate-100 pl-12 transition-colors group-hover:border-brand">
-              <div className="border-l-8 border-slate-950 bg-slate-50 p-8">
-                <p className="text-2xl font-black leading-tight text-slate-950">
-                  NON-REFUNDABLE_PROTOCOL
-                </p>
-                <p className="mt-4 text-lg font-bold leading-relaxed text-slate-700">
-                  ค่าธรรมเนียมการดำเนินงานทั้งหมด &quot;ไม่มีนโยบายคืนเงิน&quot;
-                  ไม่ว่าผลการพิจารณาจะเป็นอย่างไร
-                  เนื่องจากบริการได้เริ่มดำเนินการและจัดสรรทรัพยากรผู้เชี่ยวชาญทันทีหลังการตกลง
-                </p>
-              </div>
-              <p className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">
-                REASON::IMMEDIATE_EXPERT_ALLOCATION_PROCESS
+            <div className="ml-18 space-y-6 border-l-2 border-slate-100 pl-10 transition-colors group-hover:border-[#FCDE09]">
+              <p className="text-lg font-black leading-relaxed">
+                เนื่องจากบริการของเราเริ่มดำเนินการทันทีหลังการตกลง ค่าธรรมเนียมการดำเนินงานทั้งหมด
+                {` "ไม่มีนโยบายคืนเงิน" `} (Non-Refundable) ไม่ว่าผลการยื่นวีซ่าจะเป็นอย่างไร
+              </p>
+              <p className="font-mono text-sm font-bold uppercase text-slate-400">
+                Reason: Immediate_Expert_Allocation_and_Strategic_Labor
               </p>
             </div>
           </section>
         </div>
 
-        {/* --- 🖋️ DIGITAL_SIGNATURE_SEAL --- */}
-        <div className="shadow-sharp relative mt-40 overflow-hidden border-4 border-slate-950 bg-slate-50 p-12">
-          <div className="pointer-events-none absolute -right-4 -top-4 p-4 opacity-[0.03]">
-            <CheckCircle2 size={180} />
+        {/* --- SIGNATURE_AREA (MODE B: Industrial Sharp) --- */}
+        <div className="relative mt-32 overflow-hidden border-4 border-[#020617] bg-slate-50 p-10 shadow-sharp">
+          <div className="pointer-events-none absolute right-0 top-0 p-4 opacity-10">
+            <CheckCircle2 size={120} />
           </div>
 
-          <div className="relative z-10 flex flex-col items-center justify-between gap-12 md:flex-row">
-            <div className="max-w-md space-y-4">
+          <div className="relative z-10 flex flex-col items-center justify-between gap-8 md:flex-row">
+            <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="shadow-sharp h-4 w-4 bg-emerald-500" />
-                <span className="font-mono text-[12px] font-black uppercase tracking-[0.4em] text-slate-950">
-                  AUTHENTICATION_CONFIRMED
+                <div className="h-4 w-4 bg-[#10B981] shadow-sharp" />
+                <span className="font-mono text-[12px] font-black uppercase tracking-[0.3em] text-[#020617]">
+                  Authorization_Confirmed
                 </span>
               </div>
-              <p className="font-sans text-[13px] font-bold leading-relaxed text-slate-500">
-                การคลิกตกลงหรือส่งข้อมูลผ่านระบบปฏิบัติการนี้ ถือเป็นการ <br />
-                <span className="font-black italic text-slate-950">
-                  &quot;ลงนามทางอิเล็กทรอนิกส์ (Electronic Signature)&quot;
-                </span>{' '}
+              <p className="font-thai text-[11px] font-bold leading-relaxed text-slate-500">
+                การส่งข้อมูลผ่านระบบถือเป็นการ {` "ลงนามทางอิเล็กทรอนิกส์" `} (Electronic Signature){' '}
                 <br />
-                ที่แสดงเจตนาตกลงรับเงื่อนไขและข้อกำหนดทั้งหมดโดยสมบูรณ์
+                ที่แสดงเจตนาตกลงรับเงื่อนไขและข้อกำหนดทั้งหมดที่ระบุไว้ข้างต้น
               </p>
             </div>
 
-            <div className="flex flex-col items-center border-slate-200 pl-0 text-center md:items-end md:border-l-2 md:pl-10 md:text-right">
-              <span className="mb-2 font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-300">
-                Verified_Endpoint
+            <div className="flex flex-col items-end border-l-2 border-[#020617] pl-8 text-right">
+              <span className="mb-1 font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+                Authenticated_By
               </span>
-              <span className="font-mono text-2xl font-black italic tracking-tighter text-slate-950">
-                JPV_TERMINAL_2025
+              <span className="font-mono text-xl font-black italic tracking-tighter text-[#020617]">
+                JP_VISOUL_TERMINAL
               </span>
-              <div className="mt-4 h-1 w-full bg-slate-950" />
             </div>
           </div>
         </div>

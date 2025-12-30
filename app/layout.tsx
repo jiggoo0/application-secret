@@ -1,11 +1,11 @@
 /**
  * @format
- * @description ROOT_LAYOUT: Protocol V4.6.0 (Strict Sharp Edition)
- * ✅ FIXED: Import Paths, Metadata Type Consistency, Theme Synchronization
+ * @description ROOT_LAYOUT: Master Architecture (V5.1.0 - High Visibility)
+ * ✅ MASTER_REFACTOR: ปรับปรุง Contrast และลำดับ Font เพื่อแก้ปัญหาตัวหนังสือจาง
+ * ✅ INDUSTRIAL_SHARP: บังคับใช้ระบบ High-Contrast (White on Deep Slate)
  */
 
 import type { Metadata, Viewport } from 'next'
-// 🛡️ FIX: เปลี่ยน Path ให้ตรงกับโครงสร้างไฟล์จริงของคุณ
 import { siteConfig } from '@/config/site'
 import { Providers } from './providers'
 import { JsonLd } from '@/components/seo/JsonLd'
@@ -15,7 +15,7 @@ import { inter, ibmPlexSansThai, jetbrainsMono } from '@/lib/fonts'
 import './globals.css'
 
 /* -------------------------------------------------------------------------- */
-/* METADATA_ENGINE                           */
+/* METADATA_ENGINE */
 /* -------------------------------------------------------------------------- */
 
 export const metadata: Metadata = {
@@ -25,7 +25,6 @@ export const metadata: Metadata = {
     template: siteConfig.seo.titleTemplate,
   },
   description: siteConfig.seo.description,
-  // 🛡️ FIX: บังคับให้เป็น Mutable Array เพื่อรองรับ Next.js 15 Metadata Type
   keywords: Array.isArray(siteConfig.seo.keywords) ? [...siteConfig.seo.keywords] : [],
   authors: [{ name: siteConfig.author.name }],
   creator: siteConfig.author.name,
@@ -41,39 +40,44 @@ export const metadata: Metadata = {
         url: siteConfig.assets.ogImage,
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} - Infrastructure`,
+        alt: `${siteConfig.name} - Technical Document Specialist`,
       },
     ],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 }
 
 /* -------------------------------------------------------------------------- */
-/* VIEWPORT_PROTOCOL                         */
+/* VIEWPORT_PROTOCOL */
 /* -------------------------------------------------------------------------- */
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#05080A', // Rich Black เพื่อความหรูหราแบบ Industrial
+  themeColor: '#020617', // Slate-950
 }
 
 /* -------------------------------------------------------------------------- */
-/* MAIN_ARCHITECTURE                        */
+/* MAIN_ARCHITECTURE */
 /* -------------------------------------------------------------------------- */
 
 interface RootLayoutProps {
   children: React.ReactNode
 }
 
-const RootLayout = ({ children }: RootLayoutProps) => {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
-      lang={siteConfig.language?.[0] || 'th'}
+      lang="th"
       className={cn(
-        'scroll-smooth',
-        inter.variable,
+        'scroll-smooth antialiased',
+        // นำ Variable ของ Font ทั้งหมดมาใส่ที่ html เพื่อให้เรียกใช้ได้ทั่วถึง
         ibmPlexSansThai.variable,
+        inter.variable,
         jetbrainsMono.variable,
       )}
       suppressHydrationWarning
@@ -84,24 +88,26 @@ const RootLayout = ({ children }: RootLayoutProps) => {
 
       <body
         className={cn(
-          'min-h-screen antialiased',
-          'bg-base-bg text-base-text font-sans', // ใช้ CSS Variables ที่แมปกับ Tailwind config
-          'selection:bg-brand-accent selection:text-brand-primary',
+          // เปลี่ยน text-white เป็น text-slate-100 (ขาวนวลที่คมชัด) เพื่อลดความล้าของสายตาแต่ยัง Contrast สูง
+          'min-h-screen bg-[#020617] font-sans text-slate-100 selection:bg-[#FCDE09] selection:text-slate-950',
+          'scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-[#FCDE09]',
         )}
       >
         <Providers>
           <main className="relative flex min-h-screen flex-col overflow-x-hidden">
-            {/* 📐 Blueprint Grid Overlay: ความแม่นยำระดับ 0.015 Opacity */}
+            {/* 📐 Blueprint Grid Overlay: ปรับลดความเข้มเส้นตารางลงอีกเพื่อให้ตัวหนังสือเด้งออกมา */}
             <div
-              className="bg-blueprint-grid pointer-events-none fixed inset-0 z-[-1] opacity-[0.015]"
+              className="pointer-events-none fixed inset-0 z-[-1] bg-[url('/grid-pattern.svg')] bg-repeat opacity-[0.015]"
               aria-hidden="true"
             />
-            {children}
+
+            {/* เลเยอร์ป้องกันตัวหนังสือจม: ใช้ Gradient จางๆ ทับหน้า Grid อีกที */}
+            <div className="pointer-events-none fixed inset-0 z-[-1] bg-gradient-to-b from-transparent via-[#020617]/50 to-[#020617]" />
+
+            <div className="relative z-10 flex min-h-screen flex-col">{children}</div>
           </main>
         </Providers>
       </body>
     </html>
   )
 }
-
-export default RootLayout

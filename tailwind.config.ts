@@ -1,91 +1,103 @@
+/** @format */
 import type { Config } from 'tailwindcss'
-import { theme as brandTheme } from './config/theme'
-import animate from 'tailwindcss-animate'
-import typography from '@tailwindcss/typography'
-
-/**
- * 🛰️ TAILWIND_CONFIG_ARCHITECT_EDITION (V4.2.1-STRICT)
- * ✅ FIXED: Slate Property Error, Path Alignment, Type-Safe Tokens
- */
+import tailwindAnimate from 'tailwindcss-animate'
 
 const config: Config = {
   darkMode: ['class'],
-  content: ['./app/**/*.{ts,tsx}', './components/**/*.{ts,tsx}', './src/**/*.{ts,tsx}'],
+  content: [
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './lib/**/*.{js,ts,jsx,tsx,mdx}',
+  ],
   theme: {
     container: {
       center: true,
       padding: {
         DEFAULT: '1.5rem',
-        xl: '2.5rem',
+        sm: '2rem',
+        lg: '4rem',
       },
       screens: {
-        '2xl': '1400px', // ใช้ค่า Static เพื่อลดความซับซ้อนของการเรียกใช้ theme object
+        '2xl': '1400px',
       },
     },
     extend: {
       colors: {
-        // 🏗️ PRIMARY_AXIS: บังคับใช้ค่าจาก Brand Theme โดยตรง
         brand: {
-          DEFAULT: brandTheme.colors.brand.accent, // #C8A45D (Gold)
-          foreground: brandTheme.colors.brand.primary, // #020617 (Black)
-          dark: brandTheme.colors.brand.primary,
+          DEFAULT: '#FCDE09',
+          dark: '#D4BC08',
+          light: '#FFF9C4',
         },
-        // 🛡️ SYSTEM_TOKENS: แมปเข้ากับ CSS Variables ของ Shadcn/UI
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: brandTheme.colors.brand.accent,
-        background: brandTheme.colors.base.bg,
-        foreground: brandTheme.colors.base.text,
-
-        // 🌑 DARK_MATTER: นิยาม Slate ใหม่เองเพื่อป้องกัน TS2339
+        // 🏗️ INDUSTRIAL_SLATE: เข้ม ดุดัน สไตล์โรงงาน
         slate: {
-          950: '#020617',
+          '50': '#FFFFFF',
+          '100': '#F8FAFC',
+          '200': '#F1F5F9',
+          '300': '#E2E8F0',
+          '400': '#CBD5E1',
+          '500': '#94A3B8',
+          '900': '#0F172A',
+          '950': '#020617',
+        },
+        success: '#10B981',
+        warning: '#F59E0B',
+        error: '#EF4444',
+        sidebar: {
+          DEFAULT: 'hsl(var(--sidebar-background))',
+          foreground: 'hsl(var(--sidebar-foreground))',
+          primary: 'hsl(var(--sidebar-primary))',
+          'primary-foreground': 'hsl(var(--sidebar-primary-foreground))',
+          accent: 'hsl(var(--sidebar-accent))',
+          'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
+          border: 'hsl(var(--sidebar-border))',
+          ring: 'hsl(var(--sidebar-ring))',
         },
       },
-
-      // 📏 GEOMETRY: บังคับขอบคม 100% (No Border Radius)
-      borderRadius: {
-        none: '0',
-        DEFAULT: '0',
-        sharp: '0',
-        sm: '0',
-        md: '0',
-        lg: '0',
-        full: '9999px', // ยกเว้นสำหรับ Avatar หรือ Badge วงกลม
+      fontFamily: {
+        sans: ['var(--font-inter)', 'var(--font-thai)', 'sans-serif'],
+        thai: ['var(--font-thai)', 'sans-serif'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
-
-      // 🌑 DEPTH_PROTOCOL: Hard Shadow (ห้ามฟุ้ง)
-      boxShadow: {
-        'sharp-sm': `2px 2px 0px 0px ${brandTheme.colors.brand.primary}`,
-        'sharp-md': `4px 4px 0px 0px ${brandTheme.colors.brand.primary}`,
-        'sharp-brand': `4px 4px 0px 0px ${brandTheme.colors.brand.accent}`,
-        'sharp-lg': `8px 8px 0px 0px ${brandTheme.colors.brand.primary}`,
-      },
-
-      // ⚡ MECHANICAL_TIMING
+      // 📐 MASTER_TRANSITION: แก้ปัญหา Ambiguous Class Warning
       transitionTimingFunction: {
-        industrial: 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'sharp-ease': 'cubic-bezier(0.23, 1, 0.32, 1)',
       },
-
+      boxShadow: {
+        // 📐 SHARP_SHADOW_SYSTEM: เงาเหลี่ยมแบบอุตสาหกรรม
+        sharp: '8px 8px 0px 0px #020617',
+        'sharp-brand': '8px 8px 0px 0px #FCDE09',
+        'sharp-sm': '4px 4px 0px 0px #020617',
+        'sharp-white': '8px 8px 0px 0px #FFFFFF',
+      },
       backgroundImage: {
-        'industrial-grid': `linear-gradient(to right, ${brandTheme.colors.brand.primary}1A 1px, transparent 1px), linear-gradient(to bottom, ${brandTheme.colors.brand.primary}1A 1px, transparent 1px)`,
+        'blueprint-grid': "url('/grid-pattern.svg')",
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      },
+      animation: {
+        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        scanline: 'scanline 8s linear infinite',
+        'accordion-down': 'accordion-down 0.2s ease-out',
+        'accordion-up': 'accordion-up 0.2s ease-out',
+      },
+      keyframes: {
+        scanline: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100%)' },
+        },
+        'accordion-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-accordion-content-height)' },
+        },
+        'accordion-up': {
+          from: { height: 'var(--radix-accordion-content-height)' },
+          to: { height: '0' },
+        },
       },
     },
   },
-  plugins: [
-    animate,
-    typography,
-    // CUSTOM_UTILITY: สร้างคลาสสำหรับขอบคมแบบ Manual
-    function ({ addUtilities }: any) {
-      addUtilities({
-        '.border-sharp': {
-          'border-style': 'solid',
-          'border-width': '1px',
-          'border-color': brandTheme.colors.brand.primary,
-        },
-      })
-    },
-  ],
+  // ✅ FIXED: ใช้ ESM Import แทน require เพื่อปิดช่องโหว่ ESLint
+  plugins: [tailwindAnimate],
 }
 
 export default config

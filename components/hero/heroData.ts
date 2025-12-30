@@ -1,48 +1,69 @@
-/** * @format
- * @description HERO_DATA_REGISTRY: The Central Source of Truth (V2.6)
- * ✅ ENFORCEMENT: Type-Safe Interface, Industrial Metadata
+/** @format */
+import { Globe2, FileText, Landmark, ShieldCheck, type LucideIcon } from 'lucide-react'
+
+/**
+ * 🛠️ SERVICE_INTERFACE: กำหนดมาตรฐานข้อมูลบริการ
  */
-
-import { ShieldCheck, Lock, Target, LucideIcon } from 'lucide-react'
-
-export interface HeroSignal {
-  icon: LucideIcon
+export interface ServiceItem {
+  icon: LucideIcon // 🟢 ปิดช่องโหว่: ระบุประเภทไอคอนให้ชัดเจน
   label: string
+  title: string
+  description: string // 🟢 ปรับให้เป็น Mandatory เพื่อความเนียนของ UI Layout
 }
 
-export interface HeroData {
-  id: string
-  version: string
-  eyebrow: string
-  headline: string
-  highlight: string
-  description: string
-  signals: HeroSignal[]
-  cta: {
-    primary: string
-    secondary?: string
-  }
+export interface TrustStat {
+  label: string
+  value: string
+  unit: string
 }
 
 /**
- * 🛰️ REGISTRY: ข้อมูลหลักสำหรับ Hero Section
- * ปรับจูน Copywriting ให้มีน้ำหนัก (Gravitas) และดูเป็นทางการ
+ * 🏗️ CORE_SERVICES: รายการบริการหลัก (Read-only)
  */
-export const HERO_REGISTRY: HeroData = {
-  id: 'JPVD_CORE_STABLE',
-  version: '2.6.0',
-  eyebrow: 'JP Visual & Docs // Professional Identity',
-  headline: 'Structured Solutions',
-  highlight: 'For Sensitive Business',
-  description:
-    'ยกระดับธุรกิจนอกกรอบสู่มาตรฐานสากล ด้วยการออกแบบโครงสร้างเอกสารและภาพลักษณ์เชิงกลยุทธ์ เพื่อความมั่นคง ปลอดภัย และความน่าเชื่อถือระดับสูงสุด',
-  signals: [
-    { icon: ShieldCheck, label: 'Professional Standard' },
-    { icon: Lock, label: 'Client Confidentiality' },
-    { icon: Target, label: 'Result Oriented' },
-  ],
-  cta: {
-    primary: 'START_INITIAL_AUDIT',
-    secondary: 'VIEW_SERVICES',
+export const serviceList: ServiceItem[] = [
+  {
+    icon: Globe2,
+    label: 'VISA_PROTOCOL',
+    title: 'วีซ่าท่องเที่ยวและทำงาน',
+    description: 'ดูแลคำร้องและนัดหมายให้ครบถ้วน สบายใจทุกขั้นตอนการยื่น',
   },
-}
+  {
+    icon: FileText,
+    label: 'DOC_STRUCTURE',
+    title: 'จัดเตรียมเอกสารครบวงจร',
+    description: 'ตรวจทานและเตรียมเอกสารสำคัญให้ถูกต้องแม่นยำตามมาตรฐานสากล',
+  },
+  {
+    icon: Landmark,
+    label: 'CORP_REGISTRY',
+    title: 'จดทะเบียนและเอกสารบริษัท',
+    description: 'ที่ปรึกษาด้านงานเอกสาร เพื่อการเริ่มต้นและเติบโตของธุรกิจอย่างมั่นคง',
+  },
+  {
+    icon: ShieldCheck,
+    label: 'LEGAL_SYNC',
+    title: 'รับรองเอกสารทางกฎหมาย',
+    description: 'ดูแลการรับรองเอกสารสำคัญและประสานงานกงสุลอย่างมืออาชีพ',
+  },
+] as const
+
+/**
+ * 📊 PERFORMANCE_METRICS: สถิติความเชื่อมั่น
+ */
+export const trustStats: TrustStat[] = [
+  {
+    label: 'SUCCESS_RATE',
+    value: '99',
+    unit: '%',
+  },
+  {
+    label: 'SERVICE_YEARS',
+    value: '08',
+    unit: 'ปี',
+  },
+  {
+    label: 'CLIENT_NODES',
+    value: '2.5K',
+    unit: 'ราย',
+  },
+] as const
