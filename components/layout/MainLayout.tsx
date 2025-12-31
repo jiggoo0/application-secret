@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react'
 import { Header } from '@/components/Header'
 import { Footer } from '@/components/Footer'
 import { MobileMenu } from '@/components/MobileMenu'
+// 🗑️ REMOVED: ถอด FloatingSearchButton ออกตามคำสั่งตรวจสอบ
 import { navigationConfig } from '@/config/navigation'
 import { inter, ibmPlexSansThai, jetbrainsMono } from '@/lib/fonts'
 import { cn } from '@/lib/utils'
@@ -15,15 +16,12 @@ interface MainLayoutProps {
 }
 
 /**
- * 🛰️ COMPONENT: MainLayout
- * PURPOSE: โครงสร้างหลักของเว็บไซต์ (Unified Architecture)
- * ✅ FIXED: แก้ไข Path การ Import ให้ตรงกับ Folder Structure จริง
- * ✅ FIXED: ตัดการทำ Double Export เพื่อแก้ปัญหา Knip Duplicate Exports
+ * 🛰️ COMPONENT: MainLayout (REFINE_MODE)
+ * PURPOSE: โครงสร้างหลักที่เน้นความคลีนและระบบนำทางมาตรฐาน
  */
 export default function MainLayout({ children }: MainLayoutProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
-  // 🔒 SCROLL_LOCK_PROTOCOL: ป้องกันการเลื่อนหน้าจอเมื่อเปิดเมนู Mobile
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden'
@@ -44,7 +42,6 @@ export default function MainLayout({ children }: MainLayoutProps) {
         'min-h-screen bg-white font-sans selection:bg-[#FCDE09] selection:text-[#020617]',
       )}
     >
-      {/* 🧭 NAVIGATION_SYSTEM */}
       <MobileMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
@@ -53,10 +50,10 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
       <Header onMenuOpen={() => setIsMenuOpen(true)} />
 
-      {/* 🏗️ CONTENT_STRATA: ปรับ Padding-top ให้พอดีกับ Header ความสูง 20 unit */}
-      <main className="relative flex flex-1 flex-col pt-20">{children}</main>
+      <main className="relative flex flex-1 flex-col pt-20">
+        {children}
+      </main>
 
-      {/* 🏁 FOOTER_SYSTEM */}
       <Footer />
     </div>
   )
