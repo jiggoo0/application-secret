@@ -1,25 +1,21 @@
 /** @format */
+
 import React from 'react'
 import { Scale, Coins, CheckCircle2, FileLock2, ShieldAlert } from 'lucide-react'
 
-/**
- * @description TERMS_OF_SERVICE: หน้าข้อกำหนดและเงื่อนไข (Service Protocol Agreement)
- * 🟢 FIXED: ปิดช่องโหว่ react/no-unescaped-entities และปรับจูนความเนียนของภาษา
- */
-
 export const metadata = {
-  title: 'Terms_of_Service | JP‑VISOUL&DOCS',
+  title: 'Terms_of_Service | JP-VISOUL&DOCS',
   description: 'ข้อกำหนดและเงื่อนไขการใช้บริการระบบปฏิบัติการเอกสาร (Service Protocol Agreement)',
 }
 
 export default function TermsPage() {
   return (
     <main className="relative min-h-screen bg-white pb-32 pt-32 font-sans lg:pt-48">
-      {/* 🧩 UI_DECORATION: Blueprint Grid (MODE B) */}
+      {/* BACKGROUND GRID */}
       <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
 
       <article className="container relative z-10 mx-auto max-w-4xl px-6">
-        {/* --- CONTRACT_HEADER (MODE B) --- */}
+        {/* HEADER */}
         <div className="mb-20 border-b-4 border-[#020617] pb-12">
           <div className="mb-8 flex items-center justify-between">
             <div className="inline-flex items-center gap-2 bg-[#020617] px-3 py-1 font-mono text-[10px] font-black uppercase tracking-[0.3em] text-[#FCDE09] shadow-sharp">
@@ -51,9 +47,9 @@ export default function TermsPage() {
           </div>
         </div>
 
-        {/* --- PROTOCOL_SECTIONS --- */}
+        {/* CONTENT */}
         <div className="space-y-24 font-thai text-[#020617]">
-          {/* Protocol 01: ขอบเขตและอำนาจตัดสินใจ */}
+          {/* PROTOCOL 01 */}
           <section className="group">
             <div className="mb-8 flex items-start gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
@@ -68,6 +64,7 @@ export default function TermsPage() {
                 </h2>
               </div>
             </div>
+
             <div className="ml-18 space-y-6 border-l-2 border-slate-100 pl-10 transition-colors group-hover:border-[#FCDE09]">
               <p className="text-lg font-medium leading-relaxed">
                 เราให้บริการในฐานะที่ปรึกษาและผู้วางแผนกลยุทธ์ด้านเอกสารเท่านั้น{' '}
@@ -75,22 +72,21 @@ export default function TermsPage() {
                   การตัดสินใจผลวีซ่าเป็นอำนาจเด็ดขาดของสถานทูต
                 </span>
               </p>
+
               <div className="relative flex gap-4 overflow-hidden bg-[#020617] p-6 text-white shadow-sharp">
                 <ShieldAlert
                   size={48}
-                  className="absolute -bottom-4 -right-4 shrink-0 text-[#FCDE09] opacity-20"
+                  className="absolute -bottom-4 -right-4 text-[#FCDE09] opacity-20"
                 />
-                <div className="relative z-10">
-                  <p className="text-sm font-bold leading-relaxed">
-                    ข้อจำกัดความรับผิดชอบ: เราไม่รับประกันผลการอนุมัติวีซ่าในทุกกรณี
-                    และไม่สามารถถูกฟ้องร้องหรือเรียกค่าเสียหายจากการตัดสินใจของเจ้าหน้าที่กงสุลหรือสถานทูตได้
-                  </p>
-                </div>
+                <p className="relative z-10 text-sm font-bold leading-relaxed">
+                  ข้อจำกัดความรับผิดชอบ: เราไม่รับประกันผลการอนุมัติวีซ่าในทุกกรณี
+                  และไม่สามารถถูกฟ้องร้องหรือเรียกค่าเสียหายจากการตัดสินใจของเจ้าหน้าที่กงสุลหรือสถานทูตได้
+                </p>
               </div>
             </div>
           </section>
 
-          {/* Protocol 02: กรรมสิทธิ์ในข้อมูล */}
+          {/* PROTOCOL 02 */}
           <section className="group">
             <div className="mb-8 flex items-start gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
@@ -105,6 +101,7 @@ export default function TermsPage() {
                 </h2>
               </div>
             </div>
+
             <div className="ml-18 space-y-6 border-l-2 border-slate-100 pl-10 transition-colors group-hover:border-[#FCDE09]">
               <p className="text-lg font-medium leading-relaxed">
                 ผลการวิเคราะห์ แผนกลยุทธ์ และเอกสารประกอบที่จัดทำขึ้น{' '}
@@ -119,7 +116,7 @@ export default function TermsPage() {
             </div>
           </section>
 
-          {/* Protocol 03: นโยบายค่าธรรมเนียม */}
+          {/* PROTOCOL 03 */}
           <section className="group">
             <div className="mb-8 flex items-start gap-4">
               <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
@@ -134,10 +131,12 @@ export default function TermsPage() {
                 </h2>
               </div>
             </div>
+
             <div className="ml-18 space-y-6 border-l-2 border-slate-100 pl-10 transition-colors group-hover:border-[#FCDE09]">
               <p className="text-lg font-black leading-relaxed">
-                เนื่องจากบริการของเราเริ่มดำเนินการทันทีหลังการตกลง ค่าธรรมเนียมการดำเนินงานทั้งหมด
-                {` "ไม่มีนโยบายคืนเงิน" `} (Non-Refundable) ไม่ว่าผลการยื่นวีซ่าจะเป็นอย่างไร
+                เนื่องจากบริการเริ่มดำเนินการทันทีหลังการตกลง ค่าธรรมเนียมทั้งหมด
+                <span className="mx-1 font-black">&quot;ไม่มีนโยบายคืนเงิน&quot;</span>
+                (Non-Refundable) ไม่ว่าผลการยื่นวีซ่าจะเป็นอย่างไร
               </p>
               <p className="font-mono text-sm font-bold uppercase text-slate-400">
                 Reason: Immediate_Expert_Allocation_and_Strategic_Labor
@@ -146,7 +145,7 @@ export default function TermsPage() {
           </section>
         </div>
 
-        {/* --- SIGNATURE_AREA (MODE B: Industrial Sharp) --- */}
+        {/* SIGNATURE */}
         <div className="relative mt-32 overflow-hidden border-4 border-[#020617] bg-slate-50 p-10 shadow-sharp">
           <div className="pointer-events-none absolute right-0 top-0 p-4 opacity-10">
             <CheckCircle2 size={120} />
@@ -155,15 +154,17 @@ export default function TermsPage() {
           <div className="relative z-10 flex flex-col items-center justify-between gap-8 md:flex-row">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <div className="h-4 w-4 bg-[#10B981] shadow-sharp" />
+                <span className="h-4 w-4 bg-[#10B981] shadow-sharp" />
                 <span className="font-mono text-[12px] font-black uppercase tracking-[0.3em] text-[#020617]">
                   Authorization_Confirmed
                 </span>
               </div>
               <p className="font-thai text-[11px] font-bold leading-relaxed text-slate-500">
-                การส่งข้อมูลผ่านระบบถือเป็นการ {` "ลงนามทางอิเล็กทรอนิกส์" `} (Electronic Signature){' '}
+                การส่งข้อมูลผ่านระบบถือเป็นการ
+                <span className="mx-1 font-bold">&quot;ลงนามทางอิเล็กทรอนิกส์&quot;</span>
+                (Electronic Signature)
                 <br />
-                ที่แสดงเจตนาตกลงรับเงื่อนไขและข้อกำหนดทั้งหมดที่ระบุไว้ข้างต้น
+                เพื่อยืนยันการยอมรับเงื่อนไขทั้งหมด
               </p>
             </div>
 

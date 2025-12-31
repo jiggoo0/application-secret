@@ -9,9 +9,8 @@ import { ThemeProvider } from 'next-themes'
  * 🛰️ SYSTEM_PROVIDERS_PROTOCOL (UPDATED – DARK LUXURY)
  * ----------------------------------------------------------------
  * - บังคับ Dark Theme เป็นค่าเริ่มต้น
- * - ตัด white scaffold ทิ้ง
- * - ใช้ token จาก globals.css โดยตรง
- * - ป้องกัน FOUC แบบไม่ทำลาย theme
+ * - ใช้ Design Token จาก globals.css โดยตรง
+ * - ป้องกัน FOUC โดยไม่สร้าง white scaffold
  */
 export const Providers = ({ children }: { children: React.ReactNode }) => {
   const [mounted, setMounted] = React.useState(false)
@@ -22,11 +21,17 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
 
   /**
    * 🛡️ HYDRATION_SAFETY
-   * ใช้พื้นหลังตาม token จริง (ไม่ใช้ white)
+   * ใช้ token จริงจาก :root
    */
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-[var(--bg)] text-[var(--text)]">
+      <div
+        className="min-h-screen antialiased"
+        style={{
+          backgroundColor: 'var(--background)',
+          color: 'var(--foreground)',
+        }}
+      >
         <div className="opacity-0">{children}</div>
       </div>
     )
@@ -40,7 +45,13 @@ export const Providers = ({ children }: { children: React.ReactNode }) => {
       disableTransitionOnChange
     >
       {/* 🚀 GLOBAL_LAYOUT_WRAPPER */}
-      <div className="relative flex min-h-screen flex-col bg-[var(--bg)] text-[var(--text)] antialiased selection:bg-[rgba(200,164,93,0.25)] selection:text-white">
+      <div
+        className="relative flex min-h-screen flex-col antialiased selection:bg-[#FCDE09]/25 selection:text-slate-950"
+        style={{
+          backgroundColor: 'var(--background)',
+          color: 'var(--foreground)',
+        }}
+      >
         {children}
       </div>
     </ThemeProvider>

@@ -1,41 +1,75 @@
 /** @format */
 
+/* ------------------------------------------------------------------ */
+/* ENUM / UNION PROTOCOL                                              */
+/* ------------------------------------------------------------------ */
+
+export type ArtifactType = 'document' | 'code' | 'diagram' | 'link' | (string & {})
+
+export type ActivityStatus =
+  | 'success'
+  | 'warning'
+  | 'info'
+  | 'ANALYZED'
+  | 'EXECUTED'
+  | 'VERIFIED'
+  | (string & {})
+
+export type ClientCategory =
+  | 'FREELANCE'
+  | 'FAMILY'
+  | 'INDIVIDUAL'
+  | 'SME_OWNER'
+  | 'HNWI'
+  | (string & {})
+
+export type ComplexityLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | (string & {})
+
+/* ------------------------------------------------------------------ */
+/* ARTIFACT                                                           */
+/* ------------------------------------------------------------------ */
 /**
- * 🛠️ INTERFACE: Artifact
  * MODE A: Strict Alignment with Data Files
- * บังคับมี type แต่ title และ url เป็น optional เพื่อรองรับข้อมูลเดิม
+ * - บังคับ label / type / description
+ * - title / url เป็น optional เพื่อรองรับข้อมูลเดิม
  */
 export interface Artifact {
   label: string
-  type: 'document' | 'code' | 'diagram' | 'link' | string
+  type: ArtifactType
   description: string
   title?: string
   url?: string
 }
 
+/* ------------------------------------------------------------------ */
+/* ACTIVITY LOG                                                       */
+/* ------------------------------------------------------------------ */
 /**
- * 🛠️ INTERFACE: ActivityLog
- * ปรับ status ให้เป็น Enum-like string เพื่อรองรับการแสดงผลสีใน UI
+ * - ใช้ status แบบ Enum-like string
+ * - รองรับการ map สีใน UI
  */
 export interface ActivityLog {
   day: number
   event: string
-  status: 'success' | 'warning' | 'info' | 'ANALYZED' | 'EXECUTED' | 'VERIFIED' | string
+  status: ActivityStatus
 }
 
+/* ------------------------------------------------------------------ */
+/* CASE SHOWCASE                                                      */
+/* ------------------------------------------------------------------ */
 /**
- * 🛠️ INTERFACE: CaseShowcase
  * MODE A: Flexible Schema Protocol
- * ทำให้ฟิลด์ที่ไม่ได้ใช้ในทุกไฟล์ข้อมูลเป็น Optional (?) เพื่อแก้ TS2740
+ * - ฟิลด์ที่ไม่อยู่ครบทุกไฟล์กำหนดเป็น optional
+ * - แก้ปัญหา TS2740 จาก data ไม่ครบ schema
  */
 export interface CaseShowcase {
   id: string
   slug: string
   title: string
   executive_summary: string
-  client_category: 'FREELANCE' | 'FAMILY' | 'INDIVIDUAL' | 'SME_OWNER' | 'HNWI' | string
+  client_category: ClientCategory
 
-  // Optional Fields for Type-Safety (TS2740 Fix)
+  /* ---------------- Optional Meta ---------------- */
   description?: string
   date?: string
   status?: string
@@ -43,20 +77,21 @@ export interface CaseShowcase {
   tags?: string[]
   image?: string
 
-  // Performance Data Structure
+  /* ---------------- Performance ------------------ */
   stats?: {
     docs_processed?: number | string
-    complexity_level: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | string
+    complexity_level: ComplexityLevel
     processing_time?: string
   }
 
-  // Regulatory Outcome
+  /* ---------------- Outcome ---------------------- */
   business_outcome?: {
     verdict: string
     authority: string
     official_ref: string
   }
 
+  /* ---------------- Core Data -------------------- */
   technical_strategy: string[]
   artifacts: Artifact[]
   logs: ActivityLog[]

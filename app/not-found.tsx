@@ -1,4 +1,5 @@
 /** @format */
+
 import React from 'react'
 import Link from 'next/link'
 import { Terminal, AlertTriangle, ChevronRight, Home } from 'lucide-react'

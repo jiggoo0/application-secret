@@ -19,8 +19,11 @@ import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 
 /**
- * 🛠️ Master Handshake Logic
- * จัดการเรื่องการตรวจสอบสิทธิ์และเปลี่ยนเส้นทางให้เนียนที่สุด
+ * 🛠️ VERIFY_HANDSHAKE_CORE (UPDATED)
+ * FIX:
+ * - ตัด token ออก (สอดคล้องกับ createLead)
+ * - ใช้ id + verified เป็นแหล่งความจริง
+ * - ไม่มีโหมดจำลอง / ทดสอบ
  */
 function VerifyContent() {
   const router = useRouter()
@@ -28,58 +31,55 @@ function VerifyContent() {
   const [status, setStatus] = useState<'PROCESSING' | 'SUCCESS' | 'ERROR'>('PROCESSING')
   const [currentStep, setCurrentStep] = useState(0)
 
-  // Technical Standard: ลำดับขั้นตอนการตรวจสอบ (Static Data)
   const verificationSteps = React.useMemo(
     () => [
       { label: 'INITIATE_HANDSHAKE', icon: <Activity size={14} /> },
-      { label: 'DECRYPT_SECURE_TOKEN', icon: <Lock size={14} /> },
-      { label: 'CROSS_CHECK_DATABASE', icon: <Database size={14} /> },
+      { label: 'CROSS_CHECK_ID', icon: <Database size={14} /> },
+      { label: 'VERIFY_STATE_FLAG', icon: <Lock size={14} /> },
       { label: 'FINALIZE_AUTHORIZATION', icon: <Fingerprint size={14} /> },
     ],
     [],
   )
 
   useEffect(() => {
-    const token = searchParams.get('token')
     const id = searchParams.get('id')
     const name = searchParams.get('name')
+    const verified = searchParams.get('verified')
     const type = searchParams.get('type') || 'contact'
 
     const performHandshake = async () => {
-      // เช็กจุดบอดเบื้องต้น
-      if (!token || !id) {
+      // 🔒 Gate ตรวจสอบเส้นทางจริง
+      if (!id || verified !== 'true') {
         setStatus('ERROR')
         return
       }
 
-      // ปั้นเคสจำลองการทำงานของระบบหลังบ้าน
       for (let i = 0; i < verificationSteps.length; i++) {
         setCurrentStep(i)
-        await new Promise((resolve) => setTimeout(resolve, 800))
+        await new Promise((r) => setTimeout(r, 700))
       }
 
       setStatus('SUCCESS')
+
       const redirectPath = type === 'assessment' ? '/assessment/success' : '/contact/success'
 
-      // ทางลัดพิเศษ: ดีเลย์นิดหน่อยให้ดูว่าระบบทำงานจริงก่อน Redirect
       setTimeout(() => {
         router.push(`${redirectPath}?id=${id}&name=${encodeURIComponent(name || '')}&verified=true`)
-      }, 1200)
+      }, 1000)
     }
 
     performHandshake()
-    // ✅ จัดการ Dependency ให้ครบถ้วน งานเนียนไม่มีสะดุด
   }, [searchParams, router, verificationSteps.length])
 
   return (
     <Card className="relative w-full max-w-lg overflow-hidden border-[4px] border-slate-950 bg-white p-0 shadow-sharp">
-      {/* 🧩 UI_INFRA: Pulse Status Indicator */}
       <div className="absolute left-0 top-0 h-2 w-full bg-slate-100">
         <div
           className={cn(
             'h-full transition-all duration-1000',
-            status === 'PROCESSING' ? 'w-full animate-pulse bg-[#FCDE09]' : 'w-full',
-            status === 'SUCCESS' ? 'bg-emerald-500' : 'bg-rose-600',
+            status === 'PROCESSING' && 'w-full animate-pulse bg-[#FCDE09]',
+            status === 'SUCCESS' && 'w-full bg-emerald-500',
+            status === 'ERROR' && 'w-full bg-rose-600',
           )}
         />
       </div>
@@ -114,7 +114,6 @@ function VerifyContent() {
           </Badge>
         </div>
 
-        {/* 💻 SYSTEM_LOG: Mono Font ตามมาตรฐาน Master */}
         <div className="space-y-3 bg-slate-950 p-6 shadow-sharp-sm">
           {verificationSteps.map((step, idx) => (
             <div key={idx} className="flex items-center justify-between font-mono text-[11px]">
@@ -153,7 +152,7 @@ function VerifyContent() {
           <div className="flex items-center gap-2 font-mono text-[9px] font-bold uppercase text-slate-400">
             <Terminal size={12} /> Master_Secure_Gate
           </div>
-          <div className="font-mono text-[9px] font-bold text-slate-400">SYS_v3.2.6</div>
+          <div className="font-mono text-[9px] font-bold text-slate-400">SYS_v3.3.0</div>
         </div>
       </div>
     </Card>
@@ -164,7 +163,6 @@ export default function VerifyPage() {
   return (
     <main className="relative flex min-h-screen items-center justify-center bg-[#020617] p-6 selection:bg-[#FCDE09] selection:text-slate-950">
       <div className="pointer-events-none absolute inset-0 bg-[url('/grid.svg')] bg-center opacity-10" />
-
       <Suspense fallback={<Loader2 className="animate-spin text-[#FCDE09]" size={48} />}>
         <VerifyContent />
       </Suspense>

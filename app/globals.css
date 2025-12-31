@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    /* 🎨 CORE_PALETTE (Design Tokens Sync) */
+    /* 🎨 CORE_PALETTE */
     --background: #020617;
     --foreground: #f1f5f9;
     --brand: #fcde09;
 
-    /* 🛰️ SIDEBAR_SYSTEM (Shadcn Compatible) */
+    /* 🛰️ SIDEBAR_SYSTEM */
     --sidebar-background: 222 47% 4%;
     --sidebar-foreground: 214 32% 91%;
     --sidebar-primary: 50 98% 51%;
@@ -37,24 +37,27 @@
     @apply border-slate-800;
   }
 
-  /* 📜 SHARP_SCROLLBAR */
+  /* 📜 SCROLLBAR */
   ::-webkit-scrollbar {
     width: 6px;
     height: 6px;
   }
+
   ::-webkit-scrollbar-track {
     @apply bg-slate-950;
   }
+
   ::-webkit-scrollbar-thumb {
     @apply border-2 border-slate-950 bg-slate-700 transition-all;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     @apply bg-[#fcde09];
   }
 }
 
 @layer components {
-  /* 📊 INDUSTRIAL_FORM_INPUTS */
+  /* 📊 FORM */
   .audit-label {
     @apply mb-2 block font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-300;
   }
@@ -63,7 +66,7 @@
     @apply w-full border-b-2 border-slate-800 bg-slate-900/30 px-4 py-4 text-sm font-medium text-white transition-all duration-300 placeholder:text-slate-600 focus:border-[#fcde09] focus:bg-slate-900/60 focus:outline-none;
   }
 
-  /* 🔘 PREMIUM_BUTTONS (Shadow-Sharp System) */
+  /* 🔘 BUTTON */
   .btn-industrial {
     @apply relative flex items-center justify-center gap-3 bg-[#fcde09] px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-slate-950 transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] active:translate-x-0 active:translate-y-0 disabled:pointer-events-none disabled:opacity-50;
     box-shadow: 6px 6px 0px 0px #000;
@@ -73,7 +76,7 @@
     @apply relative flex items-center justify-center gap-3 border-2 border-white bg-transparent px-8 py-5 text-[11px] font-black uppercase tracking-[0.2em] text-white transition-all hover:bg-white hover:text-slate-950 active:scale-[0.98];
   }
 
-  /* 📐 BLUEPRINT_GRIDS */
+  /* 📐 GRID */
   .bg-blueprint-grid {
     background-image:
       linear-gradient(to right, rgba(252, 222, 9, 0.03) 1px, transparent 1px),
@@ -81,12 +84,12 @@
     background-size: 30px 30px;
   }
 
-  /* 🗚 TYPOGRAPHY_EXTENSIONS */
+  /* 🗚 TYPOGRAPHY */
   .text-h1-industrial {
     @apply text-6xl font-black uppercase italic leading-[0.85] tracking-tighter text-white md:text-8xl lg:text-[110px];
   }
 
-  /* ✅ WEBKit_STROKE_STABLE: แก้ปัญหา Build Error บรรทัดที่ 76 */
+  /* 🔠 TEXT_STROKE */
   .text-outline-dark {
     -webkit-text-stroke-width: 1.5px;
     -webkit-text-stroke-color: rgba(255, 255, 255, 0.12);
