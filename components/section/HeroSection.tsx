@@ -43,7 +43,6 @@ export const HeroSection = () => {
 
       <div className="container relative z-10 mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-20">
-          
           {/* 📝 CONTENT_MANIFEST: หัวใจสำคัญของความน่าเชื่อถือ */}
           <div className="pt-10 lg:col-span-7 lg:pt-0">
             <header className="relative mb-12">
@@ -69,7 +68,7 @@ export const HeroSection = () => {
               <p className="max-w-2xl border-l-8 border-[#FCDE09] pl-8 font-thai text-2xl font-black leading-tight text-slate-900">
                 ยกระดับงานเอกสารสู่มาตรฐานมืออาชีพ
                 <span className="mt-3 block font-thai text-lg font-bold text-slate-500">
-                  ประสบการณ์มากกว่า 8 ปี การันตีผลงานจริง ตรวจสอบได้ทุกขั้นตอน 
+                  ประสบการณ์มากกว่า 8 ปี การันตีผลงานจริง ตรวจสอบได้ทุกขั้นตอน
                   เปลี่ยนความยุ่งยากให้กลายเป็นความมั่นใจ
                 </span>
               </p>

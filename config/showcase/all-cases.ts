@@ -1,4 +1,5 @@
 /** @format */
+
 import { CaseShowcase } from '../showcase-types'
 import { showcase1 } from './case-1'
 import { showcase2 } from './case-2'
@@ -11,6 +12,7 @@ export type { CaseShowcase }
 
 /**
  * 📦 ALL_CASES_REGISTRY
+ * ทะเบียนรวมเคสศึกษาทั้งหมดที่ผ่านการตรวจสอบ (Audit Passed)
  */
 export const ALL_CASES: CaseShowcase[] = [
   showcase1,
@@ -22,15 +24,37 @@ export const ALL_CASES: CaseShowcase[] = [
 ]
 
 /**
- * 🛰️ ACCESS_PROTOCOLS
- * เพิ่มฟังก์ชันเหล่านี้เพื่อให้ Next.js 15 เรียกใช้ใน generateStaticParams และ Page Components
+ * 🛰️ DATA_ACCESS_PROTOCOLS
+ * ชุดคำสั่งสำหรับการเข้าถึงข้อมูลผ่านฝั่ง Server และ Client
  */
 
-// ✅ เพิ่มฟังก์ชันนี้เพื่อแก้ Error "(0 , getAllCases) is not a function"
+/**
+ * 🔓 PROTOCOL: GET_ALL
+ * ใช้สำหรับ generateStaticParams และหน้า Showcase Gallery
+ */
 export const getAllCases = (): CaseShowcase[] => {
-  return ALL_CASES
+  // ส่งคืนข้อมูลทั้งหมดที่ถูกจัดเรียงตามลำดับ ID (หรือเพิ่ม Logic การจัดลำดับที่นี่)
+  return [...ALL_CASES].reverse() // Reverse เพื่อให้เคสใหม่ล่าสุดขึ้นก่อน
 }
 
+/**
+ * 🎯 PROTOCOL: GET_BY_SLUG
+ * ใช้สำหรับหน้า CaseDetailPage ([slug])
+ */
 export const getCaseBySlug = (slug: string): CaseShowcase | undefined => {
-  return ALL_CASES.find((item) => item.slug === slug)
+  const targetCase = ALL_CASES.find((item) => item.slug === slug)
+
+  if (!targetCase) {
+    console.warn(`[DATA_AUDIT] Case not found for slug: ${slug}`)
+  }
+
+  return targetCase
+}
+
+/**
+ * 📊 PROTOCOL: GET_FEATURED
+ * สำหรับแสดงผลในหน้าแรก (Home Page)
+ */
+export const getFeaturedCases = (limit: number = 3): CaseShowcase[] => {
+  return getAllCases().slice(0, limit)
 }
