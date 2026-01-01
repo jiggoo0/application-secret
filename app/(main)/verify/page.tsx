@@ -18,25 +18,19 @@ import { Badge } from '@/components/ui/badge'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 
-/**
- * 🛠️ VERIFY_HANDSHAKE_CORE (UPDATED)
- * FIX:
- * - ตัด token ออก (สอดคล้องกับ createLead)
- * - ใช้ id + verified เป็นแหล่งความจริง
- * - ไม่มีโหมดจำลอง / ทดสอบ
- */
 function VerifyContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [status, setStatus] = useState<'PROCESSING' | 'SUCCESS' | 'ERROR'>('PROCESSING')
   const [currentStep, setCurrentStep] = useState(0)
 
+  // ปรับ Label ให้ดูเป็นขั้นตอนการตรวจสอบข้อมูลจริง
   const verificationSteps = React.useMemo(
     () => [
-      { label: 'INITIATE_HANDSHAKE', icon: <Activity size={14} /> },
-      { label: 'CROSS_CHECK_ID', icon: <Database size={14} /> },
-      { label: 'VERIFY_STATE_FLAG', icon: <Lock size={14} /> },
-      { label: 'FINALIZE_AUTHORIZATION', icon: <Fingerprint size={14} /> },
+      { label: 'RECEIVING_DATA', icon: <Activity size={14} /> },
+      { label: 'IDENTITY_CHECK', icon: <Database size={14} /> },
+      { label: 'SECURITY_ENCRYPTION', icon: <Lock size={14} /> },
+      { label: 'COMPLETING_REQUEST', icon: <Fingerprint size={14} /> },
     ],
     [],
   )
@@ -48,7 +42,6 @@ function VerifyContent() {
     const type = searchParams.get('type') || 'contact'
 
     const performHandshake = async () => {
-      // 🔒 Gate ตรวจสอบเส้นทางจริง
       if (!id || verified !== 'true') {
         setStatus('ERROR')
         return
@@ -101,16 +94,17 @@ function VerifyContent() {
 
         <div className="mb-10 space-y-2 text-center">
           <h2 className="text-5xl font-black uppercase italic tracking-tighter text-slate-950">
-            {status === 'PROCESSING' && 'Validating'}
-            {status === 'SUCCESS' && 'Passed'}
-            {status === 'ERROR' && 'Blocked'}
+            {status === 'PROCESSING' && 'Verifying'}
+            {status === 'SUCCESS' && 'Verified'}
+            {status === 'ERROR' && 'Denied'}
             <span className="text-[#FCDE09]">.</span>
           </h2>
           <Badge
             variant="outline"
             className="border-slate-950 font-mono text-[10px] tracking-widest"
           >
-            STATUS_CORE: {status}
+            SYSTEM_STATUS:{' '}
+            {status === 'SUCCESS' ? 'สำเร็จ' : status === 'ERROR' ? 'ขัดข้อง' : 'กำลังดำเนินการ'}
           </Badge>
         </div>
 
@@ -140,7 +134,7 @@ function VerifyContent() {
                       : 'text-slate-800',
                 )}
               >
-                {idx < currentStep ? '[OK]' : idx === currentStep ? '[LOAD]' : '[WAIT]'}
+                {idx < currentStep ? '[DONE]' : idx === currentStep ? '[LOAD]' : '[WAIT]'}
               </span>
             </div>
           ))}
@@ -150,9 +144,9 @@ function VerifyContent() {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2 font-mono text-[9px] font-bold uppercase text-slate-400">
-            <Terminal size={12} /> Master_Secure_Gate
+            <Terminal size={12} /> Secure_Gateway
           </div>
-          <div className="font-mono text-[9px] font-bold text-slate-400">SYS_v3.3.0</div>
+          <div className="font-mono text-[9px] font-bold text-slate-400">VERSION_3.3.0</div>
         </div>
       </div>
     </Card>

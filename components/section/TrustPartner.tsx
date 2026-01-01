@@ -3,88 +3,89 @@
 'use client'
 
 import React from 'react'
-import { Shield, Globe, Award, Activity } from 'lucide-react'
+import { Shield, Globe, Award, Activity, Database } from 'lucide-react'
 
 /**
- * 🛰️ COMPONENT: TRUST_PARTNER
- * @description แสดงข้อมูลยืนยันความเชื่อถือและเครือข่ายความร่วมมือ
- * ✅ FIXED: ESLint error - ย้ายคอมเมนต์ออกจาก JSX text nodes
- * ✅ IMPROVED: ปรับ Contrast ของสีตัวอักษรและพื้นหลังให้คมชัดขึ้น
+ * 🛰️ COMPONENT: TrustPartner_Protocol
+ * @version 2026.0.5
+ * PURPOSE: ยืนยันอำนาจความน่าเชื่อถือผ่าน Data Visualization และ Partner Registry
  */
 export const TrustPartner = () => {
   return (
-    <section className="relative overflow-hidden border-y border-slate-200 bg-white py-28 selection:bg-[#FCDE09] selection:text-[#020617]">
-      {/* 🧩 Blueprint Background Overlay */}
+    <section className="relative overflow-hidden border-y-2 border-[#020617] bg-white py-32 selection:bg-[#FCDE09] selection:text-[#020617]">
+      {/* 🧩 UI_INFRA: Engineering Grid & Ambient Nodes */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.02]"
+        className="pointer-events-none absolute inset-0 opacity-[0.03]"
         style={{
           backgroundImage: `linear-gradient(#020617 1px, transparent 1px), linear-gradient(90deg, #020617 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
       />
+      <div className="absolute -left-20 top-0 h-64 w-64 rounded-full bg-slate-100/50 blur-[120px]" />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-        {/* --- SECTION 01: PERFORMANCE_STATS --- */}
-        <div className="mb-32 grid grid-cols-2 gap-y-16 lg:grid-cols-4 lg:gap-12">
+        {/* --- SECTION 01: PERFORMANCE_MANIFEST --- */}
+        <div className="mb-40 grid grid-cols-2 gap-y-20 lg:grid-cols-4 lg:gap-12">
           {[
             {
-              label: 'Success_Rate',
+              label: 'Success_Protocol',
               value: '98.7',
               unit: '%',
               icon: Shield,
-              detail: 'Verified Documentation Protocol',
+              detail: 'Verified Document Architecture',
             },
             {
-              label: 'Case_Management',
+              label: 'Registry_Count',
               value: '4.5k',
               unit: '+',
-              icon: Activity,
-              detail: 'Global Live Monitoring',
+              icon: Database,
+              detail: 'Live Case Management System',
             },
             {
-              label: 'Expert_Verified',
+              label: 'Architecture_EXP',
               value: '12',
-              unit: 'EXP',
+              unit: 'YRS',
               icon: Award,
               detail: 'Senior Document Architects',
             },
             {
-              label: 'Global_Points',
+              label: 'Global_Gateway',
               value: '120',
               unit: '+',
               icon: Globe,
-              detail: 'Inter-Connect Network',
+              detail: 'Inter-Agency Connection Network',
             },
           ].map((stat, idx) => (
             <div key={`stat-${idx}`} className="group relative">
-              {/* Icon Container: Sharp Square Design */}
-              <div className="mb-6 flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center bg-[#020617] text-[#FCDE09] shadow-sharp transition-all duration-300 group-hover:shadow-none">
-                  <stat.icon size={16} strokeWidth={2.5} />
+              {/* Node Header */}
+              <div className="mb-8 flex items-center gap-4">
+                <div className="relative flex h-12 w-12 items-center justify-center bg-[#020617] text-[#FCDE09] shadow-[6px_6px_0px_#f1f5f9] transition-all duration-500 group-hover:rotate-12 group-hover:bg-[#FCDE09] group-hover:text-[#020617] group-hover:shadow-none">
+                  <stat.icon size={18} strokeWidth={2.5} />
                 </div>
-                {/* ✅ แก้ไข: ปรับจาก slate-400 เป็น slate-500 เพื่อความชัดเจน */}
-                <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-500">
-                  {stat.label}
-                </span>
+                <div className="space-y-0.5">
+                  <span className="block font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-500">
+                    {stat.label}
+                  </span>
+                  <div className="h-0.5 w-8 bg-[#FCDE09]/50" />
+                </div>
               </div>
 
               {/* Data Display */}
               <div className="relative">
-                <div className="flex items-baseline gap-1">
-                  <span className="text-6xl font-black tracking-tighter text-[#020617] transition-transform duration-500 group-hover:translate-x-1 md:text-7xl">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-7xl font-black italic tracking-tighter text-[#020617] transition-all duration-700 group-hover:scale-105 md:text-8xl">
                     {stat.value}
                   </span>
-                  <span className="text-xl font-black text-[#FCDE09]">{stat.unit}</span>
+                  <span className="text-2xl font-black text-[#FCDE09]">{stat.unit}</span>
                 </div>
 
                 {/* Technical Meta Data */}
-                {/* ✅ แก้ไข: ปรับจาก slate-400 เป็น slate-600 และจัดการคอมเมนต์ // ใหม่ */}
-                <p className="mt-2 font-mono text-[9px] font-bold uppercase tracking-widest text-slate-600">
-                  <span className="font-black text-[#FCDE09]">{'//'}</span> {stat.detail}
+                <p className="mt-4 font-mono text-[9px] font-black uppercase tracking-[0.2em] text-slate-600 transition-colors group-hover:text-[#020617]">
+                  <span className="text-[#FCDE09]">LOG_ID:</span> {stat.detail}
                 </p>
 
-                {/* Progress Indicator */}
-                <div className="mt-6 h-[2px] w-full overflow-hidden bg-slate-100">
+                {/* System Progress Bar */}
+                <div className="mt-8 h-[3px] w-full bg-slate-50">
                   <div className="h-full w-0 bg-[#020617] transition-all duration-1000 ease-out group-hover:w-full" />
                 </div>
               </div>
@@ -92,28 +93,30 @@ export const TrustPartner = () => {
           ))}
         </div>
 
-        {/* --- SECTION 02: PARTNER_NETWORK --- */}
-        <div className="relative border-t border-slate-200 pt-24">
-          <div className="flex flex-col items-center gap-16 lg:flex-row lg:justify-between">
-            <div className="max-w-xs shrink-0 text-center lg:text-left">
-              <div className="mb-4 inline-block bg-[#020617] px-3 py-1 font-mono text-[9px] font-black uppercase tracking-[0.4em] text-[#FCDE09]">
-                NETWORK_REGISTRY
+        {/* --- SECTION 02: NETWORK_REGISTRY (Industrial Logos) --- */}
+        <div className="relative border-t-2 border-slate-950 pt-24">
+          <div className="flex flex-col items-center gap-16 lg:flex-row lg:items-start lg:justify-between">
+            <div className="max-w-md space-y-6 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 bg-[#020617] px-4 py-1.5 font-mono text-[10px] font-black uppercase tracking-[0.5em] text-[#FCDE09]">
+                <Activity size={10} className="animate-pulse" />
+                NETWORK_RELIABILITY_V.26
               </div>
-              {/* ✅ แก้ไข: ปรับจาก slate-500 เป็น slate-600 เพื่อให้อ่านภาษาไทยออกง่ายขึ้น */}
-              <p className="font-thai text-sm font-bold leading-relaxed text-slate-600">
-                ประสานงานผ่านช่องทางที่ได้รับความเชื่อถือ <br />
-                <span className="text-[#020617]">เพื่อความแม่นยำและมาตรฐานสูงสุด</span>
+              <p className="font-thai text-lg font-bold leading-relaxed text-slate-600">
+                เราสร้างความเชื่อมั่นผ่านเครือข่ายที่ได้รับการรับรองสากล
+                <span className="mt-1 block text-2xl italic tracking-tight text-[#020617]">
+                  OPERATIONAL ACCURACY.
+                </span>
               </p>
             </div>
 
-            {/* Partner Display: Minimal & Authorized */}
-            <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-10 opacity-50 grayscale transition-all duration-700 hover:opacity-100 hover:grayscale-0 lg:gap-x-16">
+            {/* Partner Node Grid */}
+            <div className="grid grid-cols-2 gap-x-12 gap-y-12 opacity-30 grayscale transition-all duration-1000 hover:opacity-100 hover:grayscale-0 md:grid-cols-4 lg:gap-x-20">
               {['VFS_GLOBAL', 'TLS_CONTACT', 'GOV_GATEWAY', 'INTER_LEGAL'].map((logo) => (
-                <div key={logo} className="group cursor-default">
-                  <span className="font-mono text-2xl font-black uppercase italic tracking-tighter text-slate-900 transition-all duration-300 group-hover:tracking-normal group-hover:text-[#FCDE09]">
+                <div key={logo} className="group flex cursor-crosshair flex-col items-center gap-4">
+                  <div className="text-center font-mono text-xl font-black uppercase tracking-tighter text-slate-950 transition-all duration-300 group-hover:scale-110 group-hover:italic group-hover:text-[#020617]">
                     {logo}
-                  </span>
-                  <div className="mt-1 h-0.5 w-0 bg-[#020617] transition-all duration-300 group-hover:w-full" />
+                  </div>
+                  <div className="h-1 w-0 bg-[#FCDE09] shadow-[0_0_10px_#FCDE09] transition-all duration-500 group-hover:w-12" />
                 </div>
               ))}
             </div>
@@ -121,9 +124,9 @@ export const TrustPartner = () => {
         </div>
       </div>
 
-      {/* Decorative Corner Architecture */}
-      <div className="absolute left-0 top-0 h-10 w-[2px] bg-gradient-to-b from-[#FCDE09] to-transparent" />
-      <div className="absolute bottom-0 right-0 h-10 w-[2px] bg-gradient-to-t from-[#FCDE09] to-transparent" />
+      {/* Decorative Architecture Elements */}
+      <div className="absolute left-0 top-0 h-16 w-[3px] bg-[#FCDE09]" />
+      <div className="absolute bottom-0 right-0 h-16 w-[3px] bg-[#FCDE09]" />
     </section>
   )
 }

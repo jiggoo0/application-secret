@@ -7,36 +7,14 @@ import { headers } from 'next/headers'
 import { Resend } from 'resend'
 
 /**
+ * 🛰️ ACTION_PROTOCOL: CREATE_UNIFIED_LEAD
+ * VERSION: 3.3.1
+ * * วัตถุประสงค์:
+ * - บันทึกข้อมูลผู้ติดต่อเข้าสู่ระบบฐานข้อมูลกลาง
+ * - สร้าง Ticket ID สำหรับติดตามสถานะงาน (Tracking)
+ * - ส่งอีเมลแจ้งเตือนลูกค้าเพื่อยืนยันข้อมูลก่อนนำส่งให้ทีมงาน
+ */
 
-🛰️ ACTION_PROTOCOL: CREATE_UNIFIED_LEAD
-
-VERSION: 3.3.1
-
-วัตถุประสงค์
-
-บันทึกข้อมูลลูกค้าจากฟอร์มติดต่อ / ประเมินเคส แบบรวมศูนย์
-
-
-สร้าง Ticket ID กลางสำหรับอ้างอิงทั้งระบบ
-
-
-ส่งอีเมลยืนยันตัวตนเพื่อนำเข้าสู่ขั้นตอนวิเคราะห์เคส
-
-
-NOTE_FOR_AI:
-
-ไม่มีโหมดทดสอบ
-
-
-ทุกข้อมูลที่ถูกบันทึกถือเป็นข้อมูลจริงจากผู้ใช้
-
-
-ticket_id คือกุญแจหลักในการเชื่อมทุกระบบ
-*/
-
-// ---------------------------------------------------------------------
-// Email Client (Resend)
-// ---------------------------------------------------------------------
 const getResendClient = () => {
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
@@ -46,18 +24,13 @@ const getResendClient = () => {
   return new Resend(apiKey)
 }
 
-// ---------------------------------------------------------------------
-// โครงสร้างข้อมูลที่รับจากฟอร์ม (Unified)
-// ---------------------------------------------------------------------
 interface LeadData {
   full_name: string
   phone: string
   email: string
   service_type: string
-  details: string // รายละเอียดรวมจากฟอร์ม (ผ่านการ stringify แล้ว)
+  details: string
   line_id?: string
-
-  // ข้อมูลการประเมินเชิงลึก (ถ้ามี)
   assessment_data?: {
     country?: string
     occupation?: string
@@ -73,9 +46,6 @@ interface ActionResponse {
   error?: string
 }
 
-// ---------------------------------------------------------------------
-// ACTION: createLead
-// ---------------------------------------------------------------------
 export async function createLead(formData: LeadData): Promise<ActionResponse> {
   try {
     const headerList = await headers()
@@ -85,16 +55,10 @@ export async function createLead(formData: LeadData): Promise<ActionResponse> {
     if (!supabaseServer) throw new Error('DATABASE_NOT_AVAILABLE')
     if (!process.env.NEXT_PUBLIC_APP_URL) throw new Error('APP_URL_NOT_CONFIGURED')
 
-    /**
-     * สร้าง Ticket ID กลาง
-     * รูปแบบ: JPV-XXXXXX
-     */
+    // สร้าง Ticket ID สำหรับอ้างอิงงาน
     const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase()
     const ticketId = `JPV-${randomCode}`
 
-    /**
-     * บันทึกข้อมูลลงตาราง leads
-     */
     const { error: dbError } = await supabaseServer.from('leads').insert([
       {
         name: formData.full_name,
@@ -109,11 +73,7 @@ export async function createLead(formData: LeadData): Promise<ActionResponse> {
           ticket_id: ticketId,
           verification_level: 0,
           source_type: 'UNIFIED_CONTACT_PORTAL',
-
-          // ข้อมูลประเมินเคส (สำหรับ Admin / ระบบวิเคราะห์)
           case_profile: formData.assessment_data || null,
-
-          // ข้อมูลสภาพแวดล้อมเครือข่าย
           network_context: {
             ip_address: ip,
             user_agent: userAgent,
@@ -125,7 +85,7 @@ export async function createLead(formData: LeadData): Promise<ActionResponse> {
     if (dbError) throw new Error(`DATABASE_INSERT_FAILED: ${dbError.message}`)
 
     /**
-     * ส่งอีเมลยืนยันตัวตน
+     * ระบบส่งอีเมลยืนยัน (Email Confirmation)
      */
     if (formData.email) {
       const resend = getResendClient()
@@ -136,51 +96,55 @@ export async function createLead(formData: LeadData): Promise<ActionResponse> {
       )}&verified=true`
 
       await resend.emails.send({
-        from: 'JP-VISOUL&DOCS <noreply@jpvisouldocs.online>',
+        from: 'JP Visual & Docs <noreply@jpvisouldocs.online>',
         to: [formData.email],
-        subject: `กรุณายืนยันคำขอประเมินเคส | รหัส ${ticketId}`,
+        subject: `ยืนยันข้อมูลเพื่อเริ่มการประเมินเคส | รหัสอ้างอิง ${ticketId}`,
         html: `  
-      <div style="font-family: Arial, sans-serif; background:#ffffff; padding:40px 20px;">  
+      <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background:#ffffff; padding:40px 20px;">  
         <div style="max-width:500px; margin:0 auto; border:4px solid #020617;">  
           <div style="background:#020617; padding:25px;">  
-            <span style="background:#FCDE09; color:#020617; padding:2px 8px; font-size:10px; font-weight:900; letter-spacing:2px;">  
-              SYSTEM_VERIFICATION  
+            <span style="background:#FCDE09; color:#020617; padding:2px 8px; font-size:10px; font-weight:900; letter-spacing:2px; text-transform:uppercase;">  
+              Verification Required  
             </span>  
-            <h1 style="color:#ffffff; margin-top:15px; font-size:22px; font-weight:900;">  
-              ยืนยันตัวตนเพื่อเข้าสู่ขั้นตอนวิเคราะห์เคส  
+            <h1 style="color:#ffffff; margin-top:15px; font-size:22px; font-weight:900; line-height:1.2;">  
+              ยืนยันตัวตนเพื่อส่งต่อข้อมูลให้ทีมงาน  
             </h1>  
           </div>  
 
           <div style="padding:40px 30px; color:#020617;">  
-            <p style="font-size:15px; font-weight:800;">  
+            <p style="font-size:16px; font-weight:800; margin-bottom:20px;">  
               เรียน คุณ ${formData.full_name}  
             </p>  
 
-            <p style="font-size:13px; line-height:1.6; color:#475569;">  
-              ระบบได้รับข้อมูลของคุณเรียบร้อยแล้ว  
-              กรุณายืนยันตัวตนเพื่อให้ทีมงานสามารถนำข้อมูลเข้าสู่กระบวนการวิเคราะห์และวางกลยุทธ์ได้  
+            <p style="font-size:14px; line-height:1.6; color:#334155;">  
+              ทีมงานได้รับข้อมูลเบื้องต้นของคุณเรียบร้อยแล้ว 
+              รบกวนคุณยืนยันความถูกต้องของข้อมูลผ่านลิงก์ด้านล่าง เพื่อให้ที่ปรึกษาสามารถเริ่มขั้นตอนการตรวจสอบและวิเคราะห์เคสของคุณได้ทันที
             </p>  
 
-            <div style="text-align:center; margin:35px 0;">  
+            <div style="text-align:center; margin:40px 0;">  
               <a href="${verifyUrl}"  
                  style="background:#020617; color:#FCDE09; padding:18px 35px;  
                         text-decoration:none; font-weight:900; font-size:13px;  
-                        letter-spacing:2px; border:2px solid #020617;">  
-                ยืนยันและส่งข้อมูล  
+                        letter-spacing:1px; border:2px solid #020617; display:inline-block;">  
+                คลิกเพื่อยืนยันข้อมูล  
               </a>  
             </div>  
 
-            <div style="background:#f8fafc; border-left:6px solid #FCDE09; padding:15px;">  
-              <p style="margin:0; font-size:11px; color:#64748b; font-weight:bold;">  
-                รหัสอ้างอิง: ${ticketId}  
+            <div style="background:#f1f5f9; border-left:6px solid #FCDE09; padding:15px; margin-bottom:25px;">  
+              <p style="margin:0; font-size:11px; color:#475569; font-weight:bold;">  
+                Ticket ID สำหรับอ้างอิง: ${ticketId}  
               </p>  
             </div>  
 
-            <p style="font-size:11px; color:#94a3b8; margin-top:25px; font-style:italic;">  
-              หากคุณไม่ได้เป็นผู้ส่งคำขอนี้ สามารถละเว้นอีเมลฉบับนี้ได้  
-              ระบบจะลบข้อมูลที่ไม่ได้รับการยืนยันภายใน 24 ชั่วโมง  
+            <p style="font-size:11px; color:#94a3b8; line-height:1.5;">  
+              *หากคุณไม่ได้เป็นผู้ทำรายการนี้ สามารถละเว้นอีเมลฉบับนี้ได้ 
+              ข้อมูลที่ไม่ได้รับการยืนยันภายใน 24 ชม. จะถูกนำออกจากระบบเพื่อความเป็นส่วนตัว
             </p>  
           </div>  
+          
+          <div style="background:#f8fafc; padding:20px; border-top:1px solid #e2e8f0; text-align:center;">
+            <p style="font-size:10px; color:#64748b; margin:0; font-weight:bold;">JP Visual & Docs Management System</p>
+          </div>
         </div>  
       </div>  
     `,

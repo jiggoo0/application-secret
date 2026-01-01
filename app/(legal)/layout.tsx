@@ -1,51 +1,63 @@
 /** @format */
 import React from 'react'
-import { ShieldAlert, FileSearch } from 'lucide-react'
+import { ShieldAlert, FileSearch, Terminal } from 'lucide-react'
 
 /**
  * @description LEGAL_LAYOUT: โครงสร้างหลักสำหรับหน้ากฎหมายและข้อตกลง
- * @rules Strictly followed Mode A (Code) and Mode B (Industrial Sharp Design)
+ * ✅ VERSION: 5.2.0 (High-Security Frame)
+ * ✅ DESIGN: Industrial Sharp (Mode B)
  */
 
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="relative min-h-screen bg-white pb-32 pt-24 font-sans">
-      {/* 🧩 UI_INFRASTRUCTURE: Blueprint Grid & Fixed Accents (MODE B) */}
+      {/* 🧩 UI_INFRASTRUCTURE: Blueprint Grid & Fixed Accents */}
       <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
 
-      {/* Side Decorative Terminal Bar */}
-      <div className="fixed left-10 top-1/2 hidden -translate-y-1/2 space-y-8 opacity-20 transition-opacity hover:opacity-100 lg:block">
-        <div className="flex flex-col items-center gap-2">
-          <ShieldAlert size={16} className="text-[#020617]" />
-          <div className="h-20 w-px bg-[#020617]" />
-          <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] [writing-mode:vertical-lr]">
-            Legal_Compliance
+      {/* Side Decorative Terminal Bar: ปรับตำแหน่งและเพิ่ม Interactive Element */}
+      <div className="fixed left-6 top-1/2 hidden -translate-y-1/2 space-y-8 opacity-20 transition-all duration-500 hover:opacity-100 lg:block">
+        <div className="flex flex-col items-center gap-4">
+          <Terminal size={14} className="text-[#020617]" />
+          <div className="h-32 w-[2px] bg-gradient-to-b from-[#020617] via-[#FCDE09] to-transparent" />
+          <span className="font-mono text-[9px] font-black uppercase tracking-[0.4em] text-slate-950 [writing-mode:vertical-lr]">
+            Protocol_Compliance_Active
           </span>
+          <ShieldAlert size={16} className="text-[#020617]" />
         </div>
       </div>
 
       <div className="container relative z-10 mx-auto max-w-5xl px-6">
         {/* 📑 MAIN_DOCUMENT_CONTAINER: Sharp Edges & Hard Shadows */}
-        <div className="relative overflow-hidden border-2 border-[#020617] bg-white p-8 shadow-sharp md:p-20">
-          {/* Corner Elements */}
-          <div className="pointer-events-none absolute right-0 top-0 h-16 w-16 border-b-2 border-l-2 border-slate-50" />
-          <div className="absolute right-4 top-4 text-[#020617]/10">
-            <FileSearch size={80} strokeWidth={1} />
+        <div className="relative overflow-hidden border-[3px] border-slate-950 bg-white p-8 shadow-sharp md:p-16 lg:p-24">
+          {/* Decorative Corner: สัญลักษณ์ความปลอดภัย */}
+          <div className="absolute right-0 top-0 h-24 w-24 overflow-hidden">
+            <div className="absolute right-[-30px] top-[10px] w-[120px] rotate-45 bg-[#FCDE09] py-1 text-center font-mono text-[8px] font-black uppercase tracking-widest text-slate-950 shadow-sm">
+              Secured_Doc
+            </div>
           </div>
 
-          {children}
+          <div className="absolute right-8 top-8 text-slate-950/5">
+            <FileSearch size={120} strokeWidth={1} />
+          </div>
+
+          {/* Render Privacy/Terms content here */}
+          <div className="relative z-10">{children}</div>
         </div>
 
-        {/* 📑 DOCUMENT_METADATA_FOOTER */}
-        <div className="mt-10 flex flex-col items-center justify-between gap-4 font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-300 md:flex-row">
+        {/* 📑 DOCUMENT_METADATA_FOOTER: อัปเดตเวอร์ชันและคุมโทนสี */}
+        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-slate-100 pt-8 font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 md:flex-row">
           <div className="flex items-center gap-3">
-            <div className="h-3 w-3 bg-[#FCDE09] shadow-sharp" />
-            <span>Official_Enforcement_v2025.1</span>
+            <div className="h-3 w-3 bg-[#020617] shadow-sharp-sm" />
+            <span>Official_Enforcement_v3.2.2026</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[#020617]">JP_VISUAL.DOCS</span>
-            <span className="text-slate-100">/</span>
-            <span>LEGAL_DEPARTMENT_TERMINAL</span>
+
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-slate-950">JP_SYSTEM</span>
+              <span className="text-slate-200">|</span>
+              <span className="text-slate-400">LEGAL_TERMINAL_01</span>
+            </div>
+            <div className="h-2 w-2 animate-pulse rounded-full bg-emerald-500" />
           </div>
         </div>
       </div>

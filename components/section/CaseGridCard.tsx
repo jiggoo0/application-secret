@@ -4,6 +4,7 @@ import React from 'react'
 import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import { CaseShowcase } from '@/config/showcase-types'
+import { ArrowUpRight, FolderOpen } from 'lucide-react'
 
 interface CaseGridCardProps {
   data: CaseShowcase
@@ -11,80 +12,75 @@ interface CaseGridCardProps {
 
 /**
  * 🛠️ COMPONENT: CaseGridCard
- * MODE A: Strict Optional Chaining Enforcement
- * MODE B: Industrial Sharp (rounded-none, high contrast)
+ * @version 2.1.0
+ * MISSION: แสดงผล Case Study ในรูปแบบ Industrial Grid Unit
  */
 export const CaseGridCard = ({ data }: CaseGridCardProps) => {
-  // Fallback Values เพื่อความปลอดภัยของ UI
-  const processingTime = data.stats?.processing_time ?? 'TBD'
-  const complexity = data.stats?.complexity_level ?? 'LOW'
-  const clientTag = data.client_category?.substring(0, 2) ?? 'PR'
+  // Defensive Extraction: สกัดข้อมูลอย่างปลอดภัยตามหลัก Mode A
+  const processingTime = data.stats?.processing_time ?? '00_DAYS'
+  const complexity = data.stats?.complexity_level?.toUpperCase() ?? 'PENDING'
+  const clientTag = data.client_category?.substring(0, 3).toUpperCase() ?? 'SYS'
+  const isHighRisk =
+    complexity.includes('HIGH') || complexity.includes('CRITICAL') || complexity.includes('ซับซ้อน')
 
   return (
     <Link
       href={`/showcase/${data.slug}`}
       className={cn(
-        'group relative flex h-full flex-col bg-white p-10 transition-all duration-300',
-        'rounded-none border-b border-r border-slate-950 last:border-r-0', // MODE B: rounded-none
-        'hover:bg-slate-50',
+        'group relative flex h-full flex-col bg-white p-8 transition-all duration-500 lg:p-10',
+        'rounded-none border-b border-r border-slate-950 last:border-r-0',
+        'hover:bg-slate-950 hover:text-white', // Dark Mode Shift on Hover
       )}
     >
-      {/* 📁 UPPER_STRATA: Case Identification */}
+      {/* 🧩 UI_INFRA: Grid Corner Decor */}
+      <div className="absolute right-0 top-0 h-4 w-4 border-b border-l border-slate-200 transition-colors group-hover:border-[#FCDE09]" />
+
+      {/* UPPER_STRATA: Identification Ledger */}
       <div className="mb-12 flex items-start justify-between">
-        <div className="space-y-1">
-          <span className="block text-[10px] font-black uppercase tracking-[0.3em] text-slate-400">
-            Case_Identity
-          </span>
-          <span className="block w-fit rounded-none bg-[#FCDE09] px-1.5 py-0.5 text-[12px] font-bold text-slate-950">
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <span className="h-2 w-2 bg-[#FCDE09]" />
+            <span className="font-mono text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 group-hover:text-slate-500">
+              Protocol_ID
+            </span>
+          </div>
+          <span className="block w-fit bg-[#020617] px-2 py-0.5 font-mono text-[12px] font-black text-[#FCDE09] shadow-sharp transition-all group-hover:bg-[#FCDE09] group-hover:text-[#020617]">
             {data.id}
           </span>
         </div>
-        <div className="rounded-none border-2 border-slate-950 p-2 text-slate-950 transition-colors group-hover:bg-slate-950 group-hover:text-[#FCDE09]">
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="3"
-          >
-            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
-          </svg>
+        <div className="border-2 border-slate-950 p-2 text-slate-950 transition-all duration-500 group-hover:border-[#FCDE09] group-hover:text-[#FCDE09]">
+          <FolderOpen size={20} strokeWidth={2.5} />
         </div>
       </div>
 
-      {/* 📝 MID_STRATA: Technical Content */}
+      {/* MID_STRATA: Strategic Content */}
       <div className="flex-1 space-y-6">
-        <h3 className="text-4xl font-black uppercase italic leading-[0.9] tracking-tighter text-slate-950 transition-colors">
+        <h3 className="text-4xl font-black uppercase italic leading-[0.85] tracking-tighter transition-all duration-500 group-hover:translate-x-2">
           {data.title}
         </h3>
-        <p className="line-clamp-3 border-l-4 border-slate-900 pl-5 text-sm leading-relaxed text-slate-600">
-          {data.executive_summary ?? data.description}
+        <p className="line-clamp-3 border-l-4 border-[#FCDE09] pl-6 text-sm font-bold leading-relaxed text-slate-600 transition-colors group-hover:text-slate-400">
+          {data.executive_summary}
         </p>
       </div>
 
-      {/* 📊 LOWER_STRATA: Performance Metrics */}
-      <div className="mt-12 flex items-end justify-between border-t-2 border-slate-950 pt-8">
-        <div className="flex items-center gap-8">
+      {/* LOWER_STRATA: Performance Matrix */}
+      <div className="mt-12 flex items-end justify-between border-t-2 border-slate-100 pt-8 transition-colors group-hover:border-slate-800">
+        <div className="flex items-center gap-6">
           <div className="space-y-1">
             <span className="block text-[9px] font-black uppercase tracking-widest text-slate-400">
-              Processing
+              Cycle_Time
             </span>
-            <span className="block font-mono text-[13px] font-black uppercase italic text-slate-950">
-              {processingTime}
-            </span>
+            <span className="block font-mono text-[14px] font-black italic">{processingTime}</span>
           </div>
-          <div className="h-10 w-[1px] bg-slate-200" />
+          <div className="h-8 w-[1px] bg-slate-100 group-hover:bg-slate-800" />
           <div className="space-y-1">
             <span className="block text-[9px] font-black uppercase tracking-widest text-slate-400">
               Complexity
             </span>
             <span
               className={cn(
-                'block text-[13px] font-black uppercase italic',
-                complexity === 'HIGH' || complexity === 'CRITICAL'
-                  ? 'text-red-600'
-                  : 'text-slate-950',
+                'block text-[14px] font-black italic',
+                isHighRisk ? 'text-orange-500' : 'text-emerald-500',
               )}
             >
               {complexity}
@@ -92,22 +88,14 @@ export const CaseGridCard = ({ data }: CaseGridCardProps) => {
           </div>
         </div>
 
-        <div className="flex h-12 w-12 items-center justify-center rounded-none bg-slate-950 text-[#FCDE09] shadow-sharp transition-all group-hover:bg-[#FCDE09] group-hover:text-slate-950">
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="4"
-          >
-            <path d="M7 17L17 7M17 7H7M17 7v10" />
-          </svg>
+        {/* Action Node */}
+        <div className="flex h-12 w-12 items-center justify-center bg-slate-950 text-[#FCDE09] shadow-sharp transition-all duration-500 group-hover:-translate-y-2 group-hover:bg-[#FCDE09] group-hover:text-slate-950 group-hover:shadow-[4px_4px_0px_#fff]">
+          <ArrowUpRight size={24} strokeWidth={3} />
         </div>
       </div>
 
-      {/* 🏗️ DECORATIVE_STAMP: Industrial Watermark */}
-      <div className="pointer-events-none absolute bottom-2 right-2 select-none text-[60px] font-black italic leading-none text-slate-950 opacity-[0.03]">
+      {/* 💾 BACKGROUND_STAMP: Identifier Visual */}
+      <div className="pointer-events-none absolute bottom-4 right-4 select-none font-mono text-[80px] font-black italic leading-none text-slate-950 opacity-[0.03] transition-all duration-700 group-hover:scale-110 group-hover:opacity-[0.07]">
         {clientTag}
       </div>
     </Link>

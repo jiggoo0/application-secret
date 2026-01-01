@@ -7,17 +7,17 @@ import { ServiceHeader } from '@/components/services/ServiceHeader'
 import { ServiceFilter } from '@/components/services/ServiceFilter'
 import { ServiceCard } from '@/components/services/ServiceCard'
 import { services } from '@/components/services/serviceData'
-import { Box, ShieldCheck } from 'lucide-react'
+import { ShieldCheck, Cpu, ArrowUpRight } from 'lucide-react'
 
 /**
  * 🛰️ COMPONENT: ServiceGrid
- * ศูนย์กลางการควบคุม Matrix Grid ของบริการทั้งหมด
- * 🛡️ ENFORCEMENT: Named Export, Rounded-None, Zero Unused Vars
+ * @version 2026.1.1 (Cleanup & Performance)
+ * ✅ FIXED: Removed unused 'Box' and 'cn' imports to resolve ESLint errors.
  */
 export const ServiceGrid = () => {
   const [activeTab, setActiveTab] = useState('ALL_SERVICES')
 
-  // 🔍 Performance Optimization: กรองข้อมูลบริการตามหมวดหมู่ที่เลือก
+  // 🔍 DATA_QUERY_OPTIMIZATION
   const filteredServices = useMemo(() => {
     return services.filter((service) =>
       activeTab === 'ALL_SERVICES' ? true : service.category === activeTab,
@@ -26,86 +26,96 @@ export const ServiceGrid = () => {
 
   return (
     <section
-      className="relative overflow-hidden bg-white py-32 selection:bg-brand selection:text-slate-950 lg:py-40"
+      className="relative overflow-hidden bg-white py-32 selection:bg-[#FCDE09] selection:text-slate-950 lg:py-48"
       id="services"
     >
-      {/* 🧩 Blueprint Grid Overlay - สร้าง Texture ระดับวิศวกรรมเอกสาร */}
-      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
+      {/* 🧩 UI_INFRA: Blueprint Overlay */}
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#020617_1px,transparent_1px)] opacity-[0.03] [background-size:32px_32px]" />
 
       <div className="container relative z-10 mx-auto max-w-7xl px-6">
-        {/* --- 01: HEADER_SYSTEM --- */}
+        {/* --- 01: SYSTEM_HEADER --- */}
         <ServiceHeader />
 
-        {/* --- 02: CONTROL_INTERFACE --- */}
-        <div className="mb-16">
+        {/* --- 02: COMMAND_INTERFACE --- */}
+        <div className="mb-20">
           <ServiceFilter active={activeTab} onChange={setActiveTab} />
         </div>
 
-        {/* --- 03: GRID_MATRIX_SYSTEM --- */}
-        <div className="relative min-h-[600px]">
-          {/* Grid Background Line (Decorative) */}
-          <div className="pointer-events-none absolute inset-0 z-0 grid grid-cols-1 opacity-50 md:grid-cols-2 lg:grid-cols-3">
-            <div className="h-full border-r border-slate-100" />
-            <div className="hidden h-full border-r border-slate-100 md:block" />
-          </div>
+        {/* --- 03: GRID_MATRIX_ENGINE --- */}
+        <div className="relative">
+          {/* Service Matrix Diagram Reference */}
 
-          <div className="relative z-10 grid grid-cols-1 gap-px rounded-none border-l-2 border-t-2 border-slate-950 bg-slate-950 shadow-sharp transition-all duration-500 md:grid-cols-2 lg:grid-cols-3">
+          <div className="relative z-10 grid grid-cols-1 gap-px border-2 border-slate-950 bg-slate-950 shadow-[20px_20px_0px_#f1f5f9] md:grid-cols-2 lg:grid-cols-3">
             {filteredServices.map((service) => (
               <ServiceCard key={service.id} {...service} />
             ))}
 
-            {/* ⚡ ENTERPRISE_NODE: ส่วนปิดท้ายเพื่อ Upsell บริการระดับองค์กร */}
-            <div className="group relative flex min-h-[450px] cursor-pointer flex-col items-center justify-center overflow-hidden rounded-none bg-slate-950 p-12 text-center transition-all duration-500">
+            {/* ⚡ ENTERPRISE_NODE: Strategic Custom Solutions */}
+            <div className="group relative flex min-h-[500px] flex-col items-center justify-center bg-[#020617] p-12 text-center transition-all duration-700">
               <div className="relative z-10">
-                <div className="mx-auto mb-10 flex h-20 w-20 items-center justify-center rounded-none border-2 border-slate-800 transition-colors group-hover:border-brand">
-                  <Box className="animate-pulse text-brand" size={32} strokeWidth={1} />
+                {/* Visual Node Indicator */}
+                <div className="relative mx-auto mb-12 h-24 w-24">
+                  <div className="animate-spin-slow absolute inset-0 border border-dashed border-[#FCDE09]/30" />
+                  <div className="flex h-full w-full items-center justify-center border-2 border-[#FCDE09] bg-slate-950 text-[#FCDE09] shadow-[0_0_30px_rgba(252,222,9,0.3)]">
+                    <Cpu size={40} strokeWidth={1.5} />
+                  </div>
                 </div>
 
-                <h3 className="mb-6 text-4xl font-black uppercase leading-[0.9] tracking-tighter text-white">
-                  Enterprise <br />
-                  <span className="text-brand">Architecture</span>
+                <h3 className="mb-6 text-5xl font-black uppercase italic leading-[0.85] tracking-tighter text-white">
+                  Custom <br />
+                  <span className="text-[#FCDE09]">Architecture</span>
                 </h3>
 
-                <p className="mx-auto mb-12 max-w-[240px] font-thai text-[15px] font-medium leading-relaxed text-slate-400">
-                  สำหรับการวางโครงสร้างเอกสารระดับองค์กร หรือกรณีที่มีความซับซ้อนระดับ
-                  High-Net-Worth
+                <p className="mx-auto mb-14 max-w-[280px] font-thai text-[16px] font-bold leading-relaxed text-slate-500">
+                  ออกแบบโครงสร้างเอกสารระดับยุทธศาสตร์
+                  สำหรับกรณีที่มีความซับซ้อนสูงหรือการจัดการสินทรัพย์ระดับสากล
                 </p>
 
-                <button className="group/btn relative overflow-hidden rounded-none border-2 border-brand/20 px-8 py-4 font-mono text-[10px] font-black uppercase tracking-[0.4em] text-brand transition-all hover:bg-brand hover:text-slate-950">
-                  EXECUTE_CUSTOM_STACK
+                <button className="group/btn relative h-16 w-full overflow-hidden border-2 border-[#FCDE09] bg-transparent transition-all hover:bg-[#FCDE09]">
+                  <span className="relative z-10 flex items-center justify-center gap-3 font-mono text-[11px] font-black uppercase tracking-[0.4em] text-[#FCDE09] group-hover/btn:text-slate-950">
+                    Execute_Node <ArrowUpRight size={18} />
+                  </span>
+                  <div className="absolute inset-0 -translate-x-full bg-white transition-transform duration-500 group-hover/btn:translate-x-0" />
                 </button>
               </div>
 
-              {/* Ambient Background Effect */}
-              <div className="absolute inset-0 bg-gradient-to-br from-brand/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+              {/* Matrix Decoration */}
+              <div
+                className="absolute inset-0 opacity-[0.05]"
+                style={{
+                  backgroundImage: 'radial-gradient(#FCDE09 1px, transparent 1px)',
+                  backgroundSize: '24px 24px',
+                }}
+              />
             </div>
           </div>
         </div>
 
-        {/* --- 04: STATUS_FOOTER --- */}
-        <footer className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-slate-100 pt-8 md:flex-row">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="h-2 w-2 rounded-none bg-emerald-500 shadow-[0_0_8px_#10b981]" />
-              <span className="font-mono text-[11px] font-black uppercase tracking-wider text-slate-900">
-                System_Online
+        {/* --- 04: REGISTRY_FOOTER --- */}
+        <footer className="mt-16 flex flex-col items-center justify-between gap-8 border-t-2 border-slate-950 pt-10 md:flex-row">
+          <div className="flex items-center gap-10">
+            <div className="flex items-center gap-4">
+              <div className="relative h-3 w-3">
+                <div className="absolute inset-0 animate-ping rounded-full bg-emerald-500 opacity-20" />
+                <div className="h-full w-full bg-emerald-500 shadow-[0_0_10px_#10b981]" />
+              </div>
+              <span className="font-mono text-[12px] font-black uppercase tracking-[0.3em] text-slate-950">
+                System_Core: Active
               </span>
             </div>
 
-            <div className="hidden h-px w-16 bg-slate-100 sm:block" />
-
-            <span className="font-mono text-[11px] font-bold text-slate-400">
-              REGISTRY_COUNT:{' '}
+            <div className="font-mono text-[12px] font-black uppercase text-slate-400">
+              Active_Modules:{' '}
               <span className="text-slate-950">
-                {filteredServices.length.toString().padStart(2, '0')}
+                [{filteredServices.length.toString().padStart(2, '0')}]
               </span>
-            </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <ShieldCheck size={14} className="text-slate-300" />
-            <p className="font-mono text-[9px] uppercase italic tracking-[0.2em] text-slate-300">
-              End-to-End_Encryption_Protocol_Active
+          <div className="flex items-center gap-4 border border-slate-200 bg-slate-50 px-6 py-3">
+            <ShieldCheck size={16} className="text-slate-400" />
+            <p className="font-mono text-[10px] font-black uppercase italic tracking-[0.2em] text-slate-400">
+              Protocol: AES-256_Encrypted_Communication
             </p>
           </div>
         </footer>

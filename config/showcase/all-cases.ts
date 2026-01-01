@@ -1,8 +1,4 @@
-/** * @format
- * @description CASE_ARCHIVE_MANIFEST: Central Data Registry (V2.025.4)
- * ✅ MISSION: Unified Type Export for System-wide Integration
- */
-
+/** @format */
 import { CaseShowcase } from '../showcase-types'
 import { showcase1 } from './case-1'
 import { showcase2 } from './case-2'
@@ -11,12 +7,10 @@ import { showcase4 } from './case-4'
 import { showcase5 } from './case-5'
 import { showcase6 } from './case-6'
 
-// 🏛️ RE-EXPORT Type เพื่อให้คอมโพเนนต์อื่น (เช่น ShowcaseGrid) เรียกใช้งานได้โดยตรง
 export type { CaseShowcase }
 
 /**
- * 📦 ALL_CASES DATA_POOL
- * รวบรวมข้อมูลเคสทั้งหมดเพื่อนำไป Render บน Matrix Grid
+ * 📦 ALL_CASES_REGISTRY
  */
 export const ALL_CASES: CaseShowcase[] = [
   showcase1,
@@ -28,9 +22,15 @@ export const ALL_CASES: CaseShowcase[] = [
 ]
 
 /**
- * 🔍 CASE_QUERY_PROTOCOL
- * ฟังก์ชันสำหรับดึงข้อมูลเคสรายตัวผ่าน URL Slug
+ * 🛰️ ACCESS_PROTOCOLS
+ * เพิ่มฟังก์ชันเหล่านี้เพื่อให้ Next.js 15 เรียกใช้ใน generateStaticParams และ Page Components
  */
+
+// ✅ เพิ่มฟังก์ชันนี้เพื่อแก้ Error "(0 , getAllCases) is not a function"
+export const getAllCases = (): CaseShowcase[] => {
+  return ALL_CASES
+}
+
 export const getCaseBySlug = (slug: string): CaseShowcase | undefined => {
   return ALL_CASES.find((item) => item.slug === slug)
 }

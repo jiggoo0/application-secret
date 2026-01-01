@@ -14,11 +14,12 @@ interface ContactLeadPayload {
   details: string
 }
 
+// ปรับ Label ให้ดูเป็นทางการและชัดเจนขึ้น
 const SERVICE_OPTIONS = [
-  { id: 'GENERAL_INQUIRY', label: 'ปรึกษาข้อมูลเทคนิค' },
-  { id: 'PROFILE_READY', label: 'จัดทำโครงสร้างโปรไฟล์' },
+  { id: 'GENERAL_INQUIRY', label: 'ปรึกษาข้อมูลเอกสาร' },
+  { id: 'PROFILE_READY', label: 'วางโครงสร้างโปรไฟล์' },
   { id: 'APPEAL_CONSULT', label: 'วิเคราะห์เคสปฏิเสธ' },
-  { id: 'CORPORATE_DOCUMENT', label: 'เอกสารรับรองพิเศษ' },
+  { id: 'CORPORATE_DOCUMENT', label: 'เอกสารรับรองธุรกิจ' },
 ]
 
 export const ContactForm = () => {
@@ -57,14 +58,27 @@ export const ContactForm = () => {
 
   if (isSent) {
     return (
-      <div className="space-y-6 rounded-md border-2 border-[#020617] bg-white p-12 text-center shadow-lg">
-        <h3 className="text-2xl font-black uppercase text-[#020617]">Submission Successful</h3>
-        <div className="mx-auto max-w-xs rounded-md border border-slate-200 bg-slate-50 p-4">
-          <p className="font-mono text-xs uppercase text-slate-500">Reference ID</p>
+      <div className="space-y-8 border-[4px] border-slate-950 bg-white p-12 text-center shadow-sharp">
+        <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+          <ShieldCheck size={32} />
+        </div>
+        <div className="space-y-2">
+          <h3 className="text-3xl font-black uppercase italic tracking-tighter text-[#020617]">
+            Data_Received<span className="text-[#FCDE09]">.</span>
+          </h3>
+          <p className="text-sm font-bold text-slate-500">บันทึกข้อมูลเข้าสู่ระบบเรียบร้อยแล้ว</p>
+        </div>
+
+        <div className="mx-auto max-w-xs border-2 border-slate-950 bg-slate-50 p-6 shadow-sharp-sm">
+          <p className="mb-1 font-mono text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">
+            Reference_ID
+          </p>
           <p className="font-mono text-2xl font-black text-[#020617]">{ticketId}</p>
         </div>
-        <p className="text-sm font-bold text-slate-600">
-          ระบบได้รับข้อมูลเรียบร้อยแล้ว ทีมงานจะติดต่อกลับตามอีเมลที่ให้ไว้
+
+        <p className="mx-auto max-w-sm text-xs font-bold leading-relaxed text-slate-600">
+          กรุณาตรวจสอบอีเมลของคุณเพื่อกดยืนยันตัวตน <br />
+          ทีมงานจะเริ่มวิเคราะห์เคสหลังจากได้รับการยืนยันสำเร็จ
         </p>
       </div>
     )
@@ -74,34 +88,56 @@ export const ContactForm = () => {
     <form onSubmit={handleSubmit} className="space-y-8 font-thai">
       {/* PERSONAL INFO */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <input required name="full_name" placeholder="ชื่อ–นามสกุล" className={inputStyle} />
-        <input
-          required
-          type="email"
-          name="email"
-          placeholder="email@example.com"
-          className={cn(inputStyle, 'border-[#FCDE09]')}
-        />
+        <div className="space-y-2">
+          <label className="font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+            Full_Name
+          </label>
+          <input
+            required
+            name="full_name"
+            placeholder="ระบุชื่อ-นามสกุลจริง"
+            className={inputStyle}
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+            Email_Address
+          </label>
+          <input
+            required
+            type="email"
+            name="email"
+            placeholder="email@example.com"
+            className={cn(inputStyle, 'border-[#FCDE09]')}
+          />
+        </div>
       </div>
 
       {/* CONTACT INFO */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <input
-          required
-          name="phone"
-          placeholder="เบอร์โทรศัพท์"
-          className={cn(inputStyle, 'font-mono')}
-        />
-        <div className="flex items-center gap-2 rounded-md border border-slate-200 bg-slate-50 p-4 font-mono text-xs uppercase text-slate-600">
-          <ShieldCheck size={16} className="text-emerald-600" />
-          Privacy Protected
+        <div className="space-y-2">
+          <label className="font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+            Phone_Number
+          </label>
+          <input
+            required
+            name="phone"
+            placeholder="0XX-XXX-XXXX"
+            className={cn(inputStyle, 'font-mono')}
+          />
+        </div>
+        <div className="flex items-end pb-1">
+          <div className="flex w-full items-center gap-3 border-2 border-dashed border-slate-200 bg-slate-50 p-4 font-mono text-[10px] font-black uppercase tracking-widest text-slate-500">
+            <ShieldCheck size={18} className="text-emerald-500" />
+            End-to-End Encryption
+          </div>
         </div>
       </div>
 
       {/* SERVICE TYPE */}
-      <div className="space-y-3">
-        <label className="flex items-center gap-2 text-xs font-black uppercase text-[#020617]">
-          <Activity size={16} /> Service Type
+      <div className="space-y-4">
+        <label className="flex items-center gap-2 font-mono text-[10px] font-black uppercase tracking-widest text-[#020617]">
+          <Activity size={16} className="text-[#FCDE09]" /> Select_Service_Type
         </label>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICE_OPTIONS.map((s) => (
@@ -110,34 +146,43 @@ export const ContactForm = () => {
               type="button"
               onClick={() => setSelectedService(s.id)}
               className={cn(
-                'rounded-md border-2 p-4 text-left text-sm font-black uppercase transition',
+                'border-2 p-4 text-left transition-all',
                 selectedService === s.id
-                  ? 'border-[#020617] bg-[#020617] text-white shadow-lg'
-                  : 'border-slate-200 bg-white hover:border-[#020617] hover:shadow-sm',
+                  ? 'border-[#020617] bg-[#020617] text-[#FCDE09] shadow-sharp-sm'
+                  : 'border-slate-200 bg-white hover:border-[#020617]',
               )}
             >
-              {s.label}
+              <p className="text-[11px] font-black uppercase leading-tight">{s.label}</p>
             </button>
           ))}
         </div>
       </div>
 
       {/* DETAILS */}
-      <textarea
-        required
-        name="details"
-        rows={5}
-        placeholder="รายละเอียดเคส"
-        className={cn(inputStyle, 'resize-none rounded-md')}
-      />
+      <div className="space-y-2">
+        <label className="font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
+          Case_Details
+        </label>
+        <textarea
+          required
+          name="details"
+          rows={5}
+          placeholder="ระบุรายละเอียดเบื้องต้น หรือปัญหาที่ต้องการให้ทีมงานดูแล..."
+          className={cn(inputStyle, 'resize-none')}
+        />
+      </div>
 
       {/* SUBMIT BUTTON */}
       <button
         disabled={loading}
-        className="flex w-full items-center justify-center gap-3 rounded-md bg-[#020617] py-5 text-xs font-black uppercase tracking-widest text-white transition hover:bg-slate-900 disabled:opacity-60"
+        className="group relative flex w-full items-center justify-center gap-3 overflow-hidden bg-slate-950 py-6 text-[11px] font-black uppercase tracking-[0.3em] text-[#FCDE09] transition-all hover:bg-slate-900 disabled:opacity-60"
       >
-        {loading ? <Loader2 className="animate-spin" /> : 'Submit'}
-        {!loading && <SendHorizontal size={16} />}
+        <div className="relative z-10 flex items-center gap-3">
+          {loading ? <Loader2 className="animate-spin" /> : 'Execute_Submission'}
+          {!loading && (
+            <SendHorizontal size={16} className="transition-transform group-hover:translate-x-1" />
+          )}
+        </div>
       </button>
     </form>
   )

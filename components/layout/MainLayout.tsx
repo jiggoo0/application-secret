@@ -50,9 +50,7 @@ export default function MainLayout({ children }: MainLayoutProps) {
 
       <Header onMenuOpen={() => setIsMenuOpen(true)} />
 
-      <main className="relative flex flex-1 flex-col pt-20">
-        {children}
-      </main>
+      <main className="relative flex flex-1 flex-col pt-20">{children}</main>
 
       <Footer />
     </div>

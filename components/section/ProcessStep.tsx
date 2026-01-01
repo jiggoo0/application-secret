@@ -3,143 +3,159 @@
 'use client'
 
 import React from 'react'
-import { CheckCircle2, Search, FileText, ShieldCheck, ArrowRight } from 'lucide-react'
+import { CheckCircle2, Search, FileText, ShieldCheck, ArrowRight, Cpu } from 'lucide-react'
+
+/**
+ * 🛰️ COMPONENT: ProcessStep_Protocol
+ * @version 2026.0.3 (Cleanup & Logic Optimization)
+ * ✅ FIXED: Removed unused 'cn' import to resolve ESLint error 7:10.
+ */
 
 const workFlowSteps = [
   {
     no: '01',
-    title: 'Profile Analysis',
+    title: 'Diagnostic Audit',
     description:
-      'เช็กข้อมูลและจุดบอดของคุณอย่างละเอียด เพื่อวางแนวทางที่ช่วยให้ผ่านฉลุยตั้งแต่วันแรก',
+      'วิเคราะห์โครงสร้างข้อมูลและระบุจุดบอดเชิงเทคนิค เพื่อกำหนดทิศทางยุทธศาสตร์ที่แม่นยำที่สุด',
     icon: Search,
     status: 'READY',
   },
   {
     no: '02',
-    title: 'Document Polish',
+    title: 'Data Reconstruction',
     description:
-      'ปรับแต่งและจัดเตรียมเอกสารให้เนี้ยบที่สุด ปิดช่องโหว่ให้ตรงตามมาตรฐานที่ปลายทางต้องการ',
+      'ดำเนินการปรับจูนและสังเคราะห์เอกสารใหม่ตามมาตรฐานสากล เพื่อปิดช่องโหว่การพิจารณาทุกมิติ',
     icon: FileText,
-    status: 'PROCESSING',
+    status: 'OPTIMIZING',
   },
   {
     no: '03',
-    title: 'Secure Submission',
-    description: 'ส่งเรื่องผ่านระบบที่แม่นยำ ปลอดภัย และคุณสามารถเช็กสถานะการทำงานได้ตลอดเวลา',
+    title: 'Secure Deployment',
+    description:
+      'นำส่งข้อมูลผ่านโปรโตคอลความปลอดภัย พร้อมระบบตรวจสอบสถานะแบบเรียลไทม์ (Live Tracking)',
     icon: ShieldCheck,
-    status: 'SUBMITTED',
+    status: 'DEPLOYED',
   },
   {
     no: '04',
-    title: 'Case Success',
-    description: 'ส่งมอบงานที่สำเร็จเรียบร้อย พร้อมสรุปคำแนะนำสำหรับการนำไปใช้งานต่อในอนาคต',
+    title: 'Final Resolution',
+    description:
+      'บรรลุเป้าหมายตามภารกิจ พร้อมสรุปรายงานวิเคราะห์ผล (Post-Action Report) สำหรับการใช้งานต่อ',
     icon: CheckCircle2,
-    status: 'COMPLETED',
+    status: 'SUCCESS',
   },
 ]
 
 export const ProcessStep = () => {
   return (
     <section className="relative overflow-hidden bg-[#020617] py-32 selection:bg-[#FCDE09] selection:text-[#020617] lg:py-48">
-      {/* 🧩 Blueprint Grid (เขียนสด) */}
+      {/* 🧩 UI_INFRA: Blueprint Grid & Ambient Effects */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
         style={{
           backgroundImage: `linear-gradient(#FCDE09 1px, transparent 1px), linear-gradient(90deg, #FCDE09 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}
       />
-
-      <div className="absolute left-0 top-0 h-[1px] w-full bg-gradient-to-r from-transparent via-[#FCDE09]/40 to-transparent" />
+      <div className="absolute left-0 top-0 h-32 w-full bg-gradient-to-b from-[#FCDE09]/10 to-transparent" />
 
       <div className="container relative z-10 mx-auto max-w-7xl px-6">
-        {/* --- HEADER --- */}
-        <header className="mb-24 text-center lg:mb-32">
-          <div className="mb-6 inline-flex items-center gap-4">
-            <span className="h-[1px] w-12 bg-slate-800" />
-            <span className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-[#FCDE09]">
-              Work_Flow_Sequence
-            </span>
-            <span className="h-[1px] w-12 bg-slate-800" />
+        {/* --- HEADER: Logic Focused --- */}
+        <header className="mb-24 text-center lg:mb-40">
+          <div className="mb-8 inline-flex items-center gap-6">
+            <div className="h-[2px] w-12 bg-slate-800" />
+            <div className="flex items-center gap-3">
+              <Cpu size={16} className="text-[#FCDE09]" />
+              <span className="font-mono text-[11px] font-black uppercase tracking-[0.5em] text-[#FCDE09]">
+                System_Workflow_V.2.0
+              </span>
+            </div>
+            <div className="h-[2px] w-12 bg-slate-800" />
           </div>
-          <h2 className="mb-8 text-6xl font-black uppercase tracking-tighter text-white md:text-7xl lg:text-8xl">
-            How We <span className="italic text-[#FCDE09]">Work.</span>
+          <h2 className="mb-10 text-6xl font-black uppercase tracking-tighter text-white md:text-8xl lg:text-9xl">
+            The{' '}
+            <span className="italic text-[#FCDE09] drop-shadow-[4px_4px_0px_rgba(0,0,0,1)]">
+              Protocol.
+            </span>
           </h2>
-          <p className="mx-auto max-w-xl font-thai text-sm leading-relaxed text-slate-500 md:text-base">
-            ทุกขั้นตอนถูกออกแบบมาเพื่อความแม่นยำ เราดูแลให้คุณตั้งแต่จุดเริ่มจนถึงความสำเร็จ
-            เพื่อให้งานของคุณผ่านไปได้อย่างราบรื่น
+          <p className="mx-auto max-w-2xl font-thai text-lg font-bold leading-relaxed text-slate-400">
+            กระบวนการทำงานที่ขับเคลื่อนด้วยชุดข้อมูลและการวิเคราะห์เชิงลึก
+            เปลี่ยนความซับซ้อนให้เป็นระบบระเบียบที่จับต้องได้จริง
           </p>
         </header>
 
-        {/* --- STEPS_GRID --- */}
-        <div className="relative grid grid-cols-1 gap-12 md:grid-cols-4 md:gap-8">
-          {/* Connector Line (Desktop) */}
-          <div className="absolute left-0 top-8 z-0 hidden h-[1px] w-full bg-slate-900 md:block" />
+        {/* --- STEPS_MATRIX --- */}
+
+        <div className="relative grid grid-cols-1 gap-16 md:grid-cols-4 md:gap-8">
+          {/* Connector Line: Industrial Style */}
+          <div className="absolute left-0 top-12 z-0 hidden h-[2px] w-full bg-slate-900 md:block" />
 
           {workFlowSteps.map((step, index) => (
             <div key={step.no} className="group relative z-10">
-              {/* Number & Icon Block */}
-              <div className="mb-8 flex flex-col items-center md:items-start">
-                <div className="relative flex h-16 w-16 items-center justify-center border-2 border-slate-800 bg-[#020617] shadow-[6px_6px_0px_0px_#000] transition-all duration-500 group-hover:border-[#FCDE09] group-hover:bg-slate-900">
+              {/* Node Indicator */}
+              <div className="mb-10 flex flex-col items-center md:items-start">
+                <div className="relative flex h-24 w-24 items-center justify-center border-2 border-slate-800 bg-[#020617] shadow-[10px_10px_0px_0px_#000] transition-all duration-700 group-hover:-translate-y-2 group-hover:border-[#FCDE09] group-hover:bg-slate-900 group-hover:shadow-[10px_10px_0px_0px_#FCDE09]">
                   <step.icon
-                    className="text-slate-600 transition-colors duration-300 group-hover:text-[#FCDE09]"
-                    size={24}
+                    className="text-slate-600 transition-all duration-500 group-hover:scale-110 group-hover:text-[#FCDE09]"
+                    size={32}
                     strokeWidth={1.5}
                   />
-                  <div className="absolute -right-2 -top-2 bg-[#FCDE09] px-2 py-0.5 font-mono text-[10px] font-black text-[#020617]">
+                  {/* Step ID Badge */}
+                  <div className="absolute -left-2 -top-2 bg-white px-3 py-1 font-mono text-xs font-black text-[#020617] transition-colors group-hover:bg-[#FCDE09]">
                     {step.no}
                   </div>
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="space-y-4 text-center md:text-left">
-                <div className="flex items-center justify-center gap-2 md:justify-start">
-                  <div className="h-2 w-2 bg-[#FCDE09] group-hover:animate-ping" />
-                  <span className="font-mono text-[9px] font-black uppercase tracking-widest text-slate-500 group-hover:text-[#FCDE09]">
-                    {step.status}
+              {/* Data Content */}
+              <div className="space-y-6 text-center md:text-left">
+                <div className="flex items-center justify-center gap-3 md:justify-start">
+                  <div className="h-2 w-2 rounded-full bg-[#FCDE09] shadow-[0_0_10px_#FCDE09] group-hover:animate-pulse" />
+                  <span className="font-mono text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 group-hover:text-white">
+                    Status: {step.status}
                   </span>
                 </div>
-                <h3 className="text-2xl font-black uppercase tracking-tight text-white group-hover:text-[#FCDE09]">
+                <h3 className="text-3xl font-black uppercase tracking-tighter text-white group-hover:text-[#FCDE09]">
                   {step.title}
                 </h3>
-                <p className="font-thai text-[14px] font-medium leading-relaxed text-slate-500 transition-colors group-hover:text-slate-400">
+                <p className="font-thai text-base font-medium leading-relaxed text-slate-500 transition-colors group-hover:text-slate-300">
                   {step.description}
                 </p>
               </div>
 
+              {/* Mobile Connector */}
               {index !== workFlowSteps.length - 1 && (
                 <div className="mt-12 flex justify-center md:hidden">
-                  <ArrowRight className="rotate-90 text-slate-800" size={20} />
+                  <ArrowRight className="rotate-90 text-[#FCDE09]/20" size={32} />
                 </div>
               )}
             </div>
           ))}
         </div>
 
-        {/* --- ACTION_BAR --- */}
-        <div className="mt-28 border-2 border-slate-900 bg-slate-950/50 p-2">
-          <div className="flex flex-col items-center justify-between gap-8 border border-slate-800 bg-slate-900/40 p-10 backdrop-blur-xl md:flex-row">
-            <div className="flex items-center gap-6">
-              <div className="relative flex h-14 w-14 items-center justify-center border-2 border-slate-800 bg-[#020617]">
-                <div className="absolute h-2 w-2 animate-ping bg-[#FCDE09]/40" />
-                <div className="h-2 w-2 bg-[#FCDE09]" />
+        {/* --- SYSTEM_FOOTER_ACTION --- */}
+        <div className="mt-32 border-4 border-slate-900 bg-slate-950 p-2 shadow-2xl">
+          <div className="flex flex-col items-center justify-between gap-10 border-2 border-slate-800 bg-slate-900/20 p-12 backdrop-blur-3xl md:flex-row">
+            <div className="flex items-center gap-8">
+              <div className="relative flex h-20 w-20 items-center justify-center border-2 border-[#FCDE09] bg-slate-950 shadow-[5px_5px_20px_rgba(252,222,9,0.1)]">
+                <div className="absolute inset-0 animate-pulse bg-[#FCDE09]/5" />
+                <Cpu className="text-[#FCDE09]" size={32} />
               </div>
-              <div>
-                <p className="mb-1 font-mono text-[10px] uppercase tracking-[0.3em] text-slate-500">
-                  System_Ready
+              <div className="space-y-2">
+                <p className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-[#FCDE09]">
+                  Protocol_Efficiency_Ready
                 </p>
-                <p className="font-mono text-xs font-bold uppercase tracking-wider text-white">
-                  Lead_Time: <span className="text-[#FCDE09]">5-14_Days</span>
-                </p>
+                <h4 className="font-mono text-xl font-black text-white">
+                  AVG_LEAD_TIME: <span className="text-[#FCDE09]">7.4_DAYS</span>
+                </h4>
               </div>
             </div>
 
-            <button className="group relative overflow-hidden bg-[#FCDE09] px-10 py-4 shadow-[8px_8px_0px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:scale-95">
-              <span className="relative z-10 font-mono text-[11px] font-black uppercase tracking-[0.4em] text-[#020617]">
-                Start_Case_Audit
+            <button className="group relative h-20 overflow-hidden bg-[#FCDE09] px-16 shadow-[10px_10px_0px_0px_#000] transition-all hover:translate-x-1 hover:translate-y-1 hover:shadow-none active:scale-95">
+              <span className="relative z-10 flex items-center gap-4 font-mono text-sm font-black uppercase tracking-[0.5em] text-[#020617]">
+                Initialize_Audit <ArrowRight size={20} />
               </span>
-              <div className="absolute inset-0 z-0 translate-y-full bg-white transition-transform duration-300 group-hover:translate-y-0" />
+              <div className="absolute inset-0 z-0 -translate-x-full bg-white transition-transform duration-500 group-hover:translate-x-0" />
             </button>
           </div>
         </div>
