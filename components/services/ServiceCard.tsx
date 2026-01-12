@@ -1,10 +1,29 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.867Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: ServiceCard          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 'use client'
 
 import React from 'react'
 import Image from 'next/image'
 import { ArrowRight, type LucideIcon } from 'lucide-react'
-// 🛰️ IMPORT_PROTOCOL: ดึงค่า Config เพื่อเข้าถึง Line ID
 import { siteConfig } from '@/config/site'
 
 export interface ServiceCardProps {
@@ -22,20 +41,18 @@ export interface ServiceCardProps {
 
 /**
  * 🛰️ COMPONENT: ServiceCard
- * ✅ FIXED: บังคับส่งข้อความเข้า LINE OA ด้วยโปรโตคอล oaMessage (ข้อความขึ้นแน่นอน)
+ * ✅ FIXED: ส่งข้อความเข้า LINE OA ด้วย oaMessage Protocol
  * ✅ ENFORCED: Industrial Sharp Protocol
  */
 export const ServiceCard = ({ icon: Icon, ...item }: ServiceCardProps) => {
-  // 🛠️ MESSAGE_PROTOCOL: ข้อความที่จะให้ไปปรากฏในช่องแชท
   const lineMessage = `สวัสดีครับ สนใจบริการ: ${item.title} (รหัส: ${item.code}) ขอทราบรายละเอียดเพิ่มเติมครับ`
-
-  // 🔗 LINK_PROTOCOL: ใช้โครงสร้าง https://line.me/R/oaMessage/{lineId}/?{message}
-  // lineId จาก config คือ @462fqtfc
-  const lineUrl = `https://line.me/R/oaMessage/${siteConfig.contact.lineId}/?${encodeURIComponent(lineMessage)}`
+  const lineUrl = `https://line.me/R/oaMessage/${siteConfig.contact.lineId}/?${encodeURIComponent(
+    lineMessage,
+  )}`
 
   return (
     <div className="hover:shadow-sharp-hover group relative flex h-full flex-col border-b border-r border-slate-100 bg-white transition-all duration-500 last:border-r-0 hover:z-20">
-      {/* 🖼️ IMAGE_CONTAINER */}
+      {/* IMAGE */}
       <div className="relative aspect-[16/11] overflow-hidden bg-slate-900">
         <Image
           src={item.image}
@@ -44,10 +61,8 @@ export const ServiceCard = ({ icon: Icon, ...item }: ServiceCardProps) => {
           className="duration-industrial ease-sharp-out object-cover opacity-80 grayscale-[0.5] transition-transform group-hover:scale-110 group-hover:opacity-100 group-hover:grayscale-0"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-
-        <div className="absolute right-5 top-5 border border-slate-200/50 bg-white/90 px-3 py-1.5 shadow-sharp-sm backdrop-blur-md">
+        <div className="shadow-sharp-sm absolute right-5 top-5 border border-slate-200/50 bg-white/90 px-3 py-1.5 backdrop-blur-md">
           <div className="flex items-center gap-2">
             <div className="relative flex h-2 w-2">
               <span className="absolute inline-flex h-full w-full animate-ping rounded-none bg-[#FCDE09] opacity-75"></span>
@@ -58,9 +73,8 @@ export const ServiceCard = ({ icon: Icon, ...item }: ServiceCardProps) => {
             </span>
           </div>
         </div>
-
         <div className="absolute bottom-5 left-5">
-          <span className="inline-block bg-[#FCDE09] px-5 py-2 text-[11px] font-black uppercase tracking-[0.25em] text-slate-950 shadow-sharp transition-transform group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none">
+          <span className="shadow-sharp inline-block bg-[#FCDE09] px-5 py-2 text-[11px] font-black uppercase tracking-[0.25em] text-slate-950 transition-transform group-hover:translate-x-1 group-hover:translate-y-1 group-hover:shadow-none">
             {item.category}
           </span>
         </div>
@@ -85,7 +99,7 @@ export const ServiceCard = ({ icon: Icon, ...item }: ServiceCardProps) => {
           {item.title}
         </h3>
 
-        <p className="mb-10 line-clamp-3 font-thai text-[16px] font-medium leading-relaxed text-slate-500 group-hover:text-slate-600">
+        <p className="font-thai mb-10 line-clamp-3 text-[16px] font-medium leading-relaxed text-slate-500 group-hover:text-slate-600">
           {item.description}
         </p>
 
@@ -123,12 +137,12 @@ export const ServiceCard = ({ icon: Icon, ...item }: ServiceCardProps) => {
               </div>
             </div>
 
-            {/* 🎯 FIXED: ใช้ lineUrl (oaMessage) เพื่อให้ข้อความไปขึ้นในช่องแชททันที */}
+            {/* LINE OA Button */}
             <a
               href={lineUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="group/btn relative flex h-16 w-16 items-center justify-center overflow-hidden bg-slate-950 transition-all duration-300 hover:shadow-none active:scale-95 group-hover:bg-[#FCDE09] group-hover:shadow-sharp-brand"
+              className="group/btn group-hover:shadow-sharp-brand relative flex h-16 w-16 items-center justify-center overflow-hidden bg-slate-950 transition-all duration-300 hover:shadow-none active:scale-95 group-hover:bg-[#FCDE09]"
               aria-label={`สอบถามข้อมูลบริการ ${item.title} ผ่าน LINE`}
             >
               <ArrowRight

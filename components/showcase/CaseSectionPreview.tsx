@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.849Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: CaseSectionPreview          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 
 'use client'
@@ -12,15 +32,14 @@ import { ArrowUpRight, ShieldCheck, Activity, Database, Terminal } from 'lucide-
 /**
  * 🛠️ COMPONENT: CaseSectionPreview
  * @version 2026.1.0 (JP-High-Impact Execution)
- * ✅ ตรวจสอบ: ภาษาจริงใจ, ดีไซน์ดุดัน, เน้นความน่าเชื่อถือระดับสูง
+ * ✅ แสดงผลงาน High Impact 3 รายการแรก
  */
 export const CaseSectionPreview = () => {
-  // เลือกเคสระดับ High Impact 3 รายการแรกมาแสดง
   const featuredCases = ALL_CASES.slice(0, 3)
 
   return (
     <section className="relative border-t-8 border-[#020617] bg-white py-32 selection:bg-[#FCDE09] selection:text-[#020617] lg:py-48">
-      {/* 🧩 UI_INFRA: Engineering Grid & Overlay */}
+      {/* 🧩 Background Overlay */}
       <div
         className="pointer-events-none absolute inset-0 z-0 opacity-[0.05]"
         style={{
@@ -30,11 +49,11 @@ export const CaseSectionPreview = () => {
       />
 
       <div className="container relative z-10 mx-auto max-w-7xl px-6 md:px-10">
-        {/* 📊 HEADER_MANIFEST: ส่วนหัวที่แสดงถึงอำนาจและความเชี่ยวชาญ */}
+        {/* 📊 Header */}
         <header className="mb-24 flex flex-col items-start justify-between gap-12 lg:flex-row lg:items-end">
           <div className="max-w-3xl">
             <div className="mb-10 flex flex-wrap items-center gap-4">
-              <div className="flex h-10 items-center gap-3 bg-[#020617] px-5 shadow-sharp">
+              <div className="shadow-sharp flex h-10 items-center gap-3 bg-[#020617] px-5">
                 <Terminal size={16} className="animate-pulse text-[#FCDE09]" />
                 <span className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-[#FCDE09]">
                   System_Status: Verified
@@ -54,7 +73,7 @@ export const CaseSectionPreview = () => {
             </h2>
 
             <div className="mt-12 flex gap-8 border-l-8 border-[#FCDE09] pl-10">
-              <p className="max-w-lg font-thai text-2xl font-black leading-tight text-[#020617]">
+              <p className="font-thai max-w-lg text-2xl font-black leading-tight text-[#020617]">
                 เพราะเราไม่ได้แค่ทำงานเอกสาร <br />
                 <span className="text-slate-500">
                   แต่เรา "แก้ปัญหา" ให้เกิดผลลัพธ์ที่จับต้องได้จริง
@@ -68,7 +87,7 @@ export const CaseSectionPreview = () => {
             className={cn(
               'group relative flex items-center justify-center gap-8 border-4 border-[#020617] bg-white px-12 py-8',
               'font-thai text-lg font-black uppercase tracking-tighter text-[#020617] transition-all duration-500',
-              'hover:bg-[#020617] hover:text-[#FCDE09] hover:shadow-sharp active:scale-95',
+              'hover:shadow-sharp hover:bg-[#020617] hover:text-[#FCDE09] active:scale-95',
             )}
           >
             ดูคลังผลงานทั้งหมด
@@ -80,8 +99,8 @@ export const CaseSectionPreview = () => {
           </Link>
         </header>
 
-        {/* 🏗️ GRID_ARCHITECTURE: การจัดวางที่แข็งแกร่ง */}
-        <div className="grid grid-cols-1 gap-px border-4 border-[#020617] bg-[#020617] shadow-sharp md:grid-cols-3">
+        {/* 🏗️ Grid */}
+        <div className="shadow-sharp grid grid-cols-1 gap-px border-4 border-[#020617] bg-[#020617] md:grid-cols-3">
           {featuredCases.map((data) => (
             <div key={data.id} className="bg-white transition-colors hover:bg-slate-50">
               <CaseGridCard data={data} />
@@ -89,16 +108,16 @@ export const CaseSectionPreview = () => {
           ))}
         </div>
 
-        {/* 🛡️ SYSTEM_STATUS: แถบประทับตราความเชื่อมั่น */}
+        {/* 🛡️ Footer */}
         <footer className="mt-28 flex flex-col items-center justify-between gap-10 border-t-4 border-[#020617] pt-12 md:flex-row">
           <div className="flex flex-wrap items-center gap-10">
-            <div className="flex items-center gap-4 border-2 border-[#020617] bg-emerald-50 px-6 py-3 shadow-sharp">
+            <div className="shadow-sharp flex items-center gap-4 border-2 border-[#020617] bg-emerald-50 px-6 py-3">
               <ShieldCheck size={20} className="text-emerald-600" />
               <span className="font-thai text-sm font-black uppercase text-[#020617]">
                 ข้อมูลผ่านการตรวจสอบแล้ว
               </span>
             </div>
-            <div className="flex items-center gap-4 border-2 border-[#020617] bg-[#FCDE09] px-6 py-3 shadow-sharp">
+            <div className="shadow-sharp flex items-center gap-4 border-2 border-[#020617] bg-[#FCDE09] px-6 py-3">
               <Activity size={20} className="animate-pulse text-[#020617]" />
               <span className="font-thai text-sm font-black uppercase text-[#020617]">
                 อัตราความสำเร็จ: 98.7%

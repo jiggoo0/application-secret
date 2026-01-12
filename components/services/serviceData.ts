@@ -10,7 +10,7 @@ import {
   LucideIcon,
 } from 'lucide-react'
 
-// --- 1. DATA_INTERFACES (ปิดช่องโหว่ Type Safety) ---
+// --- 1. DATA_INTERFACES (Type Safety Full Coverage) ---
 export interface ServicePrice {
   base: string
   suffix?: string
@@ -39,7 +39,7 @@ export interface ServiceItem {
   technical: ServiceTechnical
 }
 
-// --- 2. CORE_SERVICE_REGISTRY (v3.3.1 - Expert Companion Edition) ---
+// --- 2. CORE_SERVICE_REGISTRY v3.3.1 ---
 export const services: ServiceItem[] = [
   {
     id: 'loan-strategy-001',
@@ -51,7 +51,7 @@ export const services: ServiceItem[] = [
       'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
     title: 'ที่ปรึกษาสินเชื่อส่วนบุคคลและธุรกิจ',
     description:
-      'ช่วยวิเคราะห์โปรไฟล์และเลือกแผนที่เหมาะสมที่สุด จัดชุดเอกสารให้ครบตามเงื่อนไขแบงก์ ดูแลการยื่นกู้ให้แบบมืออาชีพโดยที่คุณไม่ต้องจัดการเองให้วุ่นวาย',
+      'ช่วยวิเคราะห์โปรไฟล์และเลือกแผนที่เหมาะสมที่สุด จัดชุดเอกสารให้ครบตามเงื่อนไขแบงก์ ดูแลการยื่นกู้ให้แบบมืออาชีพโดยที่คุณไม่ต้องจัดการเอง',
     price: { base: 'X,XXX' },
     cta: { label: 'คุยแผนการกู้', action: '/contact?ref=loan' },
     technical: {
@@ -70,7 +70,7 @@ export const services: ServiceItem[] = [
       'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
     title: 'ตั๋วเครื่องบินและโรงแรม (ตรวจสอบได้จริง)',
     description:
-      'จัดการจองตั๋วและที่พักทั่วโลก ข้อมูลลิ้งก์เข้าระบบ E-booking และ Google ค้นหาเจอสถานะจริง การันตีงานด่วนจบไวภายใน 1 วัน เพื่อความราบรื่นในการเดินทาง',
+      'จัดการจองตั๋วและที่พักทั่วโลก พร้อม E-booking และ Google ค้นหาสถานะจริง การันตีงานด่วนจบไวภายใน 1 วัน',
     price: { base: 'ราคาพิเศษ' },
     cta: { label: 'เช็กราคาห้องพัก/ตั๋ว', action: '/contact?ref=booking' },
     technical: {
@@ -89,7 +89,7 @@ export const services: ServiceItem[] = [
       'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
     title: 'ร่างจดหมายสำคัญโดยผู้เชี่ยวชาญ',
     description:
-      'รับเขียนจดหมายแนะนำตัว (Cover Letter) หรือจดหมายรับรอง/สปอนเซอร์ ทั้งไทยและอังกฤษ ปรับโทนให้ดูน่าเชื่อถือและเพิ่มโอกาสผ่านได้จริง',
+      'รับเขียนจดหมาย Cover Letter หรือจดหมายรับรอง/สปอนเซอร์ ทั้งไทยและอังกฤษ ปรับโทนให้น่าเชื่อถือ เพิ่มโอกาสผ่านได้จริง',
     price: { base: '1,000' },
     cta: { label: 'เริ่มร่างเนื้อหา', action: '/contact?ref=writing' },
     technical: {
@@ -106,9 +106,9 @@ export const services: ServiceItem[] = [
     icon: FileSearch,
     image:
       'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'ดูแลเอกสารยื่นวีซ่า (เน้นสายทำงาน)',
+    title: 'ดูแลเอกสารยื่นวีซ่า (สายทำงาน)',
     description:
-      'จัดชุดเอกสารให้ครบและเนี้ยบที่สุดสำหรับกลุ่มสายทำงาน ปรับปรุงข้อมูลให้สอดคล้องกับเกณฑ์ของประเทศปลายทาง เพื่อให้ผลลัพธ์ผ่านฉลุยไม่มีสะดุด',
+      'จัดชุดเอกสารครบและเนี้ยบที่สุด ปรับข้อมูลให้สอดคล้องเกณฑ์ประเทศปลายทาง ผลลัพธ์ผ่านฉลุยไม่มีสะดุด',
     price: { base: 'X,XXX' },
     cta: { label: 'ปรึกษาการยื่น', action: '/contact?ref=visa' },
     technical: {
@@ -127,7 +127,7 @@ export const services: ServiceItem[] = [
       'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
     title: 'แก้ไขและจัดหาเอกสารเฉพาะทาง',
     description:
-      'บริการปรับแก้หรือสร้างเอกสารใหม่ตามโจทย์ที่คุณต้องการ จัดหาเอกสารทุกรูปแบบอย่างแม่นยำ งานเนียนและรวดเร็ว เหมาะสำหรับคนที่มีงานด่วนพิเศษ',
+      'ปรับแก้หรือสร้างเอกสารใหม่ตามโจทย์ จัดหาเอกสารแม่นยำ งานเนียนและรวดเร็ว สำหรับงานด่วนพิเศษ',
     price: { base: '450', suffix: '- 8XX' },
     cta: { label: 'ส่งโจทย์ให้แอดมิน', action: '/contact?ref=doc-fix' },
     technical: {
@@ -144,9 +144,9 @@ export const services: ServiceItem[] = [
     icon: Layers,
     image:
       'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'เอกสารรับรองดิจิทัล (ระบบ Vifily)',
+    title: 'เอกสารรับรองดิจิทัล (Vifily)',
     description:
-      'สร้างความมั่นใจในระดับสากลด้วยระบบ Vifily ออกเอกสารรับรองที่มาพร้อม QR Code สำหรับสแกนเช็กข้อมูลจริงได้ทันที ดูโปรไฟล์ได้จากทุกที่ทั่วโลก',
+      'สร้างความมั่นใจระดับสากลด้วย Vifily ออกเอกสารรับรองพร้อม QR Code ตรวจสอบโปรไฟล์ได้ทั่วโลก',
     price: { base: 'XXX', suffix: '- X,XXX' },
     cta: { label: 'เปิดระบบ Vifily', action: '/contact?ref=vifily' },
     technical: {
@@ -163,9 +163,9 @@ export const services: ServiceItem[] = [
     icon: CreditCard,
     image:
       'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'ผลิตบัตรจริงเกรดพรีเมียม (แข็ง/อ่อน)',
+    title: 'ผลิตบัตรจริงเกรดพรีเมียม',
     description:
-      'งานพิมพ์คุณภาพสูง พร้อมระบบการจัดส่งที่รัดกุมและเป็นส่วนตัว (Messenger/รถทัวร์) เพื่อให้ถึงมือคุณอย่างปลอดภัยและเป็นความลับที่สุด',
+      'งานพิมพ์คุณภาพสูง พร้อมระบบจัดส่งรัดกุมและเป็นส่วนตัว เพื่อความปลอดภัยและเป็นความลับสูงสุด',
     price: { base: 'X,XXX' },
     cta: { label: 'ดูตัวอย่างบัตร', action: '/contact?ref=card' },
     technical: {

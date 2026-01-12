@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.986Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: page          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 
 import { notFound } from 'next/navigation'
@@ -54,7 +74,7 @@ export default async function CaseDetailPage({ params }: Props) {
 
             <div className="relative z-10">
               <div className="mb-6 flex items-center gap-3">
-                <div className="h-4 w-4 bg-[#FCDE09] shadow-sharp" />
+                <div className="shadow-sharp h-4 w-4 bg-[#FCDE09]" />
                 <span className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">
                   CASE_CODE: {data.id}
                 </span>
@@ -76,7 +96,7 @@ export default async function CaseDetailPage({ params }: Props) {
             <div className="font-thai text-5xl font-black uppercase tracking-tighter text-[#FCDE09] drop-shadow-[0_0_20px_rgba(252,222,9,0.3)] md:text-7xl">
               {data.business_outcome?.verdict || 'อนุมัติเรียบร้อย'}
             </div>
-            <div className="mt-8 flex flex-wrap gap-6 border-t border-white/10 pt-6 font-thai text-[11px] font-bold uppercase tracking-tight text-slate-400">
+            <div className="font-thai mt-8 flex flex-wrap gap-6 border-t border-white/10 pt-6 text-[11px] font-bold uppercase tracking-tight text-slate-400">
               <span className="flex items-center gap-2 text-white">
                 <span className="text-[#FCDE09]">หน่วยงาน:</span>{' '}
                 {data.business_outcome?.authority || 'สถาบันการเงิน'}
@@ -109,14 +129,14 @@ export default async function CaseDetailPage({ params }: Props) {
 
           {/* Technical Strategy: วิธีการจัดการแบบมืออาชีพ */}
           <section className="mb-24">
-            <h2 className="mb-12 inline-block border-b-4 border-[#020617] pb-2 font-thai text-sm font-black uppercase tracking-[0.3em] text-[#020617]">
+            <h2 className="font-thai mb-12 inline-block border-b-4 border-[#020617] pb-2 text-sm font-black uppercase tracking-[0.3em] text-[#020617]">
               แนวทางการแก้ไขปัญหาเชิงลึก
             </h2>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
               {data.technical_strategy.map((s, i) => (
                 <article
                   key={`strat-${i}`}
-                  className="group relative flex items-start border-4 border-[#020617] bg-white p-8 shadow-sharp transition-all hover:-translate-y-1"
+                  className="shadow-sharp group relative flex items-start border-4 border-[#020617] bg-white p-8 transition-all hover:-translate-y-1"
                 >
                   <span className="mr-6 font-mono text-4xl font-black text-slate-100 transition-colors group-hover:text-[#FCDE09]">
                     {(i + 1).toString().padStart(2, '0')}
@@ -144,14 +164,14 @@ export default async function CaseDetailPage({ params }: Props) {
         {/* SIDEBAR: Metrics & Navigation */}
         <aside className="bg-slate-50 lg:col-span-4">
           <div className="sticky top-24 p-8 md:p-12">
-            <h2 className="mb-12 flex items-center gap-3 font-thai text-sm font-black uppercase tracking-[0.3em] text-[#020617]">
-              <div className="h-3 w-3 bg-[#FCDE09] shadow-sharp" /> ข้อมูลการตรวจสอบ
+            <h2 className="font-thai mb-12 flex items-center gap-3 text-sm font-black uppercase tracking-[0.3em] text-[#020617]">
+              <div className="shadow-sharp h-3 w-3 bg-[#FCDE09]" /> ข้อมูลการตรวจสอบ
             </h2>
 
             <div className="space-y-16">
               {/* รายละเอียดจำนวนเอกสาร */}
               <div className="relative">
-                <span className="mb-4 block font-thai text-[11px] font-black uppercase tracking-widest text-slate-400">
+                <span className="font-thai mb-4 block text-[11px] font-black uppercase tracking-widest text-slate-400">
                   จำนวนชุดข้อมูลที่จัดการ
                 </span>
                 <div className="flex items-baseline gap-3">
@@ -164,7 +184,7 @@ export default async function CaseDetailPage({ params }: Props) {
 
               {/* ความซับซ้อน */}
               <div className="border-t-2 border-slate-200 pt-8">
-                <span className="mb-2 block font-thai text-[11px] font-black text-slate-400">
+                <span className="font-thai mb-2 block text-[11px] font-black text-slate-400">
                   ระดับความซับซ้อนของเคส
                 </span>
                 <p className="font-thai text-lg font-black text-[#020617]">
@@ -174,7 +194,7 @@ export default async function CaseDetailPage({ params }: Props) {
 
               <Link
                 href="/showcase"
-                className="group flex w-full items-center justify-between border-4 border-[#020617] bg-white p-6 font-thai text-sm font-black uppercase tracking-widest text-[#020617] shadow-sharp transition-all hover:bg-[#020617] hover:text-white"
+                className="font-thai shadow-sharp group flex w-full items-center justify-between border-4 border-[#020617] bg-white p-6 text-sm font-black uppercase tracking-widest text-[#020617] transition-all hover:bg-[#020617] hover:text-white"
               >
                 ย้อนกลับไปคลังผลงาน
                 <ChevronRight

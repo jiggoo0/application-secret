@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.863Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: ServiceFilter          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 import React from 'react'
 import { cn } from '@/lib/utils'
@@ -6,14 +26,13 @@ const categories = ['ALL_SERVICES', 'IMMIGRATION', 'FINANCIAL', 'DOCUMENTATION',
 
 interface ServiceFilterProps {
   active: string
-  // ✅ ใช้ _category เพื่อบอก ESLint ว่า parameter นี้ใน type definition
-  // อาจไม่ได้ถูกเรียกใช้โดยตรงในไฟล์นี้ (ป้องกัน warning 'category' defined but never used)
+  // ✅ ป้องกัน ESLint warning: parameter อาจไม่ได้ใช้ตรงนี้
   onChange: (_category: string) => void
 }
 
 /**
  * 🛰️ COMPONENT: ServiceFilter
- * ระบบกรองข้อมูลบริการ (Operational_Filter_Module)
+ * Operational Filter Module สำหรับกรองบริการ
  */
 export const ServiceFilter = ({ active, onChange }: ServiceFilterProps) => (
   <div className="relative mb-16">
@@ -25,7 +44,7 @@ export const ServiceFilter = ({ active, onChange }: ServiceFilterProps) => (
       </span>
     </div>
 
-    {/* 🎛️ Filter Buttons Container */}
+    {/* 🎛️ Filter Buttons */}
     <div className="flex flex-wrap gap-3">
       {categories.map((cat) => {
         const isActive = active === cat
@@ -33,18 +52,17 @@ export const ServiceFilter = ({ active, onChange }: ServiceFilterProps) => (
         return (
           <button
             key={cat}
-            // ✅ cat ตัวนี้ถูกใช้ใน onChange(cat) แล้ว จะไม่ติด warning
             onClick={() => onChange(cat)}
             className={cn(
               'group relative overflow-hidden px-6 py-3 transition-all duration-300',
               'font-mono text-[10px] font-black uppercase tracking-widest',
               isActive
-                ? 'bg-slate-950 text-brand shadow-[8px_8px_0px_0px_rgba(252,222,9,0.15)]'
+                ? 'text-brand bg-slate-950 shadow-[8px_8px_0px_0px_rgba(252,222,9,0.15)]'
                 : 'border border-slate-100 bg-white text-slate-400 hover:border-slate-950 hover:text-slate-950',
             )}
           >
             {/* ⚡ Active Indicator Dot */}
-            {isActive && <span className="absolute right-1 top-1 h-1 w-1 rounded-full bg-brand" />}
+            {isActive && <span className="bg-brand absolute right-1 top-1 h-1 w-1 rounded-full" />}
 
             <span className="relative z-10">{cat}</span>
 

@@ -1,7 +1,27 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.754Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: Header          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { Cpu, Activity } from 'lucide-react'
@@ -13,60 +33,51 @@ interface HeaderProps {
 }
 
 /**
- * 🛰️ COMPONENT: Header
- * Refactored for Unified Portal (Contact & Assessment)
- * ✅ FIXED: TypeScript Type-check mismatch (href comparison)
- * ✅ IMPROVED: Contrast visibility for Dark/Light mode transitions
+ * HEADER — MAIN_NAVIGATION
+ * ---------------------------------------------------------------
+ * - ตัด workaround type cast ที่ไม่จำเป็น
+ * - ปรับ active logic ให้เสถียรกับ route จริง
+ * - คุม contrast ให้คงที่ทั้ง Light / Dark
+ * - ลด state ที่ไม่จำเป็น
  */
 export function Header({ onMenuOpen }: HeaderProps) {
-  const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
+  const [isScrolled, setIsScrolled] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20)
-    }
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
+    const onScroll = () => setIsScrolled(window.scrollY > 20)
+    onScroll()
+    window.addEventListener('scroll', onScroll)
+    return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
-  /**
-   * 🛡️ SAFE_FILTER: กรองเมนูโดยใช้การหลีกเลี่ยง Type Error
-   * ใช้ (link.href as unknown as string) เพื่อแก้ปัญหา No Overlap Type Error ใน tsc
-   */
-  const filteredNav = navigationConfig.mainNav.filter(
-    (link) => (link.href as unknown as string) !== '/assessment',
-  )
+  const navItems = navigationConfig.mainNav // ไม่ต้อง filter '/assessment'
 
   return (
     <header
       className={cn(
-        'fixed left-0 right-0 top-0 z-[100] transition-all duration-500',
+        'fixed inset-x-0 top-0 z-[100] transition-all duration-300',
         isScrolled
-          ? 'border-b border-slate-800 bg-[#020617]/90 py-3 shadow-lg backdrop-blur-xl'
+          ? 'border-b border-slate-800 bg-[#020617]/90 py-3 backdrop-blur-xl'
           : 'bg-transparent py-6',
       )}
     >
       <div className="container mx-auto flex items-center justify-between px-6">
-        {/* --- LOGO_NODE: Industrial Identity --- */}
+        {/* LOGO */}
         <Link href="/" className="group flex items-center gap-3">
-          <div className="relative flex h-10 w-10 items-center justify-center bg-[#020617] ring-1 ring-slate-800 transition-all duration-500 group-hover:rotate-90 group-hover:bg-[#FCDE09] group-hover:ring-[#FCDE09]">
+          <div className="relative flex h-10 w-10 items-center justify-center bg-[#020617] ring-1 ring-slate-800 transition-all duration-300 group-hover:rotate-90 group-hover:bg-[#FCDE09] group-hover:ring-[#FCDE09]">
             <Cpu
+              size={20}
               className={cn(
-                'transition-colors duration-500',
+                'transition-colors duration-300',
                 isScrolled ? 'text-[#FCDE09] group-hover:text-[#020617]' : 'text-[#FCDE09]',
               )}
-              size={20}
             />
             <div className="absolute -right-0.5 -top-0.5 h-1.5 w-1.5 animate-pulse bg-[#FCDE09]" />
           </div>
+
           <div className="flex flex-col">
-            <span
-              className={cn(
-                'text-xl font-black uppercase italic leading-none tracking-tighter transition-colors',
-                isScrolled ? 'text-white' : 'text-white', // ปรับให้เป็นสีขาวเสมอเพื่อสู้กับพื้นหลังใส/ดำ
-              )}
-            >
+            <span className="text-xl font-black uppercase italic leading-none tracking-tighter text-white">
               JP Visual
               <span className="text-[#FCDE09] drop-shadow-[1px_1px_0px_#020617]">.Docs</span>
             </span>
@@ -79,41 +90,39 @@ export function Header({ onMenuOpen }: HeaderProps) {
           </div>
         </Link>
 
-        {/* --- DESKTOP_NAVIGATION: High Contrast & Sharp --- */}
+        {/* DESKTOP NAV */}
         <nav className="hidden items-center gap-10 lg:flex">
-          {filteredNav.map((link) => {
-            const isActive = pathname === link.href
+          {navItems.map((item) => {
+            const active = pathname === item.href
             return (
               <Link
-                key={link.href}
-                href={link.href}
+                key={item.href}
+                href={item.href}
                 className={cn(
-                  'relative text-[11px] font-black uppercase tracking-widest transition-all duration-300',
-                  isActive
-                    ? 'text-[#FCDE09] before:absolute before:-bottom-2 before:left-0 before:h-0.5 before:w-full before:bg-[#FCDE09]'
+                  'relative text-[11px] font-black uppercase tracking-widest transition-colors duration-200',
+                  active
+                    ? 'text-[#FCDE09] after:absolute after:-bottom-2 after:left-0 after:h-0.5 after:w-full after:bg-[#FCDE09]'
                     : 'text-slate-300 hover:text-[#FCDE09]',
                 )}
               >
-                {link.title}
+                {item.title}
               </Link>
             )
           })}
         </nav>
 
-        {/* --- ACTION_TRIGGER: Mobile Menu & Portal Access --- */}
-        <div className="flex items-center gap-4">
-          <button
-            onClick={onMenuOpen}
-            aria-label="Toggle Menu"
-            className="flex h-12 w-12 items-center justify-center bg-[#FCDE09] text-[#020617] shadow-sharp-brand transition-all hover:translate-x-[-2px] hover:translate-y-[-2px] active:scale-95"
-          >
-            <div className="flex flex-col gap-1.5">
-              <span className="h-[2px] w-6 bg-[#020617]" />
-              <span className="h-[2px] w-6 bg-[#020617]" />
-              <span className="h-[2px] w-4 self-end bg-[#020617]" />
-            </div>
-          </button>
-        </div>
+        {/* MOBILE MENU */}
+        <button
+          onClick={onMenuOpen}
+          aria-label="Toggle Menu"
+          className="shadow-sharp-brand flex h-12 w-12 items-center justify-center bg-[#FCDE09] text-[#020617] transition-transform active:scale-95"
+        >
+          <div className="flex flex-col gap-1.5">
+            <span className="h-[2px] w-6 bg-[#020617]" />
+            <span className="h-[2px] w-6 bg-[#020617]" />
+            <span className="h-[2px] w-4 self-end bg-[#020617]" />
+          </div>
+        </button>
       </div>
     </header>
   )

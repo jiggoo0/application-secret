@@ -1,8 +1,28 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.774Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: layout          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /**
  * @format
- * @description ROOT_LAYOUT: Master Architecture (V5.1.0)
- * ✅ CORE_SYSTEM: จัดการโครงสร้างพื้นฐานและลำดับฟอนต์
- * ✅ INDUSTRIAL_SHARP: ดีไซน์เน้นความคมชัดสูง (High-Contrast)
+ * @description ROOT_LAYOUT: Master Architecture — JP-VISUALDOCS
+ * ✅ CORE_SYSTEM: โครงสร้างพื้นฐาน + ฟอนต์
+ * ✅ ENTERPRISE_CALM: สุภาพ น่าเชื่อถือ เน้นเอกสาร
  */
 
 import type { Metadata, Viewport } from 'next'
@@ -15,7 +35,7 @@ import { inter, ibmPlexSansThai, jetbrainsMono } from '@/lib/fonts'
 import './globals.css'
 
 /* -------------------------------------------------------------------------- */
-/* METADATA_ENGINE (ระบบจัดการข้อมูล SEO) */
+/* METADATA_ENGINE */
 /* -------------------------------------------------------------------------- */
 
 export const metadata: Metadata = {
@@ -40,7 +60,7 @@ export const metadata: Metadata = {
         url: siteConfig.assets.ogImage,
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} - ที่ปรึกษาด้านการจัดการเอกสารวีซ่าและสินเชื่อ`,
+        alt: `${siteConfig.name} – ศูนย์บริหารจัดการเอกสารและการอนุมัติ`,
       },
     ],
   },
@@ -51,18 +71,18 @@ export const metadata: Metadata = {
 }
 
 /* -------------------------------------------------------------------------- */
-/* VIEWPORT_PROTOCOL (การแสดงผลบนอุปกรณ์) */
+/* VIEWPORT_PROTOCOL */
 /* -------------------------------------------------------------------------- */
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#020617', // Slate-950 (สีหลักของระบบ)
+  themeColor: '#FAFAF9', // Stone-50
 }
 
 /* -------------------------------------------------------------------------- */
-/* MAIN_ARCHITECTURE (โครงสร้างเว็บหลัก) */
+/* MAIN_ARCHITECTURE */
 /* -------------------------------------------------------------------------- */
 
 interface RootLayoutProps {
@@ -85,23 +105,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
         <JsonLd />
       </head>
 
-      <body
-        className={cn(
-          'min-h-screen bg-[#020617] font-sans text-slate-100 selection:bg-[#FCDE09] selection:text-slate-950',
-          'scrollbar-thin scrollbar-track-slate-950 scrollbar-thumb-[#FCDE09]',
-        )}
-      >
+      <body className="min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
         <Providers>
           <main className="relative flex min-h-screen flex-col overflow-x-hidden">
-            {/* 🧩 UI_DECOR: Blueprint Grid Background */}
-            <div
-              className="pointer-events-none fixed inset-0 z-[-1] bg-[url('/grid-pattern.svg')] bg-repeat opacity-[0.015]"
-              aria-hidden="true"
-            />
-
-            {/* 🎨 UI_DECOR: Depth Gradient Overlay */}
-            <div className="pointer-events-none fixed inset-0 z-[-1] bg-gradient-to-b from-transparent via-[#020617]/50 to-[#020617]" />
-
+            {/* CONTENT */}
             <div className="relative z-10 flex min-h-screen flex-col">{children}</div>
           </main>
         </Providers>

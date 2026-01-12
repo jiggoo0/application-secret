@@ -3,19 +3,26 @@
 import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
 
+/* -------------------------------------------------------------------------- */
+/* CLASSNAME UTILITY */
+/* -------------------------------------------------------------------------- */
 /**
- * 🎨 CN: THE_TAILWIND_GATEKEEPER
- * ผสาน Class แบบไร้รอยต่อ ป้องกันการเกิด Class Collision
+ * รวม Tailwind class อย่างปลอดภัย
+ * - ตัด class ซ้ำ
+ * - ป้องกัน collision
  */
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+/* -------------------------------------------------------------------------- */
+/* DATE UTILITY — THAI BUDDHIST ERA */
+/* -------------------------------------------------------------------------- */
 /**
- * 📅 DATE_PROTOCOL: Thai Buddhist Era
- * รองรับการแสดงผลทั้งแบบย่อและแบบทางการ (เหมาะสำหรับระบบ Audit Log)
+ * แสดงวันที่รูปแบบภาษาไทย
+ * ใช้กับเอกสาร, Audit log, และสถานะทางการ
  */
-function formatDateThai(date: Date | string | number, style: 'short' | 'long' = 'long') {
+export function formatDateThai(date: Date | string | number, style: 'short' | 'long' = 'long') {
   try {
     return new Intl.DateTimeFormat('th-TH', {
       day: 'numeric',
@@ -23,42 +30,36 @@ function formatDateThai(date: Date | string | number, style: 'short' | 'long' = 
       year: 'numeric',
     }).format(new Date(date))
   } catch {
-    // ✅ FIXED: Removed the variable entirely (Optional Catch Binding)
-    // นี้คือวิธีที่สะอาดที่สุดในการผ่านกฎ no-unused-vars ใน TypeScript
     return 'INVALID_DATE'
   }
 }
 
+/* -------------------------------------------------------------------------- */
+/* URL UTILITY */
+/* -------------------------------------------------------------------------- */
 /**
- * 🔗 URL_INFRASTRUCTURE: Global Access Point
- * ตรวจสอบความถูกต้องของ Path และ Environment อย่างเข้มงวด
+ * สร้าง Absolute URL จาก Path
+ * ใช้กับ SEO, OpenGraph, และระบบอ้างอิงภายนอก
  */
 export function absoluteUrl(path: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://jpvisouldocs.online'
+  const baseUrl =
+    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') || 'https://jpvisouldocs.online'
 
-  // ป้องกันการเกิด double slash (//) ใน URL
   const cleanPath = path.startsWith('/') ? path : `/${path}`
   return `${baseUrl}${cleanPath}`
 }
 
+/* -------------------------------------------------------------------------- */
+/* CURRENCY UTILITY */
+/* -------------------------------------------------------------------------- */
 /**
- * 💰 CURRENCY_ENGINE: Precision Accounting
- * รองรับงานที่ปรึกษาที่มีค่าธรรมเนียมหลายสกุลเงิน
+ * แสดงจำนวนเงินตามมาตรฐานประเทศไทย
+ * ใช้กับค่าบริการและเอกสารทางการเงิน
  */
-function formatCurrency(amount: number, currency: string = 'THB') {
+export function formatCurrency(amount: number, currency: string = 'THB') {
   return new Intl.NumberFormat('th-TH', {
     style: 'currency',
     currency,
     minimumFractionDigits: 0,
   }).format(amount)
-}
-
-/**
- * 🛠️ UNUSED_REGISTRY
- * บริเวณกักเก็บฟังก์ชันที่ยังไม่ถูกเรียกใช้ เพื่อผ่านการตรวจสอบ Knip
- * โดยยังรักษาความสมบูรณ์ของ Codebase (Legacy Preservation)
- */
-export const unusedUtils = {
-  formatDateThai,
-  formatCurrency,
 }

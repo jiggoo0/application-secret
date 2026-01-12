@@ -1,27 +1,33 @@
 /** @format */
+
 import { Globe2, FileText, Landmark, ShieldCheck, type LucideIcon } from 'lucide-react'
 
 /**
- * 🛠️ SERVICE_INTERFACE: มาตรฐานโครงสร้างข้อมูลบริการ
+ * JP-VISUALDOCS — SERVICE DATA PROTOCOL
+ * v2026.0.1
+ * - โครงสร้างข้อมูลตายตัว
+ * - เน้นผลลัพธ์ + ความน่าเชื่อถือ
+ * - ไม่มี field ส่วนเกิน
  */
+
 export interface ServiceItem {
-  icon: LucideIcon
-  label: string
-  title: string
-  description: string
+  readonly icon: LucideIcon
+  readonly label: string
+  readonly title: string
+  readonly description: string
 }
 
 export interface TrustStat {
-  label: string
-  value: string
-  unit: string
+  readonly label: string
+  readonly value: string
+  readonly unit: string
 }
 
-/**
- * 🏗️ CORE_SERVICES: บริการหลักของที่ปรึกษา
- * ปรับภาษาให้สื่อสารถึงผลลัพธ์ (Result-oriented) และความเชี่ยวชาญ
- */
-export const serviceList: ServiceItem[] = [
+/* ─────────────────────────────────────────────── */
+/* CORE SERVICES */
+/* ─────────────────────────────────────────────── */
+
+export const serviceList: readonly ServiceItem[] = [
   {
     icon: Globe2,
     label: 'VISA_STRATEGY',
@@ -32,38 +38,39 @@ export const serviceList: ServiceItem[] = [
     icon: FileText,
     label: 'DOC_MANAGEMENT',
     title: 'จัดการเอกสารครบวงจร',
-    description: 'จัดเตรียมและตรวจทานเอกสารสำคัญให้ถูกต้อง แม่นยำ และเป็นมืออาชีพ',
+    description: 'จัดเตรียมและตรวจทานเอกสารสำคัญให้ถูกต้อง แม่นยำ และเป็นระบบ',
   },
   {
     icon: Landmark,
     label: 'BUSINESS_SETUP',
     title: 'จดทะเบียนและที่ปรึกษาธุรกิจ',
-    description: 'ดูแลโครงสร้างเอกสารบริษัทเพื่อความมั่นคงและการรองรับทางกฎหมาย',
+    description: 'วางโครงสร้างเอกสารบริษัทให้ถูกต้อง รองรับการตรวจสอบและการเติบโต',
   },
   {
     icon: ShieldCheck,
     label: 'CERTIFICATION',
     title: 'รับรองเอกสารและกงสุล',
-    description: 'ดำเนินการรับรองความถูกต้องของเอกสารสำคัญเพื่อใช้ในระดับสากล',
+    description: 'ดำเนินการรับรองเอกสารสำคัญเพื่อใช้งานในระดับสากลอย่างถูกต้อง',
   },
 ] as const
 
-/**
- * 📊 PERFORMANCE_METRICS: ตัวบ่งชี้ความเชื่อมั่น
- */
-export const trustStats: TrustStat[] = [
+/* ─────────────────────────────────────────────── */
+/* TRUST METRICS */
+/* ─────────────────────────────────────────────── */
+
+export const trustStats: readonly TrustStat[] = [
   {
-    label: 'SUCCESS_RECORDS',
+    label: 'SUCCESS_RATE',
     value: '99',
     unit: '%',
   },
   {
-    label: 'EXPERIENCE',
+    label: 'YEARS_EXPERIENCE',
     value: '08',
     unit: 'ปี',
   },
   {
-    label: 'TRUSTED_CLIENTS',
+    label: 'CLIENTS_SERVED',
     value: '2,500',
     unit: 'ราย',
   },

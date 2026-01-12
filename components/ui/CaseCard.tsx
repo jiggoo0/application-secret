@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.829Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: CaseCard          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 
 'use client'
@@ -32,7 +52,7 @@ export const CaseCard = ({ data, className }: CaseCardProps) => {
       href={`/showcase/${data.slug}`}
       className={cn(
         'group relative flex flex-col border-4 border-[#020617] bg-white transition-all duration-500',
-        'hover:-translate-y-3 hover:shadow-sharp active:scale-[0.98]',
+        'hover:shadow-sharp hover:-translate-y-3 active:scale-[0.98]',
         className,
       )}
     >
@@ -42,7 +62,7 @@ export const CaseCard = ({ data, className }: CaseCardProps) => {
         <div className="pointer-events-none absolute inset-0 z-10 bg-[radial-gradient(#000_1.5px,transparent_1.5px)] bg-[size:16px_16px] opacity-[0.06]" />
 
         {/* Official Status Badge: ตราประทับสถานะ */}
-        <div className="absolute left-0 top-6 z-20 flex items-center gap-3 bg-[#020617] px-5 py-2.5 shadow-sharp">
+        <div className="shadow-sharp absolute left-0 top-6 z-20 flex items-center gap-3 bg-[#020617] px-5 py-2.5">
           <Activity size={14} className="animate-pulse text-[#FCDE09]" />
           <span className="font-thai text-[11px] font-black uppercase tracking-widest text-white">
             {data.business_outcome?.verdict || 'อนุมัติผ่านเกณฑ์'}
@@ -69,7 +89,7 @@ export const CaseCard = ({ data, className }: CaseCardProps) => {
 
         {/* Hover Security Scan Overlay */}
         <div className="absolute inset-0 z-20 flex items-center justify-center bg-[#020617]/0 transition-all duration-500 group-hover:bg-[#020617]/20">
-          <div className="translate-y-10 scale-50 border-4 border-[#020617] bg-[#FCDE09] p-5 text-[#020617] opacity-0 shadow-sharp transition-all duration-500 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
+          <div className="shadow-sharp translate-y-10 scale-50 border-4 border-[#020617] bg-[#FCDE09] p-5 text-[#020617] opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:scale-100 group-hover:opacity-100">
             <ShieldCheck size={32} strokeWidth={3} />
           </div>
         </div>
@@ -80,7 +100,7 @@ export const CaseCard = ({ data, className }: CaseCardProps) => {
         <header className="mb-8 flex items-start justify-between">
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <span className="border-2 border-[#020617] bg-[#FCDE09] px-3 py-1 font-thai text-[10px] font-black uppercase text-[#020617] shadow-[2px_2px_0px_#020617]">
+              <span className="font-thai border-2 border-[#020617] bg-[#FCDE09] px-3 py-1 text-[10px] font-black uppercase text-[#020617] shadow-[2px_2px_0px_#020617]">
                 {data.client_category || 'ทั่วไป'}
               </span>
               <span className="font-mono text-[10px] font-black text-slate-300">REF_{data.id}</span>
@@ -89,19 +109,19 @@ export const CaseCard = ({ data, className }: CaseCardProps) => {
               {data.title}
             </h3>
           </div>
-          <div className="flex h-12 w-12 items-center justify-center border-2 border-slate-100 text-slate-200 transition-all duration-500 group-hover:border-[#020617] group-hover:bg-[#020617] group-hover:text-[#FCDE09] group-hover:shadow-sharp">
+          <div className="group-hover:shadow-sharp flex h-12 w-12 items-center justify-center border-2 border-slate-100 text-slate-200 transition-all duration-500 group-hover:border-[#020617] group-hover:bg-[#020617] group-hover:text-[#FCDE09]">
             <ArrowUpRight size={24} strokeWidth={3} />
           </div>
         </header>
 
-        <p className="mb-10 line-clamp-2 font-thai text-lg font-bold leading-relaxed text-slate-500 transition-colors group-hover:text-slate-800">
+        <p className="font-thai mb-10 line-clamp-2 text-lg font-bold leading-relaxed text-slate-500 transition-colors group-hover:text-slate-800">
           {data.executive_summary}
         </p>
 
         {/* 📊 METRIC_LEDGER: ตัวเลขสถิติที่จับต้องได้ */}
         <div className="mt-auto grid grid-cols-2 gap-px border-4 border-[#020617] bg-[#020617] shadow-sm">
           <div className="bg-white p-5">
-            <span className="mb-2 flex items-center gap-2 font-thai text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <span className="font-thai mb-2 flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-slate-400">
               <Target size={12} /> ข้อมูลที่ตรวจสอบ
             </span>
             <div className="flex items-baseline gap-2">
@@ -112,12 +132,12 @@ export const CaseCard = ({ data, className }: CaseCardProps) => {
             </div>
           </div>
           <div className="bg-white p-5">
-            <span className="mb-2 block font-thai text-[10px] font-black uppercase tracking-widest text-slate-400">
+            <span className="font-thai mb-2 block text-[10px] font-black uppercase tracking-widest text-slate-400">
               ความยากของงาน
             </span>
             <span
               className={cn(
-                'block font-thai text-base font-black uppercase leading-tight',
+                'font-thai block text-base font-black uppercase leading-tight',
                 isHighComplexity ? 'text-red-600' : 'text-emerald-600',
               )}
             >

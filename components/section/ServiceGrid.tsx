@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.891Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: ServiceGrid          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 
 'use client'
@@ -9,15 +29,9 @@ import { ServiceCard } from '@/components/services/ServiceCard'
 import { services } from '@/components/services/serviceData'
 import { ShieldCheck, Cpu, ArrowUpRight } from 'lucide-react'
 
-/**
- * 🛰️ COMPONENT: ServiceGrid
- * @version 2026.1.1 (Cleanup & Performance)
- * ✅ FIXED: Removed unused 'Box' and 'cn' imports to resolve ESLint errors.
- */
 export const ServiceGrid = () => {
   const [activeTab, setActiveTab] = useState('ALL_SERVICES')
 
-  // 🔍 DATA_QUERY_OPTIMIZATION
   const filteredServices = useMemo(() => {
     return services.filter((service) =>
       activeTab === 'ALL_SERVICES' ? true : service.category === activeTab,
@@ -26,72 +40,61 @@ export const ServiceGrid = () => {
 
   return (
     <section
-      className="relative overflow-hidden bg-white py-32 selection:bg-[#FCDE09] selection:text-slate-950 lg:py-48"
       id="services"
+      className="relative overflow-hidden bg-white py-32 selection:bg-[#FCDE09] selection:text-slate-950 lg:py-48"
     >
-      {/* 🧩 UI_INFRA: Blueprint Overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(#020617_1px,transparent_1px)] opacity-[0.03] [background-size:32px_32px]" />
+      {/* GRID PATTERN BACKGROUND */}
+      <div className="pointer-events-none absolute inset-0 bg-[url('/grid-pattern.svg')] bg-repeat opacity-[0.04]" />
 
       <div className="container relative z-10 mx-auto max-w-7xl px-6">
-        {/* --- 01: SYSTEM_HEADER --- */}
+        {/* HEADER */}
         <ServiceHeader />
 
-        {/* --- 02: COMMAND_INTERFACE --- */}
+        {/* FILTER */}
         <div className="mb-20">
           <ServiceFilter active={activeTab} onChange={setActiveTab} />
         </div>
 
-        {/* --- 03: GRID_MATRIX_ENGINE --- */}
-        <div className="relative">
-          {/* Service Matrix Diagram Reference */}
+        {/* SERVICE GRID */}
+        <div className="relative z-10 grid grid-cols-1 gap-px border-2 border-slate-950 bg-slate-950 shadow-[20px_20px_0px_#f1f5f9] md:grid-cols-2 lg:grid-cols-3">
+          {filteredServices.map((service) => (
+            <ServiceCard key={service.id} {...service} />
+          ))}
 
-          <div className="relative z-10 grid grid-cols-1 gap-px border-2 border-slate-950 bg-slate-950 shadow-[20px_20px_0px_#f1f5f9] md:grid-cols-2 lg:grid-cols-3">
-            {filteredServices.map((service) => (
-              <ServiceCard key={service.id} {...service} />
-            ))}
-
-            {/* ⚡ ENTERPRISE_NODE: Strategic Custom Solutions */}
-            <div className="group relative flex min-h-[500px] flex-col items-center justify-center bg-[#020617] p-12 text-center transition-all duration-700">
-              <div className="relative z-10">
-                {/* Visual Node Indicator */}
-                <div className="relative mx-auto mb-12 h-24 w-24">
-                  <div className="animate-spin-slow absolute inset-0 border border-dashed border-[#FCDE09]/30" />
-                  <div className="flex h-full w-full items-center justify-center border-2 border-[#FCDE09] bg-slate-950 text-[#FCDE09] shadow-[0_0_30px_rgba(252,222,9,0.3)]">
-                    <Cpu size={40} strokeWidth={1.5} />
-                  </div>
+          {/* CUSTOM NODE */}
+          <div className="group relative flex min-h-[500px] flex-col items-center justify-center bg-[#020617] p-12 text-center transition-all duration-700">
+            <div className="relative z-10">
+              <div className="relative mx-auto mb-12 h-24 w-24">
+                <div className="animate-spin-slow absolute inset-0 border border-dashed border-[#FCDE09]/30" />
+                <div className="flex h-full w-full items-center justify-center border-2 border-[#FCDE09] bg-slate-950 text-[#FCDE09] shadow-[0_0_30px_rgba(252,222,9,0.3)]">
+                  <Cpu size={40} strokeWidth={1.5} />
                 </div>
-
-                <h3 className="mb-6 text-5xl font-black uppercase italic leading-[0.85] tracking-tighter text-white">
-                  Custom <br />
-                  <span className="text-[#FCDE09]">Architecture</span>
-                </h3>
-
-                <p className="mx-auto mb-14 max-w-[280px] font-thai text-[16px] font-bold leading-relaxed text-slate-500">
-                  ออกแบบโครงสร้างเอกสารระดับยุทธศาสตร์
-                  สำหรับกรณีที่มีความซับซ้อนสูงหรือการจัดการสินทรัพย์ระดับสากล
-                </p>
-
-                <button className="group/btn relative h-16 w-full overflow-hidden border-2 border-[#FCDE09] bg-transparent transition-all hover:bg-[#FCDE09]">
-                  <span className="relative z-10 flex items-center justify-center gap-3 font-mono text-[11px] font-black uppercase tracking-[0.4em] text-[#FCDE09] group-hover/btn:text-slate-950">
-                    Execute_Node <ArrowUpRight size={18} />
-                  </span>
-                  <div className="absolute inset-0 -translate-x-full bg-white transition-transform duration-500 group-hover/btn:translate-x-0" />
-                </button>
               </div>
 
-              {/* Matrix Decoration */}
-              <div
-                className="absolute inset-0 opacity-[0.05]"
-                style={{
-                  backgroundImage: 'radial-gradient(#FCDE09 1px, transparent 1px)',
-                  backgroundSize: '24px 24px',
-                }}
-              />
+              <h3 className="mb-6 text-5xl font-black uppercase italic leading-[0.85] tracking-tighter text-white">
+                Custom <br />
+                <span className="text-[#FCDE09]">Architecture</span>
+              </h3>
+
+              <p className="font-thai mx-auto mb-14 max-w-[280px] text-[16px] font-bold leading-relaxed text-slate-500">
+                ออกแบบโครงสร้างเอกสารระดับยุทธศาสตร์
+                สำหรับกรณีที่มีความซับซ้อนสูงหรือการจัดการสินทรัพย์ระดับสากล
+              </p>
+
+              <button className="group/btn relative h-16 w-full overflow-hidden border-2 border-[#FCDE09] transition-all hover:bg-[#FCDE09]">
+                <span className="relative z-10 flex items-center justify-center gap-3 font-mono text-[11px] font-black uppercase tracking-[0.4em] text-[#FCDE09] group-hover/btn:text-slate-950">
+                  Execute_Node <ArrowUpRight size={18} />
+                </span>
+                <div className="absolute inset-0 -translate-x-full bg-white transition-transform duration-500 group-hover/btn:translate-x-0" />
+              </button>
             </div>
+
+            {/* NODE GRID OVERLAY */}
+            <div className="pointer-events-none absolute inset-0 bg-[url('/grid-pattern.svg')] bg-repeat opacity-[0.06]" />
           </div>
         </div>
 
-        {/* --- 04: REGISTRY_FOOTER --- */}
+        {/* FOOTER */}
         <footer className="mt-16 flex flex-col items-center justify-between gap-8 border-t-2 border-slate-950 pt-10 md:flex-row">
           <div className="flex items-center gap-10">
             <div className="flex items-center gap-4">

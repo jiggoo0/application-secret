@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.983Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: page          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 import React from 'react'
 import { Lock, UserCheck, ShieldAlert } from 'lucide-react'
@@ -24,7 +44,7 @@ export default function PrivacyPage() {
         {/* HEADER: แถบสถานะประกาศทางกฎหมาย */}
         <header className="mb-20 border-l-8 border-[#020617] pl-8 md:pl-12">
           <div className="mb-6 flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center bg-[#020617] shadow-sharp">
+            <div className="shadow-sharp flex h-10 w-10 items-center justify-center bg-[#020617]">
               <Lock size={20} className="text-[#FCDE09]" />
             </div>
             <span className="font-mono text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">
@@ -41,7 +61,7 @@ export default function PrivacyPage() {
 
           <div className="mt-8 flex flex-wrap gap-6 font-mono text-[10px] font-black uppercase tracking-widest text-slate-400">
             <span className="flex items-center gap-2 border border-emerald-100 bg-emerald-50 px-2 py-1 text-emerald-600">
-              <span className="h-2 w-2 animate-pulse bg-emerald-500 shadow-sharp" />
+              <span className="shadow-sharp h-2 w-2 animate-pulse bg-emerald-500" />
               STATUS: ACTIVE_COMPLIANCE
             </span>
             <span className="border border-slate-100 bg-slate-50 px-2 py-1">
@@ -53,7 +73,7 @@ export default function PrivacyPage() {
         {/* 📋 DATA_FLOW_VISUALIZATION */}
 
         {/* CONTENT: Legal Execution */}
-        <div className="space-y-16 font-thai leading-relaxed text-slate-600">
+        <div className="font-thai space-y-16 leading-relaxed text-slate-600">
           {/* SECTION 01: การเก็บข้อมูล */}
           <section className="group">
             <div className="mb-6 flex items-center gap-4 border-b-2 border-slate-100 pb-2 transition-colors group-hover:border-[#FCDE09]">

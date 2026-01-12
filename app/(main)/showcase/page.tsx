@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.964Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: page          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 
 import React from 'react'
@@ -49,7 +69,7 @@ export default function ShowcasePage() {
         <div className="relative mx-auto max-w-7xl">
           <div className="flex flex-col gap-10">
             <nav className="flex items-center gap-4">
-              <div className="flex items-center gap-3 border-2 border-[#020617] bg-[#FCDE09] px-4 py-1.5 font-thai text-[11px] font-black uppercase tracking-tight text-[#020617] shadow-sharp">
+              <div className="font-thai shadow-sharp flex items-center gap-3 border-2 border-[#020617] bg-[#FCDE09] px-4 py-1.5 text-[11px] font-black uppercase tracking-tight text-[#020617]">
                 <Database size={14} className="animate-pulse" />
                 คลังผลงานจริง
               </div>
@@ -126,7 +146,7 @@ export default function ShowcasePage() {
             </p>
           </div>
           <div className="text-right">
-            <span className="block font-thai text-xs font-black text-[#020617]">
+            <span className="font-thai block text-xs font-black text-[#020617]">
               ข้อมูลอัปเดตเรียลไทม์
             </span>
             <span className="block font-mono text-[10px] font-bold text-emerald-500">

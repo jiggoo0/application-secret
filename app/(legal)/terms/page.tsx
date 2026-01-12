@@ -1,3 +1,23 @@
+/*
+🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
+@version 2026.1.12
+@timestamp 2026-01-12T00:18:45.979Z
+🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
+✅ Tone: Professional, Calm, Supportive
+✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
+✅ Reject speculative, unverifiable, or invented content
+
+📌 PAGE METADATA
+- PageName: page          // ตัวอย่าง: ShowcasePage, ServicesPage
+- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
+- Version: 2026.1.12
+- Checked: True
+- Audience: Internal & End-user
+- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+
+... (AI Context rules same as global template)
+*/
+
 /** @format */
 import React from 'react'
 import { Scale, Coins, CheckCircle2, FileLock2, ShieldAlert } from 'lucide-react'
@@ -11,13 +31,13 @@ export default function TermsPage() {
   return (
     <main className="relative min-h-screen bg-white pb-32 pt-32 font-sans lg:pt-48">
       {/* 🧩 UI_DECOR: Blueprint Grid */}
-      <div className="pointer-events-none absolute inset-0 bg-blueprint-grid opacity-[0.03]" />
+      <div className="bg-blueprint-grid pointer-events-none absolute inset-0 opacity-[0.03]" />
 
       <article className="container relative z-10 mx-auto max-w-4xl px-6">
         {/* HEADER: แถบระบุตัวตนสัญญาดิจิทัล */}
         <div className="mb-20 border-b-4 border-[#020617] pb-12">
           <div className="mb-8 flex items-center justify-between">
-            <div className="inline-flex items-center gap-2 bg-[#020617] px-3 py-1 font-mono text-[10px] font-black uppercase tracking-[0.3em] text-[#FCDE09] shadow-sharp">
+            <div className="shadow-sharp inline-flex items-center gap-2 bg-[#020617] px-3 py-1 font-mono text-[10px] font-black uppercase tracking-[0.3em] text-[#FCDE09]">
               CONTRACT_ID: JPV-TOS-2026
             </div>
             <div className="font-mono text-[10px] font-black uppercase tracking-tighter text-slate-300">
@@ -39,7 +59,7 @@ export default function TermsPage() {
             </p>
             <div className="flex flex-col items-end justify-end gap-2 font-mono text-[10px] font-black uppercase text-slate-400">
               <span>Revision: v3.1.2026</span>
-              <span className="bg-[#FCDE09] px-2 py-0.5 text-[#020617] shadow-sharp">
+              <span className="shadow-sharp bg-[#FCDE09] px-2 py-0.5 text-[#020617]">
                 Status: Immediate_Legality
               </span>
             </div>
@@ -47,11 +67,11 @@ export default function TermsPage() {
         </div>
 
         {/* CONTENT: PROTOCOLS */}
-        <div className="space-y-24 font-thai text-[#020617]">
+        <div className="font-thai space-y-24 text-[#020617]">
           {/* PROTOCOL 01: ขอบเขตหน้าที่ */}
           <section className="group">
             <div className="mb-8 flex items-start gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
+              <div className="shadow-sharp flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white transition-all group-hover:bg-[#FCDE09]">
                 <Scale size={24} />
               </div>
               <div>
@@ -72,7 +92,7 @@ export default function TermsPage() {
                 </span>
               </p>
 
-              <div className="relative flex gap-4 overflow-hidden bg-[#020617] p-6 text-white shadow-sharp">
+              <div className="shadow-sharp relative flex gap-4 overflow-hidden bg-[#020617] p-6 text-white">
                 <ShieldAlert
                   size={48}
                   className="absolute -bottom-4 -right-4 text-[#FCDE09] opacity-20"
@@ -88,7 +108,7 @@ export default function TermsPage() {
           {/* PROTOCOL 02: ทรัพย์สินทางปัญญา */}
           <section className="group">
             <div className="mb-8 flex items-start gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
+              <div className="shadow-sharp flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white transition-all group-hover:bg-[#FCDE09]">
                 <FileLock2 size={24} />
               </div>
               <div>
@@ -119,7 +139,7 @@ export default function TermsPage() {
           {/* PROTOCOL 03: นโยบายค่าธรรมเนียม */}
           <section className="group">
             <div className="mb-8 flex items-start gap-4">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white shadow-sharp transition-all group-hover:bg-[#FCDE09]">
+              <div className="shadow-sharp flex h-14 w-14 shrink-0 items-center justify-center border-2 border-[#020617] bg-white transition-all group-hover:bg-[#FCDE09]">
                 <Coins size={24} />
               </div>
               <div>
@@ -147,7 +167,7 @@ export default function TermsPage() {
         </div>
 
         {/* 🖊️ SIGNATURE BLOCK: ส่วนการยอมรับเงื่อนไขดิจิทัล */}
-        <div className="relative mt-32 overflow-hidden border-4 border-[#020617] bg-slate-50 p-10 shadow-sharp">
+        <div className="shadow-sharp relative mt-32 overflow-hidden border-4 border-[#020617] bg-slate-50 p-10">
           <div className="pointer-events-none absolute right-0 top-0 p-4 opacity-10">
             <CheckCircle2 size={120} />
           </div>
@@ -155,7 +175,7 @@ export default function TermsPage() {
           <div className="relative z-10 flex flex-col items-center justify-between gap-8 md:flex-row">
             <div className="space-y-3">
               <div className="flex items-center gap-3">
-                <span className="h-4 w-4 bg-[#10B981] shadow-sharp" />
+                <span className="shadow-sharp h-4 w-4 bg-[#10B981]" />
                 <span className="font-mono text-[12px] font-black uppercase tracking-[0.3em] text-[#020617]">
                   Electronic_Acceptance
                 </span>

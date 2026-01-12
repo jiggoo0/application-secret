@@ -8,17 +8,14 @@ import { Resend } from 'resend'
 
 /**
  * 🛰️ ACTION_PROTOCOL: CREATE_UNIFIED_LEAD
- * VERSION: 3.3.1
- * * วัตถุประสงค์:
- * - บันทึกข้อมูลผู้ติดต่อเข้าสู่ระบบฐานข้อมูลกลาง
- * - สร้าง Ticket ID สำหรับติดตามสถานะงาน (Tracking)
- * - ส่งอีเมลแจ้งเตือนลูกค้าเพื่อยืนยันข้อมูลก่อนนำส่งให้ทีมงาน
+ * VERSION: 3.3.1 (Production Ready)
+ * ✅ Strategic Keywords: Digital Integrity, Trust by Design, Seamless Process
  */
 
 const getResendClient = () => {
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
-    console.warn('⚠️ ไม่พบ RESEND_API_KEY ระบบส่งอีเมลจะไม่ทำงาน')
+    console.warn('⚠️ EMAIL_SYSTEM_OFFLINE: Missing RESEND_API_KEY')
     return null
   }
   return new Resend(apiKey)
@@ -52,10 +49,11 @@ export async function createLead(formData: LeadData): Promise<ActionResponse> {
     const ip = headerList.get('x-forwarded-for')?.split(',')[0] || 'unknown'
     const userAgent = headerList.get('user-agent') || 'unknown'
 
+    // Evidence-Based Validation
     if (!supabaseServer) throw new Error('DATABASE_NOT_AVAILABLE')
     if (!process.env.NEXT_PUBLIC_APP_URL) throw new Error('APP_URL_NOT_CONFIGURED')
 
-    // สร้าง Ticket ID สำหรับอ้างอิงงาน
+    // 🎫 TICKET_GENERATION: สร้างรหัสอ้างอิงภายใต้มาตรฐานระบบ
     const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase()
     const ticketId = `JPV-${randomCode}`
 
@@ -85,70 +83,36 @@ export async function createLead(formData: LeadData): Promise<ActionResponse> {
     if (dbError) throw new Error(`DATABASE_INSERT_FAILED: ${dbError.message}`)
 
     /**
-     * ระบบส่งอีเมลยืนยัน (Email Confirmation)
+     * 📧 EMAIL_DISPATCH_SYSTEM (Trust by Design)
      */
     if (formData.email) {
       const resend = getResendClient()
-      if (!resend) throw new Error('EMAIL_SYSTEM_DISABLED')
 
-      const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/contact/success?id=${ticketId}&name=${encodeURIComponent(
-        formData.full_name,
-      )}&verified=true`
+      // เราจะไม่ขัดขวาง Process หลักหากระบบอีเมลขัดข้อง แต่จะบันทึก Log แทน
+      if (resend) {
+        const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify?id=${ticketId}&name=${encodeURIComponent(
+          formData.full_name,
+        )}&verified=true`
 
-      await resend.emails.send({
-        from: 'JP Visual & Docs <noreply@jpvisouldocs.online>',
-        to: [formData.email],
-        subject: `ยืนยันข้อมูลเพื่อเริ่มการประเมินเคส | รหัสอ้างอิง ${ticketId}`,
-        html: `  
-      <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background:#ffffff; padding:40px 20px;">  
-        <div style="max-width:500px; margin:0 auto; border:4px solid #020617;">  
-          <div style="background:#020617; padding:25px;">  
-            <span style="background:#FCDE09; color:#020617; padding:2px 8px; font-size:10px; font-weight:900; letter-spacing:2px; text-transform:uppercase;">  
-              Verification Required  
-            </span>  
-            <h1 style="color:#ffffff; margin-top:15px; font-size:22px; font-weight:900; line-height:1.2;">  
-              ยืนยันตัวตนเพื่อส่งต่อข้อมูลให้ทีมงาน  
-            </h1>  
-          </div>  
-
-          <div style="padding:40px 30px; color:#020617;">  
-            <p style="font-size:16px; font-weight:800; margin-bottom:20px;">  
-              เรียน คุณ ${formData.full_name}  
-            </p>  
-
-            <p style="font-size:14px; line-height:1.6; color:#334155;">  
-              ทีมงานได้รับข้อมูลเบื้องต้นของคุณเรียบร้อยแล้ว 
-              รบกวนคุณยืนยันความถูกต้องของข้อมูลผ่านลิงก์ด้านล่าง เพื่อให้ที่ปรึกษาสามารถเริ่มขั้นตอนการตรวจสอบและวิเคราะห์เคสของคุณได้ทันที
-            </p>  
-
-            <div style="text-align:center; margin:40px 0;">  
-              <a href="${verifyUrl}"  
-                 style="background:#020617; color:#FCDE09; padding:18px 35px;  
-                        text-decoration:none; font-weight:900; font-size:13px;  
-                        letter-spacing:1px; border:2px solid #020617; display:inline-block;">  
-                คลิกเพื่อยืนยันข้อมูล  
-              </a>  
+        await resend.emails.send({
+          from: 'JP Visual & Docs <noreply@jpvisouldocs.online>',
+          to: [formData.email],
+          subject: `ยืนยันข้อมูลเพื่อเริ่มการประเมินเคส | รหัสอ้างอิง ${ticketId}`,
+          html: `  
+            <div style="font-family: sans-serif; background:#ffffff; padding:40px 20px; color:#020617;">  
+              <div style="max-width:500px; margin:0 auto; border:4px solid #020617; padding:40px;">  
+                <h1 style="font-size:24px; font-weight:900; text-transform:uppercase; font-style:italic; margin-bottom:20px;">Verification_Required</h1>
+                <p style="font-size:14px; line-height:1.6;">เรียน คุณ ${formData.full_name}</p>
+                <p style="font-size:14px; line-height:1.6;">โปรดยืนยันข้อมูลผ่านลิงก์ด้านล่างเพื่อเริ่มกระบวนการวิเคราะห์เคส:</p>
+                <div style="margin:30px 0;">
+                  <a href="${verifyUrl}" style="background:#020617; color:#FCDE09; padding:15px 25px; text-decoration:none; font-weight:bold; display:inline-block;">CONFIRM_IDENTITY</a>
+                </div>
+                <p style="font-size:12px; color:#64748b;">Ticket ID: ${ticketId}</p>
+              </div>
             </div>  
-
-            <div style="background:#f1f5f9; border-left:6px solid #FCDE09; padding:15px; margin-bottom:25px;">  
-              <p style="margin:0; font-size:11px; color:#475569; font-weight:bold;">  
-                Ticket ID สำหรับอ้างอิง: ${ticketId}  
-              </p>  
-            </div>  
-
-            <p style="font-size:11px; color:#94a3b8; line-height:1.5;">  
-              *หากคุณไม่ได้เป็นผู้ทำรายการนี้ สามารถละเว้นอีเมลฉบับนี้ได้ 
-              ข้อมูลที่ไม่ได้รับการยืนยันภายใน 24 ชม. จะถูกนำออกจากระบบเพื่อความเป็นส่วนตัว
-            </p>  
-          </div>  
-          
-          <div style="background:#f8fafc; padding:20px; border-top:1px solid #e2e8f0; text-align:center;">
-            <p style="font-size:10px; color:#64748b; margin:0; font-weight:bold;">JP Visual & Docs Management System</p>
-          </div>
-        </div>  
-      </div>  
-    `,
-      })
+          `,
+        })
+      }
     }
 
     revalidatePath('/admin/leads')
@@ -159,8 +123,8 @@ export async function createLead(formData: LeadData): Promise<ActionResponse> {
       name: formData.full_name,
     }
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'SYSTEM_ERROR'
-    console.error('🚨 CREATE_LEAD_FAILED:', message)
+    const message = error instanceof Error ? error.message : 'UNKNOWN_SYSTEM_ERROR'
+    console.error('🚨 ACTION_CRITICAL_FAILURE:', message)
 
     return {
       success: false,
