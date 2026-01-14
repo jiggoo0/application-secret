@@ -1,61 +1,50 @@
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
 
-/**
- * @description THE_MASTER_ARCHITECT_CONFIG:
- * ปรับแต่งเพื่อความเนียนระดับ Industrial Sharp และความปลอดภัยสูงสุด
- */
 const nextConfig: NextConfig = {
+  /* --- Core Settings --- */
   reactStrictMode: true,
+
+  /* --- Image Optimization --- */
   images: {
-    dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    formats: ['image/avif', 'image/webp'],
-    // 🟢 เน้นคุณภาพรูปภาพที่เหมาะสมสำหรับงาน High-end Visuals
-    qualities: [75, 85, 100],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'ui-avatars.com',
-        pathname: '/api/**',
-      },
-      // 🟢 จัดการช่องโหว่การดึงภาพจาก Supabase ทั้งโปรเจกต์เก่าและใหม่
-      {
-        protocol: 'https',
-        hostname: 'dpgmfbnzyhnhwzyozoxe.supabase.co',
-        pathname: '/storage/v1/object/public/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'ksiobbrextlywypdzaze.supabase.co',
-        pathname: '/storage/v1/object/public/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.dicebear.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.jpvisouldocs.online',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "**",
       },
     ],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    formats: ["image/avif", "image/webp"],
   },
-  experimental: {
-    // 🟢 ทางลัดพิเศษ: ลด Bundle Size โดยการ Optimize การดึงไอคอน
-    optimizePackageImports: ['lucide-react'],
-  },
-}
 
-export default nextConfig
+  /* --- Experimental Features (Next.js 15) --- */
+  experimental: {
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+  },
+
+  /* --- MDX Support --- */
+  // อนุญาตให้หน้าเว็บรองรับนามสกุลไฟล์ที่หลากหลาย
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+
+  /* --- Optimization --- */
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+
+  /* --- External Packages --- */
+  serverExternalPackages: ["sharp"],
+};
+
+// ตั้งค่า MDX Plugins (ถ้ามีในอนาคต เช่น remarkGfm)
+const withMDX = createMDX({
+  // options: {
+  //   remarkPlugins: [],
+  //   rehypePlugins: [],
+  // },
+});
+
+// ส่งออก Config ที่ถูก Wrap ด้วย withMDX
+export default withMDX(nextConfig);

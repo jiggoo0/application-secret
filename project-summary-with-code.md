@@ -1,363 +1,378 @@
-# 📑 รายงานสรุปโปรเจกต์และบริบท AI (Full Context)
-_สร้างเมื่อ: 2026-01-12 09:12:48_
-> **Status:** Fresh Scan | รวมข้อมูลวิเคราะห์ Route & Code
+# 📑 Project Context Summary (Full Scan)
+_Generated on: **2026-01-15 03:20:10**_
+> **Status:** Production-Ready Analysis | Full System Context | De-indexing Focus
 
-## 🔴 1. สถานะสุขภาพโปรเจกต์ล่าสุด
-✅ **READY FOR DEPLOY** (ผ่านการตรวจสอบทุกขั้นตอน)
+## 🔴 1. Project Health & Deployment Readiness
+✅ **READY FOR DEPLOY:** The project meets all production standards.
 
 ### 📍 Production Route Map
 ```text
 ```text
-Route (app)                                        Size  First Load JS
-┌ ○ /                                           49.4 kB         180 kB
-├ ○ /_not-found                                   143 B         102 kB
-├ ○ /contact                                    3.08 kB         112 kB
-├ ○ /contact/success                            2.59 kB         112 kB
-├ ○ /manifest.webmanifest                         143 B         102 kB
-├ ƒ /pass/[id]                                    143 B         102 kB
-├ ○ /privacy                                      143 B         102 kB
-├ ○ /robots.txt                                   143 B         102 kB
-├ ○ /services                                   2.88 kB         133 kB
-├ ○ /showcase                                   2.52 kB         114 kB
-├ ● /showcase/[slug]                            2.63 kB         115 kB
-├   ├ /showcase/retirement-asset-protocol
-├   ├ /showcase/sponsor-relationship-proof
-├   ├ /showcase/baac-home-acquisition-recovery
-├   └ [+3 more paths]
-├ ○ /sitemap.xml                                  143 B         102 kB
-├ ○ /terms                                        143 B         102 kB
-└ ○ /verify                                     4.79 kB         114 kB
-+ First Load JS shared by all                    102 kB
-  ├ chunks/3c4078ff-db1510ea385e11c8.js         54.2 kB
-  ├ chunks/667-fc91a2d66fb02623.js              45.6 kB
-  └ other shared chunks (total)                 1.93 kB
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    11.1 kB         167 kB
+├ ○ /_not-found                            995 B         103 kB
+├ ○ /about                               3.16 kB         155 kB
+├ ƒ /api/auth/callback                     129 B         102 kB
+├ ○ /blog                                  173 B         110 kB
+├ ƒ /blog/[slug]                           486 B         107 kB
+├ ○ /careers                             1.08 kB         151 kB
+├ ○ /contact                               129 B         102 kB
+├ ○ /faq                                 3.66 kB         159 kB
+├ ○ /privacy                             1.07 kB         148 kB
+├ ○ /services                            4.82 kB         123 kB
+├ ● /services/[slug]                       163 B         105 kB
+├   ├ /services/tourist-visa
+├   ├ /services/business-registration
+├   └ /services/certified-translation
+├ ƒ /services/request                    57.7 kB         195 kB
+├ ○ /sitemap.xml                           129 B         102 kB
+└ ○ /support                             1.08 kB         151 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/7f97a788-70f696b0503e8e6b.js  54.2 kB
+  ├ chunks/919-cb094919e5c4c4d2.js       45.5 kB
+  └ other shared chunks (total)          1.93 kB
+ƒ Middleware                             80.2 kB
 ○  (Static)   prerendered as static content
 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
 ƒ  (Dynamic)  server-rendered on demand
 ```
 ```
 
-## 📊 2. สถิติไฟล์แบ่งตามนามสกุล
+## 📊 2. File Statistics by Extension
 ```text
-     59 tsx
-     25 ts
-      6 webp
+     44 tsx
+     17 ts
       4 sh
-      2 svg
-      2 png
-      2 jpg
-      1 ico
+      3 jpg
+      1 mdx
+      1 md
       1 css
 ```
 
-## 📁 3. โครงสร้างโฟลเดอร์ (Tree)
+## 📁 3. Directory Structure (Architecture Tree)
 ```text
-📂 app
-  📂 (legal)
-    📄 layout.tsx
-    📂 privacy
-      📄 page.tsx
-    📂 terms
-      📄 page.tsx
-  📂 (main)
-    📂 contact
-      📄 page.tsx
-      📂 success
-        📄 page.tsx
-    📄 layout.tsx
-    📄 loading.tsx
+📂 app/
+  📂 (auth)/
+  📂 (dashboard)/
+  📂 services/
     📄 page.tsx
-    📂 services
+    📂 [slug]/
       📄 page.tsx
-    📂 showcase
-      📂 [slug]
+    📂 request/
+      📄 page.tsx
+    📂 _archive/
+      📂 visa/
         📄 page.tsx
-      📄 page.tsx
-    📂 verify
-      📄 page.tsx
-  📂 actions
-    📄 lead-actions.ts
-  📄 favicon.ico
-  📄 globals.css
+      📂 legal/
+        📄 page.tsx
+  📂 api/
+    📂 auth/
+      📂 callback/
+        📄 route.ts
   📄 layout.tsx
-  📄 manifest.ts
-  📄 not-found.tsx
-  📂 pass
-    📂 [id]
-      📄 page.tsx
-  📄 providers.tsx
-  📄 robots.ts
+  📄 page.tsx
+  📄 globals.css
   📄 sitemap.ts
-📂 components
-  📄 Footer.tsx
-  📄 Header.tsx
-  📄 MobileMenu.tsx
-  📂 form
-    📄 ContactForm.tsx
-  📂 hero
-    📄 CapabilityItem.tsx
-    📄 StatsCard.tsx
-    📄 heroData.ts
-  📂 layout
-    📄 MainLayout.tsx
-  📂 section
-    📄 AboutSection.tsx
-    📄 CaseGridCard.tsx
-    📄 FAQSection.tsx
-    📄 HeroSection.tsx
-    📄 ProcessStep.tsx
-    📄 ServiceGrid.tsx
-    📄 ServicesSection.tsx
-    📄 ShowcaseGrid.tsx
-    📄 TrustPartner.tsx
-  📂 seo
-    📄 JsonLd.tsx
-  📂 services
-    📄 ServiceCard.tsx
-    📄 ServiceFilter.tsx
-    📄 ServiceHeader.tsx
-    📄 serviceData.ts
-  📂 shared
-    📄 SkeletonCard.tsx
-  📂 showcase
-    📄 CaseSectionPreview.tsx
-    📄 EvidenceBoard.tsx
-    📄 MetricsPanel.tsx
-    📄 OperationalLog.tsx
-  📂 ui
-    📄 CaseCard.tsx
-    📄 accordion.tsx
-    📄 audit-stamp.tsx
-    📄 badge.tsx
+  📂 blog/
+    📄 page.tsx
+    📂 [slug]/
+      📄 page.tsx
+  📂 (marketing)/
+    📂 about/
+      📄 page.tsx
+    📂 contact/
+      📄 page.tsx
+  📂 privacy/
+    📄 page.tsx
+  📂 careers/
+    📄 page.tsx
+  📂 support/
+    📄 page.tsx
+  📂 faq/
+    📄 page.tsx
+📂 actions/
+  📄 documentActions.ts
+  📄 authActions.ts
+📂 components/
+  📂 ui/
     📄 button.tsx
     📄 card.tsx
-    📄 dialog.tsx
-    📄 input-otp.tsx
+    📄 typography.tsx
+    📄 accordion.tsx
+    📄 badge.tsx
     📄 input.tsx
-    📄 separator.tsx
-    📄 sheet.tsx
-    📄 sidebar.tsx
-    📄 skeleton.tsx
-    📄 sonner.tsx
-    📄 table.tsx
     📄 textarea.tsx
+    📄 skeleton.tsx
+    📄 navigation-menu.tsx
+    📄 sonner.tsx
+    📄 tabs.tsx
+    📄 label.tsx
+    📄 form.tsx
+    📄 checkbox.tsx
     📄 tooltip.tsx
-📂 lib
-  📄 fonts.ts
-  📄 mail.ts
-  📂 supabase
-    📄 constants.ts
-    📄 server.ts
+    📄 sheet.tsx
+    📄 select.tsx
+  📂 shared/
+    📄 Navbar.tsx
+    📄 Footer.tsx
+    📄 Header.tsx
+    📄 HeroSection.tsx
+    📄 FaqSection.tsx
+    📄 AboutSection.tsx
+    📄 Icons.tsx
+  📂 forms/
+    📄 ServiceRequestForm.tsx
+  📂 cards/
+    📄 ServiceCard.tsx
+  📂 templates/
+    📄 CategoryArchiveTemplate.tsx
+  📂 seo/
+    📄 JsonLd.tsx
+📂 lib/
+  📂 validations/
+    📄 documentSchema.ts
   📄 utils.ts
-📂 hooks
-  📄 use-mobile.tsx
-  📄 useServiceAction.ts
-📂 scripts
-  📄 generate-ai-context.ts
-  📂 dev
+  📂 supabase/
+    📄 client.ts
+    📄 server.ts
+    📄 middleware.ts
+  📄 mdx.ts
+📂 hooks/
+  📄 use-auth.ts
+📂 types/
+  📄 index.ts
+  📄 database.types.ts
+📂 scripts/
+  📂 dev/
     📄 backup-project.sh
     📄 project-summary.sh
     📄 tree-projects.sh
   📄 pre-deploy-check.sh
-📂 public
-  📄 apple-touch-icon.png
-  📄 grid-pattern.svg
-  📄 grid.svg
-  📂 images
-    📄 Logo.webp
-    📂 blog
-      📄 default-hero.webp
-      📄 placeholder.webp
-    📄 default-avatar.webp
-    📂 hero
-      📄 HeroBackground.png
-    📄 og-image.jpg
-    📄 placeholder.webp
-    📂 service
-      📄 placeholder.webp
-  📄 og-showcase.jpg
-📂 data
-  📄 faqData.ts
-📂 config
-  📄 navigation.ts
-  📄 showcase-types.ts
-  📂 showcase
-    📄 all-cases.ts
-    📄 case-1.ts
-    📄 case-2.ts
-    📄 case-3.ts
-    📄 case-4.ts
-    📄 case-5.ts
-    📄 case-6.ts
-  📄 site.ts
+📂 public/
+  📂 fonts/
+  📂 images/
+    📂 blog/
+      📄 visa-prep.jpg
+      📄 business-reg.jpg
+    📄 about-team.jpg
+📂 data/
+📂 constants/
   📄 theme.ts
+  📄 navigation.ts
+  📄 services-data.ts
+📂 providers/
+  📄 AppProvider.tsx
+📂 content/
+  📂 guides/
+  📂 blog/
+    📄 sample-post.mdx
+    📄 first-post.md
+  📄 faq-data.ts
 ```
 
-## 📄 4. เนื้อหาโค้ดและบริบททางเทคนิค
-#### 🔍 Path: ai-context.md
+## 📄 4. Critical Code Analysis & Environment
+#### 🔍 Path: `ai-context.md`
 ```markdown
-#!/usr/bin/env ts-node
-/\*\*
+# Project Context: JP-VISOUL-DOCS
+**Version:** 2.0.0 (Expanded)
+**Last Updated:** 2026-01-14
+**Scope:** Branding, Design System, Technical Architecture, and Operational Protocol
 
-- AI-Context Auto-Generator + Template
-- ***
-- Prepend strict AI-Context block to all .tsx pages/components
-- JP-VisualDocs – Global Page Template
-  \*/
+---
 
-import fs from 'fs'
-import path from 'path'
-import glob from 'glob'
+## 1. Project Identity & Vision (อัตลักษณ์และวิสัยทัศน์)
+* **Name:** JP-VISOUL-DOCS
+* **Core Concept:** "สะพานเชื่อมโอกาส ผ่านงานเอกสารที่โปร่งใส"
+* **Mission:** ลดความเหลื่อมล้ำในการเข้าถึงบริการด้านเอกสาร ราชการ และกฎหมาย เปลี่ยนเรื่องซับซ้อนให้เป็นเรื่องง่ายที่ใครๆ ก็เข้าถึงได้ (Democratizing Document Services).
+* **Target Audience:** ครอบคลุมทุก Segment ในไทย
+    * **General:** พ่อค้าแม่ค้า, แรงงาน, ผู้สูงอายุ (เน้นคุยง่าย ไว้ใจได้)
+    * **Pro:** นักศึกษา, คนทำงาน, เจ้าของธุรกิจ (เน้นความเร็ว ความถูกต้อง)
 
-// CONFIG
-const PROJECT*ROOT = process.cwd()
-const FILE_PATTERN = '\**/\_.tsx'
-const VERSION = '2026.1.12'
+## 2. Persona & Voice (บุคลิกและน้ำเสียง)
+**Persona:** "The Empathetic Expert" (ผู้เชี่ยวชาญที่เข้าใจหัวอกลูกค้า)
+* **Tone:** สุภาพ (Polite), อบอุ่น (Warm), มั่นคง (Stable), ไม่ตัดสิน (Non-judgmental).
+* **Language Rules:**
+    * **Simplicity:** ห้ามใช้ศัพท์ราชการ/กฎหมาย โดยไม่มีคำแปลง่ายๆ กำกับ
+    * **Standard:** ใช้ภาษาไทยมาตรฐาน สุภาพ แต่ไม่แข็งกระด้าง (Semi-formal)
+    * **Directness:** บอกราคาและขั้นตอนตรงไปตรงมา ไม่หมกเม็ด
+* **Keyword Strategy:** "ดูแล", "สบายใจ", "ถูกต้อง", "รวดเร็ว", "มาตรฐาน"
+* **Forbidden:** คำสแลงวัยรุ่นเกินพอดี, คำขู่ให้กลัว, หรือการดูถูกความไม่รู้ของผู้ใช้
 
-// Utility: Convert file path to page/component name
-const getPageName = (filePath: string) => {
-const base = path.basename(filePath, '.tsx')
-return base.replace(/\[|\]/g, '') || 'UnknownPage'
-}
+## 3. Design System & Visuals (ระบบการออกแบบ)
+* **Theme Concept:** "Reliable Warmth" (ความน่าเชื่อถือที่สัมผัสได้)
+* **Color Palette:**
+    * **Primary:** `Navy Blue` (#0A192F) - สื่อถึงความมั่นคง กฎหมาย ความเป็นมืออาชีพ
+    * **Secondary:** `Bright Blue` (#0070F3) - สื่อถึงเทคโนโลยีและความรวดเร็ว
+    * **Accent/Action:** `Warm Amber` (#F59E0B) - สื่อถึงความเป็นมิตร พลังงาน และการบริการ
+    * **Background:** `Off-White` (#FAFAF9) - ลดแสงสะท้อน อ่านสบายตากว่าสีขาวล้วน
+* **Typography:**
+    * **Headings:** `IBM Plex Sans Thai` (ทันสมัย เป็นสากล)
+    * **Body:** `Sarabun` หรือ `Niramit` (คุ้นเคย อ่านง่ายสำหรับผู้ใหญ่ รองรับภาษาไทยได้ดีเยี่ยม)
 
-// Generate AI-Context block
-const generateContext = (pageName: string) => {
-const timestamp = new Date().toISOString()
-return `/\*
-🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
-@version ${VERSION}
-@timestamp ${timestamp}
-🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
-✅ Tone: Professional, Calm, Supportive
-✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
-✅ Reject speculative, unverifiable, or invented content
+## 4. UX/UI Architecture (สถาปัตยกรรมประสบการณ์ผู้ใช้)
+* **Mobile-First:** ออกแบบให้ใช้งานบนมือถือเป็นหลัก (เนื่องจากกลุ่มเป้าหมายส่วนใหญ่ใช้มือถือ)
+* **Navigation:** เมนูต้องไม่ซับซ้อน (Simple Hierarchy)
+    * *Home / บริการของเรา / เช็คสถานะงาน / ติดต่อเรา*
+* **Key Components:**
+    * **Service Cards:** การ์ดเมนูขนาดใหญ่ ไอคอนชัดเจน
+    * **Floating Action Button (FAB):** ปุ่มติดต่อด่วน (Line/โทร) มุมขวาล่างเสมอ
+    * **Progress Tracker:** หน้าเช็คสถานะงานที่ดูง่ายเหมือนเช็คพัสดุ (Received > Processing > Completed)
 
-📌 PAGE METADATA
+## 5. Service Portfolio Structure (โครงสร้างบริการ)
+จัดกลุ่มบริการให้สอดคล้องกับ "เป้าหมายชีวิต" ของลูกค้า มากกว่าชื่อเอกสาร:
+1.  **กลุ่มเดินทาง & ต่างประเทศ:** วีซ่า (ท่องเที่ยว/คู่หมั้น), แปลเอกสาร, รับรองกงสุล
+2.  **กลุ่มธุรกิจ & กฎหมาย:** จดทะเบียนบริษัท, จดทะเบียนการค้า, เครื่องหมายการค้า
+3.  **กลุ่มครอบครัว & ส่วนตัว:** เปลี่ยนชื่อ-สกุล, จดทะเบียนสมรส/หย่า, พินัยกรรม
+4.  **Special Services:** บริการเร่งด่วน (Fast Track), บริการรับ-ส่งเอกสาร (Messenger)
 
-- PageName: ${pageName} // ตัวอย่าง: ShowcasePage, ServicesPage
-- Role: [PAGE_ROLE_HERE] // ตัวอย่าง: Document Hub, Service Portal
-- Version: ${VERSION}
-- Checked: True
-- Audience: Internal & End-user
-- Purpose: [SHORT_DESCRIPTION_HERE] // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+## 6. Security & Data Privacy (ความปลอดภัยและข้อมูลส่วนตัว)
+**Priority:** สูงสุด (เนื่องจากจัดการข้อมูลอ่อนไหว)
+* **Encryption:** ข้อมูลลูกค้าทั้งหมด (บัตร ปชช., พาสปอร์ต) ต้องเข้ารหัส (End-to-End Encryption) ทั้งขณะส่งและจัดเก็บ
+* **Auto-Purge Policy:** มีระบบแจ้งลบไฟล์เอกสารอัตโนมัติเมื่อจบงานตามระยะเวลาที่กำหนด (PDPA Compliance)
+* **Consent:** ขออนุญาตการใช้ข้อมูลอย่างชัดเจน ไม่ซ่อนในเงื่อนไขตัวเล็กๆ
+* **User Trust:** แสดง Badge ความปลอดภัย (SSL, PDPA Verified) ให้เห็นชัดเจนในหน้าชำระเงินและหน้าอัปโหลด
 
-🧩 1. CORE MISSION
+## 7. Technical Stack (เทคโนโลยีที่ใช้)
+* **Frontend:** Next.js 15 (App Router) - เพื่อ SEO และ Performance ระดับสูง
+* **Styling:** Tailwind CSS 4.0 - เพื่อความคล่องตัวและไฟล์ขนาดเล็ก
+* **UI Library:** Shadcn/UI + Lucide Icons - เรียบง่าย เข้าถึงได้ (Accessible)
+* **Animation:** Framer Motion - ใช้ Micro-interaction นุ่มนวล ไม่หวือหวาจนเวียนหัว
+* **Backend/Database:** Supabase หรือ PostgreSQL (เน้น Row Level Security)
+* **Hosting:** Vercel (Edge Network เพื่อความเร็วทั่วไทย)
 
-- Platform: JP-VisualDocs – High-End Documentation Hub
-- Supported Documents: Visa, Financial, Certificates, Business Docs
-- Value: Integrity, Efficiency, Trustworthiness
-- Outcome: เอกสารต้องตรวจสอบย้อนกลับและรับรองผลได้ทันที
-- Real-Time Feedback: Mandatory
+## 8. SEO & Content Strategy (กลยุทธ์เนื้อหา)
+* **Goal:** เป็น "คลังความรู้สามัญประจำบ้าน" เรื่องเอกสาร
+* **Content Type:**
+    * **How-to Guides:** "วิธีขอวีซ่าญี่ปุ่น 2026", "จดทะเบียนร้านค้าต้องใช้อะไรบ้าง"
+    * **FAQ:** ตอบคำถามที่คนไม่กล้าถามเจ้าหน้าที่รัฐ
+* **SEO Structure:** ใช้ Schema Markup สำหรับ `Service` และ `FAQPage` เพื่อให้ Google แสดงผลได้ดีที่สุด
+* **Tone in Content:** เหมือนพี่สอนน้อง หรือเพื่อนแนะนำเพื่อน ไม่ใช่ตำราเรียน
 
-🎨 2. DESIGN & UX PRINCIPLES
+## 9. Customer Support Operations (ระบบดูแลลูกค้า)
+* **Hybrid Model:** AI Chatbot (ตอบคำถามพื้นฐาน 24ชม.) + Human Agent (เคสซับซ้อน/ผู้สูงอายุ)
+* **Channels:** เน้น Line OA เป็นหลัก (คนไทยถนัดสุด) รองลงมาคือ Facebook Messenger
+* **Communication Standard:**
+    * ตอบกลับภายใน 5 นาที (ในเวลาทำการ)
+    * อัปเดตสถานะงานเชิงรุก (Proactive Update) ไม่ต้องรอให้ลูกค้าทวง
 
-- Style: Modern Enterprise Minimal
-- Colors:
-  - primary: #0F172A
-  - secondary: #1E293B
-  - accent: #059669
-  - background: #FAFAF9
-- Typography:
-  - Font-Sans: H1-H2
-  - Font-Thai: Body Text
-  - Font-Mono: IDs, Logs
-- UI Components:
-  - Glassmorphism for Cards/Certificates
-  - Micro-interactions via Framer Motion
-  - Feedback: Skeleton, Toast, Badge
-- Accessibility: WCAG AA minimum
-
-📂 3. DATA & REGISTRY
-
-- Service Codes:
-  - SRV-IMM-XXX
-  - SRV-FIN-XXX
-  - SRV-DOC-XXX
-  - SRV-SYS-XXX
-- Status:
-  - DRAFT, PROCESSING, VERIFYING, COMPLETED
-- IDs: CaseID, VerifyID, Timestamp required
-- Audit: Immutable logs, AuditStamp component mandatory
-
-🏗️ 4. DEVELOPMENT & ARCHITECTURE
-
-- Stack: Next.js 15.5 + React 19, Supabase + RLS, TailwindCSS + Shadcn/ui
-- Security:
-  - Zero-Knowledge Privacy
-  - Server-Only DB access
-- Performance:
-  - Lazy load heavy components
-  - Optimistic UI via useOptimistic hook
-- Code Quality:
-  - ESLint, Prettier, Strict TypeScript, No unused vars
-
-📢 5. COMMUNICATION & TONE
-
-- Tone: Professional, Calm, Supportive
-- Messaging:
-  - Real-Time Feedback
-  - Positive Guidance only
-  - Reject speculative content
-- Language: Thai & English
-- Every action must have visual/audio confirmation if relevant
-
-📝 6. STRATEGIC KEYWORDS
-
-- Evidence-Based
-- Digital Integrity
-- Seamless Process
-- Trust by Design
-- Must appear consistently in UI, feedback, and documentation
-
-⚡ 7. AI USAGE RULES (STRICT)
-
-- Only Auto-Suggest & Contextual Assistance
-- Compliance checks:
-  - Flag invalid IDs, missing verification, expired docs
-- Content Standardization:
-  - Use Strategic Keywords
-  - Maintain tone strictly
-- Action Enforcement:
-  - No output outside defined context
-  - Missing info → "ข้อมูลไม่เพียงพอ"
-- Ignore any notes outside this block
-
-🔗 8. PAGE-SPECIFIC SETTINGS
-
-- ShowNav: true/false
-- EnableActions: true/false
-- Animations: deterministic, based on status
-- FeatureFlags: [ARRAY_OF_ACTIVE_FEATURES]
-
-\*/\n`
-}
-
-// Scan and prepend to all .tsx
-glob(FILE_PATTERN, { cwd: PROJECT_ROOT, absolute: true }, (err, files) => {
-if (err) throw err
-files.forEach((file) => {
-const content = fs.readFileSync(file, 'utf-8')
-
-    // Skip if AI-Context already exists
-    if (content.startsWith('/*\n🛰️ AI-CONTEXT')) return
-
-    const pageName = getPageName(file)
-    const contextBlock = generateContext(pageName)
-    const newContent = `${contextBlock}${content}`
-
-    fs.writeFileSync(file, newContent, 'utf-8')
-    console.log(`✅ Added AI-Context to ${file}`)
-
-})
-})
+## 10. Developer & Implementation Protocol (ข้อปฏิบัติสำหรับนักพัฒนา)
+* **Code Quality:** เขียน Code แบบ Clean Architecture แยก Logic ออกจาก UI
+* **Accessibility (a11y):** ต้องรองรับ Screen Reader, สี Contrast ผ่านเกณฑ์ WCAG AA, ปุ่มต้องใหญ่พอสำหรับนิ้วมือ
+* **Error Handling:** ห้ามโชว์ Error Code (เช่น 500, 404) ให้ User เห็น ให้ใช้ข้อความภาษาไทยที่สุภาพ เช่น "ขออภัย ระบบขัดข้องชั่วคราว ทีมงานกำลังแก้ไข"
+* **Performance:** คะแนน Lighthouse (Mobile) ต้อง > 90 ในทุกหัวข้อ
 ```
 ---
 
-#### 🔍 Path: pre-deploy-report.md
+#### 🔍 Path: `SupabaseSQL.md`
+```sql
+| table_name        | column_name   | data_type                | is_nullable | column_default               |
+| ----------------- | ------------- | ------------------------ | ----------- | ---------------------------- |
+| documents         | id            | uuid                     | NO          | gen_random_uuid()            |
+| documents         | type          | text                     | NO          | null                         |
+| documents         | ref_id        | text                     | NO          | null                         |
+| documents         | status        | text                     | NO          | 'pending'::text              |
+| documents         | qr_token      | text                     | NO          | null                         |
+| documents         | pdf_url       | text                     | YES         | null                         |
+| documents         | created_at    | timestamp with time zone | NO          | now()                        |
+| documents         | updated_at    | timestamp with time zone | NO          | now()                        |
+| documents         | metadata      | jsonb                    | YES         | null                         |
+| leads             | id            | uuid                     | NO          | gen_random_uuid()            |
+| leads             | created_at    | timestamp with time zone | NO          | timezone('utc'::text, now()) |
+| leads             | name          | text                     | NO          | null                         |
+| leads             | email         | text                     | YES         | null                         |
+| leads             | phone         | text                     | YES         | null                         |
+| leads             | message       | text                     | YES         | null                         |
+| leads             | template_id   | text                     | YES         | null                         |
+| leads             | category      | text                     | YES         | null                         |
+| leads             | source_url    | text                     | YES         | null                         |
+| leads             | status        | text                     | YES         | 'new'::text                  |
+| leads             | admin_notes   | text                     | YES         | null                         |
+| leads             | metadata      | jsonb                    | YES         | '{}'::jsonb                  |
+| leads             | updated_at    | timestamp with time zone | YES         | timezone('utc'::text, now()) |
+| product_stocks    | id            | uuid                     | NO          | uuid_generate_v4()           |
+| product_stocks    | product_id    | uuid                     | YES         | null                         |
+| product_stocks    | account_data  | text                     | NO          | null                         |
+| product_stocks    | status        | text                     | YES         | 'available'::text            |
+| product_stocks    | created_at    | timestamp with time zone | YES         | now()                        |
+| product_stocks    | sold_at       | timestamp with time zone | YES         | null                         |
+| products          | id            | uuid                     | NO          | uuid_generate_v4()           |
+| products          | name          | text                     | NO          | null                         |
+| products          | category      | text                     | NO          | null                         |
+| products          | price         | double precision         | NO          | null                         |
+| products          | description   | text                     | YES         | null                         |
+| products          | created_at    | timestamp with time zone | YES         | now()                        |
+| reviews           | id            | uuid                     | NO          | gen_random_uuid()            |
+| reviews           | photo         | text                     | YES         | null                         |
+| reviews           | name          | text                     | NO          | null                         |
+| reviews           | author        | text                     | NO          | null                         |
+| reviews           | text          | text                     | NO          | null                         |
+| reviews           | rating        | smallint                 | NO          | null                         |
+| reviews           | created_at    | timestamp with time zone | YES         | timezone('utc'::text, now()) |
+| uploads           | id            | uuid                     | NO          | gen_random_uuid()            |
+| uploads           | user_email    | text                     | NO          | null                         |
+| uploads           | path          | text                     | NO          | null                         |
+| uploads           | type          | text                     | YES         | null                         |
+| uploads           | name          | text                     | YES         | null                         |
+| uploads           | status        | text                     | YES         | 'pending'::text              |
+| uploads           | created_at    | timestamp with time zone | YES         | now()                        |
+| uploads           | extension     | text                     | YES         | null                         |
+| uploads           | folder        | text                     | YES         | null                         |
+| uploads           | size          | bigint                   | YES         | null                         |
+| user_sessions     | id            | uuid                     | NO          | gen_random_uuid()            |
+| user_sessions     | user_id       | text                     | NO          | null                         |
+| user_sessions     | action        | text                     | NO          | null                         |
+| user_sessions     | ip_address    | text                     | YES         | null                         |
+| user_sessions     | user_agent    | text                     | YES         | null                         |
+| user_sessions     | created_at    | timestamp with time zone | NO          | now()                        |
+| users             | id            | uuid                     | NO          | gen_random_uuid()            |
+| users             | email         | text                     | NO          | null                         |
+| users             | password      | text                     | NO          | null                         |
+| users             | name          | text                     | YES         | null                         |
+| users             | role          | text                     | YES         | 'user'::text                 |
+| users             | created_at    | timestamp with time zone | YES         | now()                        |
+| users             | updated_at    | timestamp with time zone | YES         | now()                        |
+| verification_docs | id            | uuid                     | NO          | uuid_generate_v4()           |
+| verification_docs | verify_id     | text                     | NO          | null                         |
+| verification_docs | case_id       | text                     | NO          | null                         |
+| verification_docs | customer_name | text                     | NO          | null                         |
+| verification_docs | doc_type      | text                     | NO          | null                         |
+| verification_docs | status        | text                     | YES         | 'PROCESSING'::text           |
+| verification_docs | issued_at     | timestamp with time zone | YES         | null                         |
+| verification_docs | expired_at    | timestamp with time zone | YES         | null                         |
+| verification_docs | created_at    | timestamp with time zone | YES         | now()                        |
+| verification_docs | updated_at    | timestamp with time zone | YES         | now()                        |
+| verifications     | id            | uuid                     | NO          | gen_random_uuid()            |
+| verifications     | ticket_id     | text                     | NO          | null                         |
+| verifications     | holder_name   | text                     | NO          | null                         |
+| verifications     | document_type | text                     | NO          | null                         |
+| verifications     | status        | text                     | NO          | 'PENDING'::text              |
+| verifications     | metadata      | jsonb                    | YES         | '{}'::jsonb                  |
+| verifications     | verified_by   | text                     | YES         | null                         |
+| verifications     | issued_at     | timestamp with time zone | YES         | now()                        |
+| verifications     | expires_at    | timestamp with time zone | YES         | null                         |
+| verifications     | created_at    | timestamp with time zone | YES         | now()                        |
+| verifications     | updated_at    | timestamp with time zone | YES         | now()                        |
+| wiki_posts        | id            | uuid                     | NO          | gen_random_uuid()            |
+| wiki_posts        | slug          | text                     | NO          | null                         |
+| wiki_posts        | title         | text                     | NO          | null                         |
+| wiki_posts        | description   | text                     | YES         | null                         |
+| wiki_posts        | content       | text                     | YES         | null                         |
+| wiki_posts        | category      | text                     | YES         | 'General'::text              |
+| wiki_posts        | author_name   | text                     | YES         | null                         |
+| wiki_posts        | author_role   | text                     | YES         | null                         |
+| wiki_posts        | tags          | ARRAY                    | YES         | null                         |
+| wiki_posts        | image         | text                     | YES         | null                         |
+| wiki_posts        | is_published  | boolean                  | YES         | false                        |
+| wiki_posts        | created_at    | timestamp with time zone | YES         | now()                        |
+| wiki_posts        | updated_at    | timestamp with time zone | YES         | now()                        |
+| wiki_posts        | published_at  | timestamp with time zone | YES         | now()                        |```
+---
+
+#### 🔍 Path: `pre-deploy-report.md`
 ```markdown
 # 🚀 Pre-deploy Inspection Report
-Generated at: 2026-01-12 09:08:50
-Branch: main
+Generated at: 2026-01-15 03:16:59
+Branch: N/A
 
 ## 🔐 1. Environment Check
 ✅ Status: .env file exists and verified.
@@ -371,30 +386,32 @@ Branch: main
 ✅ Status: Build successfully optimized.
 ### 📊 Route Statistics & Bundle Size
 ```text
-Route (app)                                        Size  First Load JS
-┌ ○ /                                           49.4 kB         180 kB
-├ ○ /_not-found                                   143 B         102 kB
-├ ○ /contact                                    3.08 kB         112 kB
-├ ○ /contact/success                            2.59 kB         112 kB
-├ ○ /manifest.webmanifest                         143 B         102 kB
-├ ƒ /pass/[id]                                    143 B         102 kB
-├ ○ /privacy                                      143 B         102 kB
-├ ○ /robots.txt                                   143 B         102 kB
-├ ○ /services                                   2.88 kB         133 kB
-├ ○ /showcase                                   2.52 kB         114 kB
-├ ● /showcase/[slug]                            2.63 kB         115 kB
-├   ├ /showcase/retirement-asset-protocol
-├   ├ /showcase/sponsor-relationship-proof
-├   ├ /showcase/baac-home-acquisition-recovery
-├   └ [+3 more paths]
-├ ○ /sitemap.xml                                  143 B         102 kB
-├ ○ /terms                                        143 B         102 kB
-└ ○ /verify                                     4.79 kB         114 kB
-+ First Load JS shared by all                    102 kB
-  ├ chunks/3c4078ff-db1510ea385e11c8.js         54.2 kB
-  ├ chunks/667-fc91a2d66fb02623.js              45.6 kB
-  └ other shared chunks (total)                 1.93 kB
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    11.1 kB         167 kB
+├ ○ /_not-found                            995 B         103 kB
+├ ○ /about                               3.16 kB         155 kB
+├ ƒ /api/auth/callback                     129 B         102 kB
+├ ○ /blog                                  173 B         110 kB
+├ ƒ /blog/[slug]                           486 B         107 kB
+├ ○ /careers                             1.08 kB         151 kB
+├ ○ /contact                               129 B         102 kB
+├ ○ /faq                                 3.66 kB         159 kB
+├ ○ /privacy                             1.07 kB         148 kB
+├ ○ /services                            4.82 kB         123 kB
+├ ● /services/[slug]                       163 B         105 kB
+├   ├ /services/tourist-visa
+├   ├ /services/business-registration
+├   └ /services/certified-translation
+├ ƒ /services/request                    57.7 kB         195 kB
+├ ○ /sitemap.xml                           129 B         102 kB
+└ ○ /support                             1.08 kB         151 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/7f97a788-70f696b0503e8e6b.js  54.2 kB
+  ├ chunks/919-cb094919e5c4c4d2.js       45.5 kB
+  └ other shared chunks (total)          1.93 kB
 
+
+ƒ Middleware                             80.2 kB
 
 ○  (Static)   prerendered as static content
 ●  (SSG)      prerendered as static HTML (uses generateStaticParams)
@@ -409,1330 +426,681 @@ All protocols verified: Lint passed, Types safe, and Build successful. Deploymen
 ```
 ---
 
-#### 🔍 Path: app/globals.css
+#### 🔍 Path: `app/globals.css`
 ```css
-/** @format */
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* 1. Plugins Registration */
+@plugin "tailwindcss-animate";
+@plugin "@tailwindcss/typography";
 
-/* =========================================================
- * BASE — JP-VISUALDOCS (CALM / TRUST / DOCUMENT)
- * ========================================================= */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 2. Tailwind v4 Theme Configuration */
+@theme {
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+}
+
+/* 3. Global CSS Variables (:root) */
+:root {
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.129 0.042 264.695);
+  --primary: oklch(0.25 0.05 260);
+  --secondary: oklch(0.65 0.2 30);
+  --border: oklch(0.922 0.011 264.695);
+  --input: oklch(0.922 0.011 264.695);
+  --ring: oklch(0.707 0.022 264.695);
+
+  /* นิยามค่าสำหรับภาษาไทยไว้ที่นี่เพื่อให้เรียกใช้ซ้ำได้ */
+  --thai-line-height: 1.7;
+}
+
+/* 4. Utilities (ประกาศไว้ก่อนการใช้ @apply ใน layer อื่นๆ) */
+@utility thai-snug {
+  line-height: var(--thai-line-height);
+  letter-spacing: 0.01em;
+  text-underline-offset: 4px;
+}
+
+@utility no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* 5. Base Layers */
 @layer base {
-  :root {
-    /* CORE */
-    --background: #fafaf9; /* Stone-50 */
-    --foreground: #0f172a; /* Slate-900 */
-    --border: #e5e7eb;
-
-    /* ACCENT (Verified / Completed only) */
-    --accent: #059669; /* Emerald-600 */
-
-    /* SIDEBAR */
-    --sidebar-background: 210 20% 98%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 222 47% 11%;
-    --sidebar-primary-foreground: 210 40% 98%;
-    --sidebar-accent: 220 14% 96%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 158 64% 52%;
+  * {
+    @apply border-border outline-ring/50;
   }
-
-  html {
-    scroll-behavior: smooth;
-    -webkit-tap-highlight-color: transparent;
-    background-color: var(--background);
-  }
-
   body {
-    @apply bg-[var(--background)] text-[var(--foreground)] antialiased;
-    min-height: 100dvh;
+    /* แทนที่จะ @apply thai-snug เราใช้ค่า variable โดยตรงหรือปล่อยให้ utility ทำงานแยกไป */
+    @apply bg-background text-foreground font-body antialiased;
+    line-height: var(
+      --thai-line-height
+    ); /* ใช้ค่าโดยตรงเพื่อเลี่ยง Error @apply */
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
     text-rendering: optimizeLegibility;
   }
+}
 
-  * {
-    border-color: var(--border);
+/* 6. Advanced Animations */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
   }
-
-  /* SCROLLBAR — QUIET */
-  ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 999px;
-  }
-
-  ::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-/* =========================================================
- * COMPONENTS — DOCUMENT SYSTEM
- * ========================================================= */
-@layer components {
-  /* FORM */
-  .form-label {
-    @apply mb-1 block text-xs font-medium text-slate-600;
-  }
-
-  .form-input {
-    @apply w-full rounded-md border bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/20;
-  }
-
-  /* BUTTON */
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50;
-  }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 rounded-md border bg-white px-5 py-2.5 text-sm font-medium text-slate-700 transition-colors hover:bg-slate-50;
-  }
-
-  /* CARD */
-  .card {
-    @apply rounded-xl border bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)];
-  }
-
-  .card-header {
-    @apply flex flex-col space-y-1.5 p-6;
-  }
-
-  .card-title {
-    @apply font-semibold leading-none tracking-tight;
-  }
-
-  .card-description {
-    @apply text-muted-foreground text-sm;
-  }
-
-  .card-content {
-    @apply p-6 pt-0;
-  }
-
-  .card-footer {
-    @apply flex items-center p-6 pt-0;
-  }
-
-  /* STATUS */
-  .status-draft {
-    @apply text-slate-500;
-  }
-
-  .status-processing {
-    @apply text-blue-600;
-  }
-
-  .status-verifying {
-    @apply text-amber-600;
-  }
-
-  .status-completed {
-    @apply text-emerald-600;
-  }
-
-  /* GLASS (LIMITED USE) */
-  .glass {
-    @apply rounded-xl border border-white/20 bg-white/10 backdrop-blur-[12px];
-  }
-}
-
-/* =========================================================
- * UTILITIES
- * ========================================================= */
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-
-  /* CUSTOM SCROLLBAR FOR COMPONENTS */
-  .scrollbar-quiet::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  .scrollbar-quiet::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-
-  .scrollbar-quiet::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 999px;
-  }
-
-  .scrollbar-quiet::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
-  }
+@utility animate-entry {
+  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 ```
 ---
 
-#### 🔍 Path: app/layout.tsx
+#### 🔍 Path: `app/layout.tsx`
 ```typescript
-/*
-🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
-@version 2026.1.12
-@timestamp 2026-01-12T00:18:45.774Z
-🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
-✅ Tone: Professional, Calm, Supportive
-✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
-✅ Reject speculative, unverifiable, or invented content
+import type { Metadata, Viewport } from "next";
+import { IBM_Plex_Sans_Thai, Sarabun } from "next/font/google";
+import "./globals.css";
 
-📌 PAGE METADATA
-- PageName: layout          // ตัวอย่าง: ShowcasePage, ServicesPage
-- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
-- Version: 2026.1.12
-- Checked: True
-- Audience: Internal & End-user
-- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
+import { AppProvider } from "@/providers/AppProvider";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
-... (AI Context rules same as global template)
-*/
+// 1. Font Configuration
+const ibmPlexThai = IBM_Plex_Sans_Thai({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["thai", "latin"],
+  variable: "--font-heading",
+  display: "swap",
+});
 
-/**
- * @format
- * @description ROOT_LAYOUT: Master Architecture — JP-VISUALDOCS
- * ✅ CORE_SYSTEM: โครงสร้างพื้นฐาน + ฟอนต์
- * ✅ ENTERPRISE_CALM: สุภาพ น่าเชื่อถือ เน้นเอกสาร
- */
+const sarabun = Sarabun({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["thai", "latin"],
+  variable: "--font-body",
+  display: "swap",
+});
 
-import type { Metadata, Viewport } from 'next'
-import { siteConfig } from '@/config/site'
-import { Providers } from './providers'
-import { JsonLd } from '@/components/seo/JsonLd'
-import { cn } from '@/lib/utils'
-import { inter, ibmPlexSansThai, jetbrainsMono } from '@/lib/fonts'
-
-import './globals.css'
-
-/* -------------------------------------------------------------------------- */
-/* METADATA_ENGINE */
-/* -------------------------------------------------------------------------- */
-
+// 2. Metadata & SEO
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL("https://jpvisouldocs.online"),
   title: {
-    default: siteConfig.seo.defaultTitle,
-    template: siteConfig.seo.titleTemplate,
+    default: "JP-VISOUL.DOCS | บริการเอกสารและวีซ่าครบวงจร",
+    template: "%s | JP-VISOUL.DOCS",
   },
-  description: siteConfig.seo.description,
-  keywords: Array.isArray(siteConfig.seo.keywords) ? [...siteConfig.seo.keywords] : [],
-  authors: [{ name: siteConfig.author.name }],
-  creator: siteConfig.author.name,
+  description:
+    "สะพานเชื่อมโอกาส ผ่านงานเอกสารที่โปร่งใสและเข้าถึงง่าย ทั้งบริการวีซ่า แปลเอกสาร และจดทะเบียนธุรกิจ ทั่วประเทศไทย",
+  keywords: [
+    "ขอวีซ่า",
+    "จดทะเบียนบริษัท",
+    "แปลเอกสาร",
+    "JP-VISOUL",
+    "Legal Documents Thailand",
+  ],
+  authors: [{ name: "JP-VISOUL Team" }],
   openGraph: {
-    type: 'website',
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: 'th_TH',
-    title: siteConfig.seo.defaultTitle,
-    description: siteConfig.seo.description,
+    type: "website",
+    locale: "th_TH",
+    url: "https://jpvisouldocs.online",
+    siteName: "JP-VISOUL.DOCS",
     images: [
       {
-        url: siteConfig.assets.ogImage,
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} – ศูนย์บริหารจัดการเอกสารและการอนุมัติ`,
+        alt: "JP-VISOUL Services",
       },
     ],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
-}
-
-/* -------------------------------------------------------------------------- */
-/* VIEWPORT_PROTOCOL */
-/* -------------------------------------------------------------------------- */
+};
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  themeColor: "#0A192F",
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#FAFAF9', // Stone-50
-}
+};
 
-/* -------------------------------------------------------------------------- */
-/* MAIN_ARCHITECTURE */
-/* -------------------------------------------------------------------------- */
-
-interface RootLayoutProps {
-  children: React.ReactNode
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="th"
-      className={cn(
-        'scroll-smooth antialiased',
-        ibmPlexSansThai.variable,
-        inter.variable,
-        jetbrainsMono.variable,
-      )}
-      suppressHydrationWarning
-    >
-      <head>
-        <JsonLd />
-      </head>
+    <html lang="th" className="scroll-smooth" suppressHydrationWarning>
+      <body
+        className={cn(
+          "min-h-screen flex flex-col font-body antialiased bg-white text-slate-900 selection:bg-secondary/20 selection:text-secondary",
+          ibmPlexThai.variable,
+          sarabun.variable,
+        )}
+      >
+        <AppProvider>
+          {/* --- TOP FIXED NAVIGATION ---
+              เราเก็บไว้เฉพาะ Navbar เพื่อให้แถบเมนูกะทัดรัด (Slim) 
+              และมีพื้นที่สำหรับอ่านเนื้อหามากขึ้น
+          */}
+          <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col shadow-sm bg-white/95 backdrop-blur-md">
+            {/* นำ <Header /> ออกเพื่อให้ไปเรียกใช้ในรายหน้าแทน */}
+            <Navbar />
+          </div>
 
-      <body className="min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-        <Providers>
-          <main className="relative flex min-h-screen flex-col overflow-x-hidden">
-            {/* CONTENT */}
-            <div className="relative z-10 flex min-h-screen flex-col">{children}</div>
+          {/* --- MAIN CONTENT AREA ---
+              - pt-[64px]: เว้นระยะให้เท่ากับความสูงมาตรฐานของ Navbar
+              - lg:pt-[72px]: ปรับขนาดตามหน้าจอ Desktop
+          */}
+
+          <main className="flex-grow pt-[64px] lg:pt-[72px] overflow-x-hidden animate-entry">
+            {children}
           </main>
-        </Providers>
+
+          <Footer />
+
+          <Toaster
+            position="top-center"
+            richColors
+            expand={false}
+            closeButton
+          />
+        </AppProvider>
       </body>
     </html>
-  )
+  );
 }
 ```
 ---
 
-#### 🔍 Path: scripts/generate-ai-context.ts
+#### 🔍 Path: `app/page.tsx`
 ```typescript
-#!/usr/bin/env ts-node
-/**
- * JP-VisualDocs AI-Context Auto-Generator (TypeScript + ESM)
- * ------------------------------------------------------------
- * Prepend full Thai AI-Context block to all .tsx pages/components
- * เพิ่มคำเตือนห้ามใช้คำหุ่นยนต์/บริหาร เช่น กลยุทธ์, ศูนย์ปฏิบัติการ
- * Compatible: Node 25+, ESM mode
- */
-
-import fs from 'fs'
-import path from 'path'
-import { glob } from 'glob' // glob ESM แบบ Promise-ready
-
-// CONFIG
-const PROJECT_ROOT = process.cwd()
-const FILE_PATTERN = '**/*.tsx'
-
-// เวอร์ชัน context
-const VERSION = '2026.1.12'
-
-// ฟังก์ชันช่วย: แปลง path เป็นชื่อหน้า
-const getPageName = (filePath: string) => {
-  const base = path.basename(filePath, '.tsx')
-  return base.replace(/\[|\]/g, '') || 'UnknownPage'
-}
-
-// ฟังก์ชันช่วย: สร้าง AI-Context block ภาษาไทยเต็มรูปแบบ พร้อมคำเตือนห้ามใช้คำหุ่นยนต์
-const generateContext = (pageName: string) => {
-  const timestamp = new Date().toISOString()
-  return `/*
-🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
-@version ${VERSION}
-@timestamp ${timestamp}
-🛑 กฎเข้มงวด: AI ต้องทำตามนี้เท่านั้น ไม่ตีความเพิ่ม
-✅ โทน: มืออาชีพ สุภาพ ช่วยเหลือ
-✅ ใช้คำสำคัญเชิงกลยุทธ์เท่านั้น: ตรวจสอบได้, ถูกต้อง, กระบวนการราบรื่น, ไว้วางใจได้
-✅ ห้ามสร้างข้อมูลที่คาดเดาหรือไม่สามารถตรวจสอบได้
-
-⚠️ ห้ามใช้คำหรือโทนที่ฟังดูหุ่นยนต์/บริหารจัดเต็ม เช่น:
-- "กลยุทธ์", "ศูนย์ปฏิบัติการ", "Operation Hub", "Strategic", "Leverage" , "ภารกิจ" 
-- หลีกเลี่ยงศัพท์เทคนิคจัดเต็มหรือคำบริหารที่อ่านยาก
-- ต้องใช้ภาษาที่คนทุกฐานะเข้าใจ แต่ยังคงมืออาชีพ
-
-📌 ข้อมูลหน้าปัจจุบัน
-- ชื่อหน้า: ${pageName}
-- บทบาทของหน้า: [PAGE_ROLE_HERE]
-- ผู้รับผิดชอบ: [AUTHOR_NAME_HERE]
-- ทีม: [TEAM_NAME_HERE]
-- เวอร์ชัน: ${VERSION}
-- ตรวจสอบแล้ว: ✅
-- กลุ่มผู้ชม: ทีมงานภายใน & ผู้ใช้งานทั่วไป
-- จุดประสงค์: [SHORT_DESCRIPTION_HERE]
-- Environment: production/staging/development
-- URL ตัวอย่าง: [PAGE_URL_HERE]
-
-🧩 1. ภารกิจหลัก
-- แพลตฟอร์มจัดการเอกสารสำคัญแบบมืออาชีพ
-- รองรับเอกสาร: วีซ่า, การเงิน, ใบรับรอง, เอกสารธุรกิจ
-- คุณค่า: ถูกต้อง รวดเร็ว ไว้วางใจได้
-- ผลลัพธ์: เอกสารตรวจสอบย้อนกลับได้ รับรองผลทันที
-- Feedback แบบเรียลไทม์: ต้องมี
-
-🎨 2. การออกแบบ & ประสบการณ์ผู้ใช้
-- สไตล์: เรียบ มืออาชีพ โปร่งใส
-- สีหลัก: primary #0F172A, secondary #1E293B, accent #059669, background #FAFAF9
-- ฟอนต์: Sans หัวข้อ, Thai เนื้อหา, Mono รหัส/Log
-- UI: การ์ดโปร่งแสง, แอนิเมชันเล็กๆ, Feedback (Skeleton, Toast, Badge)
-- การเข้าถึง: รองรับมาตรฐาน WCAG AA
-
-📂 3. ข้อมูล & การลงทะเบียน
-- รหัสบริการ: SRV-IMM-XXX, SRV-FIN-XXX, SRV-DOC-XXX, SRV-SYS-XXX
-- สถานะเอกสาร: DRAFT, PROCESSING, VERIFYING, COMPLETED
-- ต้องมี: CaseID, VerifyID, Timestamp
-- Audit: บันทึกไม่แก้ไขได้, ต้องมี AuditStamp component
-- Data Sensitivity: Low/Medium/High
-- Privacy Notes: Zero-Knowledge enforced
-- Audit Required: true/false
-
-🏗️ 4. พัฒนา & สถาปัตยกรรม
-- เทคโนโลยี: Next.js + React, Supabase + RLS, TailwindCSS + Shadcn/ui
-- ความปลอดภัย: ข้อมูลสำคัญไม่ถูกเปิดเผย, Database เข้าถึงได้เฉพาะ Server
-- ประสิทธิภาพ: โหลดชิ้นส่วนหนักแบบ Lazy, ใช้ Optimistic UI
-- คุณภาพโค้ด: ESLint, Prettier, Strict TypeScript, ไม่มีตัวแปรไม่ได้ใช้
-- Dependencies: [ARRAY_OF_DEPENDENCIES]
-
-📢 5. การสื่อสาร & โทน
-- โทน: มืออาชีพ สุภาพ ช่วยเหลือ
-- ข้อความ: แจ้งผลทันที, คำแนะนำชัดเจน, ห้ามคาดเดา
-- ภาษา: ไทย & อังกฤษ
-- ทุกการกระทำต้องมี feedback เห็นหรือฟังได้
-
-📝 6. คำสำคัญเชิงกลยุทธ์
-- ตรวจสอบได้
-- ถูกต้อง
-- กระบวนการราบรื่น
-- ไว้วางใจได้
-- ต้องปรากฏใน UI, feedback, เอกสาร
-
-⚡ 7. กฎการใช้งาน AI (STRICT)
-- ช่วยเสนอขั้นตอนถัดไปและตรวจสอบ context เท่านั้น
-- ตรวจสอบ ID, การยืนยัน, เอกสารหมดอายุ
-- ปฏิบัติตามโทนและคำสำคัญเคร่งครัด
-- หากขาดข้อมูล → แสดง "ข้อมูลไม่เพียงพอ"
-- Expected User Actions: [ARRAY_OF_ACTIONS]
-- Expected System Feedback: [ARRAY_OF_FEEDBACKS]
-
-📈 8. การวัดผล & Monitoring
-- Metrics: LoadTime, UserClicks, FormSubmissions
-- Tracking: Enabled/Disabled
-
-🛠️ 9. การจัดการข้อผิดพลาด & Fallback
-- ErrorHandling: Skeleton/Toast/ErrorPage
-- Fallback: DefaultContent/Redirect
-
-🔗 10. การตั้งค่าเฉพาะหน้า
-- แสดงเมนู: true/false
-- เปิดการกระทำ: true/false
-- แอนิเมชัน: deterministic ตาม status
-- ฟีเจอร์พิเศษ: [ARRAY_OF_ACTIVE_FEATURES]
-
-*/
-`
-}
-
-// MAIN
-async function run() {
-  try {
-    const files = await glob(FILE_PATTERN, { cwd: PROJECT_ROOT, absolute: true })
-
-    for (const file of files) {
-      const content = fs.readFileSync(file, 'utf-8')
-
-      // ข้ามไฟล์ที่มี AI-Context แล้ว
-      if (content.startsWith('/*\n🛰️ AI-CONTEXT')) continue
-
-      const pageName = getPageName(file)
-      const contextBlock = generateContext(pageName)
-      const newContent = `${contextBlock}${content}`
-
-      fs.writeFileSync(file, newContent, 'utf-8')
-      console.log(`✅ Added AI-Context to ${file}`)
-    }
-  } catch (err) {
-    console.error('❌ Error:', err)
-    process.exit(1)
-  }
-}
-
-run()
-```
----
-
-#### 🔍 Path: config/site.ts
-```typescript
-/** @format */
-
-// 🛠️ IMPORT
-import { services } from '@/components/services/serviceData'
-import { ALL_CASES } from '@/config/showcase/all-cases'
-
-// 🌐 BASE URL (LOCKED – no trailing slash)
-const baseUrl = (process.env.NEXT_PUBLIC_BASE_URL || 'https://jpvisouldocs.online').replace(
-  /\/$/,
-  '',
-)
-
-/**
- * SITE CONFIG — JP VISUAL DOCS
- * DESIGN PRINCIPLE:
- * - จริงจัง / ตรวจสอบได้ / ไม่ขายฝัน
- * - สื่อสารแบบมืออาชีพที่ทำงานหน้างานจริง
- * - ใช้เป็น Single Source of Truth สำหรับ SEO / UI / System Signal
- */
-export const siteConfig = {
-  // 🏷️ BRAND CORE
-  name: 'JP Visual Docs',
-  shortName: 'JPVD',
-  domain: 'jpvisouldocs.online',
-  url: baseUrl,
-
-  // 🎯 BRAND POSITIONING
-  description:
-    'JP Visual Docs ให้คำปรึกษาและจัดการเอกสารด้านวีซ่าและสินเชื่อ โดยยึดเกณฑ์พิจารณาจริงของหน่วยงานเป็นหลัก วิเคราะห์เคสตรงจุด วางโครงสร้างข้อมูลอย่างมีเหตุผล และควบคุมคุณภาพงานทุกขั้นตอน',
-
-  locale: 'th-TH',
-  language: ['th', 'en'] as const,
-
-  // 📦 SERVICE & SHOWCASE
-  services,
-  showcaseRegistry: ALL_CASES,
-
-  // 👤 AUTHORITY SIGNAL
-  author: {
-    name: 'เจ้าป่า',
-    brand: 'JP Visual Docs',
-    role: 'ที่ปรึกษาด้านเอกสารวีซ่าและสินเชื่อ',
-    email: 'contact@jpvisouldocs.online',
-    contacts: {
-      phone: '091-054-0710',
-      email: 'contact@jpvisouldocs.online',
-    },
-  },
-
-  // ⚙️ SYSTEM STATUS (ใช้กับ UI / Footer / Badge)
-  system: {
-    status: 'ACTIVE',
-    label: 'เปิดรับปรึกษาตามปกติ',
-    version: '3.3.0',
-    indicatorColor: '#FCDE09',
-  },
-
-  // 📞 CONTACT
-  contact: {
-    phone: '091-054-0710',
-    phoneFull: '+66910540710',
-    lineId: '@462fqtfc',
-    lineLink: 'https://lin.ee/ZYTzBaIE',
-    email: 'contact@jpvisouldocs.online',
-    address: 'กรุงเทพมหานคร, ประเทศไทย',
-  },
-
-  // 🌐 SOCIAL
-  social: {
-    facebook: 'https://www.facebook.com/profile.php?id=61575050976562',
-    messenger: 'https://m.me/61575050976562',
-    line: 'https://lin.ee/ZYTzBaIE',
-  },
-
-  // 🔍 SEO / OPEN GRAPH (โทนผู้เชี่ยวชาญ ไม่โอ้อวด)
-  seo: {
-    titleTemplate: '%s | JP Visual Docs',
-    defaultTitle: 'JP Visual Docs – ที่ปรึกษาเอกสารวีซ่าและสินเชื่อ วิเคราะห์เคสตามเกณฑ์จริง',
-    description:
-      'วิเคราะห์เคสรายบุคคล วางโครงสร้างเอกสารตามเงื่อนไขพิจารณาจริง และดูแลโดยทีมงานที่เชี่ยวชาญงานเอกสารโดยตรง ตรวจสอบได้ทุกขั้นตอน',
-
-    keywords: [
-      'ที่ปรึกษาเอกสารวีซ่า',
-      'วิเคราะห์เคสวีซ่า',
-      'จัดเอกสารวีซ่า',
-      'แก้เคสวีซ่าไม่ผ่าน',
-      'ที่ปรึกษาสินเชื่อ',
-      'จัดเอกสารสินเชื่อ',
-      'Visa Consultant Thailand',
-      'JP Visual Docs',
-    ],
-
-    openGraph: {
-      type: 'website',
-      locale: 'th_TH',
-      url: baseUrl,
-      siteName: 'JP Visual Docs',
-      title: 'ที่ปรึกษาเอกสารวีซ่าและสินเชื่อ | JP Visual Docs',
-      description:
-        'บริการวิเคราะห์และจัดการเอกสารโดยยึดเกณฑ์พิจารณาจริง ลดความเสี่ยง และเพิ่มความน่าเชื่อถือของเคส',
-      images: [
-        {
-          url: `${baseUrl}/images/og-image.jpg`,
-          width: 1200,
-          height: 630,
-          alt: 'JP Visual Docs – Professional Documentation & Visa Consulting',
-        },
-      ],
-    },
-  },
-
-  // 🖼️ ASSETS
-  assets: {
-    ogImage: `${baseUrl}/images/og-image.jpg`,
-    favicon: '/favicon.ico',
-    appleTouch: '/apple-touch-icon.png',
-    logo: '/images/Logo.webp',
-    hero: '/images/hero/HeroBackground.png',
-    grid: '/grid-pattern.svg',
-  },
-} as const
-
-export type SiteConfig = typeof siteConfig
-```
----
-
-#### 🔍 Path: config/navigation.ts
-```typescript
-/** @format */
-
-import { Home, LayoutGrid, ShieldAlert, Gavel, Activity, Briefcase, FileSearch } from 'lucide-react'
-
-/**
- * ---------------------------------------------------------------------
- * NAVIGATION CONFIG
- * เวอร์ชัน: 3.3.2025 (Clean + Verified)
- *
- * วัตถุประสงค์
- * - กำหนดโครงสร้างเมนูหลัก / เมนูท้ายเว็บ
- * - ตรวจสอบเส้นทางให้ตรงกับโครงสร้าง app router จริง
- * - ใช้คำภาษาไทยที่อ่านตรง ไม่ใช้ศัพท์ AI กำกวม
- *
- * เส้นทางที่ตรวจสอบแล้ว (อิงจากโครงสร้างโปรเจกต์)
- * - /                → app/(main)/page.tsx
- * - /showcase        → app/(main)/showcase/page.tsx
- * - /contact         → app/(main)/contact/page.tsx
- * - /privacy         → app/(legal)/privacy/page.tsx
- * - /terms           → app/(legal)/terms/page.tsx
- * - /#services       → anchor ในหน้าแรก
- * - /#about          → anchor ในหน้าแรก
- * - /#process        → anchor ในหน้าแรก
- *
- * NOTE_FOR_AI:
- * - ไฟล์นี้ผ่านการตรวจสอบ path แล้ว
- * - ไม่มี route ที่ไม่มีอยู่จริง
- * - ไม่ใช้โหมดทดลอง
- * ---------------------------------------------------------------------
- */
-
-export const navigationConfig = {
-  /* -------------------------------------------------------------- */
-  /* เมนูหลัก (Header) */
-  /* -------------------------------------------------------------- */
-  mainNav: [
-    {
-      title: 'หน้าหลัก',
-      href: '/',
-      label: 'HOME',
-      icon: Home,
-    },
-    {
-      title: 'ผลงานเคส',
-      href: '/showcase',
-      label: 'CASE_SHOWCASE',
-      icon: Briefcase,
-    },
-    {
-      title: 'บริการ',
-      href: '/#services',
-      label: 'SERVICE_LIST',
-      icon: LayoutGrid,
-    },
-    {
-      title: 'ปรึกษาและประเมินเคส',
-      href: '/contact',
-      label: 'CASE_ASSESSMENT',
-      icon: FileSearch,
-    },
-  ],
-
-  /* -------------------------------------------------------------- */
-  /* เมนูท้ายเว็บ (Footer) */
-  /* -------------------------------------------------------------- */
-  footerNav: {
-    solutions: [
-      {
-        name: 'ผลงานและกรณีศึกษา',
-        href: '/showcase',
-      },
-      {
-        name: 'ประเมินโปรไฟล์',
-        href: '/contact',
-      },
-      {
-        name: 'รายการบริการ',
-        href: '/#services',
-      },
-    ],
-    company: [
-      {
-        name: 'เกี่ยวกับเรา',
-        href: '/#about',
-      },
-      {
-        name: 'ขั้นตอนการทำงาน',
-        href: '/#process',
-      },
-      {
-        name: 'ติดต่อและให้ข้อมูล',
-        href: '/contact',
-      },
-    ],
-    legal: [
-      {
-        name: 'นโยบายความเป็นส่วนตัว',
-        href: '/privacy',
-        label: 'PRIVACY_POLICY',
-        icon: ShieldAlert,
-      },
-      {
-        name: 'เงื่อนไขการให้บริการ',
-        href: '/terms',
-        label: 'TERMS_AND_CONDITIONS',
-        icon: Gavel,
-      },
-    ],
-  },
-
-  /* -------------------------------------------------------------- */
-  /* ปุ่มหลัก (CTA) */
-  /* -------------------------------------------------------------- */
-  actions: {
-    primary: {
-      name: 'ประเมินโปรไฟล์เบื้องต้น',
-      href: '/contact',
-      label: 'START_PROFILE_ASSESSMENT',
-      icon: Activity,
-    },
-  },
-} as const
-
-/* ------------------------------------------------------------------ */
-/* TYPE EXPORT */
-/* ------------------------------------------------------------------ */
-
-export type NavigationConfig = typeof navigationConfig
-export type NavItem = (typeof navigationConfig.mainNav)[number]
-export type FooterNavItem = (typeof navigationConfig.footerNav.solutions)[number]
-```
----
-
-#### 🔍 Path: config/theme.ts
-```typescript
-/** @format */
-
-export const DESIGN_TOKENS = {
-  /* ------------------------------------------------------------------
-   * COLOR SYSTEM — JP-VISUALDOCS (TRUST / DOCUMENT / ENTERPRISE)
-   * ------------------------------------------------------------------ */
-  colors: {
-    // แกนหลักของระบบ
-    primary: '#0F172A', // Slate-900
-    secondary: '#1E293B', // Slate-800
-    background: '#FAFAF9', // Stone-50
-
-    // ตัวอักษร
-    textPrimary: '#0F172A',
-    textSecondary: '#334155',
-    textMuted: '#64748B',
-
-    // เส้น / พื้นผิว
-    white: '#FFFFFF',
-    border: '#E5E7EB',
-
-    // สถานะ (ใช้เชิงความหมายเท่านั้น)
-    status: {
-      draft: '#64748B',
-      processing: '#2563EB',
-      verifying: '#D97706',
-      completed: '#059669',
-      error: '#EF4444',
-    },
-
-    // Accent (ใช้เฉพาะ Verified / Completed)
-    accent: '#059669',
-  },
-
-  /* ------------------------------------------------------------------
-   * TYPOGRAPHY — CALM / PROFESSIONAL / READABLE
-   * ------------------------------------------------------------------ */
-  typography: {
-    // หัวข้อหลัก
-    h1: 'font-sans text-4xl md:text-5xl font-semibold tracking-tight text-primary',
-
-    // หัวข้อรอง
-    h2: 'font-sans text-2xl md:text-3xl font-semibold tracking-tight text-primary',
-
-    // ป้ายอ้างอิง / รหัส / Log
-    label: 'font-mono text-xs uppercase tracking-widest text-muted',
-
-    // เนื้อหาหลัก
-    body: 'font-thai text-base leading-relaxed text-textSecondary',
-  },
-
-  /* ------------------------------------------------------------------
-   * DEPTH & SURFACE — SOFT / TRUSTED
-   * ------------------------------------------------------------------ */
-  shadows: {
-    soft: 'shadow-[0_10px_30px_rgba(0,0,0,0.08)]',
-    subtle: 'shadow-[0_4px_12px_rgba(0,0,0,0.06)]',
-  },
-
-  /* ------------------------------------------------------------------
-   * INTERACTION — QUIET / RESPONSIVE
-   * ------------------------------------------------------------------ */
-  interaction: {
-    transition: 'transition-all duration-200 ease-out',
-    hover: 'hover:opacity-90',
-  },
-
-  /* ------------------------------------------------------------------
-   * GLASS (LIMITED USE)
-   * ------------------------------------------------------------------ */
-  glass: {
-    base: 'bg-white/10 backdrop-blur-[12px] border border-white/20 rounded-xl',
-  },
-} as const
-
-/* ------------------------------------------------------------------
- * TYPE EXPORT
- * ------------------------------------------------------------------ */
-export type DesignTokens = typeof DESIGN_TOKENS
-```
----
-
-#### 🔍 Path: config/showcase-types.ts
-```typescript
-/** @format */
-
-/* ------------------------------------------------------------------ */
-/* ENUM / UNION PROTOCOL                                              */
-/* ------------------------------------------------------------------ */
-
-export type ArtifactType = 'document' | 'code' | 'diagram' | 'link' | (string & {})
-
-export type ActivityStatus =
-  | 'success'
-  | 'warning'
-  | 'info'
-  | 'ANALYZED'
-  | 'EXECUTED'
-  | 'VERIFIED'
-  | (string & {})
-
-export type ClientCategory =
-  | 'FREELANCE'
-  | 'FAMILY'
-  | 'INDIVIDUAL'
-  | 'SME_OWNER'
-  | 'HNWI'
-  | (string & {})
-
-export type ComplexityLevel = 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL' | (string & {})
-
-/* ------------------------------------------------------------------ */
-/* ARTIFACT                                                           */
-/* ------------------------------------------------------------------ */
-/**
- * MODE A: Strict Alignment with Data Files
- * - บังคับ label / type / description
- * - title / url เป็น optional เพื่อรองรับข้อมูลเดิม
- */
-export interface Artifact {
-  label: string
-  type: ArtifactType
-  description: string
-  title?: string
-  url?: string
-}
-
-/* ------------------------------------------------------------------ */
-/* ACTIVITY LOG                                                       */
-/* ------------------------------------------------------------------ */
-/**
- * - ใช้ status แบบ Enum-like string
- * - รองรับการ map สีใน UI
- */
-export interface ActivityLog {
-  day: number
-  event: string
-  status: ActivityStatus
-}
-
-/* ------------------------------------------------------------------ */
-/* CASE SHOWCASE                                                      */
-/* ------------------------------------------------------------------ */
-/**
- * MODE A: Flexible Schema Protocol
- * - ฟิลด์ที่ไม่อยู่ครบทุกไฟล์กำหนดเป็น optional
- * - แก้ปัญหา TS2740 จาก data ไม่ครบ schema
- */
-export interface CaseShowcase {
-  id: string
-  slug: string
-  title: string
-  executive_summary: string
-  client_category: ClientCategory
-
-  /* ---------------- Optional Meta ---------------- */
-  description?: string
-  date?: string
-  status?: string
-  category?: string
-  tags?: string[]
-  image?: string
-
-  /* ---------------- Performance ------------------ */
-  stats?: {
-    docs_processed?: number | string
-    complexity_level: ComplexityLevel
-    processing_time?: string
-  }
-
-  /* ---------------- Outcome ---------------------- */
-  business_outcome?: {
-    verdict: string
-    authority: string
-    official_ref: string
-  }
-
-  /* ---------------- Core Data -------------------- */
-  technical_strategy: string[]
-  artifacts: Artifact[]
-  logs: ActivityLog[]
+"use client";
+
+import * as React from "react";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { ArrowRight, Star } from "lucide-react";
+
+// Components
+import HeroSection from "@/components/shared/HeroSection";
+import AboutSection from "@/components/shared/AboutSection";
+import FaqSection from "@/components/shared/FaqSection";
+import ServiceCard from "@/components/cards/ServiceCard";
+import { H2, P } from "@/components/ui/typography";
+import { Button } from "@/components/ui/button";
+
+// Data
+import { SERVICES } from "@/constants/services-data";
+import { FAQ_DATA } from "@/content/faq-data"; // Path ถูกต้องแล้ว
+
+export default function HomePage() {
+  // ดึงบริการเด่น 3 รายการ
+  const featuredServices = SERVICES.slice(0, 3);
+
+  return (
+    <main className="flex flex-col gap-0 overflow-x-hidden">
+      {/* 1. Hero Section: จุดรับสายตาแรก */}
+      <HeroSection />
+
+      {/* 2. Featured Services Section */}
+      <section className="py-24 bg-slate-50/50 relative overflow-hidden">
+        {/* ตกแต่งพื้นหลังเล็กน้อยเพื่อให้ดูมีมิติ */}
+        <div className="absolute top-0 right-0 -translate-y-1/2 translate-x-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <div className="max-w-2xl">
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                className="inline-flex items-center gap-2 text-secondary font-bold text-sm uppercase tracking-widest mb-4"
+              >
+                <Star size={16} className="fill-current" /> Our Expertise
+              </motion.div>
+              <H2 className="border-none p-0 mb-4 text-3xl md:text-5xl font-black leading-[1.1]">
+                บริการที่ <span className="text-secondary">ยอดนิยม</span> ของเรา
+              </H2>
+              <P className="text-slate-500 text-lg md:text-xl thai-snug">
+                เราคัดสรรบริการที่ตอบโจทย์ความต้องการส่วนใหญ่
+                เพื่อให้คุณเริ่มต้นจัดการงานเอกสารได้อย่างรวดเร็วและถูกต้อง
+              </P>
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+            >
+              <Button
+                asChild
+                variant="outline"
+                className="rounded-full h-14 px-10 group border-slate-200 bg-white hover:bg-secondary hover:text-white transition-all duration-300"
+              >
+                <Link href="/services">
+                  ดูบริการทั้งหมด
+                  <ArrowRight
+                    size={18}
+                    className="ml-2 group-hover:translate-x-1 transition-transform"
+                  />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+            {featuredServices.map((service, idx) => (
+              <motion.div
+                key={service.id || `service-${idx}`}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.6,
+                  delay: idx * 0.15,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                <ServiceCard service={service} />
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* 3. About Section: ความน่าเชื่อถือ */}
+      <AboutSection />
+
+      {/* 4. FAQ Section: แก้ไขปัญหาเบื้องต้น 
+          ใช้ data={FAQ_DATA} หาก FaqSection ถูกออกแบบมาให้รับ Props
+      */}
+      <FaqSection items={FAQ_DATA} />
+
+      {/* 5. Final CTA Section: ปิดการขาย (แนะนำให้เพิ่ม) */}
+      <section className="py-20 bg-primary text-white text-center">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <H2 className="text-white border-none mb-6">
+            พร้อมเริ่มงานเอกสารกับเราหรือยัง?
+          </H2>
+          <P className="text-slate-300 mb-10 text-lg">
+            ปรึกษาผู้เชี่ยวชาญฟรี ไม่มีค่าใช้จ่ายเบื้องต้น
+          </P>
+          <Button
+            asChild
+            className="bg-secondary hover:bg-white hover:text-primary text-white font-bold rounded-full px-12 py-7 text-lg transition-all"
+          >
+            <Link href="/contact">ติดต่อเราทันที</Link>
+          </Button>
+        </div>
+      </section>
+    </main>
+  );
 }
 ```
 ---
 
-#### 🔍 Path: app/actions/lead-actions.ts
+#### 🔍 Path: `mdx-components.tsx`
 ```typescript
-/** @format */
-'use server'
-
-import { supabaseServer } from '@/lib/supabase/server'
-import { revalidatePath } from 'next/cache'
-import { headers } from 'next/headers'
-import { Resend } from 'resend'
+import type { MDXComponents } from "mdx/types";
+import Image, { ImageProps } from "next/image";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { H1, H2, H3, P } from "@/components/ui/typography"; // ✅ ลบ Lead ออกเนื่องจากไม่ได้ใช้งาน
+import { cn } from "@/lib/utils";
 
 /**
- * 🛰️ ACTION_PROTOCOL: CREATE_UNIFIED_LEAD
- * VERSION: 3.3.1 (Production Ready)
- * ✅ Strategic Keywords: Digital Integrity, Trust by Design, Seamless Process
+ * ฟังก์ชันสำหรับลงทะเบียน Components ให้กับ MDX
+ * ช่วยให้คุณสามารถใช้คอมโพเนนต์อย่าง <Button /> ภายในไฟล์ .mdx ได้ทันที
  */
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    // 1. Map HTML Elements มาเป็น UI Components (Typography)
+    h1: ({ className, ...props }) => (
+      <H1 className={cn("mt-12 mb-6 border-none", className)} {...props} />
+    ),
+    h2: ({ className, ...props }) => (
+      <H2
+        className={cn("mt-10 mb-4 border-none text-2xl md:text-3xl", className)}
+        {...props}
+      />
+    ),
+    h3: ({ className, ...props }) => (
+      <H3
+        className={cn("mt-8 mb-4 text-xl md:text-2xl", className)}
+        {...props}
+      />
+    ),
+    p: ({ className, ...props }) => (
+      <P
+        className={cn("leading-relaxed mb-6 text-slate-600", className)}
+        {...props}
+      />
+    ),
 
-const getResendClient = () => {
-  const apiKey = process.env.RESEND_API_KEY
-  if (!apiKey) {
-    console.warn('⚠️ EMAIL_SYSTEM_OFFLINE: Missing RESEND_API_KEY')
-    return null
-  }
-  return new Resend(apiKey)
-}
+    // 2. Custom Components สำหรับการใช้งานในเนื้อหา
+    Button: ({ className, ...props }: React.ComponentProps<typeof Button>) => (
+      <div className="my-8 flex justify-center md:justify-start">
+        <Button
+          {...props}
+          className={cn(
+            "rounded-full px-8 font-bold shadow-lg shadow-primary/20",
+            className,
+          )}
+        />
+      </div>
+    ),
 
-interface LeadData {
-  full_name: string
-  phone: string
-  email: string
-  service_type: string
-  details: string
-  line_id?: string
-  assessment_data?: {
-    country?: string
-    occupation?: string
-    history?: string
-    target_date?: string
-  }
-}
+    // 3. ปรับแต่งรูปภาพให้เป็น Responsive Image อัตโนมัติ
+    img: (props) => (
+      <span className="block my-10 overflow-hidden rounded-3xl border border-slate-100 shadow-sm">
+        <Image
+          sizes="100vw"
+          style={{ width: "100%", height: "auto" }}
+          width={1200}
+          height={630}
+          {...(props as ImageProps)}
+          alt={props.alt || "JP-VISOUL content image"}
+        />
+      </span>
+    ),
 
-interface ActionResponse {
-  success: boolean
-  ticketId?: string
-  name?: string
-  error?: string
-}
+    // 4. ปรับแต่ง Link ให้ใช้ Next.js Link (Client-side Routing)
+    a: ({ href, children, ...props }) => {
+      const isInternal = href?.startsWith("/") || href?.startsWith("#");
 
-export async function createLead(formData: LeadData): Promise<ActionResponse> {
-  try {
-    const headerList = await headers()
-    const ip = headerList.get('x-forwarded-for')?.split(',')[0] || 'unknown'
-    const userAgent = headerList.get('user-agent') || 'unknown'
+      const linkClass =
+        "text-secondary font-bold hover:underline underline-offset-4 transition-all";
 
-    // Evidence-Based Validation
-    if (!supabaseServer) throw new Error('DATABASE_NOT_AVAILABLE')
-    if (!process.env.NEXT_PUBLIC_APP_URL) throw new Error('APP_URL_NOT_CONFIGURED')
-
-    // 🎫 TICKET_GENERATION: สร้างรหัสอ้างอิงภายใต้มาตรฐานระบบ
-    const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase()
-    const ticketId = `JPV-${randomCode}`
-
-    const { error: dbError } = await supabaseServer.from('leads').insert([
-      {
-        name: formData.full_name,
-        phone: formData.phone,
-        email: formData.email,
-        message: formData.details,
-        category: formData.service_type,
-        status: 'pending_verification',
-        metadata: {
-          transmitted_at: new Date().toISOString(),
-          protocol_version: 'v3.3.1-unified',
-          ticket_id: ticketId,
-          verification_level: 0,
-          source_type: 'UNIFIED_CONTACT_PORTAL',
-          case_profile: formData.assessment_data || null,
-          network_context: {
-            ip_address: ip,
-            user_agent: userAgent,
-          },
-        },
-      },
-    ])
-
-    if (dbError) throw new Error(`DATABASE_INSERT_FAILED: ${dbError.message}`)
-
-    /**
-     * 📧 EMAIL_DISPATCH_SYSTEM (Trust by Design)
-     */
-    if (formData.email) {
-      const resend = getResendClient()
-
-      // เราจะไม่ขัดขวาง Process หลักหากระบบอีเมลขัดข้อง แต่จะบันทึก Log แทน
-      if (resend) {
-        const verifyUrl = `${process.env.NEXT_PUBLIC_APP_URL}/verify?id=${ticketId}&name=${encodeURIComponent(
-          formData.full_name,
-        )}&verified=true`
-
-        await resend.emails.send({
-          from: 'JP Visual & Docs <noreply@jpvisouldocs.online>',
-          to: [formData.email],
-          subject: `ยืนยันข้อมูลเพื่อเริ่มการประเมินเคส | รหัสอ้างอิง ${ticketId}`,
-          html: `  
-            <div style="font-family: sans-serif; background:#ffffff; padding:40px 20px; color:#020617;">  
-              <div style="max-width:500px; margin:0 auto; border:4px solid #020617; padding:40px;">  
-                <h1 style="font-size:24px; font-weight:900; text-transform:uppercase; font-style:italic; margin-bottom:20px;">Verification_Required</h1>
-                <p style="font-size:14px; line-height:1.6;">เรียน คุณ ${formData.full_name}</p>
-                <p style="font-size:14px; line-height:1.6;">โปรดยืนยันข้อมูลผ่านลิงก์ด้านล่างเพื่อเริ่มกระบวนการวิเคราะห์เคส:</p>
-                <div style="margin:30px 0;">
-                  <a href="${verifyUrl}" style="background:#020617; color:#FCDE09; padding:15px 25px; text-decoration:none; font-weight:bold; display:inline-block;">CONFIRM_IDENTITY</a>
-                </div>
-                <p style="font-size:12px; color:#64748b;">Ticket ID: ${ticketId}</p>
-              </div>
-            </div>  
-          `,
-        })
+      if (isInternal && href) {
+        return (
+          <Link href={href} className={linkClass} {...props}>
+            {children}
+          </Link>
+        );
       }
-    }
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={linkClass}
+          {...props}
+        >
+          {children}
+        </a>
+      );
+    },
 
-    revalidatePath('/admin/leads')
-
-    return {
-      success: true,
-      ticketId,
-      name: formData.full_name,
-    }
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'UNKNOWN_SYSTEM_ERROR'
-    console.error('🚨 ACTION_CRITICAL_FAILURE:', message)
-
-    return {
-      success: false,
-      error: message,
-    }
-  }
+    // รวมคอมโพเนนต์อื่นๆ ที่ส่งผ่านมา
+    ...components,
+  };
 }
 ```
 ---
 
-#### 🔍 Path: components/services/serviceData.ts
+#### 🔍 Path: `constants/navigation.ts`
 ```typescript
-/** @format */
 import {
-  FileSearch,
-  PenTool,
-  Plane,
-  TrendingUp,
-  Layers,
-  CreditCard,
-  FileText,
-  LucideIcon,
-} from 'lucide-react'
+  Home,
+  Briefcase,
+  BookOpen,
+  Mail,
+  // ✅ ลบ Globe, Languages, Stamp, Building2 ออกเพราะไม่ได้ถูกเรียกใช้ในตัวแปรด้านล่าง
+  type LucideIcon,
+} from "lucide-react";
 
-// --- 1. DATA_INTERFACES (Type Safety Full Coverage) ---
-export interface ServicePrice {
-  base: string
-  suffix?: string
+/**
+ * Interface สำหรับรายการเมนูนำทาง
+ */
+export interface NavItem {
+  title: string;
+  href: string;
+  icon?: LucideIcon;
+  description?: string;
 }
 
-export interface ServiceTechnical {
-  highlight: string
-  protocol: string[]
-  status: 'OPERATIONAL' | 'HIGH_DEMAND' | 'DEVELOPMENT' | 'SYSTEM_CHECK'
-}
+/**
+ * เมนูหลักส่วน Header
+ */
+export const MAIN_NAV: NavItem[] = [
+  { title: "หน้าแรก", href: "/", icon: Home },
+  { title: "บริการ", href: "/services", icon: Briefcase },
+  { title: "บทความ", href: "/blog", icon: BookOpen },
+  { title: "ติดต่อเรา", href: "/contact", icon: Mail },
+];
 
-export interface ServiceItem {
-  id: string
-  code: string
-  category: 'IMMIGRATION' | 'FINANCIAL' | 'DOCUMENTATION' | 'INFRASTRUCTURE' | 'SYSTEMS'
-  type: string
-  icon: LucideIcon
-  image: string
-  title: string
-  description: string
-  price: ServicePrice
-  cta: {
-    label: string
-    action: string
-  }
-  technical: ServiceTechnical
-}
-
-// --- 2. CORE_SERVICE_REGISTRY v3.3.1 ---
-export const services: ServiceItem[] = [
-  {
-    id: 'loan-strategy-001',
-    code: 'SRV-FIN-01',
-    category: 'FINANCIAL',
-    type: 'GEN_ASSET',
-    icon: TrendingUp,
-    image:
-      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'ที่ปรึกษาสินเชื่อส่วนบุคคลและธุรกิจ',
-    description:
-      'ช่วยวิเคราะห์โปรไฟล์และเลือกแผนที่เหมาะสมที่สุด จัดชุดเอกสารให้ครบตามเงื่อนไขแบงก์ ดูแลการยื่นกู้ให้แบบมืออาชีพโดยที่คุณไม่ต้องจัดการเอง',
-    price: { base: 'X,XXX' },
-    cta: { label: 'คุยแผนการกู้', action: '/contact?ref=loan' },
-    technical: {
-      highlight: 'LOAN_STRATEGY',
-      protocol: ['เช็กโปรไฟล์', 'เตรียมเอกสาร', 'ส่งยื่นมืออาชีพ'],
-      status: 'OPERATIONAL',
-    },
-  },
-  {
-    id: 'travel-booking-001',
-    code: 'SRV-IMM-01',
-    category: 'IMMIGRATION',
-    type: 'VISA_ASSET',
-    icon: Plane,
-    image:
-      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'ตั๋วเครื่องบินและโรงแรม (ตรวจสอบได้จริง)',
-    description:
-      'จัดการจองตั๋วและที่พักทั่วโลก พร้อม E-booking และ Google ค้นหาสถานะจริง การันตีงานด่วนจบไวภายใน 1 วัน',
-    price: { base: 'ราคาพิเศษ' },
-    cta: { label: 'เช็กราคาห้องพัก/ตั๋ว', action: '/contact?ref=booking' },
-    technical: {
-      highlight: 'REAL_TIME_BOOKING',
-      protocol: ['จองผ่านระบบ', 'ยืนยันสถานะ', 'ส่งใบจองทางการ'],
-      status: 'OPERATIONAL',
-    },
-  },
-  {
-    id: 'legal-writing-001',
-    code: 'SRV-DOC-01',
-    category: 'DOCUMENTATION',
-    type: 'GEN_ASSET',
-    icon: PenTool,
-    image:
-      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'ร่างจดหมายสำคัญโดยผู้เชี่ยวชาญ',
-    description:
-      'รับเขียนจดหมาย Cover Letter หรือจดหมายรับรอง/สปอนเซอร์ ทั้งไทยและอังกฤษ ปรับโทนให้น่าเชื่อถือ เพิ่มโอกาสผ่านได้จริง',
-    price: { base: '1,000' },
-    cta: { label: 'เริ่มร่างเนื้อหา', action: '/contact?ref=writing' },
-    technical: {
-      highlight: 'PROFESSIONAL_CONTENT',
-      protocol: ['คุยเนื้อหาหลัก', 'เรียบเรียงภาษา', 'ส่งเล่มจริง'],
-      status: 'OPERATIONAL',
-    },
-  },
-  {
-    id: 'visa-work-001',
-    code: 'SRV-IMM-02',
-    category: 'IMMIGRATION',
-    type: 'VISA_ASSET',
-    icon: FileSearch,
-    image:
-      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'ดูแลเอกสารยื่นวีซ่า (สายทำงาน)',
-    description:
-      'จัดชุดเอกสารครบและเนี้ยบที่สุด ปรับข้อมูลให้สอดคล้องเกณฑ์ประเทศปลายทาง ผลลัพธ์ผ่านฉลุยไม่มีสะดุด',
-    price: { base: 'X,XXX' },
-    cta: { label: 'ปรึกษาการยื่น', action: '/contact?ref=visa' },
-    technical: {
-      highlight: 'VISA_PREPARATION',
-      protocol: ['เช็กเอกสารเดิม', 'เติมส่วนขาด', 'จัดชุดพร้อมยื่น'],
-      status: 'OPERATIONAL',
-    },
-  },
-  {
-    id: 'doc-creation-001',
-    code: 'SRV-DOC-02',
-    category: 'DOCUMENTATION',
-    type: 'GEN_ASSET',
-    icon: FileText,
-    image:
-      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'แก้ไขและจัดหาเอกสารเฉพาะทาง',
-    description:
-      'ปรับแก้หรือสร้างเอกสารใหม่ตามโจทย์ จัดหาเอกสารแม่นยำ งานเนียนและรวดเร็ว สำหรับงานด่วนพิเศษ',
-    price: { base: '450', suffix: '- 8XX' },
-    cta: { label: 'ส่งโจทย์ให้แอดมิน', action: '/contact?ref=doc-fix' },
-    technical: {
-      highlight: 'CUSTOM_DOCUMENT',
-      protocol: ['รับบรีฟละเอียด', 'ดำเนินการผลิต', 'เช็กความถูกต้อง'],
-      status: 'HIGH_DEMAND',
-    },
-  },
-  {
-    id: 'vifily-system-001',
-    code: 'SRV-SYS-01',
-    category: 'SYSTEMS',
-    type: 'GEN_ASSET',
-    icon: Layers,
-    image:
-      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'เอกสารรับรองดิจิทัล (Vifily)',
-    description:
-      'สร้างความมั่นใจระดับสากลด้วย Vifily ออกเอกสารรับรองพร้อม QR Code ตรวจสอบโปรไฟล์ได้ทั่วโลก',
-    price: { base: 'XXX', suffix: '- X,XXX' },
-    cta: { label: 'เปิดระบบ Vifily', action: '/contact?ref=vifily' },
-    technical: {
-      highlight: 'DIGITAL_VERIFY',
-      protocol: ['อัปโหลดฐานข้อมูล', 'สร้าง QR พิเศษ', 'เปิดระบบเช็กสถานะ'],
-      status: 'OPERATIONAL',
-    },
-  },
-  {
-    id: 'card-production-001',
-    code: 'SRV-INF-01',
-    category: 'INFRASTRUCTURE',
-    type: 'GEN_ASSET',
-    icon: CreditCard,
-    image:
-      'https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Service/mail-service.webp',
-    title: 'ผลิตบัตรจริงเกรดพรีเมียม',
-    description:
-      'งานพิมพ์คุณภาพสูง พร้อมระบบจัดส่งรัดกุมและเป็นส่วนตัว เพื่อความปลอดภัยและเป็นความลับสูงสุด',
-    price: { base: 'X,XXX' },
-    cta: { label: 'ดูตัวอย่างบัตร', action: '/contact?ref=card' },
-    technical: {
-      highlight: 'SECURE_PRODUCTION',
-      protocol: ['สรุปแบบบัตร', 'ผลิตชิ้นงานจริง', 'ส่งมอบส่วนตัว'],
-      status: 'OPERATIONAL',
-    },
-  },
-]
-```
----
-
-#### 🔍 Path: tailwind.config.ts
-```typescript
-/** @format */
-import type { Config } from 'tailwindcss'
-import tailwindAnimate from 'tailwindcss-animate'
-
-const config: Config = {
-  darkMode: ['class'],
-  content: [
-    './app/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './lib/**/*.{ts,tsx}',
-    './config/**/*.{ts,tsx}',
+/**
+ * ลิงก์ส่วน Footer แบ่งตามหมวดหมู่
+ */
+export const FOOTER_LINKS = {
+  company: [
+    { title: "เกี่ยวกับเรา", href: "/about" },
+    { title: "ร่วมงานกับเรา", href: "/careers" },
+    { title: "นโยบายความเป็นส่วนตัว", href: "/privacy" },
   ],
-  theme: {
-    container: {
-      center: true,
-      padding: {
-        DEFAULT: '1.5rem',
-        md: '2rem',
-        xl: '3rem',
-      },
-      screens: {
-        '2xl': '1400px',
-      },
-    },
-    extend: {
-      /* ===============================
-       * JP-VISUALDOCS COLOR SYSTEM
-       * =============================== */
-      colors: {
-        primary: '#0F172A', // Slate-900
-        secondary: '#1E293B', // Slate-800
-        accent: '#059669', // Emerald-600 (Verified / Completed only)
-        background: '#FAFAF9', // Stone-50
-
-        border: '#E5E7EB',
-        muted: '#64748B',
-
-        status: {
-          draft: '#64748B',
-          processing: '#2563EB',
-          verifying: '#D97706',
-          completed: '#059669',
-        },
-      },
-
-      /* ===============================
-       * TYPOGRAPHY
-       * =============================== */
-      fontFamily: {
-        sans: ['var(--font-inter)', 'var(--font-thai)', 'sans-serif'],
-        mono: ['var(--font-mono)', 'monospace'],
-      },
-
-      /* ===============================
-       * GLASS & DEPTH SYSTEM
-       * =============================== */
-      backdropBlur: {
-        glass: '12px',
-      },
-      boxShadow: {
-        soft: '0 10px 30px rgba(0,0,0,0.08)',
-        subtle: '0 4px 12px rgba(0,0,0,0.06)',
-      },
-      borderRadius: {
-        xl: '14px',
-      },
-
-      /* ===============================
-       * MOTION SYSTEM (CALM / PROFESSIONAL)
-       * =============================== */
-      keyframes: {
-        fadeUp: {
-          '0%': { opacity: '0', transform: 'translateY(8px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
-        },
-        fadeIn: {
-          '0%': { opacity: '0' },
-          '100%': { opacity: '1' },
-        },
-        'accordion-down': {
-          from: { height: '0' },
-          to: { height: 'var(--radix-accordion-content-height)' },
-        },
-        'accordion-up': {
-          from: { height: 'var(--radix-accordion-content-height)' },
-          to: { height: '0' },
-        },
-      },
-      animation: {
-        fadeUp: 'fadeUp 0.4s ease-out',
-        fadeIn: 'fadeIn 0.25s ease-out',
-        'accordion-down': 'accordion-down 0.2s ease-out',
-        'accordion-up': 'accordion-up 0.2s ease-out',
-      },
-    },
-  },
-  plugins: [tailwindAnimate],
-}
-
-export default config
+  support: [
+    { title: "คำถามที่พบบ่อย", href: "/faq" },
+    { title: "เช็คสถานะเอกสาร", href: "/track-status" },
+    { title: "ศูนย์ช่วยเหลือ", href: "/support" },
+  ],
+};
 ```
 ---
 
-#### 🔍 Path: tsconfig.json
+#### 🔍 Path: `constants/theme.ts`
+```typescript
+export const SITE_CONFIG = {
+  name: "JP-VISOUL.DOCS",
+  shortName: "JP-VISOUL",
+  description: "ศูนย์บริการเอกสาร วีซ่า และที่ปรึกษาธุรกิจครบวงจร",
+  url: "https://jpvisouldocs.online",
+  ogImage: "/og-image.jpg",
+  contact: {
+    email: "contact@jp-visoul.com",
+    phone: "0XX-XXX-XXXX",
+    line: "@jpvisouldocs",
+    address: "กรุงเทพมหานคร, ประเทศไทย",
+  },
+};
+
+export const BRAND_COLORS = {
+  primary: "#0A192F", // Deep Navy (ความน่าเชื่อถือ)
+  secondary: "#D4A373", // Gold/Sand (ความพรีเมียม)
+  accent: "#E9EDC6", // Soft Green (ความโปร่งใส)
+  slate: {
+    50: "#F8FAFC",
+    500: "#64748B",
+    900: "#0F172A",
+  },
+};
+```
+---
+
+#### 🔍 Path: `constants/services-data.ts`
+```typescript
+/**
+ * Interface สำหรับข้อมูลบริการ (Service Item)
+ * ใช้สำหรับแสดงผลในหน้า List, Cards และรายละเอียดบริการ
+ */
+export interface Service {
+  id: string;
+  slug: string;
+  title: string;
+  category: "visa" | "legal" | "translation";
+  description: string;
+  longDescription: string;
+  features: string[]; // บังคับเป็น Array ของ string เพื่อป้องกันปัญหาตอน .map()
+  iconName: string; // ชื่อ Icon ที่จะนำไป Map กับ Lucide Icons ใน Component
+  priceTag?: string; // เพิ่ม optional สำหรับป้ายราคา (ถ้ามี)
+}
+
+/**
+ * Type Alias สำหรับเรียกใช้ใน ServiceCard (เพื่อความยืดหยุ่นในการทำ Type Mapping)
+ */
+export type ServiceItem = Service;
+
+/**
+ * รายการข้อมูลบริการทั้งหมดภายในระบบ
+ */
+export const SERVICES: Service[] = [
+  {
+    id: "tourist-visa",
+    slug: "tourist-visa",
+    title: "วีซ่าท่องเที่ยว",
+    category: "visa",
+    description: "บริการเตรียมเอกสารยื่นวีซ่าท่องเที่ยวทั่วโลก",
+    longDescription:
+      "ทีมงานมืออาชีพช่วยเตรียมเอกสาร วางแผนการเดินทาง และให้คำปรึกษาเพื่อให้การขอวีซ่าของคุณมีโอกาสผ่านสูงสุด",
+    features: [
+      "ตรวจเช็คเอกสาร",
+      "จองคิวสัมภาษณ์",
+      "วางแผนการเงิน",
+      "เขียนจดหมายแนะนำตัว",
+    ],
+    iconName: "globe", // ใช้พิมพ์เล็กตามมาตรฐาน Mapping ที่เราทำใน ServiceCard
+  },
+  {
+    id: "business-registration",
+    slug: "business-registration",
+    title: "จดทะเบียนบริษัท",
+    category: "legal",
+    description: "เริ่มต้นธุรกิจอย่างถูกต้องตามกฎหมาย",
+    longDescription:
+      "บริการจดทะเบียนบริษัทนิติบุคคล แก้ไขทะเบียนรายชื่อผู้ถือหุ้น และให้คำปรึกษาด้านโครงสร้างธุรกิจ",
+    features: [
+      "จดทะเบียน DBD",
+      "ขอเลขผู้เสียภาษี",
+      "เปิดบัญชีบริษัท",
+      "จดทะเบียนภาษีมูลค่าเพิ่ม",
+    ],
+    iconName: "building",
+  },
+  {
+    id: "certified-translation",
+    slug: "certified-translation",
+    title: "แปลเอกสารรับรอง",
+    category: "translation",
+    description: "แปลภาษาพร้อมรับรองโดยผู้เชี่ยวชาญ",
+    longDescription:
+      "บริการแปลเอกสารราชการ เอกสารกฎหมาย พร้อมรับรองจากกงสุลหรือสถานทูต เพื่อใช้ในต่างประเทศ",
+    features: [
+      "แปลไทย-อังกฤษ-จีน",
+      "รับรองกงสุล",
+      "รับรองสถานทูต",
+      "Notary Public",
+    ],
+    iconName: "languages",
+  },
+];
+
+/**
+ * Helper function สำหรับดึงข้อมูล Service ตาม Slug
+ */
+export const getServiceBySlug = (slug: string): Service | undefined => {
+  return SERVICES.find((service) => service.slug === slug);
+};
+```
+---
+
+#### 🔍 Path: `actions/documentActions.ts`
+```typescript
+"use server";
+
+import { createClient } from "@/lib/supabase/server";
+import { revalidatePath } from "next/cache";
+
+// กำหนดประเภทข้อมูลที่รับมาจาก Form ให้ตรงกับ Schema และสอดคล้องกับ Database
+export interface ServiceRequestInput {
+  name: string;
+  email: string;
+  phone: string;
+  service_type: string; // ตรงกับคอลัมน์ใน DB
+  details: string;      // ตรงกับคอลัมน์ใน DB
+  urgency: "normal" | "urgent" | "express";
+  privacyPolicy: boolean;
+}
+
+/**
+ * Action สำหรับสร้างรายการคำขอรับบริการใหม่
+ * รองรับมาตรฐาน JP-VISOUL-DOCS v2.0.0
+ * แก้ไขปัญหา Linting: ลบ Unused variables เรียบร้อยแล้ว
+ */
+export async function createServiceRequest(values: ServiceRequestInput) {
+  const supabase = await createClient();
+
+  try {
+    // 1. ตรวจสอบข้อมูลเบื้องต้น
+    if (!values.privacyPolicy) {
+      return { error: "โปรดยอมรับนโยบายความเป็นส่วนตัวเพื่อดำเนินการต่อ" };
+    }
+
+    // 2. บันทึกข้อมูลลงฐานข้อมูล
+    const { data, error } = await supabase
+      .from("service_requests")
+      .insert([
+        {
+          full_name: values.name,
+          email: values.email,
+          phone: values.phone,
+          service_type: values.service_type,
+          details: { 
+            content: values.details,
+            urgency: values.urgency,
+            submitted_at: new Date().toISOString()
+          },
+          status: "DRAFT",
+        },
+      ])
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Database Error:", error.message);
+      return { 
+        error: "ขออภัย ระบบขัดข้องชั่วคราว ทีมงานกำลังเร่งแก้ไข โปรดลองอีกครั้ง" 
+      };
+    }
+
+    // 3. Update Cache (Revalidation)
+    revalidatePath("/admin/requests");
+
+    return { 
+      success: true, 
+      data, 
+      message: "ได้รับข้อมูลของท่านแล้ว เจ้าหน้าที่ทีมงานจะติดต่อกลับโดยเร็วที่สุด" 
+    };
+
+  } catch {
+    // แก้ไข Linting: ลบ (err) ออกเนื่องจากไม่ได้ถูกใช้งาน
+    return { 
+      error: "เกิดข้อผิดพลาดที่ไม่คาดคิด โปรดตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของท่าน" 
+    };
+  }
+}
+```
+---
+
+#### 🔍 Path: `tsconfig.json`
 ```json
-/** @format */
 {
   "compilerOptions": {
     "target": "ES2017",
@@ -1740,48 +1108,52 @@ export default config
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "esModuleInterop": true,
+    "incremental": true,
     "module": "esnext",
-    "moduleResolution": "node", // หรือใช้ "bundler" สำหรับ Next.js 15
+    "esModuleInterop": true,
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
-    "incremental": true,
-    "plugins": [{ "name": "next" }],
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "baseUrl": ".",
     "paths": {
-      "@/config/*": ["config/*"],
-      "@/components/*": ["components/*"],
-      "@/data/*": ["data/*"],
-      "@/app/*": ["app/*"],
-      "@/types/*": ["types/*"],
-      "@/lib/*": ["lib/*"],
-      "@/content/*": ["content/*"],
-      "@/*": ["*"]
-    }
+      "@/*": ["./*"]
+    },
+    /* ✅ ปรับปรุงการตรวจสอบให้เข้มงวดแต่ยืดหยุ่นสำหรับ Next.js 15 */
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    /* ✅ แนะนำให้เพิ่ม (Optional) */
+    "noFallthroughCasesInSwitch": true, // ป้องกันลืมใส่ break ใน switch case
+    "strictPropertyInitialization": false // กรณีใช้กับพวก Class ที่ถูก init ภายหลัง
   },
   "include": [
     "next-env.d.ts",
+    ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "config/**/*.ts",
-    "content/**/*.ts",
-    "app/**/*.ts", // เพิ่มเพื่อให้มั่นใจว่าไฟล์ใน app router ถูก track ทั้งหมด
-    "components/**/*.tsx"
+    "**/*.md",
+    "**/*.mdx"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next"] // ✅ เพิ่ม .next ใน exclude เพื่อไม่ให้ตรวจสอบไฟล์ที่ถูก build แล้ว
 }
 ```
 ---
 
-#### 🔍 Path: package.json
+#### 🔍 Path: `package.json`
 ```json
 {
-  "name": "jp-visouldocs",
-  "version": "1.0.0",
+  "name": "test",
+  "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -1792,135 +1164,115 @@ export default config
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@radix-ui/react-accordion": "^1.2.2",
-    "@radix-ui/react-avatar": "^1.1.11",
+    "@img/sharp-wasm32": "^0.34.5",
+    "@next/mdx": "^16.1.1",
+    "@radix-ui/react-accordion": "^1.2.12",
+    "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-dialog": "^1.1.15",
     "@radix-ui/react-label": "^2.1.8",
+    "@radix-ui/react-navigation-menu": "^1.2.14",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
-    "@radix-ui/react-tabs": "^1.1.1",
-    "@radix-ui/react-toast": "^1.2.15",
+    "@radix-ui/react-tabs": "^1.1.13",
     "@radix-ui/react-tooltip": "^1.2.8",
     "@supabase/ssr": "^0.8.0",
-    "@supabase/supabase-js": "^2.89.0",
-    "@tanstack/react-table": "^8.21.3",
+    "@supabase/supabase-js": "^2.90.1",
+    "@types/mdx": "^2.0.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.23.26",
-    "glob": "^13.0.0",
-    "input-otp": "^1.4.2",
-    "lucide-react": "^0.468.0",
+    "framer-motion": "^12.25.0",
+    "gray-matter": "^4.0.3",
+    "lucide-react": "^0.562.0",
     "next": "15.5.7",
+    "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.4.6",
-    "papaparse": "^5.5.3",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "react-hook-form": "^7.69.0",
-    "resend": "^6.6.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "react-hook-form": "^7.71.1",
     "sonner": "^2.0.7",
-    "tailwind-merge": "^2.5.5",
+    "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "uuid": "^13.0.0",
-    "zod": "^4.2.1"
+    "zod": "^4.3.5"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
-    "@next/eslint-plugin-next": "15.5.7",
+    "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
-    "@types/node": "^20.17.10",
-    "@types/papaparse": "^5.5.2",
-    "@types/react": "^19.0.1",
-    "@types/react-dom": "^19.0.2",
-    "@typescript-eslint/eslint-plugin": "^8.50.1",
-    "@typescript-eslint/parser": "^8.50.1",
-    "autoprefixer": "^10.4.20",
-    "eslint": "^9.39.2",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.23",
+    "eslint": "^9",
     "eslint-config-next": "15.5.7",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "globals": "^16.5.0",
-    "knip": "^5.77.1",
-    "postcss": "^8.4.49",
-    "postcss-load-config": "^6.0.1",
-    "prettier": "^3.4.2",
+    "postcss": "^8.5.6",
+    "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
-    "tailwindcss": "^3.4.16",
-    "typescript": "^5.7.2"
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1.4.0",
+    "typescript": "^5"
   }
 }
 ```
 ---
 
-#### 🔍 Path: next.config.ts
+#### 🔍 Path: `next.config.ts`
 ```typescript
-import type { NextConfig } from 'next'
+import type { NextConfig } from "next";
+import createMDX from "@next/mdx";
 
-/**
- * @description THE_MASTER_ARCHITECT_CONFIG:
- * ปรับแต่งเพื่อความเนียนระดับ Industrial Sharp และความปลอดภัยสูงสุด
- */
 const nextConfig: NextConfig = {
+  /* --- Core Settings --- */
   reactStrictMode: true,
+
+  /* --- Image Optimization --- */
   images: {
-    dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    formats: ['image/avif', 'image/webp'],
-    // 🟢 เน้นคุณภาพรูปภาพที่เหมาะสมสำหรับงาน High-end Visuals
-    qualities: [75, 85, 100],
     remotePatterns: [
       {
-        protocol: 'https',
-        hostname: 'ui-avatars.com',
-        pathname: '/api/**',
-      },
-      // 🟢 จัดการช่องโหว่การดึงภาพจาก Supabase ทั้งโปรเจกต์เก่าและใหม่
-      {
-        protocol: 'https',
-        hostname: 'dpgmfbnzyhnhwzyozoxe.supabase.co',
-        pathname: '/storage/v1/object/public/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'ksiobbrextlywypdzaze.supabase.co',
-        pathname: '/storage/v1/object/public/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'api.dicebear.com',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.jpvisouldocs.online',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'picsum.photos',
-        pathname: '/**',
+        protocol: "https",
+        hostname: "**",
       },
     ],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    formats: ["image/avif", "image/webp"],
   },
-  experimental: {
-    // 🟢 ทางลัดพิเศษ: ลด Bundle Size โดยการ Optimize การดึงไอคอน
-    optimizePackageImports: ['lucide-react'],
-  },
-}
 
-export default nextConfig
+  /* --- Experimental Features (Next.js 15) --- */
+  experimental: {
+    staleTimes: {
+      dynamic: 30,
+      static: 180,
+    },
+  },
+
+  /* --- MDX Support --- */
+  // อนุญาตให้หน้าเว็บรองรับนามสกุลไฟล์ที่หลากหลาย
+  pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
+
+  /* --- Optimization --- */
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+
+  /* --- External Packages --- */
+  serverExternalPackages: ["sharp"],
+};
+
+// ตั้งค่า MDX Plugins (ถ้ามีในอนาคต เช่น remarkGfm)
+const withMDX = createMDX({
+  // options: {
+  //   remarkPlugins: [],
+  //   rehypePlugins: [],
+  // },
+});
+
+// ส่งออก Config ที่ถูก Wrap ด้วย withMDX
+export default withMDX(nextConfig);
 ```
 ---
 
-#### 🔍 Path: components.json
+#### 🔍 Path: `components.json`
 ```json
 {
   "$schema": "https://ui.shadcn.com/schema.json",
@@ -1928,9 +1280,9 @@ export default nextConfig
   "rsc": true,
   "tsx": true,
   "tailwind": {
-    "config": "tailwind.config.ts",
+    "config": "",
     "css": "app/globals.css",
-    "baseColor": "neutral",
+    "baseColor": "slate",
     "cssVariables": true,
     "prefix": ""
   },
@@ -1947,7 +1299,210 @@ export default nextConfig
 ```
 ---
 
-#### 🔍 Path: .env
+#### 🔍 Path: `lib/mdx.ts`
+```typescript
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
+
+const BLOG_PATH = path.join(process.cwd(), "content/blog");
+
+// 1. กำหนด Interface สำหรับ Post เพื่อแก้ปัญหา Property 'title' does not exist
+export interface BlogPost {
+  title: string;
+  date: string;
+  excerpt: string;
+  image?: string;
+  author?: string;
+  category?: string;
+  content: string;
+  slug: string;
+}
+
+export async function getAllPosts(): Promise<BlogPost[]> {
+  if (!fs.existsSync(BLOG_PATH)) {
+    return [];
+  }
+
+  const files = fs.readdirSync(BLOG_PATH);
+
+  const posts = files
+    .filter((file) => file.endsWith(".md") || file.endsWith(".mdx"))
+    .map((file) => {
+      const filePath = path.join(BLOG_PATH, file);
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+
+      const { data, content } = matter(fileContent);
+
+      // 2. Return ข้อมูลพร้อมการทำ Type Assertion
+      return {
+        slug: file.replace(/\.mdx?$/, ""),
+        content: content,
+        title: data.title || "Untitled",
+        date: data.date || new Date().toISOString(),
+        excerpt: data.excerpt || "",
+        image: data.image || "/images/blog-placeholder.jpg",
+        author: data.author || "JP-VISOUL",
+        category: data.category || "สาระน่ารู้",
+        ...data, // กระจาย data อื่นๆ ถ้ามี
+      } as BlogPost;
+    })
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  return posts;
+}
+
+export async function getPostBySlug(slug: string): Promise<BlogPost | null> {
+  try {
+    const posts = await getAllPosts();
+    return posts.find((p) => p.slug === slug) || null;
+  } catch {
+    return null;
+  }
+}
+```
+---
+
+#### 🔍 Path: `types/database.types.ts`
+```typescript
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[];
+
+export interface Database {
+  public: {
+    Tables: {
+      profiles: {
+        Row: {
+          id: string;
+          email: string;
+          full_name: string | null;
+          avatar_url: string | null;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          email: string;
+          full_name?: string | null;
+          avatar_url?: string | null;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          full_name?: string | null;
+          avatar_url?: string | null;
+          updated_at?: string;
+        };
+      };
+      service_requests: {
+        Row: {
+          id: string;
+          user_id: string | null;
+          service_type: string;
+          status: "pending" | "processing" | "completed" | "cancelled";
+          details: Json;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id?: string | null;
+          service_type: string;
+          status?: "pending" | "processing" | "completed" | "cancelled";
+          details: Json;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string | null;
+          service_type?: string;
+          status?: "pending" | "processing" | "completed" | "cancelled";
+          details?: Json;
+          created_at?: string;
+        };
+      };
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      [_ in never]: never;
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+  };
+}
+```
+---
+
+#### 🔍 Path: `types/index.ts`
+```typescript
+import { LucideIcon } from "lucide-react";
+
+/**
+ * 🛠️ Navigation Types
+ */
+export interface NavItem {
+  title: string;
+  href: string;
+  description?: string;
+  icon: LucideIcon;
+}
+
+export interface NavCategory {
+  title: string;
+  items: NavItem[];
+}
+
+/**
+ * 📑 Service Types
+ */
+export type ServiceCategory = "visa" | "legal" | "translation" | "business";
+
+export interface Service {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  longDescription?: string;
+  category: ServiceCategory;
+  iconName: string; // เก็บชื่อไอคอนเพื่อดึงจาก Icons.tsx หรือ Lucide
+  price?: {
+    amount: number;
+    unit: string;
+    isStartingPrice: boolean;
+  };
+  features?: string[];
+}
+
+/**
+ * 💬 Content Types
+ */
+export interface FaqItem {
+  question: string;
+  answer: string;
+  category?: string;
+}
+
+export interface BlogPost {
+  slug: string;
+  title: string;
+  excerpt: string;
+  date: string;
+  author: string;
+  image: string;
+  content: string;
+  category: string;
+}
+```
+---
+
+#### 🔍 Path: `.env`
 ```text
 # .env.local
 
@@ -2009,6 +1564,5 @@ NEXT_PUBLIC_APP_URL= "********"
 ```
 ---
 
-## 📝 บทสรุป
-การสแกนเสร็จสิ้น ข้อมูลถูกจัดรูปแบบให้ AI ประมวลผลได้ทันที
-. Format code in: Optimized
+## 📝 Summary
+Architecture scan and context compilation completed successfully. Focus maintained on Privacy & Security.

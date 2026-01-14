@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # === CONFIG ===
-PROJECT_DIR="$HOME/project"
+PROJECT_DIR="$HOME/JP-Online"
 BACKUP_DIR="$HOME/storage/downloads/Backup"
 TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
 ZIP_NAME="project-backup-$TIMESTAMP.zip"

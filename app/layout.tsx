@@ -1,118 +1,111 @@
-/*
-🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
-@version 2026.1.12
-@timestamp 2026-01-12T00:18:45.774Z
-🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
-✅ Tone: Professional, Calm, Supportive
-✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
-✅ Reject speculative, unverifiable, or invented content
+import type { Metadata, Viewport } from "next";
+import { IBM_Plex_Sans_Thai, Sarabun } from "next/font/google";
+import "./globals.css";
 
-📌 PAGE METADATA
-- PageName: layout          // ตัวอย่าง: ShowcasePage, ServicesPage
-- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
-- Version: 2026.1.12
-- Checked: True
-- Audience: Internal & End-user
-- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+import Navbar from "@/components/shared/Navbar";
+import Footer from "@/components/shared/Footer";
+import { AppProvider } from "@/providers/AppProvider";
+import { Toaster } from "@/components/ui/sonner";
+import { cn } from "@/lib/utils";
 
-... (AI Context rules same as global template)
-*/
+// 1. Font Configuration
+const ibmPlexThai = IBM_Plex_Sans_Thai({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["thai", "latin"],
+  variable: "--font-heading",
+  display: "swap",
+});
 
-/**
- * @format
- * @description ROOT_LAYOUT: Master Architecture — JP-VISUALDOCS
- * ✅ CORE_SYSTEM: โครงสร้างพื้นฐาน + ฟอนต์
- * ✅ ENTERPRISE_CALM: สุภาพ น่าเชื่อถือ เน้นเอกสาร
- */
+const sarabun = Sarabun({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["thai", "latin"],
+  variable: "--font-body",
+  display: "swap",
+});
 
-import type { Metadata, Viewport } from 'next'
-import { siteConfig } from '@/config/site'
-import { Providers } from './providers'
-import { JsonLd } from '@/components/seo/JsonLd'
-import { cn } from '@/lib/utils'
-import { inter, ibmPlexSansThai, jetbrainsMono } from '@/lib/fonts'
-
-import './globals.css'
-
-/* -------------------------------------------------------------------------- */
-/* METADATA_ENGINE */
-/* -------------------------------------------------------------------------- */
-
+// 2. Metadata & SEO
 export const metadata: Metadata = {
-  metadataBase: new URL(siteConfig.url),
+  metadataBase: new URL("https://jpvisouldocs.online"),
   title: {
-    default: siteConfig.seo.defaultTitle,
-    template: siteConfig.seo.titleTemplate,
+    default: "JP-VISOUL.DOCS | บริการเอกสารและวีซ่าครบวงจร",
+    template: "%s | JP-VISOUL.DOCS",
   },
-  description: siteConfig.seo.description,
-  keywords: Array.isArray(siteConfig.seo.keywords) ? [...siteConfig.seo.keywords] : [],
-  authors: [{ name: siteConfig.author.name }],
-  creator: siteConfig.author.name,
+  description:
+    "สะพานเชื่อมโอกาส ผ่านงานเอกสารที่โปร่งใสและเข้าถึงง่าย ทั้งบริการวีซ่า แปลเอกสาร และจดทะเบียนธุรกิจ ทั่วประเทศไทย",
+  keywords: [
+    "ขอวีซ่า",
+    "จดทะเบียนบริษัท",
+    "แปลเอกสาร",
+    "JP-VISOUL",
+    "Legal Documents Thailand",
+  ],
+  authors: [{ name: "JP-VISOUL Team" }],
   openGraph: {
-    type: 'website',
-    url: siteConfig.url,
-    siteName: siteConfig.name,
-    locale: 'th_TH',
-    title: siteConfig.seo.defaultTitle,
-    description: siteConfig.seo.description,
+    type: "website",
+    locale: "th_TH",
+    url: "https://jpvisouldocs.online",
+    siteName: "JP-VISOUL.DOCS",
     images: [
       {
-        url: siteConfig.assets.ogImage,
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: `${siteConfig.name} – ศูนย์บริหารจัดการเอกสารและการอนุมัติ`,
+        alt: "JP-VISOUL Services",
       },
     ],
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
-}
-
-/* -------------------------------------------------------------------------- */
-/* VIEWPORT_PROTOCOL */
-/* -------------------------------------------------------------------------- */
+};
 
 export const viewport: Viewport = {
-  width: 'device-width',
+  themeColor: "#0A192F",
+  width: "device-width",
   initialScale: 1,
   maximumScale: 5,
-  themeColor: '#FAFAF9', // Stone-50
-}
+};
 
-/* -------------------------------------------------------------------------- */
-/* MAIN_ARCHITECTURE */
-/* -------------------------------------------------------------------------- */
-
-interface RootLayoutProps {
-  children: React.ReactNode
-}
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html
-      lang="th"
-      className={cn(
-        'scroll-smooth antialiased',
-        ibmPlexSansThai.variable,
-        inter.variable,
-        jetbrainsMono.variable,
-      )}
-      suppressHydrationWarning
-    >
-      <head>
-        <JsonLd />
-      </head>
+    <html lang="th" className="scroll-smooth" suppressHydrationWarning>
+      <body
+        className={cn(
+          "min-h-screen flex flex-col font-body antialiased bg-white text-slate-900 selection:bg-secondary/20 selection:text-secondary",
+          ibmPlexThai.variable,
+          sarabun.variable,
+        )}
+      >
+        <AppProvider>
+          {/* --- TOP FIXED NAVIGATION ---
+              เราเก็บไว้เฉพาะ Navbar เพื่อให้แถบเมนูกะทัดรัด (Slim) 
+              และมีพื้นที่สำหรับอ่านเนื้อหามากขึ้น
+          */}
+          <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col shadow-sm bg-white/95 backdrop-blur-md">
+            {/* นำ <Header /> ออกเพื่อให้ไปเรียกใช้ในรายหน้าแทน */}
+            <Navbar />
+          </div>
 
-      <body className="min-h-screen bg-[var(--background)] font-sans text-[var(--foreground)]">
-        <Providers>
-          <main className="relative flex min-h-screen flex-col overflow-x-hidden">
-            {/* CONTENT */}
-            <div className="relative z-10 flex min-h-screen flex-col">{children}</div>
+          {/* --- MAIN CONTENT AREA ---
+              - pt-[64px]: เว้นระยะให้เท่ากับความสูงมาตรฐานของ Navbar
+              - lg:pt-[72px]: ปรับขนาดตามหน้าจอ Desktop
+          */}
+
+          <main className="flex-grow pt-[64px] lg:pt-[72px] overflow-x-hidden animate-entry">
+            {children}
           </main>
-        </Providers>
+
+          <Footer />
+
+          <Toaster
+            position="top-center"
+            richColors
+            expand={false}
+            closeButton
+          />
+        </AppProvider>
       </body>
     </html>
-  )
+  );
 }

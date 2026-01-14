@@ -1,73 +1,132 @@
-/*
-🛰️ AI-CONTEXT: JP-VisualDocs – Global Page Template
-@version 2026.1.12
-@timestamp 2026-01-12T00:18:45.875Z
-🛑 STRICT MODE: AI must follow rules exactly, no interpretation allowed
-✅ Tone: Professional, Calm, Supportive
-✅ Output must use Strategic Keywords only: Evidence-Based, Digital Integrity, Seamless Process, Trust by Design
-✅ Reject speculative, unverifiable, or invented content
+import { ServiceItem } from "@/constants/services-data";
 
-📌 PAGE METADATA
-- PageName: JsonLd          // ตัวอย่าง: ShowcasePage, ServicesPage
-- Role: [PAGE_ROLE_HERE]         // ตัวอย่าง: Document Hub, Service Portal
-- Version: 2026.1.12
-- Checked: True
-- Audience: Internal & End-user
-- Purpose: [SHORT_DESCRIPTION_HERE]   // ตัวอย่าง: แสดงสถานะเอกสาร, ให้บริการ workflow
+/**
+ * ✅ กำหนด Interface สำหรับข้อมูล Schema เพื่อหลีกเลี่ยง any
+ * ใช้ Record<string, unknown> สำหรับข้อมูลที่เป็นโครงสร้าง Object ทั่วไป
+ */
+interface JsonLdProps {
+  type: "Organization" | "Service" | "BlogPosting";
+  data?: ServiceItem | BlogData | Record<string, unknown>;
+}
 
-... (AI Context rules same as global template)
-*/
+interface BlogData {
+  headline?: string;
+  title?: string;
+  image?: string | string[];
+  datePublished?: string;
+  date?: string;
+  dateModified?: string;
+  author?: string | { name: string };
+  description?: string;
+  excerpt?: string;
+  slug?: string;
+}
 
-/** @format */
+export function JsonLd({ type, data }: JsonLdProps) {
+  // ✅ ใช้ unknown และ Record สำหรับ Type Safety แทน any
+  let schema: Record<string, unknown> | null = null;
 
-import { siteConfig } from '@/config/site'
-
-export function JsonLd() {
-  const organizationSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'ProfessionalService', // ระบุเป็นธุรกิจบริการเฉพาะทาง
-    name: siteConfig.name,
-    alternateName: siteConfig.shortName,
-    description: siteConfig.seo.description,
-    url: siteConfig.url,
-    logo: `${siteConfig.url}${siteConfig.assets.logo}`,
-    image: `${siteConfig.url}${siteConfig.assets.ogImage}`, // ใช้ OG Image เพื่อแสดงภาพพรีวิวที่สวยงาม
-    telephone: siteConfig.contact.phoneFull,
-    priceRange: '฿฿', // ระบุระดับราคาเพื่อให้ Google เข้าใจกลุ่มเป้าหมาย
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Bangkok',
-      addressRegion: 'Bangkok',
-      addressCountry: 'TH',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 13.7563,
-      longitude: 100.5018,
-    },
-    openingHoursSpecification: [
-      {
-        '@type': 'OpeningHoursSpecification',
-        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        opens: '09:00',
-        closes: '18:00',
+  // 1. ข้อมูลสำหรับองค์กร (Organization)
+  if (type === "Organization") {
+    schema = {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "JP-VISOUL-DOCS",
+      url: "https://jpvisouldocs.online",
+      logo: "https://jpvisouldocs.online/logo.png",
+      description: "บริการให้คำปรึกษาด้านเอกสาร วีซ่า และงานกฎหมายครบวงจร",
+      contactPoint: {
+        "@type": "ContactPoint",
+        telephone: "+66-XX-XXX-XXXX",
+        contactType: "customer service",
+        areaServed: "TH",
+        availableLanguage: ["Thai", "English"],
       },
-    ],
-    sameAs: [
-      siteConfig.social.facebook,
-      siteConfig.social.line,
-      // สามารถเพิ่ม URL ของรีวิวหรือ Social อื่นๆ ได้ที่นี่
-    ],
-    areaServed: {
-      '@type': 'Country',
-      name: 'Thailand',
-    },
+      sameAs: [
+        "https://www.facebook.com/jpvisouldocs",
+        "https://line.me/ti/p/@jpvisouldocs",
+      ],
+    };
   }
+
+  // 2. ข้อมูลสำหรับหน้ารายละเอียดบริการ (Service)
+  if (type === "Service" && data) {
+    const service = data as ServiceItem;
+    schema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      serviceType: service.title,
+      provider: {
+        "@type": "LocalBusiness",
+        name: "JP-VISOUL-DOCS",
+        image: "https://jpvisouldocs.online/og-image.jpg",
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: "Bangkok",
+          addressCountry: "TH",
+        },
+      },
+      description: service.description,
+      areaServed: "TH",
+      hasOfferCatalog: {
+        "@type": "OfferCatalog",
+        name: service.category || "General Services",
+        itemListElement:
+          service.features?.map((f) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: f,
+            },
+          })) || [],
+      },
+    };
+  }
+
+  // 3. ข้อมูลสำหรับหน้าบทความ (BlogPosting)
+  if (type === "BlogPosting" && data) {
+    const blog = data as BlogData;
+    schema = {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      headline: blog.headline || blog.title,
+      image: Array.isArray(blog.image)
+        ? blog.image
+        : [blog.image || "/images/blog-placeholder.jpg"],
+      datePublished: blog.datePublished || blog.date,
+      dateModified: blog.dateModified || blog.datePublished || blog.date,
+      author: [
+        {
+          "@type": "Person",
+          name:
+            blog.author && typeof blog.author === "object"
+              ? blog.author.name
+              : blog.author || "JP-VISOUL Team",
+          url: "https://jpvisouldocs.online",
+        },
+      ],
+      description: blog.description || blog.excerpt,
+      publisher: {
+        "@type": "Organization",
+        name: "JP-VISOUL-DOCS",
+        logo: {
+          "@type": "ImageObject",
+          url: "https://jpvisouldocs.online/logo.png",
+        },
+      },
+      mainEntityOfPage: {
+        "@type": "WebPage",
+        "@id": `https://jpvisouldocs.online/blog/${blog.slug || ""}`,
+      },
+    };
+  }
+
+  if (!schema) return null;
 
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
     />
-  )
+  );
 }

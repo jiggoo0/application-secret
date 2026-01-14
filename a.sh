@@ -1,84 +1,35 @@
 #!/bin/bash
 
-# --- 🏗️ STEP 1: สร้างโฟลเดอร์โครงสร้างใหม่ ---
-echo "📂 Creating new directory structure..."
-mkdir -p app/\(main\)
-mkdir -p app/\(business\)/\[biz_type\]/_components/templates
+echo "🚀 Finalizing project architecture..."
 
-# --- 🏗️ STEP 2: ย้ายหน้าเว็บหลักเข้ากลุ่ม (main) ---
-# ระบบจะข้ามไฟล์ layout.tsx หลักเพื่อรักษา Provider และ CSS
-echo "🚀 Moving main site routes to (main) group..."
+# 1. สร้าง middleware.ts (สำคัญมากสำหรับ Auth)
+if [ ! -f "middleware.ts" ]; then
+  cat <<EOF > middleware.ts
+import { NextResponse, type NextRequest } from 'next/server'
 
-# รายชื่อโฟลเดอร์หน้าเว็บหลัก
-MAIN_PAGES=("about" "blog" "contact" "services" "works" "reviews" "dti" "fb" "flight-booking" "letter-service" "verify")
+export function middleware(request: NextRequest) {
+  // เพิ่ม Logic ตรวจสอบ Session ที่นี่
+  return NextResponse.next()
+}
 
-for page in "${MAIN_PAGES[@]}"; do
-    if [ -d "app/$page" ]; then
-        mv "app/$page" "app/(main)/"
-        echo "✅ Moved: app/$page -> app/(main)/$page"
-    fi
-done
-
-# ย้ายไฟล์หน้าแรกและไฟล์เสริม
-[ -f "app/page.tsx" ] && mv app/page.tsx app/\(main\)/
-[ -f "app/loading.tsx" ] && mv app/loading.tsx app/\(main\)/
-[ -f "app/favicon.ico" ] && mv app/favicon.ico app/\(main\)/
-
-# --- 🏗️ STEP 3: สร้างไฟล์ Template เริ่มต้นสำหรับธุรกิจ ---
-echo "📝 Generating business template files..."
-
-# สร้างไฟล์ Dispatcher Page
-cat <<EOF > app/\(business\)/\[biz_type\]/page.tsx
-import { notFound } from 'next/navigation';
-
-export default async function BusinessPage({ params }: { params: Promise<{ biz_type: string }> }) {
-    const { biz_type } = await params;
-    const allowedBiz = ['visa', 'loan', 'property']; // เพิ่มชื่อธุรกิจที่พี่ต้องการที่นี่
-    
-    if (!allowedBiz.includes(biz_type.toLowerCase())) return notFound();
-
-    return (
-        <div className="p-20 text-center">
-            <h1 className="text-7xl font-black uppercase italic tracking-tighter">
-                {biz_type} <span className="text-blue-600">Portal</span>
-            </h1>
-            <p className="mt-4 font-mono text-xs text-slate-400">STATUS: SYSTEM_READY_FOR_CUSTOM_UI</p>
-        </div>
-    );
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }
 EOF
+  echo "📄 Created: middleware.ts"
+fi
 
-# สร้างไฟล์ Layout สำหรับฝั่งธุรกิจ (แยก Header/Footer)
-cat <<EOF > app/\(business\)/\[biz_type\]/layout.tsx
-import React from 'react';
+# 2. สร้างโครงสร้าง Supabase Server-side (Next.js 15 ต้องแยก Client/Server)
+touch lib/supabase/server.ts
+touch lib/supabase/middleware.ts
 
-export default async function BusinessLayout({ 
-    children, 
-    params 
-}: { 
-    children: React.ReactNode, 
-    params: Promise<{ biz_type: string }> 
-}) {
-    const { biz_type } = await params;
-    return (
-        <div className="min-h-screen flex flex-col bg-white">
-            <header className="border-b-4 border-slate-900 p-6 flex justify-between items-center bg-white sticky top-0 z-50">
-                <div className="font-black text-2xl italic uppercase tracking-tighter">
-                    {biz_type}_Operations
-                </div>
-                <div className="font-mono text-[10px] bg-slate-900 text-white px-2 py-1">
-                    SECURE_ACCESS
-                </div>
-            </header>
-            <main className="flex-grow">{children}</main>
-            <footer className="border-t-4 border-slate-900 p-10 bg-slate-50 font-mono text-[9px] text-center">
-                © 2025 JP-VISOUL // BUSINESS_UNIT: {biz_type.toUpperCase()}
-            </footer>
-        </div>
-    );
-}
-EOF
+# 3. จัดการโฟลเดอร์ hooks (สร้างไฟล์ตัวอย่าง)
+if [ -z "$(ls -A hooks)" ]; then
+  touch hooks/use-auth.ts
+  echo "⚓ Created: hooks/use-auth.ts"
+fi
 
-echo "---------------------------------------------------"
-echo "✅ RESTRUCTURE COMPLETE: โปรเจกต์พร้อมขยายตัวแล้ว!"
-echo "---------------------------------------------------"
+# 4. เพิ่มไฟล์สำหรับการตั้งค่าระบบ (Config)
+touch next.config.ts
+
+echo "✅ All essential files are in place."

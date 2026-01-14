@@ -1,105 +1,132 @@
 #!/bin/bash
 
-# === CONFIG ===
+# ==============================================================================
+# 🛠️ JP-VISOUL-DOCS: Project Structure & Health Reporter
+# ==============================================================================
+# Description: Generates a comprehensive markdown report of the project structure.
+# Features: Recursive directory mapping, dependency analysis, and pre-deploy sync.
+# ==============================================================================
+
+# ⚙️ CONFIGURATION
 OUTPUT_FILE="project-structure.md"
 PRE_DEPLOY_REPORT="pre-deploy-report.md"
-WHITELIST_DIRS=("app" "components" "lib" "hooks" "types" "scripts" "public" "data")
 
-# ✅ 1. ลบไฟล์เก่าทิ้งก่อนเริ่มงาน
+# Directories allowed for scanning (Strictly aligned with Next.js 15 App Router)
+WHITELIST_DIRS=(
+  "app" 
+  "actions" 
+  "components" 
+  "lib" 
+  "hooks" 
+  "types" 
+  "scripts" 
+  "public" 
+  "data" 
+  "constants" 
+  "providers" 
+  "content" 
+  "styles" 
+  "services" 
+  "config"
+)
+
+# Regex to ignore non-essential or sensitive files
+IGNORE_PATTERN="node_modules|\.git|\.next|\.DS_Store|__pycache__|\.env"
+
+# 🚀 START EXECUTION
 rm -f "$OUTPUT_FILE"
 
-# === EXECUTE ===
-echo "🚀 กำลังสแกนโครงสร้างโฟลเดอร์และวิเคราะห์โปรเจกต์..."
+echo "🔍 Scanning JP-VISOUL-DOCS project architecture..."
 
 {
-  echo "# 📁 รายงานโครงสร้างโปรเจกต์"
-  echo "_สร้างเมื่อ: $(date)_"
+  echo "# 📁 Project Structure Report: JP-VISOUL-DOCS"
+  echo "> Generated on: **$(date '+%Y-%m-%d %H:%M:%S')**"
   echo ""
 
-  # --- 2. โครงสร้างโฟลเดอร์ ---
-  echo "## 🌳 Folder Structure"
+  # --- 1. ARCHITECTURAL OVERVIEW ---
+  echo "## 🌳 Directory Tree"
+  echo "The following structure represents the core business logic and UI layers."
+  echo ""
+
   for dir in "${WHITELIST_DIRS[@]}"; do
     if [ -d "$dir" ]; then
-      echo "📂 $dir"
-      find "$dir" -maxdepth 10 -mindepth 1 \
-        -path "*/node_modules" -prune -o \
-        -path "*/.*" -prune -o \
-        -print | while read -r path; do
-          depth=$(echo "$path" | tr -cd '/' | wc -c)
+      echo "### 📂 $dir"
+      
+      # Use find with depth calculation for visual rhythmic prose in tree form
+      find "$dir" -maxdepth 10 -not -path '*/.*' | grep -vE "$IGNORE_PATTERN" | while read -r path; do
+          
+          # Indentation logic
+          depth=$(temp="${path//[^\/]/}"; echo "${#temp}")
           indent=$(printf '%*s' $((depth * 2)) "")
           name=$(basename "$path")
+          
           if [ -d "$path" ]; then
-            echo "${indent}📂 $name"
+            # Directory entry (Skip the root dir of the loop itself)
+            [[ "$path" != "$dir" ]] && echo "${indent}📂 **$name/**"
           else
+            # File entry
             echo "${indent}📄 $name"
           fi
-        done
+      done
+      echo ""
     fi
   done
 
-  echo ""
-  echo "## 📦 ตรวจหา package.json"
-  echo '```json'
+  # --- 2. DEPENDENCY ANALYSIS ---
+  echo "## 📦 Project Dependencies"
   if [ -f "package.json" ]; then
-    echo "พบ package.json ที่ root ของโปรเจกต์"
-    echo ""
+    echo "Current configuration in \`package.json\`:"
+    echo '```json'
     if command -v jq >/dev/null 2>&1; then
+      # Displaying only vital production-ready information
       jq '{name, version, scripts, dependencies, devDependencies}' package.json
     else
       cat package.json
     fi
+    echo '```'
   else
-    echo "ไม่พบ package.json"
+    echo "> ❌ Error: \`package.json\` not found in root directory."
   fi
-  echo '```'
   echo ""
 
-  # --- 3. ส่วนวิเคราะห์ปัญหา (ดึงมาจาก Pre-deploy Report) ---
-  echo "## 📝 ผลการวิเคราะห์และปัญหาที่พบ"
-  echo "________"
+  # --- 3. PRE-DEPLOYMENT HEALTH CHECK ---
+  echo "## 📝 Deployment Status & Issues"
+  echo "---"
   
   if [ -f "$PRE_DEPLOY_REPORT" ]; then
-    echo "🔍 ตรวจพบรายงานการตรวจสอบล่าสุด:"
-    echo ""
-    
-    # 3.1 ตรวจสอบสถานะภาพรวม
-    if grep -q "### ✅ READY FOR DEPLOY" "$PRE_DEPLOY_REPORT"; then
-      echo "✅ สถานะปัจจุบัน: **READY FOR DEPLOY**"
+    # 3.1 Status Verification
+    if grep -qi "READY FOR DEPLOY" "$PRE_DEPLOY_REPORT"; then
+      echo "### ✅ Final Status: **READY FOR DEPLOY**"
     else
-      echo "❌ สถานะปัจจุบัน: **FIX REQUIRED**"
+      echo "### ❌ Final Status: **FIX REQUIRED**"
     fi
     echo ""
 
-    # 3.2 ดึงรายละเอียด Route Statistics
+    # 3.2 Production Route Mapping
     if grep -q "### 📊 Route Statistics" "$PRE_DEPLOY_REPORT"; then
-      echo "### 📍 Production Route Map"
+      echo "#### 📍 Production Route Map"
       echo "\`\`\`text"
-      # ✅ แก้ไข: ใช้ -- เพื่อป้องกัน grep เข้าใจผิดเรื่อง Option
-      # และใช้ sed เพื่อดึงเนื้อหาที่อยู่ระหว่างหัวข้อ
       sed -n '/### 📊 Route Statistics/,/---/p' "$PRE_DEPLOY_REPORT" | \
-      grep -v "###" | \
-      grep -v -- "---" | \
-      sed '/^$/d'
+      grep -vE "###|---" | sed '/^$/d'
       echo "\`\`\`"
     fi
 
-    # 3.3 ดึง Error/Warning
-    echo "### ⚠️ Issues Highlight"
-    # ✅ แก้ไข: ใส่ -- หลัง grep -E เพื่อความปลอดภัย
-    ERRORS=$(grep -E -- "❌|⚠️|error|warning" "$PRE_DEPLOY_REPORT")
+    # 3.3 Critical Issues Highlight
+    echo "#### ⚠️ Critical Issues Highlight"
+    ERRORS=$(grep -E "❌|⚠️|[Ee]rror|[Ww]arning" "$PRE_DEPLOY_REPORT" | grep -v "###")
     if [ -z "$ERRORS" ]; then
-      echo "✅ ไม่พบปัญหาสำคัญในรายงานล่าสุด"
+      echo "Everything looks clean. No significant issues found in the latest report."
     else
       echo "$ERRORS"
     fi
   else
-    echo "⚠️ ไม่พบไฟล์ $PRE_DEPLOY_REPORT กรุณารัน pre-deploy-check.sh ก่อน"
+    echo "> ℹ️ Pre-deploy report (\`$PRE_DEPLOY_REPORT\`) is missing. Please run \`npm run check\` first."
   fi
 
   echo ""
   echo "---"
-  echo "Status: Scanning process completed successfully."
+  echo "_Report generated by JP-VISOUL Internal Automation._"
 
 } > "$OUTPUT_FILE"
 
-echo "✅ แก้ไขคำสั่งและสแกนเสร็จสิ้น → $OUTPUT_FILE"
+echo "✅ Success: Report saved to → $OUTPUT_FILE"
