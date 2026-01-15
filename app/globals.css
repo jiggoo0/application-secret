@@ -8,37 +8,48 @@
 
 /* 2. Tailwind v4 Theme Configuration */
 @theme {
-  --font-heading: var(--font-heading);
-  --font-body: var(--font-body);
+  --font-heading: var(--font-heading), ui-sans-serif, system-ui;
+  --font-body: var(--font-body), ui-sans-serif, system-ui;
 
+  /* ปรับโทนสีให้เป็น Professional Navy ตามแบรนด์ JP-VISOUL */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
+  --color-primary: var(--primary); /* Navy #0A192F */
+  --color-secondary: var(--secondary); /* Blue #2563EB */
+  --color-accent: var(--accent); /* Emerald/Line #06C755 */
+
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* ควบคุมความโค้งให้คมขึ้น (ลดความเป็นมังงะ/การ์ตูน) */
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px; /* สูงสุดที่แนะนำสำหรับกล่องเนื้อหาหลัก */
 }
 
 /* 3. Global CSS Variables (:root) */
 :root {
+  /* ใช้ Pure White พื้นหลังเพื่อความสะอาดสไตล์เว็บไซต์ชั้นนำ */
   --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.25 0.05 260);
-  --secondary: oklch(0.65 0.2 30);
-  --border: oklch(0.922 0.011 264.695);
-  --input: oklch(0.922 0.011 264.695);
-  --ring: oklch(0.707 0.022 264.695);
+  --foreground: oklch(0.141 0.044 265.75);
 
-  /* นิยามค่าสำหรับภาษาไทยไว้ที่นี่เพื่อให้เรียกใช้ซ้ำได้ */
-  --thai-line-height: 1.7;
+  --primary: oklch(0.21 0.044 265.75);
+  --secondary: oklch(0.55 0.18 250);
+  --accent: oklch(0.7 0.19 145);
+
+  --border: oklch(0.92 0.01 265);
+  --input: oklch(0.92 0.01 265);
+  --ring: oklch(0.55 0.18 250 / 0.15);
+
+  --thai-line-height: 1.6;
 }
 
-/* 4. Utilities (ประกาศไว้ก่อนการใช้ @apply ใน layer อื่นๆ) */
+/* 4. Utilities */
 @utility thai-snug {
   line-height: var(--thai-line-height);
-  letter-spacing: 0.01em;
-  text-underline-offset: 4px;
+  letter-spacing: -0.015em;
+  text-underline-offset: 6px;
 }
 
 @utility no-scrollbar {
@@ -54,24 +65,38 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  html {
+    @apply scroll-smooth antialiased;
+  }
+
   body {
-    /* แทนที่จะ @apply thai-snug เราใช้ค่า variable โดยตรงหรือปล่อยให้ utility ทำงานแยกไป */
-    @apply bg-background text-foreground font-body antialiased;
-    line-height: var(
-      --thai-line-height
-    ); /* ใช้ค่าโดยตรงเพื่อเลี่ยง Error @apply */
+    @apply bg-background text-foreground font-body;
+    line-height: var(--thai-line-height);
     font-feature-settings:
       "rlig" 1,
       "calt" 1;
     text-rendering: optimizeLegibility;
   }
+
+  /* หัวข้อสไตล์ Corporate: ตัวหนา กระชับ ไม่ห่างเกินไป */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading font-semibold tracking-tight;
+    line-height: 1.15;
+    color: var(--primary);
+  }
 }
 
-/* 6. Advanced Animations */
+/* 6. Advanced Animations (Smooth & Minimal) */
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(10px); /* ลดระยะเคลื่อนไหวให้ดูนิ่งขึ้น */
   }
   to {
     opacity: 1;
@@ -80,5 +105,23 @@
 }
 
 @utility animate-entry {
-  animation: fade-in-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: fade-in-up 0.6s cubic-bezier(0.2, 0, 0, 1) forwards;
+}
+
+/* 7. Scrollbar Styling (Minimalist) */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-200 rounded-full hover:bg-slate-300 transition-colors;
+}
+
+/* 8. Card Styling Override (ป้องกันความโค้งเกินไปใน Component) */
+.service-card {
+  @apply rounded-2xl border border-slate-100 shadow-sm transition-all duration-300;
 }

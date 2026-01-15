@@ -1,4 +1,14 @@
+/**
+ * FAQ Page – Production Ready
+ * - App Router compatible
+ * - ใช้ SITE_CONFIG เป็น Single Source of Truth
+ * - ป้องกัน crash (Line / Contact)
+ * - Structure + format พร้อมใช้งานจริง
+ */
+
 import { Metadata } from "next";
+import Link from "next/link";
+
 import Header from "@/components/shared/Header";
 import { H2, P } from "@/components/ui/typography";
 import {
@@ -7,156 +17,163 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
+
 import {
   HelpCircle,
   Plane,
-  FileText,
   ShieldCheck,
   MessageCircle,
+  Wallet,
 } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
+import { SITE_CONFIG } from "@/constants/site-config";
+import { CONTACT_CHANNELS } from "@/lib/utils/line-link";
+
+/* =====================
+ * Metadata
+ * ===================== */
 export const metadata: Metadata = {
-  title: "คำถามที่พบบ่อย (FAQ) | JP-VISOUL.DOCS",
+  title: "คำถามที่พบบ่อย (FAQ) | JP-VISOUL Professional Docs",
   description:
-    "รวมคำถามที่พบบ่อยเกี่ยวกับบริการวีซ่า งานเอกสาร และการจดทะเบียนธุรกิจ",
+    "รวมคำถามเกี่ยวกับบริการจัดการเอกสารกงสุล วีซ่า และการวางโครงสร้างเอกสารการเงินเพื่อการอนุมัติ",
 };
 
+/* =====================
+ * Page
+ * ===================== */
 export default function FAQPage() {
+  const lineUrl = CONTACT_CHANNELS?.line?.officialUrl;
+
   const faqCategories = [
     {
+      id: "finance",
+      icon: <Wallet size={20} className="text-blue-600" />,
+      title: "การวางโครงสร้างเอกสารการเงิน",
+      questions: [
+        {
+          q: "กรณีไม่มีเอกสารรายได้หรือสเตทเม้นไม่สวย สามารถปรึกษาได้ไหม?",
+          a: "ปรึกษาได้ครับ เรามีผู้เชี่ยวชาญช่วยวิเคราะห์และวางโครงสร้างเอกสารรายได้ (Document Structuring) ให้สอดคล้องกับเงื่อนไขการพิจารณาของสถาบันการเงินหรือสถานทูต เพื่อเพิ่มความน่าเชื่อถือของโปรไฟล์ให้สูงที่สุด",
+        },
+        {
+          q: "การจัดเตรียมเอกสารใช้เวลานานเท่าไหร่?",
+          a: "โดยปกติขั้นตอนวิเคราะห์และออกแบบโครงสร้างเอกสารจะใช้เวลา 1–3 วันทำการ หลังจากได้รับข้อมูลครบถ้วน และมีการตรวจสอบซ้ำก่อนส่งมอบทุกครั้ง",
+        },
+      ],
+    },
+    {
       id: "visa",
-      icon: <Plane className="text-secondary" size={20} />,
-      title: "บริการวีซ่า",
+      icon: <Plane size={20} className="text-blue-500" />,
+      title: "บริการวีซ่าและที่พัก",
       questions: [
         {
-          q: "การขอวีซ่าญี่ปุ่นต้องใช้เวลานานเท่าไหร่?",
-          a: "โดยปกติจะใช้เวลาประมาณ 5-7 วันทำการหลังจากยื่นเอกสารครบถ้วน ทั้งนี้ขึ้นอยู่กับประเภทของวีซ่าและดุลยพินิจของสถานทูต",
+          q: "ตั๋วเครื่องบินและโรงแรมที่จัดให้ ตรวจสอบได้จริงหรือไม่?",
+          a: "ตรวจสอบได้ 100% ผ่านระบบ Global Distribution System (GDS) พร้อมรหัส PNR ที่สามารถตรวจสอบได้โดยตรงจากสายการบินหรือโรงแรม",
         },
         {
-          q: "ถ้าโดนปฏิเสธวีซ่า สามารถยื่นใหม่ได้ทันทีหรือไม่?",
-          a: "หากถูกปฏิเสธวีซ่าญี่ปุ่น โดยปกติจะต้องเว้นระยะเวลา 6 เดือนจึงจะสามารถยื่นใหม่ได้ในเหตุผลเดิม ยกเว้นกรณีที่มีการเปลี่ยนแปลงข้อมูลสำคัญอย่างมีนัยสำคัญ",
-        },
-      ],
-    },
-    {
-      id: "documents",
-      icon: <FileText className="text-blue-500" size={20} />,
-      title: "งานเอกสารและแปลภาษา",
-      questions: [
-        {
-          q: "เอกสารที่แปลต้องมีการรับรองจากกงสุลหรือไม่?",
-          a: "ขึ้นอยู่กับวัตถุประสงค์การใช้งาน หากใช้ยื่นหน่วยงานราชการต่างประเทศ ส่วนใหญ่จำเป็นต้องผ่านการรับรองจากกรมการกงสุล กระทรวงการต่างประเทศ ซึ่งเรามีบริการดำเนินการให้ครบวงจรครับ",
+          q: "มีบริการร่างจดหมายชี้แจงสถานะ (Cover Letter) หรือไม่?",
+          a: "มีครับ เราร่างจดหมายภาษาอังกฤษเชิงทางการ เพื่ออธิบายจุดอ่อนของเคสหรือความสัมพันธ์สำหรับวีซ่าสปอนเซอร์โดยเฉพาะ",
         },
       ],
     },
     {
-      id: "payment",
-      icon: <ShieldCheck className="text-green-500" size={20} />,
-      title: "การชำระเงินและความปลอดภัย",
+      id: "trust",
+      icon: <ShieldCheck size={20} className="text-emerald-500" />,
+      title: "ความปลอดภัยและความเป็นส่วนตัว",
       questions: [
         {
-          q: "ช่องทางการชำระเงินมีอะไรบ้าง?",
-          a: "เรามีบริการรับชำระผ่านการโอนเงินผ่านธนาคาร, บัตรเครดิต และมีใบเสร็จรับเงิน/ใบกำกับภาษี ออกให้ทุกครั้งเพื่อความโปร่งใส",
+          q: "ข้อมูลส่วนตัวและเอกสารจะถูกเก็บเป็นความลับหรือไม่?",
+          a: "ข้อมูลทั้งหมดถูกใช้เฉพาะเพื่อการดำเนินงาน และจะถูกจัดการภายใต้นโยบายความปลอดภัยระดับสูงสุด พร้อมทำลายข้อมูลเมื่อสิ้นสุดกระบวนการ",
         },
       ],
     },
   ];
 
   return (
-    <main className="min-h-screen bg-slate-50/30 pb-24">
-      {/* 1. Header Section */}
+    <main className="min-h-screen bg-[#FAFAF9] pb-24">
+      {/* =====================
+       * Header
+       * ===================== */}
       <Header
-        title="Frequently Asked Questions"
-        description="รวมคำตอบที่คุณสงสัยเกี่ยวกับบริการงานเอกสารและวีซ่า"
-        centered={true}
+        title="Professional Support"
+        description="คำถามที่พบบ่อยเกี่ยวกับระบบจัดการเอกสารและวีซ่า"
+        centered
       />
 
-      <div className="container mx-auto px-4 -mt-12 relative z-10">
-        <div className="max-w-4xl mx-auto">
-          {/* 2. FAQ Categories & Items */}
-          <div className="space-y-12">
-            {faqCategories.map((category) => (
-              <div
-                key={category.id}
-                className="bg-white rounded-[2.5rem] p-6 md:p-10 shadow-sm border border-slate-100"
-              >
-                <div className="flex items-center gap-3 mb-8 pb-4 border-b border-slate-50">
-                  <div className="p-3 bg-slate-50 rounded-2xl">
-                    {category.icon}
-                  </div>
-                  <h3 className="text-2xl font-black text-slate-900">
-                    {category.title}
-                  </h3>
+      <div className="container relative z-10 mx-auto -mt-12 px-4">
+        <div className="mx-auto max-w-4xl space-y-10">
+          {faqCategories.map((category) => (
+            <section
+              key={category.id}
+              className="rounded-[3rem] border border-slate-100 bg-white p-8 shadow-sm md:p-12"
+            >
+              <div className="mb-10 flex items-center gap-4">
+                <div className="rounded-[1.2rem] bg-slate-50 p-4">
+                  {category.icon}
+                </div>
+                <h3 className="text-2xl font-black uppercase italic tracking-tight text-[#0A192F]">
+                  {category.title}
+                </h3>
+              </div>
+
+              <Accordion type="single" collapsible className="w-full space-y-4">
+                {category.questions.map((item, index) => (
+                  <AccordionItem
+                    key={`${category.id}-${index}`}
+                    value={`${category.id}-${index}`}
+                    className="rounded-[1.5rem] border border-slate-100 px-8 transition-all data-[state=open]:border-blue-100 data-[state=open]:bg-blue-50/30"
+                  >
+                    <AccordionTrigger className="py-6 text-left text-lg font-black text-slate-800 hover:text-blue-600">
+                      {item.q}
+                    </AccordionTrigger>
+                    <AccordionContent className="pb-8 text-base font-medium leading-relaxed text-slate-500">
+                      {item.a}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </section>
+          ))}
+
+          {/* =====================
+           * CTA
+           * ===================== */}
+          {lineUrl && (
+            <section className="relative mt-20 overflow-hidden rounded-[4rem] bg-[#0A192F] p-10 text-center text-white shadow-2xl md:p-16">
+              <div className="relative z-10">
+                <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-3xl border border-white/10 bg-white/5">
+                  <HelpCircle size={40} className="text-blue-500" />
                 </div>
 
-                <Accordion
-                  type="single"
-                  collapsible
-                  className="w-full space-y-4"
-                >
-                  {category.questions.map((item, index) => (
-                    <AccordionItem
-                      key={index}
-                      value={`${category.id}-${index}`}
-                      className="border border-slate-100 rounded-2xl px-6 transition-all data-[state=open]:border-secondary/30 data-[state=open]:bg-slate-50/50"
-                    >
-                      <AccordionTrigger className="hover:no-underline py-5 text-left font-bold text-slate-800">
-                        {item.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-slate-600 leading-relaxed pb-6 thai-snug">
-                        {item.a}
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            ))}
-          </div>
+                <H2 className="mb-6 border-none p-0 text-3xl font-black italic uppercase tracking-tight text-white md:text-5xl">
+                  ต้องการปรึกษา <br className="md:hidden" />
+                  <span className="text-blue-500">เคสเฉพาะบุคคล?</span>
+                </H2>
 
-          {/* 3. Still Have Questions? CTA */}
+                <P className="mx-auto mb-12 max-w-xl text-lg font-medium text-slate-400">
+                  ทีม {SITE_CONFIG.shortName}
+                  พร้อมให้คำปรึกษาเชิงลึกผ่านช่องทางส่วนตัว
+                  ข้อมูลของคุณจะถูกเก็บเป็นความลับสูงสุด
+                </P>
 
-          <div className="mt-20 p-8 md:p-12 rounded-[3rem] bg-primary text-white text-center relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-              <div className="absolute top-10 left-10 w-32 h-32 rounded-full border-4 border-white" />
-              <div className="absolute bottom-10 right-10 w-48 h-48 rounded-full border-8 border-white" />
-            </div>
-
-            <div className="relative z-10">
-              <div className="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <HelpCircle size={32} className="text-secondary" />
-              </div>
-              <H2 className="text-white border-none p-0 mb-4 text-3xl font-black">
-                ยังไม่ได้คำตอบที่ต้องการ?
-              </H2>
-              <P className="text-slate-300 mb-10 max-w-lg mx-auto">
-                หากคุณมีคำถามเฉพาะทาง หรือต้องการปรึกษาเคสวีซ่าเป็นการส่วนตัว
-                ทีมงานของเราพร้อมให้บริการผ่านทุกช่องทาง
-              </P>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Button
                   asChild
-                  className="bg-secondary hover:bg-white hover:text-primary py-7 px-10 rounded-full text-lg font-bold transition-all shadow-xl shadow-secondary/20"
+                  className="rounded-[2rem] bg-[#06C755] px-12 py-8 text-xl font-black shadow-2xl shadow-emerald-900/30 transition-all hover:bg-[#05b34c] active:scale-95"
                 >
                   <Link
-                    href="https://line.me"
+                    href={lineUrl}
                     target="_blank"
-                    className="flex items-center gap-2"
+                    className="flex items-center gap-3"
                   >
-                    <MessageCircle size={20} /> คุยผ่าน LINE
+                    <MessageCircle size={24} fill="white" />
+                    LINE CONSULT
                   </Link>
                 </Button>
-                <Button
-                  asChild
-                  variant="outline"
-                  className="border-white/20 bg-white/5 hover:bg-white/10 py-7 px-10 rounded-full text-lg font-bold text-white"
-                >
-                  <Link href="/contact">ติดต่อเจ้าหน้าที่</Link>
-                </Button>
               </div>
-            </div>
-          </div>
+
+              <div className="absolute -bottom-20 -right-20 h-80 w-80 rounded-full bg-blue-600/10 blur-[100px]" />
+            </section>
+          )}
         </div>
       </div>
     </main>

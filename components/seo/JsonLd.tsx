@@ -1,13 +1,10 @@
-import { ServiceItem } from "@/constants/services-data";
+// components/seo/JsonLd.tsx
 
-/**
- * ✅ กำหนด Interface สำหรับข้อมูล Schema เพื่อหลีกเลี่ยง any
- * ใช้ Record<string, unknown> สำหรับข้อมูลที่เป็นโครงสร้าง Object ทั่วไป
- */
-interface JsonLdProps {
-  type: "Organization" | "Service" | "BlogPosting";
-  data?: ServiceItem | BlogData | Record<string, unknown>;
-}
+import { type Service as ServiceItem } from "@/constants/services-data";
+
+/* -------------------------------------------------------------------------- */
+/*                                   Types                                    */
+/* -------------------------------------------------------------------------- */
 
 interface BlogData {
   headline?: string;
@@ -22,22 +19,43 @@ interface BlogData {
   slug?: string;
 }
 
+interface JsonLdProps {
+  type: "Organization" | "Service" | "BlogPosting";
+  data?: ServiceItem | BlogData;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                               Helper Utils                                 */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * ลบ key ที่เป็น undefined เพื่อป้องกัน JSON-LD invalid
+ */
+function cleanObject<T extends Record<string, unknown>>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj));
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                 Component                                  */
+/* -------------------------------------------------------------------------- */
+
 export function JsonLd({ type, data }: JsonLdProps) {
-  // ✅ ใช้ unknown และ Record สำหรับ Type Safety แทน any
   let schema: Record<string, unknown> | null = null;
 
-  // 1. ข้อมูลสำหรับองค์กร (Organization)
+  /* ------------------------------------------------------------------------ */
+  /* 1. Organization Schema                                                    */
+  /* ------------------------------------------------------------------------ */
   if (type === "Organization") {
     schema = {
       "@context": "https://schema.org",
       "@type": "Organization",
       name: "JP-VISOUL-DOCS",
       url: "https://jpvisouldocs.online",
-      logo: "https://jpvisouldocs.online/logo.png",
-      description: "บริการให้คำปรึกษาด้านเอกสาร วีซ่า และงานกฎหมายครบวงจร",
+      logo: "https://jpvisouldocs.online/og-image.jpg",
+      description:
+        "บริการให้คำปรึกษาด้านเอกสาร วีซ่า และการวางโครงสร้างทางกฎหมายครบวงจร",
       contactPoint: {
         "@type": "ContactPoint",
-        telephone: "+66-XX-XXX-XXXX",
         contactType: "customer service",
         areaServed: "TH",
         availableLanguage: ["Thai", "English"],
@@ -49,76 +67,81 @@ export function JsonLd({ type, data }: JsonLdProps) {
     };
   }
 
-  // 2. ข้อมูลสำหรับหน้ารายละเอียดบริการ (Service)
+  /* ------------------------------------------------------------------------ */
+  /* 2. Service Schema                                                         */
+  /* ------------------------------------------------------------------------ */
   if (type === "Service" && data) {
     const service = data as ServiceItem;
-    schema = {
+
+    schema = cleanObject({
       "@context": "https://schema.org",
       "@type": "Service",
-      serviceType: service.title,
-      provider: {
-        "@type": "LocalBusiness",
-        name: "JP-VISOUL-DOCS",
-        image: "https://jpvisouldocs.online/og-image.jpg",
-        address: {
-          "@type": "PostalAddress",
-          addressLocality: "Bangkok",
-          addressCountry: "TH",
-        },
-      },
+      name: service.name,
+      serviceType: service.category ?? service.name,
       description: service.description,
-      areaServed: "TH",
-      hasOfferCatalog: {
-        "@type": "OfferCatalog",
-        name: service.category || "General Services",
-        itemListElement:
-          service.features?.map((f) => ({
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: f,
-            },
-          })) || [],
+      areaServed: {
+        "@type": "Country",
+        name: "Thailand",
       },
-    };
+      provider: {
+        "@type": "Organization",
+        name: "JP-VISOUL-DOCS",
+        url: "https://jpvisouldocs.online",
+        logo: "https://jpvisouldocs.online/og-image.jpg",
+      },
+      hasOfferCatalog: service.features?.length
+        ? {
+            "@type": "OfferCatalog",
+            name: service.category ?? "Service Features",
+            itemListElement: service.features.map((feature) => ({
+              "@type": "Offer",
+              itemOffered: {
+                "@type": "Service",
+                name: feature,
+              },
+            })),
+          }
+        : undefined,
+    });
   }
 
-  // 3. ข้อมูลสำหรับหน้าบทความ (BlogPosting)
+  /* ------------------------------------------------------------------------ */
+  /* 3. BlogPosting Schema                                                      */
+  /* ------------------------------------------------------------------------ */
   if (type === "BlogPosting" && data) {
     const blog = data as BlogData;
-    schema = {
+
+    schema = cleanObject({
       "@context": "https://schema.org",
       "@type": "BlogPosting",
-      headline: blog.headline || blog.title,
+      headline: blog.headline ?? blog.title,
       image: Array.isArray(blog.image)
         ? blog.image
-        : [blog.image || "/images/blog-placeholder.jpg"],
-      datePublished: blog.datePublished || blog.date,
-      dateModified: blog.dateModified || blog.datePublished || blog.date,
-      author: [
-        {
-          "@type": "Person",
-          name:
-            blog.author && typeof blog.author === "object"
-              ? blog.author.name
-              : blog.author || "JP-VISOUL Team",
-          url: "https://jpvisouldocs.online",
-        },
-      ],
-      description: blog.description || blog.excerpt,
+        : [blog.image ?? "https://jpvisouldocs.online/og-image.jpg"],
+      datePublished: blog.datePublished ?? blog.date,
+      dateModified: blog.dateModified ?? blog.datePublished ?? blog.date,
+      description: blog.description ?? blog.excerpt,
+      author: {
+        "@type": "Person",
+        name:
+          typeof blog.author === "object"
+            ? blog.author.name
+            : (blog.author ?? "JP-VISOUL Team"),
+        url: "https://jpvisouldocs.online",
+      },
       publisher: {
         "@type": "Organization",
         name: "JP-VISOUL-DOCS",
         logo: {
           "@type": "ImageObject",
-          url: "https://jpvisouldocs.online/logo.png",
+          url: "https://jpvisouldocs.online/og-image.jpg",
         },
       },
       mainEntityOfPage: {
         "@type": "WebPage",
-        "@id": `https://jpvisouldocs.online/blog/${blog.slug || ""}`,
+        "@id": `https://jpvisouldocs.online/blog/${blog.slug ?? ""}`,
       },
-    };
+    });
   }
 
   if (!schema) return null;
@@ -126,7 +149,9 @@ export function JsonLd({ type, data }: JsonLdProps) {
   return (
     <script
       type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+      dangerouslySetInnerHTML={{
+        __html: JSON.stringify(schema),
+      }}
     />
   );
 }

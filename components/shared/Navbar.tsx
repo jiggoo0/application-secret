@@ -1,136 +1,142 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { Icons } from "./Icons";
-import { MAIN_NAV } from "@/constants/navigation";
-import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X, ChevronRight, ArrowUpRight } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+import Logo from "@/components/shared/Logo";
+import { Button } from "@/components/ui/button";
+import { MAIN_NAV } from "@/constants/navigation";
+import { SITE_CONFIG } from "@/constants/site-config";
+
+/**
+ * Navbar (Production Safe)
+ * - ไม่มี unused imports
+ * - Guard ทุก dynamic route จาก SITE_CONFIG
+ * - รองรับ App Router + Client Component
+ * - ปลอดภัยต่อ runtime
+ */
 export default function Navbar() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
 
+  /* =====================
+   * Safe Routes
+   * ===================== */
+  const servicesHref = SITE_CONFIG.routes?.services ?? "/services";
+
+  /* =====================
+   * Scroll Detection
+   * ===================== */
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 15);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => setIsOpen(false), [pathname]);
+  /* =====================
+   * Close mobile menu on route change
+   * ===================== */
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300", // เพิ่ม fixed top
+        "fixed inset-x-0 top-0 z-50 transition-all duration-500",
         scrolled
-          ? "bg-white/95 backdrop-blur-md py-3 border-b border-slate-200/60 shadow-md"
-          : "bg-white py-5 border-b border-transparent",
+          ? "border-b border-slate-200/50 bg-white/90 py-3 backdrop-blur-xl shadow-[0_10px_30px_-15px_rgba(0,0,0,0.05)]"
+          : "bg-white py-6",
       )}
     >
-      <div className="container mx-auto px-4 flex items-center justify-between">
-        {/* --- Logo Section --- */}
-        <Link href="/" className="flex items-center gap-2 group">
-          <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white transition-all group-hover:rotate-12 group-hover:scale-110 shadow-lg shadow-primary/25">
-            <Icons.visa size={22} />
-          </div>
-          <span className="font-black text-xl md:text-2xl tracking-tighter text-primary">
-            JP-VISOUL<span className="text-secondary italic">.DOCS</span>
-          </span>
-        </Link>
+      <div className="container mx-auto flex items-center justify-between px-4">
+        {/* Logo */}
+        <Logo />
 
-        {/* --- Desktop Navigation --- */}
-        <div className="hidden md:flex items-center gap-1">
-          {MAIN_NAV.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "px-4 py-2 text-[15px] font-extrabold transition-all rounded-full relative group",
-                pathname === item.href
-                  ? "text-primary bg-primary/5" // หน้าปัจจุบันใช้สี Primary อ่อนๆ
-                  : "text-slate-600 hover:text-primary",
-              )}
-            >
-              {item.title}
-              {/* เส้นใต้เวลา Hover */}
-              <span
+        {/* =====================
+         * Desktop Navigation
+         * ===================== */}
+        <div className="hidden items-center gap-2 lg:flex">
+          {MAIN_NAV.map((item) => {
+            const isActive = pathname === item.href;
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
                 className={cn(
-                  "absolute bottom-1 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-secondary transition-all duration-300 group-hover:w-1/2",
-                  pathname === item.href && "w-1/2",
+                  "relative rounded-full px-5 py-2 text-sm font-bold transition-all",
+                  isActive
+                    ? "bg-blue-50 text-blue-600"
+                    : "text-slate-600 hover:text-[#0A192F]",
                 )}
-              />
-            </Link>
-          ))}
+              >
+                {item.title}
+              </Link>
+            );
+          })}
 
-          <div className="ml-4 pl-4 border-l border-slate-200">
-            <Button
-              asChild
-              className="rounded-full px-6 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all active:scale-95 bg-primary hover:bg-primary/90 text-white"
-            >
-              <Link href="/services/request">เริ่มใช้บริการ</Link>
+          <div className="ml-4 border-l border-slate-200 pl-4">
+            <Button asChild className="h-12 rounded-2xl px-8 font-black">
+              <Link href={servicesHref} className="flex items-center gap-2">
+                เริ่มใช้บริการ
+                <ArrowUpRight size={18} />
+              </Link>
             </Button>
           </div>
         </div>
 
-        {/* --- Mobile Toggle --- */}
+        {/* =====================
+         * Mobile Toggle
+         * ===================== */}
         <button
-          className="md:hidden p-2.5 text-primary bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors"
-          onClick={() => setIsOpen(!isOpen)}
+          type="button"
+          aria-label="Toggle navigation"
+          onClick={() => setIsOpen((v) => !v)}
+          className="rounded-2xl border border-slate-200 bg-slate-50 p-3 lg:hidden"
         >
-          {isOpen ? <Icons.close size={24} /> : <Icons.menu size={24} />}
+          {isOpen ? <X /> : <Menu />}
         </button>
       </div>
 
-      {/* --- Mobile Menu --- */}
+      {/* =====================
+       * Mobile Menu
+       * ===================== */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="md:hidden absolute top-full left-0 right-0 bg-white border-t border-slate-100 shadow-2xl p-4"
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2 }}
+            className="border-t border-slate-100 bg-white shadow-xl lg:hidden"
           >
-            <div className="flex flex-col gap-2">
+            <div className="space-y-3 p-4">
               {MAIN_NAV.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={cn(
-                    "flex items-center gap-4 p-4 rounded-2xl font-black transition-all",
-                    pathname === item.href
-                      ? "bg-primary text-white shadow-lg shadow-primary/20"
-                      : "text-primary hover:bg-slate-50",
-                  )}
+                  className="flex items-center justify-between rounded-2xl bg-slate-50 p-5 font-bold text-slate-700"
                 >
-                  <div
-                    className={cn(
-                      "w-9 h-9 rounded-xl flex items-center justify-center transition-colors",
-                      pathname === item.href ? "bg-white/20" : "bg-primary/5",
-                    )}
-                  >
-                    {item.icon ? (
-                      <item.icon size={20} />
-                    ) : (
-                      <Icons.visa size={20} />
-                    )}
-                  </div>
-                  {item.title}
+                  <span>{item.title}</span>
+                  <ChevronRight size={18} />
                 </Link>
               ))}
-              <div className="mt-4 pt-4 border-t border-slate-100">
-                <Button
-                  asChild
-                  className="w-full py-7 rounded-2xl text-lg font-black shadow-xl shadow-secondary/30 bg-secondary hover:bg-secondary/90 text-white"
-                >
-                  <Link href="/services/request">เริ่มต้นขอรับบริการ</Link>
-                </Button>
-              </div>
+
+              <Button
+                asChild
+                className="h-16 w-full rounded-2xl text-lg font-black"
+              >
+                <Link href={servicesHref} className="flex items-center gap-2">
+                  ขอรับบริการทันที
+                  <ArrowUpRight />
+                </Link>
+              </Button>
             </div>
           </motion.div>
         )}

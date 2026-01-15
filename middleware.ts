@@ -1,15 +1,22 @@
-// middleware.ts (อยู่ที่ Root ของโปรเจกต์)
-import { type NextRequest } from "next/server";
-import { updateSession } from "@/lib/supabase/middleware";
+// middleware.ts
 
-export async function middleware(request: NextRequest) {
-  // เรียกใช้ Logic จาก lib
-  return await updateSession(request);
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function middleware(_request: NextRequest) {
+  const response = NextResponse.next();
+
+  // Clickjacking protection
+  response.headers.set("X-Frame-Options", "DENY");
+
+  // Prevent MIME sniffing
+  response.headers.set("X-Content-Type-Options", "nosniff");
+
+  return response;
 }
 
 export const config = {
   matcher: [
-    /* กำหนด Path ที่ต้องการให้ Middleware ทำงาน */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    "/((?!api|_next/static|_next/image|favicon.ico|images).*)",
   ],
 };

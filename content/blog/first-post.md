@@ -4,10 +4,12 @@ excerpt: "เจาะลึกทุกรายละเอียดการ�
 date: "2026-01-14"
 author: "JP-VISOUL Team"
 category: "Visa"
-image: "/images/blog/visa-prep.jpg"
+image: "https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Jpblog.png"
 tags: ["วีซ่า", "ท่องเที่ยว", "เตรียมเอกสาร"]
 published: true
 ---
+
+![JP-VISOUL Visa Preparation 2026](https://ksiobbrextlywypdzaze.supabase.co/storage/v1/object/public/user-uploads/Blog/Jpblog.png)
 
 ## ทำไมการเตรียมเอกสารจึงสำคัญ?
 

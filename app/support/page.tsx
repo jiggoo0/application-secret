@@ -1,6 +1,9 @@
 import { Metadata } from "next";
+import Link from "next/link";
 import Header from "@/components/shared/Header";
 import { H2, P } from "@/components/ui/typography";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import {
   MessageCircle,
   Mail,
@@ -10,9 +13,6 @@ import {
   UserCheck,
   ExternalLink,
 } from "lucide-react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils"; // ✅ ใช้ cn จาก lib ส่วนกลางเพื่อมาตรฐานเดียวกัน
 
 export const metadata: Metadata = {
   title: "ศูนย์ช่วยเหลือ | JP-VISOUL.DOCS",
@@ -20,7 +20,6 @@ export const metadata: Metadata = {
     "ศูนย์ช่วยเหลือและติดต่อสอบถามข้อมูลบริการวีซ่า เอกสาร และจดทะเบียนธุรกิจ",
 };
 
-// ✅ กำหนด Interface สำหรับข้อมูล เพื่อหลีกเลี่ยง any
 interface ContactMethod {
   icon: React.ReactNode;
   title: string;
@@ -84,32 +83,32 @@ export default function SupportPage() {
       <Header
         title="ศูนย์ช่วยเหลือ"
         description="เราพร้อมดูแลและตอบทุกข้อสงสัย เพื่อให้งานเอกสารของคุณเป็นเรื่องง่าย"
-        centered={true}
+        centered
       />
 
-      <div className="container mx-auto px-4 -mt-12 relative z-10">
-        <div className="max-w-6xl mx-auto">
-          {/* 2. Quick Contact Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+      <div className="container relative z-10 mx-auto -mt-12 px-4">
+        <div className="mx-auto max-w-6xl">
+          {/* 2. Quick Contact */}
+          <div className="mb-16 grid grid-cols-1 gap-6 md:grid-cols-3">
             {contactMethods.map((item, idx) => (
               <a
-                href={item.link}
                 key={idx}
-                className="group flex items-center p-6 bg-white rounded-3xl border border-slate-100 shadow-xl shadow-slate-200/50 transition-all hover:-translate-y-1 hover:border-secondary"
+                href={item.link}
+                className="group flex items-center rounded-3xl border border-slate-100 bg-white p-6 shadow-xl shadow-slate-200/50 transition-all hover:-translate-y-1 hover:border-secondary"
               >
                 <div
                   className={cn(
-                    "w-14 h-14 rounded-2xl flex items-center justify-center mr-5 transition-colors",
+                    "mr-5 flex h-14 w-14 items-center justify-center rounded-2xl transition-colors",
                     item.color,
                   )}
                 >
                   {item.icon}
                 </div>
                 <div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">
+                  <p className="mb-1 text-xs font-bold uppercase tracking-widest text-slate-400">
                     {item.title}
                   </p>
-                  <p className="font-black text-slate-900 group-hover:text-secondary transition-colors">
+                  <p className="font-black text-slate-900 transition-colors group-hover:text-secondary">
                     {item.value}
                   </p>
                 </div>
@@ -118,29 +117,29 @@ export default function SupportPage() {
           </div>
 
           {/* 3. Help Categories */}
-          <div className="text-center mb-12">
-            <H2 className="border-none p-0 text-3xl font-black mb-4">
+          <div className="mb-12 text-center">
+            <H2 className="mb-4 border-none p-0 text-3xl font-black">
               หัวข้อที่ช่วยคุณได้
             </H2>
             <P className="text-slate-500">เลือกหมวดหมู่ที่ต้องการค้นหาคำตอบ</P>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+          <div className="mb-20 grid grid-cols-1 gap-8 md:grid-cols-3">
             {helpCategories.map((cat, idx) => (
               <div
                 key={idx}
-                className="p-8 rounded-[2rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-2xl hover:shadow-slate-200 transition-all duration-500"
+                className="rounded-[2rem] border border-slate-100 bg-slate-50 p-8 transition-all duration-500 hover:bg-white hover:shadow-2xl hover:shadow-slate-200"
               >
-                <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mb-6 text-primary">
+                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-white text-primary shadow-sm">
                   {cat.icon}
                 </div>
-                <h3 className="text-xl font-bold mb-3">{cat.title}</h3>
-                <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                <h3 className="mb-3 text-xl font-bold">{cat.title}</h3>
+                <p className="mb-6 text-sm leading-relaxed text-slate-500">
                   {cat.desc}
                 </p>
                 <Link
                   href="/faq"
-                  className="text-secondary font-bold text-sm inline-flex items-center gap-2 hover:underline"
+                  className="inline-flex items-center gap-2 text-sm font-bold text-secondary hover:underline"
                 >
                   อ่านเพิ่มเติม <ExternalLink size={14} />
                 </Link>
@@ -148,30 +147,31 @@ export default function SupportPage() {
             ))}
           </div>
 
-          {/* 4. CTA Section */}
-          <div className="bg-primary rounded-[3rem] p-8 md:p-16 text-center text-white relative overflow-hidden shadow-2xl shadow-primary/20">
-            {/* Background Decor */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-secondary/20 rounded-full blur-[80px] -mr-32 -mt-32" />
+          {/* 4. CTA */}
+          <div className="relative overflow-hidden rounded-[3rem] bg-primary p-8 text-center text-white shadow-2xl shadow-primary/20 md:p-16">
+            <div className="absolute right-0 top-0 -mr-32 -mt-32 h-64 w-64 rounded-full bg-secondary/20 blur-[80px]" />
 
-            <div className="relative z-10 max-w-2xl mx-auto">
-              <h2 className="text-3xl md:text-4xl font-black mb-6 leading-tight">
+            <div className="relative z-10 mx-auto max-w-2xl">
+              <h2 className="mb-6 text-3xl font-black leading-tight md:text-4xl">
                 หาคำตอบที่ต้องการไม่เจอใช่ไหม?
               </h2>
-              <p className="text-slate-300 mb-10 text-lg">
+              <p className="mb-10 text-lg text-slate-300">
                 ส่งข้อความหาเราโดยตรง
                 ทีมงานผู้เชี่ยวชาญพร้อมให้คำปรึกษาและแก้ไขปัญหาให้คุณทันที
               </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+
+              <div className="flex flex-col justify-center gap-4 sm:flex-row">
                 <Button
                   asChild
-                  className="bg-secondary hover:bg-white hover:text-primary py-7 px-10 rounded-full text-lg font-bold transition-all text-primary"
+                  className="rounded-full bg-secondary px-10 py-7 text-lg font-bold text-primary transition-all hover:bg-white"
                 >
                   <Link href="/services/request">ส่งคำขอรับบริการ</Link>
                 </Button>
+
                 <Button
                   asChild
                   variant="outline"
-                  className="border-white/20 bg-white/5 hover:bg-white/10 py-7 px-10 rounded-full text-lg font-bold text-white"
+                  className="rounded-full border-white/20 bg-white/5 px-10 py-7 text-lg font-bold text-white hover:bg-white/10"
                 >
                   <Link href="/contact">คุยกับเราตอนนี้</Link>
                 </Button>

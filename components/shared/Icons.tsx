@@ -1,3 +1,5 @@
+// components/shared/Icons.tsx
+import * as React from "react";
 import {
   Globe,
   Languages,
@@ -5,55 +7,89 @@ import {
   Menu,
   X,
   ChevronDown,
+  ChevronRight,
   Home,
   Briefcase,
   BookOpen,
   Mail,
   User,
+  Users,
   ShieldCheck,
   FileText,
   BadgeCheck,
+  Calendar,
+  ArrowRight,
+  Clock,
+  HelpCircle,
   type LucideIcon,
 } from "lucide-react";
 
-/**
- * 1. กำหนดประเภทของ Icon เพื่อใช้งานในโปรเจกต์
- */
 export type IconType = LucideIcon;
 
 /**
- * 2. คลัง Icon หลัก (Static Mapping)
- * เพิ่มไอคอนที่จำเป็นสำหรับงานเอกสารและวีซ่า
+ * Icons Registry
+ * Single Source of Truth สำหรับ icon ทั้งระบบ
+ * ❗ key ต้องตรงกับที่เรียกใช้ เช่น <Icons.help />
  */
 export const Icons = {
+  /* =====================
+   * Core Services
+   * ===================== */
   visa: Globe,
   translation: Languages,
   legal: Scale,
+
+  /* =====================
+   * Navigation
+   * ===================== */
   menu: Menu,
   close: X,
   chevronDown: ChevronDown,
+  chevronRight: ChevronRight,
+
   home: Home,
   services: Briefcase,
   blog: BookOpen,
+  book: BookOpen,
   contact: Mail,
-  user: User,
-  shield: ShieldCheck,
-  document: FileText,
-  badge: BadgeCheck,
-};
 
-/**
- * 3. DynamicIcon Component (แก้ไขปัญหา Element type is invalid)
- * ใช้สำหรับเรนเดอร์ Icon ผ่านชื่อ String (key)
- * เช่น <DynamicIcon name="visa" />
- */
-interface DynamicIconProps extends React.ComponentProps<"svg"> {
-  name: string | keyof typeof Icons;
+  /* =====================
+   * Users / Trust
+   * ===================== */
+  user: User,
+  users: Users,
+  shield: ShieldCheck,
+
+  /* =====================
+   * Documents / Status
+   * ===================== */
+  document: FileText,
+  fileText: FileText,
+  badge: BadgeCheck,
+
+  /* =====================
+   * Misc
+   * ===================== */
+  calendar: Calendar,
+  arrowRight: ArrowRight,
+  clock: Clock,
+  help: HelpCircle, // ใช้กับ FAQ / Help
+} satisfies Record<string, LucideIcon>;
+
+interface DynamicIconProps extends React.ComponentPropsWithoutRef<"svg"> {
+  name: keyof typeof Icons;
+  size?: number;
 }
 
-export function DynamicIcon({ name, ...props }: DynamicIconProps) {
-  // เลือก Icon ตามชื่อที่ส่งมา หากไม่พบจะใช้ Globe เป็นค่าเริ่มต้น
-  const IconComponent = Icons[name as keyof typeof Icons] || Icons.visa;
+/**
+ * DynamicIcon
+ * ใช้ render icon จาก key แบบ dynamic
+ * ปลอดภัยต่อ runtime (คืน null หากไม่พบ icon)
+ */
+export function DynamicIcon({ name, size = 20, ...props }: DynamicIconProps) {
+  const IconComponent = Icons[name];
 
-  return <IconComponent {...props} />;
+  if (!IconComponent) return null;
+
+  return <IconComponent size={size} {...props} />;
 }

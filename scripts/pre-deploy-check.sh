@@ -4,15 +4,15 @@
 REPORT_FILE="pre-deploy-report.md"
 TIMESTAMP=$(date '+%Y-%m-%d %H:%M:%S')
 
-# ✅ ขั้นตอน 0: ลบไฟล์รายงานเก่าทิ้งก่อนเริ่มทำงาน
+# ✅ ขั้นตอน 0: ล้างรายงานเก่า
 if [ -f "$REPORT_FILE" ]; then
     rm "$REPORT_FILE"
     echo "🗑️  Old report removed."
 fi
 
-echo "🔍 Starting UnlinkTH Pre-deploy Inspection..."
+echo "🔍 Starting JP-VISOUL Pre-deploy Inspection..."
 
-# เริ่มเขียนไฟล์ Markdown ใหม่
+# เริ่มเขียนไฟล์ Markdown
 echo "# 🚀 Pre-deploy Inspection Report" > $REPORT_FILE
 echo "Generated at: $TIMESTAMP" >> $REPORT_FILE
 echo "Branch: $(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo 'N/A')" >> $REPORT_FILE
@@ -33,15 +33,10 @@ echo "🛠️  Attempting to Auto-fix Linting issues..."
 echo "## 🛠️  2. Auto-Fix Procedure" >> $REPORT_FILE
 pnpm lint --fix > fix_output.txt 2>&1
 FIX_EXIT_CODE=$?
-
-if [ $FIX_EXIT_CODE -eq 0 ]; then
-    echo "✅ Status: Auto-fix completed or no issues found." >> $REPORT_FILE
-else
-    echo "⚠️  Note: Some issues could not be fixed automatically." >> $REPORT_FILE
-fi
+echo "✅ Status: Auto-fix process finished (Code: $FIX_EXIT_CODE)." >> $REPORT_FILE
 rm fix_output.txt
 
-# 3. เช็ค Linting (Code Hygiene)
+# 3. เช็ค Linting
 echo "🧹 Running Final Linting Check..."
 echo "## 🧹 3. Code Linting (ESLint)" >> $REPORT_FILE
 pnpm lint > lint_output.txt 2>&1
@@ -75,18 +70,29 @@ else
 fi
 rm type_output.txt
 
-# 5. ขั้นตอน Build (Production Readiness)
+# 5. Smart Checks: ค้นหาคำตกค้าง (Debugging Logs)
+echo "🔍 Searching for leftover debug logs..."
+echo "## 🔍 5. Clean Code Audit" >> $REPORT_FILE
+LOG_FOUND=$(grep -r "console.log" ./app ./components --exclude-dir=node_modules | wc -l)
+if [ $LOG_FOUND -gt 0 ]; then
+    echo "⚠️  Found $LOG_FOUND 'console.log' instances in your code." >> $REPORT_FILE
+else
+    echo "✅ No debug logs found." >> $REPORT_FILE
+fi
+
+# 6. ขั้นตอน Build (Production Readiness)
 echo "🏗️  Executing Production Build..."
-echo "## 🏗️  5. Production Build Test" >> $REPORT_FILE
-# ใช้ 'tee' เพื่อแสดงผลบนหน้าจอพร้อมบันทึกลงไฟล์
+echo "## 🏗️  6. Production Build Test" >> $REPORT_FILE
 pnpm run build 2>&1 | tee build_output.txt
+
+# ✅ FIXED: ใช้ PIPESTATUS เพื่อดึง exit code ของ pnpm build ที่แท้จริง
 BUILD_EXIT_CODE=${PIPESTATUS[0]}
 
 if [ $BUILD_EXIT_CODE -eq 0 ]; then
     echo "✅ Status: Build successfully optimized." >> $REPORT_FILE
     echo "### 📊 Route Statistics & Bundle Size" >> $REPORT_FILE
     echo "\`\`\`text" >> $REPORT_FILE
-    # ดึงเฉพาะส่วนที่เป็นตารางสรุป Route จากไฟล์ build_output
+    # ดึงเฉพาะตารางสรุป Route จาก Build Log
     sed -n '/Route (app)/,$p' build_output.txt >> $REPORT_FILE
     echo "\`\`\`" >> $REPORT_FILE
 else
@@ -98,17 +104,17 @@ else
 fi
 rm build_output.txt
 
-# สรุปผลลัพธ์สุดท้าย
+# สรุปผล
 echo "" >> $REPORT_FILE
 echo "---" >> $REPORT_FILE
 echo "## 🏆 Summary Result" >> $REPORT_FILE
 
 if [ $LINT_EXIT_CODE -eq 0 ] && [ $TYPE_EXIT_CODE -eq 0 ] && [ $BUILD_EXIT_CODE -eq 0 ]; then
     echo "### ✅ READY FOR DEPLOY" >> $REPORT_FILE
-    echo "All protocols verified: Lint passed, Types safe, and Build successful. Deployment is highly recommended." >> $REPORT_FILE
+    echo "All protocols verified: Lint passed, Types safe, and Build successful." >> $REPORT_FILE
 else
     echo "### 🚫 FIX REQUIRED BEFORE DEPLOY" >> $REPORT_FILE
-    echo "Please resolve the errors in the failed stages above." >> $REPORT_FILE
+    echo "Please resolve the errors mentioned above before pushing to production." >> $REPORT_FILE
 fi
 
 echo "🚀 Inspection complete. Full report generated: $REPORT_FILE"

@@ -1,5 +1,6 @@
+// app/layout.tsx
 import type { Metadata, Viewport } from "next";
-import { IBM_Plex_Sans_Thai, Sarabun } from "next/font/google";
+import { IBM_Plex_Sans_Thai, Inter } from "next/font/google";
 import "./globals.css";
 
 import Navbar from "@/components/shared/Navbar";
@@ -8,59 +9,58 @@ import { AppProvider } from "@/providers/AppProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 
-// 1. Font Configuration
+/**
+ * Font configuration
+ * - Headings: IBM Plex Sans Thai
+ * - Body: Inter
+ */
 const ibmPlexThai = IBM_Plex_Sans_Thai({
-  weight: ["300", "400", "500", "600", "700"],
+  weight: ["400", "500", "600", "700"],
   subsets: ["thai", "latin"],
   variable: "--font-heading",
   display: "swap",
 });
 
-const sarabun = Sarabun({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["thai", "latin"],
+const inter = Inter({
+  subsets: ["latin"],
   variable: "--font-body",
   display: "swap",
 });
 
-// 2. Metadata & SEO
+/**
+ * Global metadata
+ */
 export const metadata: Metadata = {
   metadataBase: new URL("https://jpvisouldocs.online"),
   title: {
-    default: "JP-VISOUL.DOCS | บริการเอกสารและวีซ่าครบวงจร",
-    template: "%s | JP-VISOUL.DOCS",
+    default: "JP-VISOUL | เพื่อนคู่คิดด้านเอกสารและการวางแผนที่ปรึกษาคุณ",
+    template: "%s | JP-VISOUL",
   },
   description:
-    "สะพานเชื่อมโอกาส ผ่านงานเอกสารที่โปร่งใสและเข้าถึงง่าย ทั้งบริการวีซ่า แปลเอกสาร และจดทะเบียนธุรกิจ ทั่วประเทศไทย",
-  keywords: [
-    "ขอวีซ่า",
-    "จดทะเบียนบริษัท",
-    "แปลเอกสาร",
-    "JP-VISOUL",
-    "Legal Documents Thailand",
-  ],
-  authors: [{ name: "JP-VISOUL Team" }],
+    "ช่วยจัดการเอกสารที่ยุ่งยากให้เป็นเรื่องง่าย พร้อมดูแลทุกขั้นตอนอย่างใส่ใจ",
   openGraph: {
     type: "website",
     locale: "th_TH",
     url: "https://jpvisouldocs.online",
-    siteName: "JP-VISOUL.DOCS",
+    siteName: "JP-VISOUL Intelligence",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "JP-VISOUL Services",
+        alt: "JP-VISOUL – Document & Advisory Services",
       },
     ],
   },
 };
 
+/**
+ * Viewport configuration
+ */
 export const viewport: Viewport = {
-  themeColor: "#0A192F",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
+  themeColor: "#0A192F",
 };
 
 export default function RootLayout({
@@ -72,37 +72,47 @@ export default function RootLayout({
     <html lang="th" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={cn(
-          "min-h-screen flex flex-col font-body antialiased bg-white text-slate-900 selection:bg-secondary/20 selection:text-secondary",
+          "flex min-h-screen flex-col bg-[#FAFAFA] text-[#1A1A1A] antialiased",
           ibmPlexThai.variable,
-          sarabun.variable,
+          inter.variable,
+          "font-body selection:bg-blue-600/20 selection:text-[#0A192F]",
         )}
       >
         <AppProvider>
-          {/* --- TOP FIXED NAVIGATION ---
-              เราเก็บไว้เฉพาะ Navbar เพื่อให้แถบเมนูกะทัดรัด (Slim) 
-              และมีพื้นที่สำหรับอ่านเนื้อหามากขึ้น
-          */}
-          <div className="fixed top-0 left-0 right-0 z-[100] flex flex-col shadow-sm bg-white/95 backdrop-blur-md">
-            {/* นำ <Header /> ออกเพื่อให้ไปเรียกใช้ในรายหน้าแทน */}
-            <Navbar />
-          </div>
+          {/* Noise texture overlay */}
+          <div
+            aria-hidden
+            className="pointer-events-none fixed inset-0 z-[9999] bg-[url('/images/noise.png')] opacity-[0.015]"
+          />
 
-          {/* --- MAIN CONTENT AREA ---
-              - pt-[64px]: เว้นระยะให้เท่ากับความสูงมาตรฐานของ Navbar
-              - lg:pt-[72px]: ปรับขนาดตามหน้าจอ Desktop
-          */}
+          <Navbar />
 
-          <main className="flex-grow pt-[64px] lg:pt-[72px] overflow-x-hidden animate-entry">
-            {children}
+          {/* Main content */}
+          <main className="relative flex-grow pt-[80px] lg:pt-[90px]">
+            {/* Decorative gradient */}
+            <div
+              aria-hidden
+              className="pointer-events-none absolute left-0 top-0 h-[500px] w-full bg-gradient-to-b from-blue-50/50 to-transparent"
+            />
+            <div className="relative z-10">{children}</div>
           </main>
 
           <Footer />
 
+          {/* Global toaster */}
           <Toaster
-            position="top-center"
+            position="bottom-right"
             richColors
-            expand={false}
+            expand
             closeButton
+            toastOptions={{
+              className:
+                "rounded-2xl border-none bg-white/95 font-heading text-[#0A192F] shadow-2xl backdrop-blur-md",
+              style: {
+                borderRadius: "16px",
+                boxShadow: "0 20px 40px -10px rgba(0, 0, 0, 0.1)",
+              },
+            }}
           />
         </AppProvider>
       </body>

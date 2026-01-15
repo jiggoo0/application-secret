@@ -1,27 +1,17 @@
 # 📁 Project Structure Report: JP-VISOUL-DOCS
-> Generated on: **2026-01-15 03:42:20**
+> Generated on: **2026-01-16 03:08:57**
 
 ## 🌳 Directory Tree
 The following structure represents the core business logic and UI layers.
 
 ### 📂 app
-  📂 **(auth)/**
-  📂 **(dashboard)/**
+  📂 **partner/**
+    📄 page.tsx
   📂 **services/**
     📄 page.tsx
     📂 **[slug]/**
       📄 page.tsx
-    📂 **request/**
-      📄 page.tsx
-    📂 **_archive/**
-      📂 **visa/**
-        📄 page.tsx
-      📂 **legal/**
-        📄 page.tsx
   📂 **api/**
-    📂 **auth/**
-      📂 **callback/**
-        📄 route.ts
   📄 layout.tsx
   📄 page.tsx
   📄 globals.css
@@ -30,6 +20,8 @@ The following structure represents the core business logic and UI layers.
     📄 page.tsx
     📂 **[slug]/**
       📄 page.tsx
+    📂 **test-article/**
+      📄 page.mdx
   📂 **(marketing)/**
     📂 **about/**
       📄 page.tsx
@@ -37,16 +29,14 @@ The following structure represents the core business logic and UI layers.
       📄 page.tsx
   📂 **privacy/**
     📄 page.tsx
-  📂 **careers/**
-    📄 page.tsx
   📂 **support/**
     📄 page.tsx
   📂 **faq/**
     📄 page.tsx
+  📄 favicon.ico
+  📄 robots.ts
 
 ### 📂 actions
-  📄 documentActions.ts
-  📄 authActions.ts
 
 ### 📂 components
   📂 **ui/**
@@ -67,35 +57,40 @@ The following structure represents the core business logic and UI layers.
     📄 tooltip.tsx
     📄 sheet.tsx
     📄 select.tsx
+    📄 dropdown-menu.tsx
+    📄 scroll-area.tsx
+    📄 table.tsx
   📂 **shared/**
     📄 Navbar.tsx
     📄 Footer.tsx
     📄 Header.tsx
     📄 HeroSection.tsx
     📄 FaqSection.tsx
-    📄 AboutSection.tsx
     📄 Icons.tsx
-  📂 **forms/**
-    📄 ServiceRequestForm.tsx
-  📂 **cards/**
+    📄 ProtocolStepper.tsx
+    📄 Logo.tsx
     📄 ServiceCard.tsx
+    📄 BlogSection.tsx
+  📂 **home/**
+    📄 ServiceSection.tsx
+    📄 ValuePropositionSection.tsx
+    📄 CTASection.tsx
+    📄 ProcessSection.tsx
   📂 **templates/**
     📄 CategoryArchiveTemplate.tsx
   📂 **seo/**
     📄 JsonLd.tsx
 
 ### 📂 lib
-  📂 **validations/**
-    📄 documentSchema.ts
   📄 utils.ts
   📂 **supabase/**
     📄 client.ts
     📄 server.ts
-    📄 middleware.ts
   📄 mdx.ts
+  📂 **utils/**
+    📄 line-link.ts
 
 ### 📂 hooks
-  📄 use-auth.ts
 
 ### 📂 types
   📄 index.ts
@@ -107,6 +102,8 @@ The following structure represents the core business logic and UI layers.
     📄 project-summary.sh
     📄 tree-projects.sh
   📄 pre-deploy-check.sh
+  📄 tree.sh
+  📄 clean-project.sh
 
 ### 📂 public
   📂 **fonts/**
@@ -114,14 +111,17 @@ The following structure represents the core business logic and UI layers.
     📂 **blog/**
       📄 visa-prep.jpg
       📄 business-reg.jpg
-    📄 about-team.jpg
-
-### 📂 data
+      📄 Jpblog.webp
+    📄 noise.png
+    📄 about-vision.jpg
+    📄 default-avatar.webp
+  📄 og-image.jpg
 
 ### 📂 constants
-  📄 theme.ts
   📄 navigation.ts
   📄 services-data.ts
+  📄 contact.ts
+  📄 site-config.ts
 
 ### 📂 providers
   📄 AppProvider.tsx
@@ -131,13 +131,17 @@ The following structure represents the core business logic and UI layers.
   📂 **blog/**
     📄 sample-post.mdx
     📄 first-post.md
+    📄 financial-protocol-schengen-2026.mdx
+    📄 home-loan-structuring-protocol.mdx
+    📄 corporate-documentation-integrity.mdx
+    📄 data-privacy-security-standard.mdx
   📄 faq-data.ts
 
 ## 📦 Project Dependencies
 Current configuration in `package.json`:
 ```json
 {
-  "name": "test",
+  "name": "JP-Online",
   "version": "0.1.0",
   "scripts": {
     "dev": "next dev",
@@ -154,8 +158,10 @@ Current configuration in `package.json`:
     "@radix-ui/react-accordion": "^1.2.12",
     "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-dialog": "^1.1.15",
+    "@radix-ui/react-dropdown-menu": "^2.1.16",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-navigation-menu": "^1.2.14",
+    "@radix-ui/react-scroll-area": "^1.2.10",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-separator": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
@@ -166,11 +172,11 @@ Current configuration in `package.json`:
     "@types/mdx": "^2.0.13",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.1.0",
     "framer-motion": "^12.25.0",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.562.0",
     "next": "15.5.7",
-    "next-mdx-remote": "^5.0.0",
     "next-themes": "^0.4.6",
     "react": "19.2.3",
     "react-dom": "19.2.3",
@@ -183,6 +189,8 @@ Current configuration in `package.json`:
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
     "@tailwindcss/postcss": "^4",
     "@tailwindcss/typography": "^0.5.19",
     "@types/node": "^20",
@@ -203,7 +211,38 @@ Current configuration in `package.json`:
 
 ## 📝 Deployment Status & Issues
 ---
+### ✅ Final Status: **READY FOR DEPLOY**
 
-
+#### 📍 Production Route Map
+```text
+```text
+Route (app)                                 Size  First Load JS
+┌ ○ /                                    9.44 kB         173 kB
+├ ○ /_not-found                            994 B         103 kB
+├ ○ /about                                 492 B         107 kB
+├ ○ /blog                                  174 B         110 kB
+├ ƒ /blog/[slug]                           492 B         107 kB
+├ ○ /blog/test-article                     492 B         107 kB
+├ ○ /contact                               129 B         102 kB
+├ ○ /faq                                 3.62 kB         159 kB
+├ ○ /partner                             1.05 kB         151 kB
+├ ○ /privacy                             1.03 kB         148 kB
+├ ○ /robots.txt                            129 B         102 kB
+├ ○ /services                            10.9 kB         172 kB
+├ ƒ /services/[slug]                     9.07 kB         127 kB
+├ ○ /sitemap.xml                           129 B         102 kB
+└ ○ /support                             1.05 kB         151 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/7f97a788-70f696b0503e8e6b.js  54.2 kB
+  ├ chunks/919-cb094919e5c4c4d2.js       45.5 kB
+  └ other shared chunks (total)          1.93 kB
+ƒ Middleware                             33.7 kB
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+```
+```
+#### ⚠️ Critical Issues Highlight
+Everything looks clean. No significant issues found in the latest report.
 
 ---
+_Report generated by JP-VISOUL Internal Automation._

@@ -1,0 +1,21 @@
+import Image from "next/image";
+import { JsonLd } from "@/components/seo/JsonLd";
+
+export const metadata = {
+  title: "Test Article | JP-VISOUL.DOCS",
+  description: "บทความทดสอบระบบ MDX",
+};
+
+export default function Page() {
+  return (
+    <>
+      <JsonLd type="BlogPosting" data={{ headline: "Test Article" }} />
+
+      <main className="container py-12">
+        ## ทำไมต้องใช้ MDX
+
+        MDX ช่วยให้ผสม **Markdown** และ **React**
+      </main>
+    </>
+  );
+}
